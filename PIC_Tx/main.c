@@ -188,85 +188,6 @@ void interrupt InterReceiver(void);
 //    }
 //}
 
-/*******************************************************************************
-*test for interrupt
-******************************************************************************/
-//FIXME:[start]test for interrupt
-// void interrupt interReceiverTest( void ){
-//    UBYTE RXDATA;
-//    if (RCIF == 1) {
-//        RXDATA = getChar();
-//        //RXDATA++;
-//        //putChar('G');
-//        putChar(RXDATA);
-       
-//        switch (RXDATA){
-//             case 'h':
-//                 putChar('H');
-//                 HEATER = 1;
-//                 for(int i=0;i<300;i++) delay_ms(1000);
-//                 HEATER = 0;
-//                 break;
-//            case 'i':
-//                HEATER = 1;
-//                for(int i=0;i<60;i++) delay_ms(1000);
-//                HEATER = 0;
-//                break;
-//             case 'c':
-//                 putChar('C');
-//                 putChar('W');
-                
-//                 for(int i=0;i<120;i++){
-//                 CWKEY = 1;
-//                 __delay_ms(50);
-//                 CWKEY = 0;
-//                 __delay_ms(50);
-
-//                 CWKEY = 1;
-//                 __delay_ms(50);
-//                 CWKEY = 0;
-//                 __delay_ms(50);
-
-//                 CWKEY = 1;
-//                 __delay_ms(50);
-//                 CWKEY = 0;
-//                 __delay_ms(50);
-
-//                 CWKEY = 1;
-//                 __delay_ms(150);
-//                 CWKEY = 0;
-//                 __delay_ms(50);
-//                 }
-
-//                 putChar('C');
-//                 putChar('W');
-//                 putChar('2');
-//                 break;
-//             case 'f':
-//                 putChar('F');
-//                 putChar('m');
-//                 CWKEY = 0;
-//         //            __delay_ms(2000);
-//                 __delay_ms(300);
-//                 UBYTE EEPROMTestData[36];
-//                 EEPROMTestData[0] = 'o';
-//                 EEPROMTestData[1] = 'r';
-//                 EEPROMTestData[2] = 'i';
-//                 EEPROMTestData[3] = '1';
-//                 for(int i=4;i<36;i++) EEPROMTestData[i] = 'A';
-//                 __delay_ms(300);
-//                 FMPTT = 1;
-//                 SendPacket(EEPROMTestData);
-//                 FMPTT = 0;
-//                 __delay_ms(300);
-//                 break;
-                
-
-//        }
-//        RCIF = 0;
-//    }
-// }
-
 void main(void) {
     
     __delay_ms(1000);
@@ -282,21 +203,6 @@ void main(void) {
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
 //    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
     
-
-    //FIXME:write melting status for debug
-//    UBYTE main_test_melting_status = 0b00000011;
-//    UBYTE sub_test_melting_status = 0b01111111;
-//    WriteOneByteToEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow, main_test_melting_status);
-//    WriteOneByteToEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh, MeltingStatus_addressLow, sub_test_melting_status);
-//    putChar(0xa1);
-////    
-//    UBYTE main_melting_status;
-//    UBYTE sub_melting_status;
-//    main_melting_status = ReadEEPROM(EEPROM_address, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-//    sub_melting_status = ReadEEPROM(EEPROM_subaddress, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-//    putChar(0xa2);
-//    putChar(main_melting_status);
-//    putChar(sub_melting_status);  
 
     HK_test_setting();
     
@@ -315,47 +221,5 @@ void main(void) {
         }         
         //TODO debug send HK 
         HKDownlink();
-        
-        
-        /*---------------------------------------------------------------*/
-        //FIXME:[start]debug for downlink FM signal        
-        // FMPTT = 1;
-        // UBYTE eDataField[36];
-        // for(UBYTE i=0; i<36; i++){
-        //     eDataField[i] = i;
-        // }
-        // SendPacket(eDataField);
-        // __delay_ms(2000);
-        //  FMPTT = 0;
-        //FIXME:[finish]debug for downlink CW signal
-        /*---------------------------------------------------------------*/
-
-        /*---------------------------------------------------------------*/
-        //FIXME:[start]check for CW signal       
-//       __delay_ms(1000);
-//        CWKEY = 1;
-//        __delay_ms(2000);
-//        CWKEY =0;
-        //FIXME:[finish]check for  CW signal
-        /*---------------------------------------------------------------*/
-        
-        /*---------------------------------------------------------------*/
-        //FIXME:[start]debug for downlink CW signal
-        // testForCwFunctions();
-        //FIXME:[finish]debug for downlink CW signal
-        /*---------------------------------------------------------------*/
-        
-       /*----------------------------------------------------------*/
-       //FIXME : method for test to measure ADC start
-//       putChar(0xaa);
-//       putChar(0xaa);
-//       putChar(0xaa);
-//       measureAllChanelADC();
-//       putChar(0xbb);
-//       putChar(0xbb);
-//       putChar(0xbb);
-       //method for test to measure ADC finish
-       /*----------------------------------------------------------*/
-        
     }
 }
