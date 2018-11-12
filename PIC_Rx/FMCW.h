@@ -26,9 +26,6 @@ USLONG FMRX_Nprg = 24916;
 
 
 //function declarations:
-//void FMTX(int Nref, UBYTE *Nprg);
-//void CWTX(int Nref, UBYTE *Nprg);
-//void FMRX(int Nref, UBYTE *Nprg);
 void FMTX(int Nref, USLONG Nprg);
 void CWTX(int Nref, USLONG Nprg);
 void FMRX(int Nref, USLONG Nprg);

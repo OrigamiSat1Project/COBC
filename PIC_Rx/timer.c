@@ -29,7 +29,10 @@ static UINT hour_counter    = 0;
 static UINT day_counter     = 0;
 static UINT week_counter    = 0;
 
-static UINT wdt_pulse_counter_sec       = 0;
+static UINT NTRX_pll_setting_counter_sec  = 0;
+static UINT NTRX_pll_setting_counter_min  = 0;
+static UINT NTRX_pll_setting_counter_hour = 0;
+static UINT NTRX_pll_setting_counter_day  = 0;
 static UINT receive_command_counter_sec = 0;
 static UINT receive_command_counter_min = 0;
 static UINT bat_meas_counter_sec        = 0;
@@ -55,7 +58,7 @@ void interrupt TimerCheck(void){
         timer_counter = 0;
         second_counter += 1;
         
-        wdt_pulse_counter_sec ++;
+        NTRX_pll_setting_counter_sec ++;
         eps_reset_counter_sec ++; //for debug        
         init_ope_counter_sec ++;
         bat_meas_counter_sec ++;
@@ -66,8 +69,11 @@ void interrupt TimerCheck(void){
     if(second_counter >= one_minute){
         second_counter = 0;
         minute_counter ++;        
-        putChar('G');
     }
+    if(NTRX_pll_setting_counter_sec >= one_minute){
+        NTRX_pll_setting_counter_sec = 0;
+        NTRX_pll_setting_counter_min ++;
+    }    
     //for debug
     if(eps_reset_counter_sec >= one_minute){
         eps_reset_counter_sec = 0;
@@ -89,10 +95,20 @@ void interrupt TimerCheck(void){
         minute_counter = 0;
         hour_counter ++;
     }
+    if(NTRX_pll_setting_counter_min >= one_hour){
+        NTRX_pll_setting_counter_min = 0;
+        NTRX_pll_setting_counter_hour ++;
+    }     
+    
     if(hour_counter >= one_day){
         hour_counter = 0;
         day_counter ++;
     }
+    if(NTRX_pll_setting_counter_hour >= one_day){
+        NTRX_pll_setting_counter_hour = 0;
+        NTRX_pll_setting_counter_day ++;
+    } 
+    
     if(day_counter >= one_week){
         day_counter = 0;
         week_counter ++;
@@ -100,26 +116,27 @@ void interrupt TimerCheck(void){
     if(week_counter >= 2){
         week_counter = 0;
     }
-    
-    /*---WDT send pulse (4s)---*/
-////    if((get_timer_counter('s') % WDT_INTERVAL) == 1 ){
-//    if(wdt_pulse_counter_sec>=WDT_INTERVAL){
-////        if(WDT_flag == 0x01){
-//        wdt_pulse_counter_sec = 0;
-//            sendPulseWDT();
-////            WDT_flag = 0x00;
-////        }
-//    }
 }
 
-void set_wdt_pulse_counter(UINT time_sec){
-    wdt_pulse_counter_sec = time_sec;
+void set_NTRX_pll_setting_counter(UINT time_sec, UINT time_min, UINT time_hour, UINT time_day){
+    NTRX_pll_setting_counter_sec = time_sec;
+    NTRX_pll_setting_counter_min = time_min;
+    NTRX_pll_setting_counter_min = time_hour;
+    NTRX_pll_setting_counter_min = time_day;
+}
+UINT get_NTRX_pll_setting_counter_sec(void){
+    return NTRX_pll_setting_counter_sec;
+}
+UINT get_NTRX_pll_setting_counter_min(void){
+    return NTRX_pll_setting_counter_min;
+}
+UINT get_NTRX_pll_setting_counter_hour(void){
+    return NTRX_pll_setting_counter_hour;
+}
+UINT get_NTRX_pll_setting_counter_day(void){
+    return NTRX_pll_setting_counter_day;
 }
 
-//for debug
-UINT get_wdt_pulse_counter_sec(void){
-    return wdt_pulse_counter_sec;
-}
 
 //for debug
 void set_eps_reset_counter(UINT time_sec, UINT time_min){

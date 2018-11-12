@@ -164,10 +164,6 @@ void downlinkFMSignal(UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressL
 void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_address_forData, UBYTE low_address_forData, UBYTE downlink_times, UBYTE EEPROMDataLength_or_high_address_forDataSize, UBYTE low_address_forDataSize){
     UBYTE read_data_forCW[];
     switch(type_select){
-        case 's':   //start CW downlink
-            CWdownlinkStart();
-            switchOk(ok_FMCW_commandSwitchCWDownlink_Start);
-            break;
         case 0xaa:  //the size of data is specified by the command
             ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, downlink_times);
             switchOk(ok_FMCW_commandSwitchCWDownlink_aa);

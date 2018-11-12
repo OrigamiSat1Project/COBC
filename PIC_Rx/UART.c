@@ -19,7 +19,8 @@ void InitSerial(void){
 	SREN   = 0;						// No effect
     RCIF   = 0;                     // RX frag Reset
 	TXIE   = 0;						// Disble tx interrupts
-	RCIE   = 1;						// Enable rx interrupts
+	RCIE   = 0;						// Disble rx interrupts
+//    RCIE   = 1;						// Enable rx interrupts
 	TX9    = 0;						// 8-bit transmission
 	RX9    = 0;						// 8-bit reception
 	TXEN   = 0;						// Reset transmitter
@@ -57,19 +58,32 @@ void putChar(UBYTE byte){
 // }
 
 void put_error(void){
+    putChar('\r');
+    putChar('\n');
     putChar('E');
     putChar('R');
     putChar('R');
     putChar('O');
     putChar('R');
     putChar('!');
+    putChar('\r');
+    putChar('\n');
 }
 
-//void put_ok(void){
-//    putChar('O');
-//    putChar('K');
-//    putChar('!');
-//}
+void put_ok(void){
+    putChar('\r');
+    putChar('\n');
+    putChar('O');
+    putChar('K');
+    putChar('!');
+    putChar('\r');
+    putChar('\n');
+}
+
+void put_lf(void){
+    putChar('\r');
+    putChar('\n');
+}
 
 //void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){ //TODO change name from NM to OBC
 //    putChar(NM_wad_header);
@@ -104,7 +118,6 @@ void sendCommandByPointer(UBYTE* Parameter){
     
     for(UBYTE i=0; i<10; i++){
         putChar(Command[i]);
-        NOP();
     }        
 }
 
@@ -124,7 +137,7 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1,UBYTE Par
     Command[9] = (UBYTE)(CRC & 0x00FF);
 //    putString(Command);
     for(UBYTE i=0; i<10; i++){
-    putChar(Command[i]);
+        putChar(Command[i]);
     }
 }
 

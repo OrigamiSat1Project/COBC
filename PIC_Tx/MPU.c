@@ -38,7 +38,8 @@ void Init_MPU(void)
     TRISE  = 0b00000000;	
 
 	//Port Initial Value Setting	
-	PORTA  = 0x00;
+//	PORTA  = 0x00;          //WDT on
+    PORTA  = 0b00000010;    //WDT off   //FIXME: for debug !!!!
 	PORTB  = 0x00;
 	PORTC  = 0x00;
     //PORTD  = 0x00;
@@ -68,26 +69,6 @@ UINT invertState(UINT pinState){
         return high;
     }
 }
-
-//Used to switch PIN to the opposite status(high/low)
-//UINT invertStateWithTIme(UINT pinState,UBYTE timeHigh, UBYTE timeLow){
-//    if (timeHigh != 0x00 && timeLow != 0x00){
-//        UWORD operationTime;
-//        operationTime = (UWORD)timeHigh * 0x100 + timeLow;
-//        delay_ms(operationTime);
-//        pinState = 1 - pinState;
-//    }else{
-//        return pinState;
-//    }
-//}
-
-// void cutWire(UBYTE timeHigh, UBYTE timeLow){
-//     UWORD cutTime;
-//     cutTime = (UWORD)timeHigh * 0x100 + timeLow;
-//     WIRE_CUTTER = 1;
-//     delay_ms(cutTime);
-//     WIRE_CUTTER = 0;
-// }
 
 /*heater*/
 void onOffHEATER(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
@@ -188,9 +169,8 @@ void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE m
     main_melting_status = ReadEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow);
     sub_melting_status = ReadEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh, MeltingStatus_addressLow);
 
-//    //FIXME:
-//    main_melting_status = 0b01000000;
-//    sub_melting_status = 0b01000000;
+    if(main_melting_status==0xff) main_melting_status = 0x00;
+    if(sub_melting_status ==0xff) sub_melting_status  = 0x00;
     
     //bit operation
     //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
@@ -282,11 +262,11 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             break;
         case 'a': //WIRE_CUTTER
             putChar(0xb1);
-//            cutWire(onOff, timeHigh, timeLow);
+////            cutWire(onOff, timeHigh, timeLow);
             break;
         case 't': //WIRE_CUTTER with times
             putChar(0xb2);
-//            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
+////            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
             break;
         case 'w': //WDT
             onOffTXWDT(onOff, timeHigh, timeLow);

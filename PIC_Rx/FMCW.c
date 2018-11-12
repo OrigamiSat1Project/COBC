@@ -312,22 +312,6 @@ void FMRX(int Nref, USLONG Nprg){
     setNprg(fmrx, Nprg);
 }
 
-// void setPLL(void){    
-//     /*---FMTX---*/
-//     setOptionRegister(FMTX_ID);
-//     setNref(FMTX_ID, FMTX_Nref);
-//     setNprg(FMTX_ID, FMTX_Nprg);
-//     /*---CWTX---*/
-//     setOptionRegister(CWTX_ID);
-//     setNref(CWTX_ID, CWTX_Nref);
-//     setNprg(CWTX_ID, CWTX_Nprg);
-//     /*---FMRX---*/
-//     setOptionRegister(FMRX_ID);
-//     setNref(FMRX_ID, FMRX_Nref);
-//     setNprg(FMRX_ID, FMRX_Nprg);
-// } 
- 
-
 /*
   * [Perform PLL setting]// TODO: check pointers and replace in the main.c, uncomment in FMCW.h
  */
