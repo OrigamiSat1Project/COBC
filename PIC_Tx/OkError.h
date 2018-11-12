@@ -23,9 +23,10 @@
 #define ok_ADC_downlinkReceivedCommand_5VCIB        0xad
 #define ok_ADC_downlinkReceivedCommand_All          0xae
 
-#define ok_FMCW_commandSwitchCWDownlink_Start    0xfa
-#define ok_FMCW_commandSwitchCWDownlink_aa       0xfb
-#define ok_FMCW_commandSwitchCWDownlink_bb       0xfc
+#define ok_FMCW_commandSwitchCWDownlink_aa       0xfa
+#define ok_FMCW_commandSwitchCWDownlink_bb       0xfb
+#define ok_FMCW_commandSwitchFMDownlink_aa       0xfc
+#define ok_FMCW_commandSwitchFMDownlink_bb       0xfd
 
 
 /*******************************************************************************
@@ -34,6 +35,7 @@
 #define error_ADC_commandSwitchHKdata         0xa0
 #define error_FMCW_downlinkReceivedCommand    0xf0
 #define error_FMCW_commandSwitchCWDownlink    0xf1
+#define error_FMCW_commandSwitchFMDownlink    0xf2
 #define error_I2C_commandSwitchI2C            0x20
 #define error_MPU_commandSwitchPowerSupply    0x90
 #define error_main_crcCheck                   0x10

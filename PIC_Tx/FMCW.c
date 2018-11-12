@@ -1,6 +1,7 @@
 
 #include <xc.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "FMCW.h"
 #include "EEPROM.h"
 #include "pinDefine.h"
@@ -11,6 +12,7 @@
 #include "Type_define.h"
 #include "time.h"
 #include "OkError.h"
+#include "WDT.h"
 
 /*******************************************************************************
 *Marco, Enum / Global data / Method 
@@ -59,7 +61,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
     __delay_us(200);
     FMPTT = 1;
     for(UBYTE sendCounter = 0; sendCounter < downlinlkTimes; sendCounter++){
-        SendPacket(commandData);
+//        SendPacket(commandData);
         // SendPacketWithDataSize(commandData,EEPROM_COMMAND_DATA_SIZE);
         __delay_ms(300);
     }
@@ -70,16 +72,21 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         //Task target
         if(commandData[2] == 't'){          //task target =  PIC_TX
         // Command type
+            UBYTE commandData11_19[9] = {0};
+            
             switch(commandData[3]){         //Process command type
                 case 'm':/*get satellite mode*/
-                    downlinkFMSignal(satelliteMode_EEPROMAndB0Select, satelliteMode_addressHigh, satelliteMode_addressLow, commandData[4], satelliteMode_DataSize);
+                    downlinkFMSignal(EEPROM_address, satelliteMode_addressHigh, satelliteMode_addressLow, commandData[4], satelliteMode_DataSize);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                 case 'C':/*downlink CW Signal*/
                     commandSwitchCWDownlink(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9], commandData[10]);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'f':/*downlink FM Signal*/
-                    downlinkFMSignal(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8]);
+                    for(UBYTE i=0;i<9; i++){
+                        commandData11_19[i] = commandData[11+i];  
+                    }        
+                    commandSwitchFMDownlink(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9], commandData[10], commandData11_19);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                     break;           
                 case 'p': /*power supply*/
@@ -136,31 +143,245 @@ void _NOP(void) {
 /*******************************************************************************
 *FM
 ******************************************************************************/
-void downlinkFMSignal(UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes,UBYTE DataSize){
-    UBYTE mainAddress;
-    UBYTE subAddress;
-    mainAddress = (UBYTE)(EEPROM_address | EEPROMAndB0Select);
-    subAddress = (UBYTE)(EEPROM_subaddress | EEPROMAndB0Select);
-
-    UBYTE readData[];
-    ReadDataFromEEPROM(mainAddress,addressHigh,addressLow, readData,DataSize);
+void downlinkFMSignal(UBYTE Address7bit, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes,UBYTE EEPROMDataLength){   
+    /*-------------need debug with WDT------------------------------*/
+    CWKEY = low;
+    __delay_ms(300);
+    UBYTE FM_downlink_data[FM_DATA_SIZE];
+    FM_downlink_data[0] = 'O';
+    FM_downlink_data[1] = 'R';
+    FM_downlink_data[2] = 'I';
+    FM_downlink_data[3] = '1';
     
-    //TODO:eror->read sub EEPROM
-//    ReadDataFromEEPROM(subAddress,addressHigh,addressLow, readData,DataSize);
-
-    FMPTT = 1;
-    __delay_ms(100);//TODO check time
+    FMPTT = high;
+    __delay_ms(1000);
     for(UBYTE sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
-        SendPacket(readData);
-//         SendPacketWithDataSize(readData,DataSize);
-        __delay_ms(300);
+        for(UBYTE i=EEPROMDataLength;i<FM_DATA_SIZE;i++) FM_downlink_data[i] = sendCounter;
+//        SendPacket(FM_downlink_data);
+        __delay_ms(600);
+        sendPulseWDT();
     }
-    FMPTT = 0;
+    FMPTT = low;
+    __delay_ms(300);
+    CWKEY = high;
+    __delay_ms(300);
+
+    /*--------------need debug with WDT-----------------------------*/    
+      
+    UBYTE FM_downlink_data[FM_DATA_SIZE];
+    if(EEPROMDataLength>FM_DATA_SIZE){
+        EEPROMDataLength = FM_DATA_SIZE;
+        //TODO:add error
+    } 
+    ReadDataFromEEPROM(Address7bit,addressHigh,addressLow, FM_downlink_data,EEPROMDataLength);
+    for(UBYTE i=EEPROMDataLength;i<FM_DATA_SIZE;i++){
+        FM_downlink_data[i] = 'D';  //damy data
+    }
+    CWKEY = low;    
+    __delay_ms(300);  
+    FMPTT = high;
+    __delay_ms(1000);
+    for(UBYTE sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
+//        SendPacket(FM_downlink_data);
+        __delay_ms(600);
+        sendPulseWDT();
+    }
+    FMPTT = low;
+    __delay_ms(300);    
+    CWKEY = high;
+    __delay_ms(300);
+    /*-------------------------------------------*/     
 }
+
+//need debug
+void readDataSizeAndDownlinkFMSignal(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address, UINT high_address_forDataSize, UBYTE low_address_forDataSize, UBYTE downlink_times){
+    UBYTE EEPROMDataLength = 0;
+    UBYTE FM_downlink_data[FM_DATA_SIZE];
+    
+    EEPROMDataLength = ReadEEPROM(Address7Bytes,high_address_forDataSize,low_address_forDataSize);
+    if(EEPROMDataLength > FM_DATA_SIZE){
+        EEPROMDataLength = FM_DATA_SIZE;
+    }
+    
+    ReadDataFromEEPROM(Address7Bytes, high_address, low_address, FM_downlink_data, EEPROMDataLength);
+
+    for(UBYTE i=EEPROMDataLength; i<FM_DATA_SIZE; i++){
+        FM_downlink_data[i] = 'D';   //damy data
+    }
+    
+    /*---------------for debug------------------------*/
+//    putChar(EEPROMDataLength);
+//    
+//    for (UBYTE i=0; i<EEPROMDataLength; i++){
+//        putChar(FM_downlink_data[i]);
+//    }
+    /*---------------for debug------------------------*/
+    
+    CWKEY = low;    
+    __delay_ms(500);  
+    FMPTT = high;
+    __delay_ms(1000);
+    for(UBYTE sendCounter = 0; sendCounter < downlink_times; sendCounter++){
+//        SendPacket(FM_downlink_data);
+        __delay_ms(600);
+        sendPulseWDT();
+    }
+    FMPTT = low;
+    __delay_ms(300);    
+    CWKEY = high;
+    __delay_ms(300);
+}
+
+void getDataAnddownlinkFMSignal(UBYTE downlinlTimes, UBYTE data_size, UBYTE *any_size_of_data){
+    UBYTE FM_downlink_data[FM_DATA_SIZE];
+    if(data_size > FM_DATA_SIZE){
+        data_size = FM_DATA_SIZE;
+    }    
+    for(UBYTE i=0; i<data_size; i++){
+        FM_downlink_data[i] = any_size_of_data[i];   //send data
+    }    
+    
+    for(UBYTE i=data_size; i<FM_DATA_SIZE; i++){
+        FM_downlink_data[i] = 'D';                   //damy data
+    }    
+    
+    CWKEY = low;    
+    __delay_ms(500);  
+    FMPTT = high;
+    __delay_ms(1000);
+    for(UBYTE sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
+//        SendPacket(FM_downlink_data);
+        __delay_ms(600);
+        sendPulseWDT();
+    }
+    FMPTT = low;
+    __delay_ms(300);    
+    CWKEY = high;
+    __delay_ms(300);
+}
+
+
+void commandSwitchFMDownlink(UBYTE type_select, UBYTE Address7bit_downlinlTimes, UBYTE DataHighAddress_dataSize, UBYTE DataLowAddress_data0, UBYTE downlinkTimes_data1, UBYTE EEPROMDataLength_DataSizeHighAddress_data2, UBYTE DataSizeLowAddress_data3, UBYTE *data4_12){
+    UBYTE any_size_of_data[FM_FREE_DATA_MAX_SIZE];
+    switch(type_select){
+        case 0xaa:  //the size of data is specified by the command
+            downlinkFMSignal(Address7bit_downlinlTimes, DataHighAddress_dataSize, DataLowAddress_data0, downlinkTimes_data1, EEPROMDataLength_DataSizeHighAddress_data2);
+            break;
+        case 0xbb:  //the size of data is written in EEPROM
+            readDataSizeAndDownlinkFMSignal(Address7bit_downlinlTimes, DataHighAddress_dataSize, DataLowAddress_data0, EEPROMDataLength_DataSizeHighAddress_data2, DataSizeLowAddress_data3, downlinkTimes_data1);
+            break;
+        case 0xcc:  //data from OBC or RXPIC
+            any_size_of_data[0] = DataLowAddress_data0;
+            any_size_of_data[1] = downlinkTimes_data1;
+            any_size_of_data[2] = EEPROMDataLength_DataSizeHighAddress_data2;
+            any_size_of_data[3] = DataSizeLowAddress_data3;
+            for(UBYTE i=4; i<12; i++){
+                any_size_of_data[i] = data4_12[i-4];
+            }
+            getDataAnddownlinkFMSignal(Address7bit_downlinlTimes, DataHighAddress_dataSize, any_size_of_data);
+            break;
+        default:
+//            switchError(error_FMCW_commandSwitchFMDownlink);
+            break;
+
+    }
+}
+
+void testForFMFunctions(void){
+        
+    /*---------------------------send 36 byte---------------------------*/
+    CWKEY = low;
+    UBYTE EEPROMTestData[36];
+    EEPROMTestData[0] = 'o';
+    EEPROMTestData[1] = 'r';
+    EEPROMTestData[2] = 'i';
+    EEPROMTestData[3] = '1';
+    for(int i=4;i<36;i++) EEPROMTestData[i] = 'D';
+    __delay_ms(300);
+    FMPTT = high;
+//    SendPacket(EEPROMTestData);
+    FMPTT = low;
+    __delay_ms(300);
+    putChar('3');
+    putChar('6');
+    put_ok();
+    /*---------------------------send 36 byte---------------------------*/
+    
+    /*---------------------------send XXX byte--------------------------*/
+//    CWKEY = low;
+//    UBYTE FM_downlink_data[FM_DATA_SIZE];
+//    FM_downlink_data[0] = 'o';
+//    FM_downlink_data[1] = 'r';
+//    FM_downlink_data[2] = 'i';
+//    FM_downlink_data[3] = '1';
+//    for(UBYTE i=4;i<FM_DATA_SIZE;i++) FM_downlink_data[i] = 'H';
+//    __delay_ms(300);
+//    FMPTT = high;
+//    SendPacket(FM_downlink_data);
+//    FMPTT = low;
+//    __delay_ms(300);
+//    putChar('3');
+//    putChar('6');
+//    put_ok(); 
+    /*-------------------------------------------*/
+//    CWKEY = low;
+//    UBYTE FM_downlink_data[FM_DATA_SIZE];
+//    FM_downlink_data[0] = 'o';
+//    FM_downlink_data[1] = 'r';
+//    FM_downlink_data[2] = 'i';
+//    FM_downlink_data[3] = '1';
+//    for(UBYTE i=EEPROMDataLength;i<FM_DATA_SIZE;i++) FM_downlink_data[i] = 'H';
+//    __delay_ms(300);
+//    FMPTT = high;
+//    SendPacket(FM_downlink_data);
+//    FMPTT = low;
+//    __delay_ms(300);
+//    putChar('3');
+//    putChar('6');
+//    put_ok();
+    /*-------------------------------------------*/
+//    CWKEY = low;
+//    UBYTE FM_downlink_data[FM_DATA_SIZE];
+//    FM_downlink_data[0] = 'o';
+//    FM_downlink_data[1] = 'r';
+//    FM_downlink_data[2] = 'i';
+//    FM_downlink_data[3] = '1';
+//    for(UBYTE sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
+//        for(UBYTE i=EEPROMDataLength;i<FM_DATA_SIZE;i++) FM_downlink_data[i] = sendCounter;
+//        __delay_ms(300);
+//        FMPTT = high;
+//        SendPacket(FM_downlink_data);
+//        FMPTT = low;
+//        __delay_ms(300);
+//        __delay_ms(2000);
+//    }    
+//    putChar('3');
+//    putChar('6');
+//    put_ok();
+    /*-------------------------------------------*/
+    
+    /*---------------------------send XXX byte---------------------------*/
+        
+    //write data to EEPROM
+//    UBYTE test_data[5] = {'G','H','Q','!',0x03};
+//    UBYTE downlinlTimes = 20;
+//    UBYTE EEPROMDataLength = 4;
+//    WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, test_data);
+//    putChar('1');
+//    put_ok();
+//    downlinkFMSignal(EEPROM_address, whigh_address, wlow_address, downlinlTimes, EEPROMDataLength);
+//    putChar('2');
+//    put_ok();
+//    readDataSizeAndDownlinkFMSignal(EEPROM_address,whigh_address, wlow_address, whigh_address, (wlow_address+0x04), downlinlTimes);
+//    putChar('3');
+//    put_ok();
+}
+
 
 /*******************************************************************************
 *CW swtich
 ******************************************************************************/
+//TODO:debug not yet
 void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_address_forData, UBYTE low_address_forData, UBYTE downlink_times, UBYTE EEPROMDataLength_or_high_address_forDataSize, UBYTE low_address_forDataSize){
     UBYTE read_data_forCW[];
     switch(type_select){
@@ -572,7 +793,6 @@ void HKDownlinkFR2(void){
     UBYTE ReadData2_addressLow = ReadEEPROM(EEPROM_address, FreeData2Lowaddress_addressHigh, FreeData2Lowaddress_addressLow); 
     ReadOneByteDataFromEEPROMandSendMorse(ReadData2_slaveaddress,ReadData2_addressHigh,ReadData2_addressLow);
 }
-
 
 /*******************************************************************************
 for debug

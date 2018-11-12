@@ -15,16 +15,15 @@
 void SendByte(UBYTE);
 void flipout(void);
 void fcsbit(UBYTE);
-UBYTE Packetmaker(UBYTE *);
-
-/*--for debug--*/
-//void test_Packetmaker(UBYTE *);
+UINT Packetmaker(UBYTE *,UINT);
+//void test_Packetmaker(UBYTE *, UBYTE *);
 
 UBYTE eflag = 0;
 UBYTE efcsflag = 0;
 UBYTE estuff = 0;
 UBYTE efcslo, efcshi;
 UBYTE ePacket[52];
+//UBYTE ePacket_50[52];
 BIT ebitstatus = low;
 
 /*--for debug--*/
@@ -36,8 +35,16 @@ BIT ebitstatus = low;
 //     putcrlf();
 // }
 
-UBYTE Packetmaker(UBYTE *eDataField){
-    for(UBYTE i=0;i<6;i++){
+//void test_Packetmaker(UBYTE *eDataField){
+//    UINT num_ = Packetmaker(eDataField);
+//    for(UINT i=0;i<num_;i++){
+//        putch(ePacket[i]);
+//    }
+//    putcrlf();
+//}
+
+UINT Packetmaker(UBYTE *eDataField,UINT num){
+    for(UINT i=0;i<6;i++){
         ePacket[i] = ucall[i] << 1;
     }
     ePacket[6] = 0x60;  //SSID
@@ -47,25 +54,29 @@ UBYTE Packetmaker(UBYTE *eDataField){
     ePacket[13] = 0xe1; //SSID.e1?
     ePacket[14] = 0x03; //Control.30?
     ePacket[15] = 0xf0; //PID
-    const UBYTE Datanum = 36;
+    UINT Datanum = num;
 //    for(Datanum=0;eDataField[Datanum] != '\0';Datanum++);
-    //Datanum -= 1;
-    for(UBYTE i=0;i<Datanum;i++){
+//    Datanum -= 1;
+//    while(*eDataField){
+//        Datanum ++;
+//        ++eDataField;
+//    }
+    for(UINT i=0;i<Datanum;i++){
         ePacket[16+i] = eDataField[i];
     }
     
     //  XXX : for debug
-    for(UBYTE i=0;i<16+Datanum;i++){
-        putch(ePacket[i]);
-    }
+//    for(UBYTE i=0;i<16+Datanum;i++){
+//        putch(ePacket[i]);
+//    }
     return 16+Datanum;
 }
 
-void SendPacket(UBYTE *eDataField){
+void SendPacket(UBYTE *eDataField,UINT num){
 //void SendPacket(void)
     UBYTE Packetnum;
     Packetnum = 0;
-    Packetnum = Packetmaker(eDataField);
+    Packetnum = Packetmaker(eDataField,num);
     ebitstatus = 1;
     efcslo = efcshi = 0xff;
     estuff = 0;
@@ -97,6 +108,47 @@ void SendPacket(UBYTE *eDataField){
     }
 }
 
+//void SendPacketWithDataSize(UBYTE *eDataField, UBYTE DataSize){
+//    UBYTE Packetnum;
+//    Packetnum = 0;
+//    Packetnum = PacketmakerWithDataSize(eDataField, DataSize);
+//    
+//    //XXX : for debug
+////    putChar('\r');
+////    putChar('\n');
+////    putChar(Packetnum);
+////    putChar('\r');
+////    putChar('\n');
+//    
+//    ebitstatus = 1;
+//    efcslo = efcshi = 0xff;
+//    estuff = 0;
+//    //  FlagField
+//    eflag = 1;
+//    efcsflag = 0;
+//    for(UBYTE i=0;i<27;i++){
+//        SendByte(0x7e);
+//    }
+//    eflag = 0;
+//    //  eDataField
+//    for(UBYTE i=0;i<Packetnum;i++){
+//        SendByte(ePacket_50[i]);
+//    }    
+//    
+//    //  FCSField
+//    efcsflag = 1;
+//    efcslo ^= 0xff;
+//    efcshi ^= 0xff;
+//    SendByte(efcslo);
+//    SendByte(efcshi);
+//    efcsflag = 0;
+//    
+//    //  FlagField
+//    eflag = 1;
+//    for(UBYTE i=0;i<6;i++){
+//        SendByte(0x7e);
+//    }
+//}
 
 void SendByte(UBYTE byte){
     UBYTE bt;
@@ -137,11 +189,15 @@ void flipout(void){
 //  FCSCalculation
 void fcsbit(UBYTE tbyte){
     //FIXME:fix assembry
-//    #asm
-//        BCF 03,0
-//        RRF _efcshi,F
-//        RRF _efcslo,F
-//    #endasm
+    #asm
+        BCF 03,0
+        RRF _efcshi,F
+        RRF _efcslo,F
+    #endasm
+//    STATUS &= ~0x01;
+//    efcshi = efcshi >> 1;
+//    efcslo = efcslo >> 1;
+    
     if(((STATUS & bit_H)^(tbyte)) == bit_H){
         efcshi ^= 0x84;
         efcslo ^= 0x08;
