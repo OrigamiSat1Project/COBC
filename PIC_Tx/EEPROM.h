@@ -26,8 +26,8 @@
 /*******************************************************************************
 *OK and ERROR
 ******************************************************************************/
-#define HighAddress_for_commandID  0xE0
-#define LowAddress_for_commandID   0x00
+#define HighAddress_for_commandID  HighAddress_for_TXCOBCLastCommandID
+#define LowAddress_for_commandID   LowAddress_for_TXCOBCLastCommandID
 
 #define B0select_for_Ok       0x00
 #define HighAddress_for_Ok    0xE0
@@ -40,11 +40,15 @@
 /*******************************************************************************
 *Last Command ID
 ******************************************************************************/
-#define B0select_for_TXCOBCLastCommandID     0x00
-#define HighAddress_for_TXCOBCLastCommandID  0xE0
-#define LowAddress_for_TXCOBCLastCommandID   0x00
-#define HighAddress_for_RXCOBCLastCommandID  0x00
-#define LowAddress_for_RXCOBCLastCommandID   0x00
+#define B0select_for_TXCOBCLastCommandID     EEPROM_address
+#define HighAddress_for_TXCOBCLastCommandID         0x81
+#define LowAddress_for_TXCOBCLastCommandID          0x85
+#define HighAddress_for_TXCOBCLastCommandStatus     0x81
+#define LowAddress_for_TXCOBCLastCommandStatus      0x86
+#define HighAddress_for_RXCOBCLastCommandID         0x00
+#define LowAddress_for_RXCOBCLastCommandID          0x00
+
+#define OffSet_for_CommandID 1
 
 /*******************************************************************************
 *CRC check

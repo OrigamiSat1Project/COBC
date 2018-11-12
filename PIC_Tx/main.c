@@ -44,35 +44,32 @@ UBYTE ReceiveFlag = NOT_RECEIVE;
 
 
 void interrupt InterReceiver(void){
-    putChar(0xee);
-    
     if (RCIF == 1) {
         putChar('U');
         RXDATA[0] = 0x21;
         for(UINT i=0;i<commandSize;i++){
             RXDATA[i] = getChar();
         }
+//            /*for debug
         for(UINT i=0;i<commandSize;i++){
             putChar(RXDATA[i]);
         }
-//            /*for debug
+
         putChar(0xcc);
         putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
         putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
 //             end*/
-        ReceiveFlag = UNCORRECT_RECEIVE;
+        if(RXDATA[0] == 'g'){
+            ReceiveFlag = CORRECT_RECEIVE;
+            RCIF = 0;
+            putChar(0xb9);
+            return;
+        }
         if(crc16(0,RXDATA,8) == CRC_check(RXDATA, 8)){
             ReceiveFlag = CORRECT_RECEIVE;
         }
         if(RXDATA[0] == 't'){
-            NOP();
-        }else if(RXDATA[0] == 'g'){
-            NOP();
-             //Write to EEPROM for CW Downlink
-//            UBYTE commandID = 0x00;
-//            WriteOneByteToEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID, commandID);
-            //Write to EEPROM for CW Downlink
-//            WriteOneByteToEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow, ReceiveFlag);
+            ReceiveFlag = CORRECT_RECEIVE;
         }else{
             ReceiveFlag = UNCORRECT_RECEIVE;
         }
@@ -171,21 +168,36 @@ void main(void) {
         //UART receive process
 
         if(ReceiveFlag == CORRECT_RECEIVE){
+            UBYTE command_ID = 0x00;
+            UBYTE command_status = 0x00;
+            UBYTE ID_add_high = 0x00;
+            UBYTE ID_add_low = 0x00;
             
-            /*for debug
-            putChar(0x33);
-            put_lf();
-            for(UINT i=0;i<commandSize;i++){
-                putChar(RXDATA[i]);
+            //Calculate Address for CRCcheck byte
+            ID_add_high   = RXDATA[3];
+            ID_add_low    = RXDATA[4] + OffSet_for_CommandID;
+            putChar(0xc4);
+            putChar(ID_add_high);
+            putChar(ID_add_low);
+                    
+            //Read Command ID byte from EEPROM
+            command_ID = ReadEEPROM(RXDATA[2], ID_add_high, ID_add_low);
+            putChar(0xc5);
+            putChar(command_ID);
+            WriteLastCommandIdToEEPROM(command_ID);
+            WriteLastCommandStatusToEEPROM(UNEXECUTED);
+            
+            if(RXDATA[0] == 'g'){
+                if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
+                    //Write status to EEPROM
+                    WriteLastCommandStatusToEEPROM(error_main_crcCheck);
+                    ReceiveFlag = UNCORRECT_RECEIVE;
+                    putChar(0x98);
+                    put_lf();
+                    continue;
+                }
             }
-             end*/
             
-
-            /*---read command ID---*/
-            UBYTE commandID;
-//            commandID = ReadEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID);
-            
-
             /*---Define if command target is 't' or 'g' and read in task target ---*/
             /*------------------------------------------------------------------*/
             switch(RXDATA[1]){
@@ -216,7 +228,6 @@ void main(void) {
                 case 0x72: /*'r':send command to RXCOBC*/
                     sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
                     break;
-                    
                     //for debug putChar only
                 case 0x80:
                     putChar(0x80);
@@ -227,7 +238,7 @@ void main(void) {
                     put_error();
                     break;
             }
-            WriteLastCommandIdToEEPROM(commandID);
+            WriteLastCommandStatusToEEPROM(command_status);
             ReceiveFlag = NOT_RECEIVE;
             putChar(0x39);
         }

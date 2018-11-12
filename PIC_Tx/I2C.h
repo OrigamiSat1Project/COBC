@@ -34,6 +34,7 @@ void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
 void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
+void WriteLastCommandStatusToEEPROM(UBYTE);
 void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 
 /*******************************************************************************
