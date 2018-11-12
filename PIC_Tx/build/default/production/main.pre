@@ -2018,6 +2018,7 @@ extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
 # 15 "Type_define.h"
+typedef bit BIT;
 typedef signed char SBYTE;
 typedef unsigned char UBYTE;
 typedef signed short SWORD;
@@ -2028,25 +2029,53 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 15 "UART.h"
-void Init_SERIAL(void);
-void putch(UBYTE c);
-void putstr(UBYTE *);
-UBYTE getch(void);
-void putcrlf(void);
+# 16 "UART.h"
+UBYTE UPLINK_COMMAND_SIZE = 32;
 
+void Init_SERIAL(void);
+UBYTE getChar(void);
+void putChar(UBYTE);
+void putString(UBYTE *);
+void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+
+
+void changeInterruptPermission(UBYTE, UBYTE);
 void put_error(void);
 void put_ok(void);
-void NM_waddress(UBYTE, UBYTE, UBYTE);
+void changeBaudRate(UBYTE,UBYTE,UBYTE);
+void UARTbufferClear(void);
+void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
+void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
 
-# 22 "Init_MPU.h"
+
+void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
+
+# 22 "MPU.h"
 void Init_MPU(void);
-void led_onoff(void);
-void debug_ledy(void);
 
-# 23 "time.h"
+
+
+
+void onOffHEATER(UBYTE,UBYTE, UBYTE);
+void onOffNTRX(UBYTE,UBYTE, UBYTE);
+void onOff5R8GSubPower(UBYTE,UBYTE, UBYTE);
+void cutWire(UBYTE,UBYTE, UBYTE);
+void cutWireWithMeltingtimes(UBYTE,UBYTE, UBYTE, UBYTE);
+void onOffTXWDT(UBYTE,UBYTE, UBYTE);
+void onOffFMPTT(UBYTE,UBYTE, UBYTE);
+void onOffCWKEY(UBYTE,UBYTE, UBYTE);
+void commandSwitchPowerSupply(UBYTE , UBYTE , UBYTE , UBYTE, UBYTE);
+
+# 30 "time.h"
 void delay_ms(UWORD);
 void delay_us(UWORD);
+void delay_s(UWORD);
+
+UWORD calTime2Byte(UBYTE, UBYTE);
+
+
+void set_timer_counter_only_getChar(UINT);
+UINT get_timer_counter_only_getChar(void);
 
 # 4 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\__size_t.h"
 typedef unsigned size_t;
@@ -4257,52 +4286,101 @@ extern volatile __bit nW @ (((unsigned) &SSPSTAT)*8) + 2;
 
 extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
 
-# 35 "decode_AX25.h"
-UINT getbit(void);
-
-# 43
-void ReceivePacket(void);
-void ReceivePacket_data(UBYTE *);
-
-# 25 "encode_AX25.h"
+# 19 "encode_AX25.h"
+void SendPacketWithDataSize(UBYTE *,UINT);
 void SendPacket(UBYTE *);
-void test_Packetmaker(UBYTE *);
 
-# 17 "I2C.h"
-void Init_I2C_M(const UDWORD c);
-void I2C_Master_Wait(void);
-void I2C_Master_Start(void);
-void I2C_Master_RepeatedStart(void);
-void I2C_Master_Stop(void);
-void I2C_Master_Write(unsigned d);
-UBYTE I2C_Master_Read(UBYTE a);
-void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
-void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+# 21 "I2C.h"
+void InitI2CMaster(const UDWORD c);
+void I2CMasterWait(void);
+void I2CMasterStart(void);
+void I2CMasterRepeatedStart(void);
+void I2CMasterStop(void);
 
-# 13 "FMCW.h"
-int FMTX_Nref = 2560;
-int FMTX_Nprg[5] = {8,7,3,0,0};
-int CWTX_Nref = 160;
-int CWTX_Nprg[5] = {0,1,7,4,7};
-int FMRX_Nref = 2560;
-int FMRX_Nprg[5] = {2,4,8,8,7};
+# 31
+void I2CMasterWrite(UBYTE);
+UBYTE I2CMasterRead(UBYTE);
+void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+void WriteLastCommandIdToEEPROM(UBYTE);
+void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 
-# 35
-void Init_FMCW(void);
+# 42
+void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
+void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 
-void FMTX(int Nref, int *Nprg);
-void CWTX(int Nref, int *Nprg);
-void FMRX(int Nref, int *Nprg);
+# 32 "FMCW.h"
+void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
 
-# 47
+
 void _NOP(void);
 
 
-# 22 "main.c"
+void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
+
+
+void HKDownlink(void);
+void HKDownlinkFR0(void);
+void HKDownlinkFR1(void);
+void HKDownlinkFR2(void);
+
+
+
+void commandSwitchCWDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+long changeCharMorse (char);
+char changeBinaryToChar(UBYTE);
+void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
+void sendMorse(char*,size_t);
+void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
+void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
+void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
+void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE, UBYTE);
+
+
+void testForCwFunctions(void);
+void Morse_V(void);
+void Morse_Y(void);
+void Morse_J(void);
+
+
+void HK_test_setting(void);
+
+# 19 "WDT.h"
+void commandWDT(UBYTE);
+void Init_WDT(void);
+void resetWDT();
+void sendPulseWDT(void);
+
+# 14 "CRC16.h"
+UWORD crc16(UWORD, UBYTE *, UINT);
+UWORD Identify_CRC16(UBYTE *);
+UWORD CRC_check(UBYTE *, UINT);
+
+# 13 "ADC.h"
+void measureAllChanelADC(void);
+void measureDcDcTemperature(void);
+void measureChannel2(void);
+void measureChannel3(void);
+void measureChannel4(void);
+void commandSwitchHKdata(UBYTE, UBYTE, UBYTE, UBYTE);
+
+# 43 "OkError.h"
+void switchOk(UBYTE);
+void switchError(UBYTE);
+void putErrorNoDownlink(UBYTE);
+UBYTE bitCalResult(UBYTE bit_input);
+
+# 20 "main.c"
+void interrupt InterReceiver(void);
+
+
+# 28
 #pragma config FOSC = HS
 #pragma config WDTE = OFF
 #pragma config PWRTE = ON
-
 #pragma config MCLRE = ON
 #pragma config CP = OFF
 #pragma config CPD = OFF
@@ -4313,62 +4391,37 @@ void _NOP(void);
 #pragma config BOR4V = BOR40V
 #pragma config WRT = OFF
 
+# 270
 void main(void) {
 
-
-
-Init_SERIAL();
+_delay((unsigned long)((1000)*(10000000/4000.0)));
 Init_MPU();
-Init_I2C_M(400000);
+InitI2CMaster(100000);
+Init_SERIAL();
 
-# 51
+sendPulseWDT();
+delay_s(2);
+putChar('S');
+
+# 301
+HK_test_setting();
+
 while(1){
 
-# 67
-UBYTE dData[];
+putChar('m');
 
 
+sendPulseWDT();
+_delay((unsigned long)((5000)*(10000000/4000.0)));
 
-
-UINT write_data_length;
-for (write_data_length = 0; dData[write_data_length]!= '\0'; ++write_data_length);
-
-
-_delay((unsigned long)((200)*(10000000/4000.0)));
-
-
-_delay((unsigned long)((200)*(10000000/4000.0)));
-
-# 97
-UBYTE *EEPROMData;
-if (RB5==1){
-UBYTE EEPROMData[32];
-UINT EEPROMDataLength;
-
-_delay((unsigned long)((200)*(10000000/4000.0)));
-EEPROM_Read(0x50,0x00,0xE0, EEPROMData,&EEPROMDataLength);
-_delay((unsigned long)((200)*(10000000/4000.0)));
-
-
-
-
-SendPacket(EEPROMData);
-
-
-_delay((unsigned long)((200)*(10000000/4000.0)));
-
-# 137
+measureDcDcTemperature();
+if(RC2 == 0){
+measureChannel2();
 }else{
-put_error;
-
 }
 
+HKDownlink();
 
-
-
-_delay((unsigned long)((200)*(10000000/4000.0)));
-
-
+# 360
 }
-
 }

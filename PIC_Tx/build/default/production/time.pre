@@ -2018,6 +2018,7 @@ extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
 # 15 "Type_define.h"
+typedef bit BIT;
 typedef signed char SBYTE;
 typedef unsigned char UBYTE;
 typedef signed short SWORD;
@@ -2028,11 +2029,21 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 23 "time.h"
+# 30 "time.h"
 void delay_ms(UWORD);
 void delay_us(UWORD);
+void delay_s(UWORD);
+
+UWORD calTime2Byte(UBYTE, UBYTE);
+
+
+void set_timer_counter_only_getChar(UINT);
+UINT get_timer_counter_only_getChar(void);
 
 # 8 "time.c"
+static UINT timer_counter_only_getChar = 0;
+
+
 void delay_ms(UWORD msec)
 {
 while(msec)
@@ -2052,3 +2063,27 @@ usec--;
 }
 }
 
+
+void delay_s(UWORD sec)
+{
+while(sec)
+{
+_delay((unsigned long)((1)*(10000000/4.0)));
+sec--;
+}
+}
+
+UWORD calTime2Byte(UBYTE timeHigh, UBYTE timeLow){
+UWORD timeBin = 0;
+timeBin = (UWORD)((timeHigh<<8) | timeLow);
+return timeBin;
+}
+
+
+void set_timer_counter_only_getChar(UINT time){
+timer_counter_only_getChar = time;
+}
+
+UINT get_timer_counter_only_getChar(void){
+return timer_counter_only_getChar;
+}
