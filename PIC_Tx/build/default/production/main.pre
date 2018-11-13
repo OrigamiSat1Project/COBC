@@ -4308,9 +4308,9 @@ void WriteLastCommandIdToEEPROM(UBYTE);
 void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 
 # 42
-void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
 void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 
 # 36 "FMCW.h"
@@ -4321,8 +4321,8 @@ void _NOP(void);
 
 
 void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
-void readDataSizeAndDownlinkFMSignal(UBYTE, UBYTE, UBYTE, UINT, UBYTE, UBYTE);
-void commandSwitchFMDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE*);
+void readDataSizeAndDownlinkFMSignal(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchFMDownlink(UBYTE, UBYTE*);
 void testForFMFunctions(void);
 
 
@@ -4466,6 +4466,7 @@ if(ReceiveFlag == 0x02){
 UBYTE commandID;
 
 # 138
+UBYTE FMdata[8];
 switch(RXDATA[1]){
 
 
@@ -4482,7 +4483,10 @@ commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], R
 break;
 case 0x66:
 putChar(0xa6);
-downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+for(UBYTE i=0; i<8; i++){
+FMdata[i] = RXDATA[i+3];
+}
+commandSwitchFMDownlink(RXDATA[2], FMdata);
 break;
 case 'p':
 putChar(0xa7);

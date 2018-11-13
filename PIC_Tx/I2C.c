@@ -113,7 +113,7 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
 /*******************************************************************************
 *Method for EEPROM Read
 ******************************************************************************/
-void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
+void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UBYTE EEPROMDataLength){
 
     UBYTE Address = (UBYTE)(Address7Bytes << 1);
     UBYTE ReadAddress = (UBYTE)(Address | 0x01);
@@ -124,7 +124,7 @@ void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address
     I2CMasterRepeatedStart();               //Restart condition
     
     I2CMasterWrite(ReadAddress);            //7 bit address + Read
-    for(UINT i = 0; i < EEPROMDataLength - 1; i++){
+    for(UBYTE i = 0; i < EEPROMDataLength - 1; i++){
         ReadData[i] = I2CMasterRead(1);     //Read + Acknowledge
     }
     ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
@@ -169,7 +169,7 @@ UBYTE ReadEEPROM(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address){
 }
 
 //TODO:need debug
-void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
+void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UBYTE *EEPROMDataLength){
     UBYTE Address = (UBYTE)(Address7Bytes << 1);
     UBYTE ReadAddress = (UBYTE)(Address | 0x01);
     I2CMasterStart();                       //Start condition

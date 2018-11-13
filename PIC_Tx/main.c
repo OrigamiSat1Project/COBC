@@ -135,6 +135,7 @@ void main(void) {
 
             /*---Define if command target is 't' or 'g' and read in task target ---*/
             /*------------------------------------------------------------------*/
+            UBYTE FMdata[8];
             switch(RXDATA[1]){
                 /*---Command from RXCOBC---*/
                 /*------------------------------------------------------------------*/
@@ -151,7 +152,10 @@ void main(void) {
                     break;
                 case 0x66:  /*'f':FM Downlink*/
                     putChar(0xa6);
-                    downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+                    for(UBYTE i=0; i<8; i++){
+                        FMdata[i] = RXDATA[i+3];
+                    }    
+                    commandSwitchFMDownlink(RXDATA[2], FMdata);
                     break;
                 case 'p':/*'p':power*/
                     putChar(0xa7);

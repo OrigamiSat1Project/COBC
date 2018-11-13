@@ -54,7 +54,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "401
 [v _INTCONbits `VS13 ~T0 @X0 0 e@11 ]
 "42 I2C.h
-[v _ReadDataFromEEPROM `(v ~T0 @X0 0 ef5`uc`uc`uc`*uc`ui ]
+[v _ReadDataFromEEPROM `(v ~T0 @X0 0 ef5`uc`uc`uc`*uc`uc ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -3076,9 +3076,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 35: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 [; ;I2C.h: 36: void WriteLastCommandIdToEEPROM(UBYTE);
 [; ;I2C.h: 37: void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;I2C.h: 42: void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+[; ;I2C.h: 42: void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
 [; ;I2C.h: 43: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-[; ;I2C.h: 44: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+[; ;I2C.h: 44: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
 [; ;I2C.h: 45: void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 "9 UART.c
 [v _Init_SERIAL `(v ~T0 @X0 1 ef ]
@@ -3529,7 +3529,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.c: 159: UWORD CRC;
 [; ;UART.c: 160: ReadDataFromEEPROM(slaveAddress, highAddress, lowAddress, ReadData, dataLength);
 "160
-[e ( _ReadDataFromEEPROM (4 , , , , _slaveAddress _highAddress _lowAddress _ReadData -> _dataLength `ui ]
+[e ( _ReadDataFromEEPROM (4 , , , , _slaveAddress _highAddress _lowAddress _ReadData _dataLength ]
 [; ;UART.c: 161: for(UBYTE i=0;i<dataLength;i++){
 "161
 {

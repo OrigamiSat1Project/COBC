@@ -1487,9 +1487,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 35: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 [; ;I2C.h: 36: void WriteLastCommandIdToEEPROM(UBYTE);
 [; ;I2C.h: 37: void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;I2C.h: 42: void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+[; ;I2C.h: 42: void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
 [; ;I2C.h: 43: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-[; ;I2C.h: 44: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+[; ;I2C.h: 44: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
 [; ;I2C.h: 45: void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 [; ;OkError.h: 45: void switchOk(UBYTE);
 [; ;OkError.h: 46: void switchError(UBYTE);
@@ -1802,15 +1802,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 151 ]
 }
 "116
-[v _ReadDataFromEEPROM `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`ui ]
+[v _ReadDataFromEEPROM `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`uc ]
 {
-[; ;I2C.c: 116: void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
+[; ;I2C.c: 116: void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UBYTE EEPROMDataLength){
 [e :U _ReadDataFromEEPROM ]
 [v _Address7Bytes `uc ~T0 @X0 1 r1 ]
 [v _high_address `uc ~T0 @X0 1 r2 ]
 [v _low_address `uc ~T0 @X0 1 r3 ]
 [v _ReadData `*uc ~T0 @X0 1 r4 ]
-[v _EEPROMDataLength `ui ~T0 @X0 1 r5 ]
+[v _EEPROMDataLength `uc ~T0 @X0 1 r5 ]
 [f ]
 "118
 [v _Address `uc ~T0 @X0 1 a ]
@@ -1838,11 +1838,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 126: I2CMasterWrite(ReadAddress);
 "126
 [e ( _I2CMasterWrite (1 _ReadAddress ]
-[; ;I2C.c: 127: for(UINT i = 0; i < EEPROMDataLength - 1; i++){
+[; ;I2C.c: 127: for(UBYTE i = 0; i < EEPROMDataLength - 1; i++){
 "127
 {
-[v _i `ui ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `ui ]
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
 [e $U 156  ]
 [e :U 153 ]
 {
@@ -1852,16 +1852,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 "129
 }
 "127
-[e ++ _i -> -> 1 `i `ui ]
+[e ++ _i -> -> 1 `i `uc ]
 [e :U 156 ]
-[e $ < _i - _EEPROMDataLength -> -> 1 `i `ui 153  ]
+[e $ < -> _i `i - -> _EEPROMDataLength `i -> 1 `i 153  ]
 [e :U 154 ]
 "129
 }
 [; ;I2C.c: 129: }
 [; ;I2C.c: 130: ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
 "130
-[e = *U + _ReadData * -> - _EEPROMDataLength -> -> 1 `i `ui `ux -> -> # *U _ReadData `ui `ux ( _I2CMasterRead (1 -> -> 0 `i `uc ]
+[e = *U + _ReadData * -> - -> _EEPROMDataLength `i -> 1 `i `x -> -> # *U _ReadData `i `x ( _I2CMasterRead (1 -> -> 0 `i `uc ]
 [; ;I2C.c: 131: I2CMasterStop();
 "131
 [e ( _I2CMasterStop ..  ]
@@ -1925,15 +1925,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 157 ]
 }
 "172
-[v _ReadDataAndDataSizeFromEEPROM `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`*ui ]
+[v _ReadDataAndDataSizeFromEEPROM `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`*uc ]
 {
-[; ;I2C.c: 172: void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
+[; ;I2C.c: 172: void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UBYTE *EEPROMDataLength){
 [e :U _ReadDataAndDataSizeFromEEPROM ]
 [v _Address7Bytes `uc ~T0 @X0 1 r1 ]
 [v _high_address `uc ~T0 @X0 1 r2 ]
 [v _low_address `uc ~T0 @X0 1 r3 ]
 [v _ReadData `*uc ~T0 @X0 1 r4 ]
-[v _EEPROMDataLength `*ui ~T0 @X0 1 r5 ]
+[v _EEPROMDataLength `*uc ~T0 @X0 1 r5 ]
 [f ]
 "173
 [v _Address `uc ~T0 @X0 1 a ]
@@ -1964,7 +1964,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 182: for (*EEPROMDataLength = 0; ReadData[*EEPROMDataLength]!= 0xFF; *EEPROMDataLength++);
 "182
 {
-[e = *U _EEPROMDataLength -> -> 0 `i `ui ]
+[e = *U _EEPROMDataLength -> -> 0 `i `uc ]
 [e $U 162  ]
 [e :U 159 ]
 [e *U ++ _EEPROMDataLength * -> -> 1 `i `x -> -> # *U _EEPROMDataLength `i `x ]
@@ -1988,7 +1988,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "183
 [e ++ _i -> -> 1 `i `ui ]
 [e :U 166 ]
-[e $ < _i *U _EEPROMDataLength 163  ]
+[e $ < _i -> *U _EEPROMDataLength `ui 163  ]
 [e :U 164 ]
 "185
 }
@@ -2131,7 +2131,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _data_length _data1 ]
 [; ;I2C.c: 250: ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, (UINT)data1);
 "250
-[e ( _ReadDataFromEEPROM (4 , , , , _slaveAdress _dataHigh _dataLow _read_data -> _data1 `ui ]
+[e ( _ReadDataFromEEPROM (4 , , , , _slaveAdress _dataHigh _dataLow _read_data -> -> _data1 `ui `uc ]
 [; ;I2C.c: 251: if(data2=='f'){
 "251
 [e $ ! == -> _data2 `ui -> 102 `ui 183  ]
@@ -2165,7 +2165,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _data_length ( _ReadEEPROM (3 , , _slaveAdress _dataHigh _dataLow ]
 [; ;I2C.c: 267: ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, data_length);
 "267
-[e ( _ReadDataFromEEPROM (4 , , , , _slaveAdress _dataHigh _dataLow _read_data -> _data_length `ui ]
+[e ( _ReadDataFromEEPROM (4 , , , , _slaveAdress _dataHigh _dataLow _read_data _data_length ]
 [; ;I2C.c: 269: case 't':
 "269
 [e :U 188 ]
