@@ -53,7 +53,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
             //5,4bit 0--->0
             commandData[31] &= 0b11001111;
         }
-    }   
+    } 
     
     WriteCheckByteToEEPROMs(B0Select,addressHigh,addressLow, commandData[31]);
     __delay_us(200);

@@ -109,6 +109,11 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
     WriteCheckByteToEEPROMs(B0select_for_TXCOBCLastCommandID, HighAddress_for_TXCOBCLastCommandID, LowAddress_for_TXCOBCLastCommandID, last_command_ID);
 }
 
+void WriteLastCommandStatusToEEPROM(UBYTE command_status){
+    WriteCheckByteToEEPROMs(B0select_for_TXCOBCLastCommandID, HighAddress_for_TXCOBCLastCommandStatus, LowAddress_for_TXCOBCLastCommandStatus, command_status);
+}
+
+
 
 /*******************************************************************************
 *Method for EEPROM Read
