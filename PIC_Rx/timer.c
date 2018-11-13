@@ -63,7 +63,6 @@ void interrupt TimerCheck(void){
         init_ope_counter_sec ++;
         bat_meas_counter_sec ++;
         receive_command_counter_sec ++;
-        LED_WHITE = 1 - LED_WHITE;  //for debug
         WDT_flag = 0x01;
     }
     if(second_counter >= one_minute){
