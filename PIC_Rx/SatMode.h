@@ -40,6 +40,7 @@
 UBYTE MeasureBatVoltageAndChangeSatMode(void);
 UBYTE BitCount(UBYTE);
 void SwitchToSavingMode(void);
+void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
     
 
 #endif	/* SATMODE_H */

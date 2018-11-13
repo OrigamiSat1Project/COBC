@@ -9,6 +9,7 @@
 #include "FMCW.h"
 #include "ADC.h"
 #include "SatMode.h"
+#include "OkError.h"
 
 UBYTE ReserveBeforeSatMode = SATMODE_SAVING;//spare BeforeSatMode (when can't read BeforeSatMode from EEPROM)
 
@@ -133,90 +134,72 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
 
             switch(ChoicedSatMode){
                 case SATMODE_NOMINAL:
-//                    putChar(0x0A);
                     if(Voltage >= (BatVol_nominal_saving_high << 8 | BatVol_nominal_saving_low)) {
-//                        putChar(0x01);
-                        //write SatMode nominal(SEP -> ON, RBF -> ON)
-                        WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
-                        ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
+                        //write SatMode nominal(SEP -> ON, RBF -> ON)                        
                         switch(OBC_STATUS){
                             case OBC_ALIVE:                               
                                 break;
                             case OBC_DIED:
                                 killEPS();
-                                onEPS();
-                                __delay_ms(1000);//wait EPS ON                                                                               
+                                onEPS();                                                                          
                                 setPLL();
                                 break;
                             default:    
                                 break;
                         }
+                        WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
+                        ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
                     }else if(Voltage <= ((UWORD)BatVol_saving_survival_high<<8 | (UWORD)BatVol_saving_survival_low)){
-//                        putChar(0x02);
-                        //write SatMode survival(SEP -> OFF, RBF -> ON)
+                        //write SatMode survival(SEP -> OFF, RBF -> ON)                      
+                        killEPS();
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
                         ReserveBeforeSatMode = SATMODE_SURVIVAL_SEPOFF_RBFON;
-                        killEPS();
                     }else{
-//                        putChar(0x03);
-                        //Write SatMode saving(SEP -> OFF, RBF -> ON)
+                        //Write SatMode saving(SEP -> OFF, RBF -> ON)                        
+                        killEPS();                   
+                        onNtrxPowerSupplyCIB(0,0);
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SAVING_SEPOFF_RBFON);
                         ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;
-                        killEPS();
-                        __delay_ms(500);                     
-                        onNtrxPowerSupplyCIB(0,0);               
                     }
                     break;
                 case SATMODE_SAVING:
-//                    putChar(0x0B);
                     if(Voltage >= ((UWORD)BatVol_nominal_revival_high <<8 |(UWORD)BatVol_nominal_revival_low)){
-//                        putChar(0x01);
-                        //write SatMode nominal(SEP -> ON, RBF -> ON)
-                        WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
-                        ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;                        
+                        //write SatMode nominal(SEP -> ON, RBF -> ON)                                               
                         offNtrxPowerSupplyCIB();
-                        __delay_ms(500);
                         onEPS();
-                        __delay_ms(1000);//wait EPS ON
                         setPLL();
+                        WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
+                        ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
                     }else if (Voltage <= ((UWORD)BatVol_saving_survival_high << 8 | (UWORD)BatVol_saving_survival_low)){
-//                        putChar(0x02);
-                        //write SatMode survival(SEP -> OFF, RBF -> ON)
+                        //write SatMode survival(SEP -> OFF, RBF -> ON)                       
+                        offNtrxPowerSupplyCIB();
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
                         ReserveBeforeSatMode = SATMODE_SURVIVAL_SEPOFF_RBFON;
-                        offNtrxPowerSupplyCIB();
                     }else{
-//                        putChar(0x03);
                         //Write SatMode saving(SEP -> OFF, RBF -> ON)
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SAVING_SEPOFF_RBFON);
                         ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;
                     }
                     break;
                 case SATMODE_SURVIVAL:
-//                    putChar(0x0c);
                     if(Voltage >= ((UWORD)BatVol_nominal_revival_high <<8 | (UWORD)BatVol_nominal_revival_low)){
-//                       putChar(0x01);
-                        //write SatMode nominal(SEP -> ON, RBF -> ON)
+                        //write SatMode nominal(SEP -> ON, RBF -> ON)                       
+                        onEPS();
+                        setPLL();
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
                         ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
-                        onEPS();
-                        __delay_ms(1000);//wait EPS ON
-                        setPLL();
-                    }else if (Voltage <= ((UWORD)BatVol_saving_revival_high << 8 | (UWORD)BatVol_saving_revival_low)){// <=6.114V
-//                        putChar(0x02);
+                    }else if (Voltage <= ((UWORD)BatVol_saving_revival_high << 8 | (UWORD)BatVol_saving_revival_low)){
                         //write SatMode survival(SEP -> OFF, RBF -> ON)
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
                         ReserveBeforeSatMode = SATMODE_SURVIVAL_SEPOFF_RBFON;
                     }else{
-//                        putChar(0x03);
-                        //Write SatMode saving(SEP -> OFF, RBF -> ON)
+                        //Write SatMode saving(SEP -> OFF, RBF -> ON)                      
+                        onNtrxPowerSupplyCIB(0,0);
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SAVING_SEPOFF_RBFON);
                         ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;
-                        onNtrxPowerSupplyCIB(0,0);
                     }                  
                     break;
                 default:       
-//                    putChar(0x0D);
                     error_status = error_status | 0b00110000;
                     break;
         }
@@ -242,4 +225,63 @@ void SwitchToSavingMode(void){
     setPLL();
     WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SAVING_SEPOFF_RBFON);
     ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;
+}
+
+/*******************************************************************************
+*command swtich feature 
+******************************************************************************/
+/*
+ *	change satellite mode
+ *	arg      :   command, timeHigh, timeLow
+ *	return   :   0x07 -> Nominal mode (ON: CIB, EPS, OBC, Tx(CW), Rx)
+ *               0x3C -> Power saving mode (ON: CIB, Tx(CW), Rx / OFF: EPS, OBC)
+ *               0xF0 -> Survival mode (ON: CIB / OFF: EPS, OBC, Tx(CW), Rx)             
+ */
+void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times are given in ms
+    switch(command){    
+        case 0x07: 
+            /*---------------------------*/
+            /* method for nominal mode (ON: CIB, EPS, OBC, Tx(CW), Rx)
+             * 1.SEP_SW & RBF_SW = LOW -> EPS switch ON
+             * 2.then Rx/Tx/OBC switch  ON
+            /*---------------------------*/
+            offNtrxPowerSupplyCIB();
+            switchPowerEPS(0x01, timeHigh, timeLow);
+            setPLL();
+            WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
+            ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
+            break;
+        case 0x3C: 
+            /*----------------------------*/
+            /*method for power saving mode (ON: CIB, Tx(CW), Rx / OFF: EPS, OBC)
+             * 1.first kill EPS (this also kills Rx/Tx/OBC)
+             * 2.send command to TXCOBC to turn back on RX and TX  (Radio Unit)
+             *      task target:t(TX COBC)
+             *      CommandType:p(power)
+             *      Parameter1:0x01(on) / 2:timeHigh / 3:timeLow
+             * 3.RXCOBC reset PLL data
+             * 4.after setting time, revive EPS (this also revive OBC)
+            /*----------------------------*/
+            killEPS();
+            onNtrxPowerSupplyCIB(timeHigh,timeLow);
+            WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SAVING_SEPOFF_RBFON);
+            ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;
+            break;
+        case 0xF0: 
+            /*---------------------------*/
+            /* method for survival mode (ON: CIB / OFF: EPS, OBC, Tx(CW), Rx)
+             * only enter if time in survival mode is specified 
+             * set automatical revival time
+             * 1.SEP_SW & RBF_SW = HIGH -> EPS switch OFF
+             * 2.then Rx/Tx/OBC switch  OFF
+             * 3.if time has run out switch to power saving mode
+            /*---------------------------*/
+            switchPowerEPS(0x00, timeHigh, timeLow);
+            WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
+            ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;
+            break;
+        default:
+            switchError(error_MPU_commandSwitchSatMode);
+            break;
+    }
 }
