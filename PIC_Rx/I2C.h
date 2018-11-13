@@ -17,6 +17,7 @@
 #define I2C_baud_rate_low  100000  //100kbps
 #define I2C_baud_rate_def  I2C_baud_rate_low
 
+
 void InitI2CMaster(const UDWORD c);
 void I2CMasterWait(void);                                               
 void I2CMasterStart(void);                                              
@@ -27,6 +28,7 @@ UBYTE I2CMasterRead(UBYTE a);
 
 /*write*/
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+void WriteToEEPROM_Length(UBYTE,UBYTE,UBYTE,UBYTE, UBYTE *);
 void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
 void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
@@ -45,7 +47,7 @@ void ChangeI2CBaudRate(UBYTE);
 void TestEEPROM(UBYTE);
 
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE*);
 
 
 #endif	/* I2C_H */

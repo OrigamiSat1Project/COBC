@@ -74,7 +74,7 @@ void main(void) {
        
     
     UBYTE error_status = 0x00;
-    
+   
     while(1){
               
         /*---timer interrupt---*/
@@ -214,7 +214,7 @@ void main(void) {
         }else{
             commandData[31] = commandData[31] | 0b10000000;
 //            switchOk(ok_main_crcCheck);           
-        }  
+        }
         
         /*---Write uplink command in EEPROM---*/
         /*------------------------------------------------------------------*/
@@ -261,7 +261,7 @@ void main(void) {
                     commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
                     break;
                 case 'e': /*EEPROM*/
-                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
                     break;
                 case 'u':/*UART*/
                     commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
