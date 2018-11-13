@@ -48,6 +48,14 @@ static UINT eps_reset_counter_min = 0;
 
 //for debug function
 void interrupt TimerCheck(void){
+    
+    if(RCIF == 1){
+        
+        //get data only
+        
+        RCIF = 0;
+    }
+    
     if(INTCONbits.TMR0IF){
         INTCONbits.TMR0IF = 0;
         TMR0 = 0x00;
@@ -97,7 +105,7 @@ void interrupt TimerCheck(void){
     if(NTRX_pll_setting_counter_min >= one_hour){
         NTRX_pll_setting_counter_min = 0;
         NTRX_pll_setting_counter_hour ++;
-    }     
+    }
     
     if(hour_counter >= one_day){
         hour_counter = 0;
@@ -106,7 +114,7 @@ void interrupt TimerCheck(void){
     if(NTRX_pll_setting_counter_hour >= one_day){
         NTRX_pll_setting_counter_hour = 0;
         NTRX_pll_setting_counter_day ++;
-    } 
+    }
     
     if(day_counter >= one_week){
         day_counter = 0;
