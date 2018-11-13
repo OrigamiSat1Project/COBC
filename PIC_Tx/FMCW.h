@@ -15,15 +15,18 @@
 //***Read Me!!!
 //***comentout methods are defined in FMCW.c
 
-// #define SHORT_DELAYTIMES_FOR_MORSE     15  //80wpm
-// #define MIDDLE_DELAYTIMES_FOR_MORSE    45
-// #define LONG_DELAYTIMES_FOR_MORSE      105
-#define SHORT_DELAYTIMES_FOR_MORSE     65800  //80wpm
+// #define SHORT_DELAYTIMES_FOR_MORSE     15000  //80wpm
+// #define MIDDLE_DELAYTIMES_FOR_MORSE    45000
+// #define LONG_DELAYTIMES_FOR_MORSE      105000
+//#define SHORT_DELAYTIMES_FOR_MORSE     30000  //40wpm
+// #define MIDDLE_DELAYTIMES_FOR_MORSE    90000
+// #define LONG_DELAYTIMES_FOR_MORSE      210000
+
+#define SHORT_DELAYTIMES_FOR_MORSE     65800  //20wpm
 #define MIDDLE_DELAYTIMES_FOR_MORSE    197400
 #define LONG_DELAYTIMES_FOR_MORSE      460600
-
-//FIXME : overflow for wait_us(UWORD)
-#define ADD_BLANK_FOR_MORSE            LONG_DELAYTIMES_FOR_MORSE-MIDDLE_DELAYTIMES_FOR_MORSE
+//#define ADD_BLANK_FOR_MORSE            LONG_DELAYTIMES_FOR_MORSE-MIDDLE_DELAYTIMES_FOR_MORSE
+#define ADD_BLANK_FOR_MORSE            LONG_DELAYTIMES_FOR_MORSE
 
 /*Downlink Command*/
 void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
@@ -59,7 +62,7 @@ void Morse_Y(void);
 void Morse_J(void);
 
 
-void CWdownlinkStart(void);
+void HK_test_setting(void);//for debug
 
 #endif	/* FMCW_H */
 

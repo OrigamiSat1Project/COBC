@@ -8,7 +8,7 @@
 
 //UBYTE EEPROMData[32];                  
 
-#define MELTING_FINISH_FLAG 0b11111111
+#define MELTING_FINISH_FLAG 0b01111110
 
 /*******************************************************************************
 *setting
@@ -158,7 +158,7 @@ UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
     UBYTE Address = EEPROM_address << 1;
     UBYTE ReadAddress = Address | 0x01;
     UBYTE ReadData;
-   
+
     I2CMasterStart();         //Start condition
     I2CMasterWrite(Address);     //7 bit address + Write
     I2CMasterWrite(high_address);    //Adress High Byte
@@ -335,8 +335,8 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
             TestEEPROM(slaveAdress);
             break;
         case 'm': //write melting status to EEPROM --> stop melting
-            WriteCheckByteToEEPROMs(MeltingStatus_B0select, MeltingStatus_addressHigh, MeltingStatus_addressLow, MELTING_FINISH_FLAG);
-            //TODO:change task taget r->o
+            /*---write melting status---*/
+            WriteOneByteToMainAndSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, MELTING_FINISH_FLAG);
             break;
         default:
             switchError(error_I2C_commandSwitchEEPROM);

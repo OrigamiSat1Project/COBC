@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   I2C.h
  * Author: Kosuke
  *
@@ -22,7 +22,7 @@
 
 /*******************************************************************************
 *setting
-******************************************************************************/ 
+******************************************************************************/
 void InitI2CMaster(const UDWORD c);
 void I2CMasterWait(void);
 void I2CMasterStart(void);
@@ -31,7 +31,7 @@ void I2CMasterStop(void);
 
 
 /*******************************************************************************
-*Method for EEPROM Write 
+*Method for EEPROM Write
 ******************************************************************************/
 void I2CMasterWrite(UBYTE);
 UBYTE I2CMasterRead(UBYTE);
@@ -55,4 +55,3 @@ void debugForCommandSwitchI2C(void);        //for debug
 void debugForCommandSwitchEEPROM(void); //for debug
 
 #endif	/* I2C_H */
-

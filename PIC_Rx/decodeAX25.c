@@ -37,10 +37,10 @@ UINT fcsCheck(void);
 // reads bit using NRZ (Non-return-to-zero space)
 // bit synchronization program using the change in status so that the sampling timing does not shift by adding half the bit time interval
 // Number of GET_BIT_WAIT_LOOP and HALF_INTERVA are VERY sensitive (change with care and if changed check runtime again!!!)
-UBYTE getBit(void){
-    static UBYTE oldBit;
+UINT getBit(void){
+    static UINT oldBit;
     oldBit = FX614_RXD;
-    for(UBYTE i=0;i<GET_BIT_WAIT_LOOP;i++){     //Loop iteration number defines waiting interval for signal to change
+    for(UINT i=0;i<GET_BIT_WAIT_LOOP;i++){     //Loop iteration number defines waiting interval for signal to change
         if(FX614_RXD != oldBit){
             __delay_us(HALF_INTERVAL);
 //            LED_YELLOW= 1- LED_YELLOW;       //for debugging  
@@ -81,14 +81,6 @@ void waitFlag(void){
     
     while(rcvState < 2){
         while(buf != FLAG_AX25){    //Wait for the flag to come
-            //XXX break by timer
-//            if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
-            if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
-                putChar('F');
-                putChar('1');
-                break;
-            }
-            
             readBit = getBit();
             buf = buf << 1;         // TODO: Changed bit shift direction, bit_H, bit_L according to LSB, MSB.
             if(readBit == 0){
@@ -97,11 +89,8 @@ void waitFlag(void){
                 buf = buf | BIT_HIGH;
             }
         }
-        //XXX break by timer
-//        if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+        
         if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
-            putChar('F');
-            putChar('2');            
             break;
         }
         
@@ -204,14 +193,11 @@ UINT fcsCheck(void){
             byte = dPacket[i];
             for(UBYTE j=0;j<8;j++){
                 bt = byte & BIT_HIGH;
-//                #asm                                //embedded assembly language route to do a 16 bit rotate
-//                    BCF 03,0
-//                    RRF _dfcsHighByte,F
-//                    RRF _dfcsLowByte,F
-//                #endasm
-                STATUS &= ~0x01;
-                dfcsHighByte = dfcsHighByte >> 1;
-                dfcsLowByte = dfcsLowByte >> 1;
+                #asm                                //embedded assembly language route to do a 16 bit rotate
+                    BCF 03,0
+                    RRF _dfcsHighByte,F
+                    RRF _dfcsLowByte,F
+                #endasm
                 if(((STATUS & BIT_HIGH)^bt) == BIT_HIGH){
                     dfcsHighByte = dfcsHighByte ^ 0x84;
                     dfcsLowByte = dfcsLowByte ^ 0x08;
@@ -238,18 +224,18 @@ void receiveDataPacket(UBYTE *cdData){
     waitFlag();
     //XXX break by timer
 //    if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
-    if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
-        putChar('F');
-        putChar('3');
-        set_receive_command_counter(0,0);
-        return;
-    }
+//    if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
+//        // putChar('F');
+//        // putChar('3');
+//        set_receive_command_counter(0,0);
+//        return;
+//    }
     
-    //putChar('w');
+    putChar('w');
     getData();
-    //putChar('d');
+    putChar('d');
     fcschecker = fcsCheck();
-    //putChar('f');
+    putChar('f');
     
     if(fcschecker == 1){    //valid data is stored in dData
         for(UBYTE i=0; i<DATA_SIZE; i++){

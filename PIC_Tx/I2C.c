@@ -46,12 +46,12 @@ void I2CMasterWrite(UBYTE d){
 
 UBYTE I2CMasterRead(UBYTE a){
   UBYTE temp;
-  
+
   I2CMasterWait();
   RCEN = 1;
   I2CMasterWait();
   temp = SSPBUF;
-  
+
   I2CMasterWait();
   ACKDT = (a)?0:1;
   ACKEN = 1;
@@ -59,7 +59,7 @@ UBYTE I2CMasterRead(UBYTE a){
 }
 
 /*******************************************************************************
-*Method for EEPROM Write 
+*Method for EEPROM Write
 ******************************************************************************/
 //need debug
 void writeDataI2C(UBYTE slave_address, UBYTE address_size, UBYTE *address, UBYTE data_size, UBYTE *data){
@@ -68,17 +68,17 @@ void writeDataI2C(UBYTE slave_address, UBYTE address_size, UBYTE *address, UBYTE
 
     I2CMasterStart();                  //Start condition
     I2CMasterWrite(Address);           //7 bit address + Write
-    
+
     for(UBYTE i=0; i<address_size; i++){
         I2CMasterWrite(address[i]);    //address
-    } 
-    
+    }
+
     for(UBYTE i=0; i<data_size; i++){
         I2CMasterWrite(data[i]);       //Data
     }
-    
+
     I2CMasterStop();                  //Stop condition
-    __delay_ms(200);    
+    __delay_ms(200);
 }
 
 //debug finish
@@ -146,20 +146,20 @@ void readDataI2C(UBYTE Address7Bytes, UBYTE address_size, UBYTE *address, UBYTE 
     UBYTE ReadAddress = (UBYTE)(Address | 0x01);
     I2CMasterStart();                       //Start condition
     I2CMasterWrite(Address);                //7 bit address + Write
-    
+
     for(UBYTE i=0; i<address_size; i++){
         I2CMasterWrite(address[i]);         //Adress
     }
-    
+
     I2CMasterRepeatedStart();               //Restart condition
     I2CMasterWrite(ReadAddress);            //7 bit address + Read
-    
+
     for(UBYTE i = 0; i < data_size - 1; i++){
         data[i] = I2CMasterRead(1);         //Read + Acknowledge
     }
-    
+
     data[data_size - 1] = I2CMasterRead(0);
-    I2CMasterStop();                        //Stop condition   
+    I2CMasterStop();                        //Stop condition
 }
 //debug finish
 void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
@@ -171,7 +171,7 @@ void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address
     I2CMasterWrite(high_address);           //Adress High Byte
     I2CMasterWrite(low_address);            //Adress Low Byte
     I2CMasterRepeatedStart();               //Restart condition
-    
+
     I2CMasterWrite(ReadAddress);            //7 bit address + Read
     for(UINT i = 0; i < EEPROMDataLength - 1; i++){
         ReadData[i] = I2CMasterRead(1);     //Read + Acknowledge
@@ -203,22 +203,22 @@ UBYTE ReadEEPROM(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address){
     UBYTE Address = (UBYTE)(Address7Bytes << 1);
     UBYTE ReadAddress = (UBYTE)(Address | 0x01);
     UBYTE ReadData;
-   
+
     I2CMasterStart();         //Start condition
     I2CMasterWrite(Address);     //7 bit address + Write
     I2CMasterWrite(high_address);    //Adress High Byte
     I2CMasterWrite(low_address);    //Adress Low Byte
     I2CMasterRepeatedStart();         //Restart condition
-    
+
     I2CMasterWrite(ReadAddress);     //7 bit address + Read
-    
+
     ReadData = I2CMasterRead(0); //Read + Acknowledge
-    
+
     I2CMasterStop();          //Stop condition
-    return ReadData; 
+    return ReadData;
 }
 
-//TODO:need debug  ‚à‚µ‚©‚µ‚½‚ç‚¢‚ç‚È‚¢‚©‚àH
+//TODO:need debug  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç‚¢ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½H
 void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
     UBYTE Address = (UBYTE)(Address7Bytes << 1);
     UBYTE ReadAddress = (UBYTE)(Address | 0x01);
@@ -227,7 +227,7 @@ void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE 
     I2CMasterWrite(high_address);           //Adress High Byte
     I2CMasterWrite(low_address);            //Adress Low Byte
     I2CMasterRepeatedStart();               //Restart condition
-    
+
     I2CMasterWrite(ReadAddress);            //7 bit address + Read
     for (*EEPROMDataLength = 0; ReadData[*EEPROMDataLength]!= I2Cnull; *EEPROMDataLength++);
     for(UINT i = 0; i < *EEPROMDataLength; i++){
@@ -235,7 +235,7 @@ void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE 
     }
     ReadData[*EEPROMDataLength] = I2CMasterRead(0);
     I2CMasterStop();          //Stop condition
-    
+
     //for denbugging
     /*
     for(UINT j = 0; j < *EEPROMDataLength; j++){
@@ -268,7 +268,7 @@ void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
     }
 }
 //need debug
-//•Ï‚¦‚Ä‚à‚¢‚¢‚Å‚·
+//ï¿½Ï‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½
 void testEEPROM(UBYTE slaveAdress, UBYTE test_type){
     UBYTE read_data[TEST_DATA_SIZE] = {0};
     UBYTE error_status = 0x00;
@@ -299,15 +299,15 @@ void testEEPROM(UBYTE slaveAdress, UBYTE test_type){
             }
             if(read_data[1]!='w'){
                 error_status += 0x25;
-            } 
+            }
             WriteOneByteToMainAndSubB0EEPROM(TXCOBC_CommandErrorStatus_addressHigh,TXCOBC_CommandErrorStatus_addressLow, error_status);
             break;
     }
 }
 
 //process command data if the command type is 'I2C'
-void commandSwitchI2C(UBYTE command, UBYTE slaveAdress_baudRate, UBYTE addressSize, UBYTE *address, UBYTE dataSize, UBYTE *data){ 
-    switch(command){    
+void commandSwitchI2C(UBYTE command, UBYTE slaveAdress_baudRate, UBYTE addressSize, UBYTE *address, UBYTE dataSize, UBYTE *data){
+    switch(command){
         case 'w': //I2C write  //TODO:need debug
             writeDataI2C(slaveAdress_baudRate, addressSize,  *address,  dataSize,  *data);
             break;
@@ -340,9 +340,9 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress_baudRate, UBYTE addressSi
     }
 }
 
-void commandSwitchEEPROM(UBYTE command, UBYTE B0B1select_slaveAdress, UBYTE dataHigh_type, UBYTE dataLow, UBYTE data_size, UBYTE data1, UBYTE data2, UBYTE data3,UBYTE data4, UBYTE data5){ 
+void commandSwitchEEPROM(UBYTE command, UBYTE B0B1select_slaveAdress, UBYTE dataHigh_type, UBYTE dataLow, UBYTE data_size, UBYTE data1, UBYTE data2, UBYTE data3,UBYTE data4, UBYTE data5){
     UBYTE eeprom_data[5];
-    switch(command){    
+    switch(command){
         case 'w': //write data to EEPROM  //TODO:need debug
             eeprom_data[0] = data1;
             eeprom_data[1] = data2;
@@ -350,7 +350,7 @@ void commandSwitchEEPROM(UBYTE command, UBYTE B0B1select_slaveAdress, UBYTE data
             eeprom_data[3] = data4;
             eeprom_data[4] = data5;
             WriteCheckByteToEEPROMsWithDataSize(B0B1select_slaveAdress, dataHigh_type, dataLow, eeprom_data, data_size);
-            break;            
+            break;
         case 't': //EEPROM test   //TODO:need debug
             testEEPROM(B0B1select_slaveAdress, dataHigh_type);
             break;
@@ -366,25 +366,25 @@ void commandSwitchEEPROM(UBYTE command, UBYTE B0B1select_slaveAdress, UBYTE data
 void debugForCommandSwitchI2C(void){
     putChar('S');
     put_ok();
-    
+
     UBYTE command = 0xcc;
     UBYTE slaveAdress_baudRate = 0xcc;
     UBYTE addressSize = 0xcc;
     UBYTE address[2] = {0x00};
     UBYTE dataSize = 0xcc;
     UBYTE data[3] = {0x00};
-    
+
     /*--change baud rate---*/
     command = 'b';
     slaveAdress_baudRate = 0x00; // 0x00 / 0x01
     commandSwitchI2C(command, slaveAdress_baudRate, addressSize, address, dataSize, data);
-    
+
     /*---write I2C---*/
     command = 'w';
     slaveAdress_baudRate = EEPROM_address;
     addressSize = 2;
     address[0] = whigh_address;
-    address[1] = wlow_address;  
+    address[1] = wlow_address;
     dataSize = 3;
     data[0] = '1';
     data[1] = '2';
@@ -393,24 +393,24 @@ void debugForCommandSwitchI2C(void){
 
     putChar('W');
     put_ok();
-    
+
     /*--read I2C---*/
     command = 'r';
     UBYTE read_data[3] = {0x00};
     commandSwitchI2C(command, slaveAdress_baudRate, addressSize, address, dataSize, read_data);
-    
+
     for(UBYTE i=0; i<3; i++){
         putChar(read_data[i]);
-    }   
+    }
     putChar('R');
     put_ok();
 }
 
 void debugForCommandSwitchEEPROM(void){
-    
+
     putChar('S');
-    put_ok();    
-    
+    put_ok();
+
     /*---write data to EEPROM---*/
     UBYTE command = 'w';
     UBYTE B0B1select_slaveAdress = 0x00;
@@ -421,13 +421,13 @@ void debugForCommandSwitchEEPROM(void){
     UBYTE data2 = 'E';
     UBYTE data3 = 'S';
     UBYTE data4 = 'T';
-    UBYTE data5 = '!';    
-    
+    UBYTE data5 = '!';
+
     commandSwitchEEPROM(command, B0B1select_slaveAdress, dataHigh_type, dataLow, data_size, data1, data2, data3, data4, data5);
-    
+
     putChar('W');
     put_ok();
-    
+
     /*---read data from EEPROM---*/
     UBYTE ReadData_main[5];
     UBYTE ReadData_sub[5];
@@ -437,12 +437,12 @@ void debugForCommandSwitchEEPROM(void){
     //B1
     ReadDataFromEEPROM(EEPROM_address_B1, dataHigh_type, dataLow, ReadData_main, data_size);
     ReadDataFromEEPROM(EEPROM_subMaddress_B1, dataHigh_type, dataLow, ReadData_sub, data_size);
-    
+
     for(UBYTE i=0; i<5; i++){
         putChar(ReadData_main[i]);
         putChar(ReadData_sub[i]);
     }
-    
+
     putChar('R');
     put_ok();
 
@@ -450,24 +450,24 @@ void debugForCommandSwitchEEPROM(void){
     UBYTE command = 't';
     UBYTE B0B1select_slaveAdress = EEPROM_address; //EEPROM_address / EEPROM_subaddress / EEPROM_address_B1 / EEPROM_subMaddress_B1
     UBYTE dataHigh_type = 'r';
-    
+
     commandSwitchEEPROM(command, B0B1select_slaveAdress, dataHigh_type, dataLow, data_size, data1, data2, data3, data4, data5);
     putChar(ReadEEPROM(EEPROM_address, TXCOBC_CommandErrorStatus_addressHigh, TXCOBC_CommandErrorStatus_addressLow));
     putChar(ReadEEPROM(EEPROM_subaddress, TXCOBC_CommandErrorStatus_addressHigh, TXCOBC_CommandErrorStatus_addressLow));
 
     putChar('T');
     put_ok();
-    
+
     /*---EEPROM test(write)---*/
     UBYTE command = 't';
     UBYTE B0B1select_slaveAdress = EEPROM_address; //EEPROM_address / EEPROM_subaddress / EEPROM_address_B1 / EEPROM_subMaddress_B1
     UBYTE dataHigh_type = 'w';
-    
+
     commandSwitchEEPROM(command, B0B1select_slaveAdress, dataHigh_type, dataLow, data_size, data1, data2, data3, data4, data5);
     putChar(ReadEEPROM(EEPROM_address, TXCOBC_CommandErrorStatus_addressHigh, TXCOBC_CommandErrorStatus_addressLow));
     putChar(ReadEEPROM(EEPROM_subaddress, TXCOBC_CommandErrorStatus_addressHigh, TXCOBC_CommandErrorStatus_addressLow));
 
     putChar('T');
     put_ok();
-    
+
 }
