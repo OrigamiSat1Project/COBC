@@ -52,7 +52,6 @@ void changeInOut(UINT, UBYTE);
 void changeHighLow(UINT, UBYTE);
 void changeXtalFrequency(UBYTE);
 
-void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 
