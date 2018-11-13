@@ -18,12 +18,13 @@
 #define MYCALL  "JS1YAX"           //call sign of OrigamiSat-1
 
 //Global Data   
-static UBYTE rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
+static UINT rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
 UBYTE dPacket[PACKET_SIZE];         //whole uplink command
 UBYTE dData[DATA_SIZE];             //only information byte of uplink command
-UBYTE  dPacketCounter = 0;
+UINT  dPacketCounter = 0;
 //UINT  dPacketCounter = 0;
 UBYTE dfcsHighByte, dfcsLowByte;
+UBYTE breakflag = 0;
 
 
 //Methods
@@ -77,17 +78,17 @@ void waitFlag(void){
     rcvState = 0;
     
     //XXX : set timer 0
-    set_receive_command_counter(0,0);
+//    set_receive_command_counter(0,0);
     
     while(rcvState < 2){
         while(buf != FLAG_AX25){    //Wait for the flag to come
-            //XXX break by timer
-//            if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
-            if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
-                // putChar('F');
-                // putChar('1');
-                break;
-            }
+//             //XXX break by timer
+// //            if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+//             if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
+//                 // putChar('F');
+//                 // putChar('1');
+//                 break;
+//             }
             
             readBit = getBit();
             buf = buf << 1;         // TODO: Changed bit shift direction, bit_H, bit_L according to LSB, MSB.
@@ -97,11 +98,15 @@ void waitFlag(void){
                 buf = buf | BIT_HIGH;
             }
         }
-        //XXX break by timer
-//        if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
-        if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
-            // putChar('F');
-            // putChar('2');            
+//         //XXX break by timer
+// //        if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+//         if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
+//             // putChar('F');
+//             // putChar('2');            
+        
+        if( get_timer_counter('s') >= 10){
+            reset_timer();
+            breakflag = 1;
             break;
         }
         
@@ -200,18 +205,15 @@ UINT fcsCheck(void){
     UBYTE bt, byte;//, dfcsHighByte, dfcsLowByte;
     dfcsLowByte = dfcsHighByte = 0xff;
     while(rcvState == 3){
-        for(UBYTE i=0;i<dPacketCounter-2;i++){      //calculate the FCS for all except the last two bytes
+        for(UINT i=0;i<dPacketCounter-2;i++){      //calculate the FCS for all except the last two bytes
             byte = dPacket[i];
-            for(UBYTE j=0;j<8;j++){
+            for(UINT j=0;j<8;j++){
                 bt = byte & BIT_HIGH;
                 #asm                                //embedded assembly language route to do a 16 bit rotate
                     BCF 03,0
                     RRF _dfcsHighByte,F
                     RRF _dfcsLowByte,F
                 #endasm
-//                STATUS &= ~0x01;
-//                dfcsHighByte = dfcsHighByte >> 1;
-//                dfcsLowByte = dfcsLowByte >> 1;
                 if(((STATUS & BIT_HIGH)^bt) == BIT_HIGH){
                     dfcsHighByte = dfcsHighByte ^ 0x84;
                     dfcsLowByte = dfcsLowByte ^ 0x08;
@@ -236,24 +238,15 @@ void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
     
     waitFlag();
-    //XXX break by timer
-//    if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
-    if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
-        // putChar('F');
-        // putChar('3');
-        set_receive_command_counter(0,0);
-        return;
-    }
-    
-    //putChar('w');
+    putChar('w');
     getData();
-    //putChar('d');
+    putChar('d');
     fcschecker = fcsCheck();
-    //putChar('f');
+    putChar('f');
     
     if(fcschecker == 1){    //valid data is stored in dData
-        for(UBYTE i=0; i<DATA_SIZE; i++){
-            cdData[i] = dPacket[i+20];     //[dPacket]0-5:UCALL / 6:SSID / 7-12:MYCALL / 13:SSID / 14:control / 15:PID / 16-19:'ori1' / 20-52:command data(=cdData) / 53,54:FCS 
+        for(UINT i=0; i<DATA_SIZE; i++){
+            cdData[i] = dPacket[i+22];     //[dPacket]0-5:UCALL / 6:SSID / 7-12:MYCALL / 13:SSID / 14:control / 15:PID / 16-19:'ori1' / 20-52:command data(=cdData) / 53,54:FCS 
         }
         dPacketCounter = 0;
         rcvState = 0;

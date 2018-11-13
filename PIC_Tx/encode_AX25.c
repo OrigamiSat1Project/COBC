@@ -108,48 +108,6 @@ void SendPacket(UBYTE *eDataField,UINT num){
     }
 }
 
-//void SendPacketWithDataSize(UBYTE *eDataField, UBYTE DataSize){
-//    UBYTE Packetnum;
-//    Packetnum = 0;
-//    Packetnum = PacketmakerWithDataSize(eDataField, DataSize);
-//    
-//    //XXX : for debug
-////    putChar('\r');
-////    putChar('\n');
-////    putChar(Packetnum);
-////    putChar('\r');
-////    putChar('\n');
-//    
-//    ebitstatus = 1;
-//    efcslo = efcshi = 0xff;
-//    estuff = 0;
-//    //  FlagField
-//    eflag = 1;
-//    efcsflag = 0;
-//    for(UBYTE i=0;i<27;i++){
-//        SendByte(0x7e);
-//    }
-//    eflag = 0;
-//    //  eDataField
-//    for(UBYTE i=0;i<Packetnum;i++){
-//        SendByte(ePacket_50[i]);
-//    }    
-//    
-//    //  FCSField
-//    efcsflag = 1;
-//    efcslo ^= 0xff;
-//    efcshi ^= 0xff;
-//    SendByte(efcslo);
-//    SendByte(efcshi);
-//    efcsflag = 0;
-//    
-//    //  FlagField
-//    eflag = 1;
-//    for(UBYTE i=0;i<6;i++){
-//        SendByte(0x7e);
-//    }
-//}
-
 void SendByte(UBYTE byte){
     UBYTE bt;
     for(UBYTE i=0;i<8;i++){

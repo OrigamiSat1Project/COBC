@@ -1,6 +1,4 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"16 C:\Program Files (x86)\Microchip\xc8\v1.45\include\conio.h
-[v _putch `(v ~T0 @X0 0 ef1`uc ]
 "15 encode_AX25.c
 [v _SendByte `(v ~T0 @X0 0 ef1`uc ]
 "17
@@ -1443,25 +1441,26 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 22: typedef unsigned short long USLONG;
 [; ;Type_define.h: 23: typedef signed long SDWORD;
 [; ;Type_define.h: 24: typedef unsigned long UDWORD;
-"16 UART.h
+"20 UART.h
 [v _UPLINK_COMMAND_SIZE `uc ~T0 @X0 1 e ]
 [i _UPLINK_COMMAND_SIZE
 -> -> 32 `i `uc
 ]
-[; ;UART.h: 16: UBYTE UPLINK_COMMAND_SIZE = 32;
-[; ;UART.h: 18: void Init_SERIAL(void);
-[; ;UART.h: 19: UBYTE getChar(void);
-[; ;UART.h: 20: void putChar(UBYTE);
-[; ;UART.h: 21: void putString(UBYTE *);
-[; ;UART.h: 22: void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 25: void changeInterruptPermission(UBYTE, UBYTE);
-[; ;UART.h: 26: void put_error(void);
-[; ;UART.h: 27: void put_ok(void);
-[; ;UART.h: 28: void changeBaudRate(UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 29: void UARTbufferClear(void);
-[; ;UART.h: 30: void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
-[; ;UART.h: 31: void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 34: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
+[; ;UART.h: 20: UBYTE UPLINK_COMMAND_SIZE = 32;
+[; ;UART.h: 22: void Init_SERIAL(void);
+[; ;UART.h: 23: UBYTE getChar(void);
+[; ;UART.h: 24: void putChar(UBYTE);
+[; ;UART.h: 25: void putString(UBYTE *);
+[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 29: void changeInterruptPermission(UBYTE, UBYTE);
+[; ;UART.h: 30: void put_error(void);
+[; ;UART.h: 31: void put_ok(void);
+[; ;UART.h: 32: void put_lf(void);
+[; ;UART.h: 33: void changeBaudRate(UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 34: void UARTbufferClear(void);
+[; ;UART.h: 35: void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
+[; ;UART.h: 36: void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 39: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
 [; ;time.h: 32: void delay_s(UWORD);
@@ -3019,75 +3018,76 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC16F887.h: 4302: extern volatile __bit nW @ (((unsigned) &SSPSTAT)*8) + 2;
 [; ;PIC16F887.h: 4304: extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
 [; ;encode_AX25.h: 19: void SendPacketWithDataSize(UBYTE *,UINT);
-[; ;encode_AX25.h: 20: void SendPacket(UBYTE *);
+[; ;encode_AX25.h: 20: void SendPacket(UBYTE *,UINT);
 [; ;encode_AX25.c: 15: void SendByte(UBYTE);
 [; ;encode_AX25.c: 16: void flipout(void);
 [; ;encode_AX25.c: 17: void fcsbit(UBYTE);
-[; ;encode_AX25.c: 18: UBYTE Packetmaker(UBYTE *);
-"23 encode_AX25.c
+[; ;encode_AX25.c: 18: UINT Packetmaker(UBYTE *,UINT);
+"21 encode_AX25.c
 [v _eflag `uc ~T0 @X0 1 e ]
 [i _eflag
 -> -> 0 `i `uc
 ]
-[; ;encode_AX25.c: 23: UBYTE eflag = 0;
-"24
+[; ;encode_AX25.c: 21: UBYTE eflag = 0;
+"22
 [v _efcsflag `uc ~T0 @X0 1 e ]
 [i _efcsflag
 -> -> 0 `i `uc
 ]
-[; ;encode_AX25.c: 24: UBYTE efcsflag = 0;
-"25
+[; ;encode_AX25.c: 22: UBYTE efcsflag = 0;
+"23
 [v _estuff `uc ~T0 @X0 1 e ]
 [i _estuff
 -> -> 0 `i `uc
 ]
-[; ;encode_AX25.c: 25: UBYTE estuff = 0;
-"26
+[; ;encode_AX25.c: 23: UBYTE estuff = 0;
+"24
 [v _efcslo `uc ~T0 @X0 1 e ]
 [v _efcshi `uc ~T0 @X0 1 e ]
-[; ;encode_AX25.c: 26: UBYTE efcslo, efcshi;
-"27
+[; ;encode_AX25.c: 24: UBYTE efcslo, efcshi;
+"25
 [v _ePacket `uc ~T0 @X0 -> 52 `i e ]
-[; ;encode_AX25.c: 27: UBYTE ePacket[52];
-"28
+[; ;encode_AX25.c: 25: UBYTE ePacket[52];
+"27
 [v _ebitstatus `b ~T0 @X0 1 e ]
 [i _ebitstatus
 -> 0 `i
 ]
-[; ;encode_AX25.c: 28: BIT ebitstatus = 0;
-"39
-[v _Packetmaker `(uc ~T0 @X0 1 ef1`*uc ]
+[; ;encode_AX25.c: 27: BIT ebitstatus = 0;
+"46
+[v _Packetmaker `(ui ~T0 @X0 1 ef2`*uc`ui ]
 {
-[; ;encode_AX25.c: 39: UBYTE Packetmaker(UBYTE *eDataField){
+[; ;encode_AX25.c: 46: UINT Packetmaker(UBYTE *eDataField,UINT num){
 [e :U _Packetmaker ]
 [v _eDataField `*uc ~T0 @X0 1 r1 ]
+[v _num `ui ~T0 @X0 1 r2 ]
 [f ]
-[; ;encode_AX25.c: 40: for(UBYTE i=0;i<6;i++){
-"40
+[; ;encode_AX25.c: 47: for(UINT i=0;i<6;i++){
+"47
 {
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 6 `i 277  ]
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 6 `i `ui 277  ]
 [e $U 278  ]
 [e :U 277 ]
 {
-[; ;encode_AX25.c: 41: ePacket[i] = "JQ1YCZ"[i] << 1;
-"41
+[; ;encode_AX25.c: 48: ePacket[i] = "JQ1YCZ"[i] << 1;
+"48
 [e = *U + &U _ePacket * -> _i `ux -> -> # *U &U _ePacket `ui `ux -> << -> *U + :s 1C * -> _i `ux -> -> # *U :s 1C `ui `ux `i -> 1 `i `uc ]
-"42
+"49
 }
-"40
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 6 `i 277  ]
+"47
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 6 `i `ui 277  ]
 [e :U 278 ]
-"42
+"49
 }
-[; ;encode_AX25.c: 42: }
-[; ;encode_AX25.c: 43: ePacket[6] = 0x60;
-"43
+[; ;encode_AX25.c: 49: }
+[; ;encode_AX25.c: 50: ePacket[6] = 0x60;
+"50
 [e = *U + &U _ePacket * -> -> -> 6 `i `ui `ux -> -> # *U &U _ePacket `ui `ux -> -> 96 `i `uc ]
-[; ;encode_AX25.c: 44: for(UBYTE i=0;i<6;i++){
-"44
+[; ;encode_AX25.c: 51: for(UBYTE i=0;i<6;i++){
+"51
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
@@ -3095,354 +3095,338 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 281  ]
 [e :U 280 ]
 {
-[; ;encode_AX25.c: 45: ePacket[i+7] = "JS1YAX"[i] << 1;
-"45
+[; ;encode_AX25.c: 52: ePacket[i+7] = "JS1YAX"[i] << 1;
+"52
 [e = *U + &U _ePacket * -> -> + -> _i `i -> 7 `i `ui `ux -> -> # *U &U _ePacket `ui `ux -> << -> *U + :s 2C * -> _i `ux -> -> # *U :s 2C `ui `ux `i -> 1 `i `uc ]
-"46
+"53
 }
-"44
+"51
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> 6 `i 280  ]
 [e :U 281 ]
-"46
-}
-[; ;encode_AX25.c: 46: }
-[; ;encode_AX25.c: 47: ePacket[13] = 0xe1;
-"47
-[e = *U + &U _ePacket * -> -> -> 13 `i `ui `ux -> -> # *U &U _ePacket `ui `ux -> -> 225 `i `uc ]
-[; ;encode_AX25.c: 48: ePacket[14] = 0x03;
-"48
-[e = *U + &U _ePacket * -> -> -> 14 `i `ui `ux -> -> # *U &U _ePacket `ui `ux -> -> 3 `i `uc ]
-[; ;encode_AX25.c: 49: ePacket[15] = 0xf0;
-"49
-[e = *U + &U _ePacket * -> -> -> 15 `i `ui `ux -> -> # *U &U _ePacket `ui `ux -> -> 240 `i `uc ]
-"50
-[v F2925 `Cuc ~T0 @X0 1 s Datanum ]
-[i F2925
--> -> 36 `i `uc
-]
-[; ;encode_AX25.c: 50: const UBYTE Datanum = 36;
-[; ;encode_AX25.c: 53: for(UBYTE i=0;i<Datanum;i++){
 "53
+}
+[; ;encode_AX25.c: 53: }
+[; ;encode_AX25.c: 54: ePacket[13] = 0xe1;
+"54
+[e = *U + &U _ePacket * -> -> -> 13 `i `ui `ux -> -> # *U &U _ePacket `ui `ux -> -> 225 `i `uc ]
+[; ;encode_AX25.c: 55: ePacket[14] = 0x03;
+"55
+[e = *U + &U _ePacket * -> -> -> 14 `i `ui `ux -> -> # *U &U _ePacket `ui `ux -> -> 3 `i `uc ]
+[; ;encode_AX25.c: 56: ePacket[15] = 0xf0;
+"56
+[e = *U + &U _ePacket * -> -> -> 15 `i `ui `ux -> -> # *U &U _ePacket `ui `ux -> -> 240 `i `uc ]
+"57
+[v _Datanum `ui ~T0 @X0 1 a ]
+[; ;encode_AX25.c: 57: UINT Datanum = num;
+[e = _Datanum _num ]
+[; ;encode_AX25.c: 64: for(UINT i=0;i<Datanum;i++){
+"64
 {
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> F2925 `i 283  ]
-[e $U 284  ]
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $U 286  ]
 [e :U 283 ]
 {
-[; ;encode_AX25.c: 54: ePacket[16+i] = eDataField[i];
-"54
-[e = *U + &U _ePacket * -> -> + -> 16 `i -> _i `i `ui `ux -> -> # *U &U _ePacket `ui `ux *U + _eDataField * -> _i `ux -> -> # *U _eDataField `ui `ux ]
-"55
-}
-"53
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> F2925 `i 283  ]
-[e :U 284 ]
-"55
-}
-[; ;encode_AX25.c: 55: }
-[; ;encode_AX25.c: 58: for(UBYTE i=0;i<16+Datanum;i++){
-"58
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i + -> 16 `i -> F2925 `i 286  ]
-[e $U 287  ]
-[e :U 286 ]
-{
-[; ;encode_AX25.c: 59: putch(ePacket[i]);
-"59
-[e ( _putch (1 *U + &U _ePacket * -> _i `ux -> -> # *U &U _ePacket `ui `ux ]
-"60
-}
-"58
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i + -> 16 `i -> F2925 `i 286  ]
-[e :U 287 ]
-"60
-}
-[; ;encode_AX25.c: 60: }
-[; ;encode_AX25.c: 61: return 16+Datanum;
-"61
-[e ) -> + -> 16 `i -> F2925 `i `uc ]
-[e $UE 276  ]
-[; ;encode_AX25.c: 62: }
-"62
-[e :UE 276 ]
+[; ;encode_AX25.c: 65: ePacket[16+i] = eDataField[i];
+"65
+[e = *U + &U _ePacket * -> + -> -> 16 `i `ui _i `ux -> -> # *U &U _ePacket `ui `ux *U + _eDataField * -> _i `ux -> -> # *U _eDataField `ui `ux ]
+"66
 }
 "64
-[v _SendPacket `(v ~T0 @X0 1 ef1`*uc ]
+[e ++ _i -> -> 1 `i `ui ]
+[e :U 286 ]
+[e $ < _i _Datanum 283  ]
+[e :U 284 ]
+"66
+}
+[; ;encode_AX25.c: 66: }
+[; ;encode_AX25.c: 72: return 16+Datanum;
+"72
+[e ) + -> -> 16 `i `ui _Datanum ]
+[e $UE 276  ]
+[; ;encode_AX25.c: 73: }
+"73
+[e :UE 276 ]
+}
+"75
+[v _SendPacket `(v ~T0 @X0 1 ef2`*uc`ui ]
 {
-[; ;encode_AX25.c: 64: void SendPacket(UBYTE *eDataField){
+[; ;encode_AX25.c: 75: void SendPacket(UBYTE *eDataField,UINT num){
 [e :U _SendPacket ]
 [v _eDataField `*uc ~T0 @X0 1 r1 ]
+[v _num `ui ~T0 @X0 1 r2 ]
 [f ]
-"66
+"77
 [v _Packetnum `uc ~T0 @X0 1 a ]
-[; ;encode_AX25.c: 66: UBYTE Packetnum;
-[; ;encode_AX25.c: 67: Packetnum = 0;
-"67
-[e = _Packetnum -> -> 0 `i `uc ]
-[; ;encode_AX25.c: 68: Packetnum = Packetmaker(eDataField);
-"68
-[e = _Packetnum ( _Packetmaker (1 _eDataField ]
-[; ;encode_AX25.c: 69: ebitstatus = 1;
-"69
-[e = _ebitstatus -> -> 1 `i `b ]
-[; ;encode_AX25.c: 70: efcslo = efcshi = 0xff;
-"70
-[e = _efcslo = _efcshi -> -> 255 `i `uc ]
-[; ;encode_AX25.c: 71: estuff = 0;
-"71
-[e = _estuff -> -> 0 `i `uc ]
-[; ;encode_AX25.c: 73: eflag = 1;
-"73
-[e = _eflag -> -> 1 `i `uc ]
-[; ;encode_AX25.c: 74: efcsflag = 0;
-"74
-[e = _efcsflag -> -> 0 `i `uc ]
-[; ;encode_AX25.c: 75: for(UBYTE i=0;i<27;i++){
-"75
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 27 `i 290  ]
-[e $U 291  ]
-[e :U 290 ]
-{
-[; ;encode_AX25.c: 76: SendByte(0x7e);
-"76
-[e ( _SendByte (1 -> -> 126 `i `uc ]
-"77
-}
-"75
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 27 `i 290  ]
-[e :U 291 ]
-"77
-}
-[; ;encode_AX25.c: 77: }
-[; ;encode_AX25.c: 78: eflag = 0;
+[; ;encode_AX25.c: 77: UBYTE Packetnum;
+[; ;encode_AX25.c: 78: Packetnum = 0;
 "78
-[e = _eflag -> -> 0 `i `uc ]
-[; ;encode_AX25.c: 80: for(UBYTE i=0;i<Packetnum;i++){
+[e = _Packetnum -> -> 0 `i `uc ]
+[; ;encode_AX25.c: 79: Packetnum = Packetmaker(eDataField,num);
+"79
+[e = _Packetnum -> ( _Packetmaker (2 , _eDataField _num `uc ]
+[; ;encode_AX25.c: 80: ebitstatus = 1;
 "80
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $U 296  ]
-[e :U 293 ]
-{
-[; ;encode_AX25.c: 81: SendByte(ePacket[i]);
+[e = _ebitstatus -> -> 1 `i `b ]
+[; ;encode_AX25.c: 81: efcslo = efcshi = 0xff;
 "81
-[e ( _SendByte (1 *U + &U _ePacket * -> _i `ux -> -> # *U &U _ePacket `ui `ux ]
+[e = _efcslo = _efcshi -> -> 255 `i `uc ]
+[; ;encode_AX25.c: 82: estuff = 0;
 "82
-}
-"80
-[e ++ _i -> -> 1 `i `uc ]
-[e :U 296 ]
-[e $ < -> _i `i -> _Packetnum `i 293  ]
-[e :U 294 ]
-"82
-}
-[; ;encode_AX25.c: 82: }
-[; ;encode_AX25.c: 86: efcsflag = 1;
-"86
-[e = _efcsflag -> -> 1 `i `uc ]
-[; ;encode_AX25.c: 87: efcslo ^= 0xff;
-"87
-[e =^ _efcslo -> -> 255 `i `uc ]
-[; ;encode_AX25.c: 88: efcshi ^= 0xff;
-"88
-[e =^ _efcshi -> -> 255 `i `uc ]
-[; ;encode_AX25.c: 89: SendByte(efcslo);
-"89
-[e ( _SendByte (1 _efcslo ]
-[; ;encode_AX25.c: 90: SendByte(efcshi);
-"90
-[e ( _SendByte (1 _efcshi ]
-[; ;encode_AX25.c: 91: efcsflag = 0;
-"91
-[e = _efcsflag -> -> 0 `i `uc ]
-[; ;encode_AX25.c: 94: eflag = 1;
-"94
+[e = _estuff -> -> 0 `i `uc ]
+[; ;encode_AX25.c: 84: eflag = 1;
+"84
 [e = _eflag -> -> 1 `i `uc ]
-[; ;encode_AX25.c: 95: for(UBYTE i=0;i<6;i++){
-"95
+[; ;encode_AX25.c: 85: efcsflag = 0;
+"85
+[e = _efcsflag -> -> 0 `i `uc ]
+[; ;encode_AX25.c: 86: for(UBYTE i=0;i<27;i++){
+"86
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 6 `i 297  ]
-[e $U 298  ]
-[e :U 297 ]
+[e $ < -> _i `i -> 27 `i 288  ]
+[e $U 289  ]
+[e :U 288 ]
 {
-[; ;encode_AX25.c: 96: SendByte(0x7e);
-"96
+[; ;encode_AX25.c: 87: SendByte(0x7e);
+"87
 [e ( _SendByte (1 -> -> 126 `i `uc ]
-"97
+"88
 }
-"95
+"86
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 6 `i 297  ]
-[e :U 298 ]
+[e $ < -> _i `i -> 27 `i 288  ]
+[e :U 289 ]
+"88
+}
+[; ;encode_AX25.c: 88: }
+[; ;encode_AX25.c: 89: eflag = 0;
+"89
+[e = _eflag -> -> 0 `i `uc ]
+[; ;encode_AX25.c: 91: for(UBYTE i=0;i<Packetnum;i++){
+"91
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $U 294  ]
+[e :U 291 ]
+{
+[; ;encode_AX25.c: 92: SendByte(ePacket[i]);
+"92
+[e ( _SendByte (1 *U + &U _ePacket * -> _i `ux -> -> # *U &U _ePacket `ui `ux ]
+"93
+}
+"91
+[e ++ _i -> -> 1 `i `uc ]
+[e :U 294 ]
+[e $ < -> _i `i -> _Packetnum `i 291  ]
+[e :U 292 ]
+"93
+}
+[; ;encode_AX25.c: 93: }
+[; ;encode_AX25.c: 97: efcsflag = 1;
 "97
-}
-[; ;encode_AX25.c: 97: }
-[; ;encode_AX25.c: 98: }
+[e = _efcsflag -> -> 1 `i `uc ]
+[; ;encode_AX25.c: 98: efcslo ^= 0xff;
 "98
-[e :UE 289 ]
-}
+[e =^ _efcslo -> -> 255 `i `uc ]
+[; ;encode_AX25.c: 99: efcshi ^= 0xff;
+"99
+[e =^ _efcshi -> -> 255 `i `uc ]
+[; ;encode_AX25.c: 100: SendByte(efcslo);
+"100
+[e ( _SendByte (1 _efcslo ]
+[; ;encode_AX25.c: 101: SendByte(efcshi);
 "101
+[e ( _SendByte (1 _efcshi ]
+[; ;encode_AX25.c: 102: efcsflag = 0;
+"102
+[e = _efcsflag -> -> 0 `i `uc ]
+[; ;encode_AX25.c: 105: eflag = 1;
+"105
+[e = _eflag -> -> 1 `i `uc ]
+[; ;encode_AX25.c: 106: for(UBYTE i=0;i<6;i++){
+"106
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 6 `i 295  ]
+[e $U 296  ]
+[e :U 295 ]
+{
+[; ;encode_AX25.c: 107: SendByte(0x7e);
+"107
+[e ( _SendByte (1 -> -> 126 `i `uc ]
+"108
+}
+"106
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 295  ]
+[e :U 296 ]
+"108
+}
+[; ;encode_AX25.c: 108: }
+[; ;encode_AX25.c: 109: }
+"109
+[e :UE 287 ]
+}
+"111
 [v _SendByte `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;encode_AX25.c: 101: void SendByte(UBYTE byte){
+[; ;encode_AX25.c: 111: void SendByte(UBYTE byte){
 [e :U _SendByte ]
 [v _byte `uc ~T0 @X0 1 r1 ]
 [f ]
-"102
+"112
 [v _bt `uc ~T0 @X0 1 a ]
-[; ;encode_AX25.c: 102: UBYTE bt;
-[; ;encode_AX25.c: 103: for(UBYTE i=0;i<8;i++){
-"103
+[; ;encode_AX25.c: 112: UBYTE bt;
+[; ;encode_AX25.c: 113: for(UBYTE i=0;i<8;i++){
+"113
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 8 `i 301  ]
-[e $U 302  ]
-[e :U 301 ]
+[e $ < -> _i `i -> 8 `i 299  ]
+[e $U 300  ]
+[e :U 299 ]
 {
-[; ;encode_AX25.c: 104: bt = (UBYTE)(byte & 0x01);
-"104
+[; ;encode_AX25.c: 114: bt = (UBYTE)(byte & 0x01);
+"114
 [e = _bt -> & -> _byte `i -> 1 `i `uc ]
-[; ;encode_AX25.c: 106: if(efcsflag == 0 && eflag == 0){
-"106
-[e $ ! && == -> _efcsflag `i -> 0 `i == -> _eflag `i -> 0 `i 304  ]
-{
-[; ;encode_AX25.c: 107: fcsbit(bt);
-"107
-[e ( _fcsbit (1 _bt ]
-"108
-}
-[e :U 304 ]
-[; ;encode_AX25.c: 108: }
-[; ;encode_AX25.c: 110: if(bt == 0x00){
-"110
-[e $ ! == -> _bt `i -> 0 `i 305  ]
-{
-[; ;encode_AX25.c: 111: flipout();
-"111
-[e ( _flipout ..  ]
-"112
-}
-[; ;encode_AX25.c: 112: }else{
-[e $U 306  ]
-[e :U 305 ]
-{
-[; ;encode_AX25.c: 113: estuff ++;
-"113
-[e ++ _estuff -> -> 1 `i `uc ]
-[; ;encode_AX25.c: 115: if(eflag == 0 && estuff == 5){
-"115
-[e $ ! && == -> _eflag `i -> 0 `i == -> _estuff `i -> 5 `i 307  ]
-{
-[; ;encode_AX25.c: 116: _delay((unsigned long)((795)*(10000000/4000000.0)));
+[; ;encode_AX25.c: 116: if(efcsflag == 0 && eflag == 0){
 "116
-[e ( __delay (1 -> * -> -> 795 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;encode_AX25.c: 117: flipout();
+[e $ ! && == -> _efcsflag `i -> 0 `i == -> _eflag `i -> 0 `i 302  ]
+{
+[; ;encode_AX25.c: 117: fcsbit(bt);
 "117
-[e ( _flipout ..  ]
+[e ( _fcsbit (1 _bt ]
 "118
 }
-[e :U 307 ]
-"119
-}
-[e :U 306 ]
-[; ;encode_AX25.c: 118: }
-[; ;encode_AX25.c: 119: }
-[; ;encode_AX25.c: 120: _delay((unsigned long)((795)*(10000000/4000000.0)));
-"120
-[e ( __delay (1 -> * -> -> 795 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;encode_AX25.c: 121: byte = (UBYTE)(byte >> 1);
-"121
-[e = _byte -> >> -> _byte `i -> 1 `i `uc ]
-"122
-}
-"103
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 8 `i 301  ]
 [e :U 302 ]
+[; ;encode_AX25.c: 118: }
+[; ;encode_AX25.c: 120: if(bt == 0x00){
+"120
+[e $ ! == -> _bt `i -> 0 `i 303  ]
+{
+[; ;encode_AX25.c: 121: flipout();
+"121
+[e ( _flipout ..  ]
 "122
 }
-[; ;encode_AX25.c: 122: }
-[; ;encode_AX25.c: 123: }
+[; ;encode_AX25.c: 122: }else{
+[e $U 304  ]
+[e :U 303 ]
+{
+[; ;encode_AX25.c: 123: estuff ++;
 "123
-[e :UE 300 ]
-}
+[e ++ _estuff -> -> 1 `i `uc ]
+[; ;encode_AX25.c: 125: if(eflag == 0 && estuff == 5){
 "125
+[e $ ! && == -> _eflag `i -> 0 `i == -> _estuff `i -> 5 `i 305  ]
+{
+[; ;encode_AX25.c: 126: _delay((unsigned long)((795)*(10000000/4000000.0)));
+"126
+[e ( __delay (1 -> * -> -> 795 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
+[; ;encode_AX25.c: 127: flipout();
+"127
+[e ( _flipout ..  ]
+"128
+}
+[e :U 305 ]
+"129
+}
+[e :U 304 ]
+[; ;encode_AX25.c: 128: }
+[; ;encode_AX25.c: 129: }
+[; ;encode_AX25.c: 130: _delay((unsigned long)((795)*(10000000/4000000.0)));
+"130
+[e ( __delay (1 -> * -> -> 795 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
+[; ;encode_AX25.c: 131: byte = (UBYTE)(byte >> 1);
+"131
+[e = _byte -> >> -> _byte `i -> 1 `i `uc ]
+"132
+}
+"113
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 8 `i 299  ]
+[e :U 300 ]
+"132
+}
+[; ;encode_AX25.c: 132: }
+[; ;encode_AX25.c: 133: }
+"133
+[e :UE 298 ]
+}
+"135
 [v _flipout `(v ~T0 @X0 1 ef ]
 {
-[; ;encode_AX25.c: 125: void flipout(void){
+[; ;encode_AX25.c: 135: void flipout(void){
 [e :U _flipout ]
 [f ]
-[; ;encode_AX25.c: 126: estuff = 0;
-"126
+[; ;encode_AX25.c: 136: estuff = 0;
+"136
 [e = _estuff -> -> 0 `i `uc ]
-[; ;encode_AX25.c: 127: if(ebitstatus == 0){
-"127
-[e $ ! == -> _ebitstatus `i -> 0 `i 309  ]
+[; ;encode_AX25.c: 137: if(ebitstatus == 0){
+"137
+[e $ ! == -> _ebitstatus `i -> 0 `i 307  ]
 {
-[; ;encode_AX25.c: 128: RC5 = 1;
-"128
-[e = _RC5 -> -> 1 `i `b ]
-[; ;encode_AX25.c: 129: ebitstatus = 1;
-"129
-[e = _ebitstatus -> -> 1 `i `b ]
-"130
-}
-[; ;encode_AX25.c: 130: }else{
-[e $U 310  ]
-[e :U 309 ]
-{
-[; ;encode_AX25.c: 131: RC5 = 0;
-"131
-[e = _RC5 -> -> 0 `i `b ]
-[; ;encode_AX25.c: 132: ebitstatus = 0;
-"132
-[e = _ebitstatus -> -> 0 `i `b ]
-"133
-}
-[e :U 310 ]
-[; ;encode_AX25.c: 133: }
-[; ;encode_AX25.c: 134: }
-"134
-[e :UE 308 ]
-}
+[; ;encode_AX25.c: 138: RC5 = 1;
 "138
+[e = _RC5 -> -> 1 `i `b ]
+[; ;encode_AX25.c: 139: ebitstatus = 1;
+"139
+[e = _ebitstatus -> -> 1 `i `b ]
+"140
+}
+[; ;encode_AX25.c: 140: }else{
+[e $U 308  ]
+[e :U 307 ]
+{
+[; ;encode_AX25.c: 141: RC5 = 0;
+"141
+[e = _RC5 -> -> 0 `i `b ]
+[; ;encode_AX25.c: 142: ebitstatus = 0;
+"142
+[e = _ebitstatus -> -> 0 `i `b ]
+"143
+}
+[e :U 308 ]
+[; ;encode_AX25.c: 143: }
+[; ;encode_AX25.c: 144: }
+"144
+[e :UE 306 ]
+}
+"148
 [v _fcsbit `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;encode_AX25.c: 138: void fcsbit(UBYTE tbyte){
+[; ;encode_AX25.c: 148: void fcsbit(UBYTE tbyte){
 [e :U _fcsbit ]
 [v _tbyte `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;encode_AX25.c: 145: if(((STATUS & 0x01)^(tbyte)) == 0x01){
-"145
-[e $ ! == ^ & -> _STATUS `i -> 1 `i -> _tbyte `i -> 1 `i 312  ]
+"151
+[; <"         BCF 03,0 ;# ">
+"152
+[; <"         RRF _efcshi,F ;# ">
+"153
+[; <"         RRF _efcslo,F ;# ">
+[; ;encode_AX25.c: 159: if(((STATUS & 0x01)^(tbyte)) == 0x01){
+"159
+[e $ ! == ^ & -> _STATUS `i -> 1 `i -> _tbyte `i -> 1 `i 310  ]
 {
-[; ;encode_AX25.c: 146: efcshi ^= 0x84;
-"146
+[; ;encode_AX25.c: 160: efcshi ^= 0x84;
+"160
 [e =^ _efcshi -> -> 132 `i `uc ]
-[; ;encode_AX25.c: 147: efcslo ^= 0x08;
-"147
+[; ;encode_AX25.c: 161: efcslo ^= 0x08;
+"161
 [e =^ _efcslo -> -> 8 `i `uc ]
-"148
+"162
 }
-[e :U 312 ]
-[; ;encode_AX25.c: 148: }
-[; ;encode_AX25.c: 149: }
-"149
-[e :UE 311 ]
+[e :U 310 ]
+[; ;encode_AX25.c: 162: }
+[; ;encode_AX25.c: 163: }
+"163
+[e :UE 309 ]
 }
 [a 1C 74 81 49 89 67 90 0 ]
 [a 2C 74 83 49 89 65 88 0 ]

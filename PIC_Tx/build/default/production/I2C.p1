@@ -25,7 +25,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v __delay `JF1552 ~T0 @X0 0 e ]
 [p i __delay ]
-"44 OkError.h
+"46 OkError.h
 [v _switchError `(v ~T0 @X0 0 ef1`uc ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
@@ -1455,25 +1455,26 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 22: typedef unsigned short long USLONG;
 [; ;Type_define.h: 23: typedef signed long SDWORD;
 [; ;Type_define.h: 24: typedef unsigned long UDWORD;
-"16 UART.h
+"20 UART.h
 [v _UPLINK_COMMAND_SIZE `uc ~T0 @X0 1 e ]
 [i _UPLINK_COMMAND_SIZE
 -> -> 32 `i `uc
 ]
-[; ;UART.h: 16: UBYTE UPLINK_COMMAND_SIZE = 32;
-[; ;UART.h: 18: void Init_SERIAL(void);
-[; ;UART.h: 19: UBYTE getChar(void);
-[; ;UART.h: 20: void putChar(UBYTE);
-[; ;UART.h: 21: void putString(UBYTE *);
-[; ;UART.h: 22: void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 25: void changeInterruptPermission(UBYTE, UBYTE);
-[; ;UART.h: 26: void put_error(void);
-[; ;UART.h: 27: void put_ok(void);
-[; ;UART.h: 28: void changeBaudRate(UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 29: void UARTbufferClear(void);
-[; ;UART.h: 30: void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
-[; ;UART.h: 31: void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 34: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
+[; ;UART.h: 20: UBYTE UPLINK_COMMAND_SIZE = 32;
+[; ;UART.h: 22: void Init_SERIAL(void);
+[; ;UART.h: 23: UBYTE getChar(void);
+[; ;UART.h: 24: void putChar(UBYTE);
+[; ;UART.h: 25: void putString(UBYTE *);
+[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 29: void changeInterruptPermission(UBYTE, UBYTE);
+[; ;UART.h: 30: void put_error(void);
+[; ;UART.h: 31: void put_ok(void);
+[; ;UART.h: 32: void put_lf(void);
+[; ;UART.h: 33: void changeBaudRate(UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 34: void UARTbufferClear(void);
+[; ;UART.h: 35: void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
+[; ;UART.h: 36: void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 39: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
 [; ;I2C.h: 21: void InitI2CMaster(const UDWORD c);
 [; ;I2C.h: 22: void I2CMasterWait(void);
 [; ;I2C.h: 23: void I2CMasterStart(void);
@@ -1490,10 +1491,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 43: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
 [; ;I2C.h: 44: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
 [; ;I2C.h: 45: void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
-[; ;OkError.h: 43: void switchOk(UBYTE);
-[; ;OkError.h: 44: void switchError(UBYTE);
-[; ;OkError.h: 45: void putErrorNoDownlink(UBYTE);
-[; ;OkError.h: 46: UBYTE bitCalResult(UBYTE bit_input);
+[; ;OkError.h: 45: void switchOk(UBYTE);
+[; ;OkError.h: 46: void switchError(UBYTE);
+[; ;OkError.h: 47: void putErrorNoDownlink(UBYTE);
+[; ;OkError.h: 48: UBYTE bitCalResult(UBYTE bit_input);
 "16 I2C.c
 [v _InitI2CMaster `(v ~T0 @X0 1 ef1`Cul ]
 {

@@ -1,15 +1,147 @@
 
 # 1 "main.c"
 
-# 26 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\htc.h"
-extern const char __xc8_OPTIM_SPEED;
+# 4 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\__size_t.h"
+typedef unsigned size_t;
 
-extern double __fpnormalize(double);
+# 7 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdarg.h"
+typedef void * va_list[1];
+
+#pragma intrinsic(__va_start)
+extern void * __va_start(void);
+
+#pragma intrinsic(__va_arg)
+extern void * __va_arg(void *, ...);
+
+# 43 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h"
+struct __prbuf
+{
+char * ptr;
+void (* func)(char);
+};
+
+# 29 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\errno.h"
+extern int errno;
+
+# 12 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\conio.h"
+extern void init_uart(void);
+
+extern char getch(void);
+extern char getche(void);
+extern void putch(char);
+extern void ungetch(char);
+
+extern __bit kbhit(void);
+
+# 23
+extern char * cgets(char *);
+extern void cputs(const char *);
+
+# 88 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h"
+extern int cprintf(char *, ...);
+#pragma printf_check(cprintf)
+
+
+
+extern int _doprnt(struct __prbuf *, const register char *, register va_list);
+
+
+# 180
+#pragma printf_check(vprintf) const
+#pragma printf_check(vsprintf) const
+
+extern char * gets(char *);
+extern int puts(const char *);
+extern int scanf(const char *, ...) __attribute__((unsupported("scanf() is not supported by this compiler")));
+extern int sscanf(const char *, const char *, ...) __attribute__((unsupported("sscanf() is not supported by this compiler")));
+extern int vprintf(const char *, va_list) __attribute__((unsupported("vprintf() is not supported by this compiler")));
+extern int vsprintf(char *, const char *, va_list) __attribute__((unsupported("vsprintf() is not supported by this compiler")));
+extern int vscanf(const char *, va_list ap) __attribute__((unsupported("vscanf() is not supported by this compiler")));
+extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupported("vsscanf() is not supported by this compiler")));
+
+#pragma printf_check(printf) const
+#pragma printf_check(sprintf) const
+extern int sprintf(char *, const char *, ...);
+extern int printf(const char *, ...);
+
+# 7 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdlib.h"
+typedef unsigned short wchar_t;
+
+# 15
+typedef struct {
+int rem;
+int quot;
+} div_t;
+typedef struct {
+unsigned rem;
+unsigned quot;
+} udiv_t;
+typedef struct {
+long quot;
+long rem;
+} ldiv_t;
+typedef struct {
+unsigned long quot;
+unsigned long rem;
+} uldiv_t;
+
+# 53
+extern double atof(const char *);
+extern double strtod(const char *, const char **);
+extern int atoi(const char *);
+extern unsigned xtoi(const char *);
+extern long atol(const char *);
+extern long strtol(const char *, char **, int);
+
+extern int rand(void);
+extern void srand(unsigned int);
+extern void * calloc(size_t, size_t);
+extern div_t div(int numer, int denom);
+extern udiv_t udiv(unsigned numer, unsigned denom);
+extern ldiv_t ldiv(long numer, long denom);
+extern uldiv_t uldiv(unsigned long numer,unsigned long denom);
+extern unsigned long _lrotl(unsigned long value, unsigned int shift);
+extern unsigned long _lrotr(unsigned long value, unsigned int shift);
+extern unsigned int _rotl(unsigned int value, unsigned int shift);
+extern unsigned int _rotr(unsigned int value, unsigned int shift);
+
+
+
+
+extern void * malloc(size_t);
+extern void free(void *);
+extern void * realloc(void *, size_t);
 
 
 # 13 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\xc8debug.h"
 #pragma intrinsic(__builtin_software_breakpoint)
 extern void __builtin_software_breakpoint(void);
+
+# 86 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdlib.h"
+extern int atexit(void (*)(void));
+extern char * getenv(const char *);
+extern char ** environ;
+extern int system(char *);
+extern void qsort(void *, size_t, size_t, int (*)(const void *, const void *));
+extern void * bsearch(const void *, void *, size_t, size_t, int(*)(const void *, const void *));
+extern int abs(int);
+extern long labs(long);
+
+extern char * itoa(char * buf, int val, int base);
+extern char * utoa(char * buf, unsigned val, int base);
+
+
+
+
+extern char * ltoa(char * buf, long val, int base);
+extern char * ultoa(char * buf, unsigned long val, int base);
+
+extern char * ftoa(float f, int * status);
+
+# 26 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\htc.h"
+extern const char __xc8_OPTIM_SPEED;
+
+extern double __fpnormalize(double);
 
 # 50 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f886.h"
 extern volatile unsigned char INDF @ 0x000;
@@ -2029,7 +2161,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 16 "UART.h"
+# 20 "UART.h"
 UBYTE UPLINK_COMMAND_SIZE = 32;
 
 void Init_SERIAL(void);
@@ -2042,6 +2174,7 @@ void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
 void put_error(void);
 void put_ok(void);
+void put_lf(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void UARTbufferClear(void);
 void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
@@ -2076,138 +2209,6 @@ UWORD calTime2Byte(UBYTE, UBYTE);
 
 void set_timer_counter_only_getChar(UINT);
 UINT get_timer_counter_only_getChar(void);
-
-# 4 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\__size_t.h"
-typedef unsigned size_t;
-
-# 7 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdarg.h"
-typedef void * va_list[1];
-
-#pragma intrinsic(__va_start)
-extern void * __va_start(void);
-
-#pragma intrinsic(__va_arg)
-extern void * __va_arg(void *, ...);
-
-# 43 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h"
-struct __prbuf
-{
-char * ptr;
-void (* func)(char);
-};
-
-# 29 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\errno.h"
-extern int errno;
-
-# 12 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\conio.h"
-extern void init_uart(void);
-
-extern char getch(void);
-extern char getche(void);
-extern void putch(char);
-extern void ungetch(char);
-
-extern __bit kbhit(void);
-
-# 23
-extern char * cgets(char *);
-extern void cputs(const char *);
-
-# 88 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h"
-extern int cprintf(char *, ...);
-#pragma printf_check(cprintf)
-
-
-
-extern int _doprnt(struct __prbuf *, const register char *, register va_list);
-
-
-# 180
-#pragma printf_check(vprintf) const
-#pragma printf_check(vsprintf) const
-
-extern char * gets(char *);
-extern int puts(const char *);
-extern int scanf(const char *, ...) __attribute__((unsupported("scanf() is not supported by this compiler")));
-extern int sscanf(const char *, const char *, ...) __attribute__((unsupported("sscanf() is not supported by this compiler")));
-extern int vprintf(const char *, va_list) __attribute__((unsupported("vprintf() is not supported by this compiler")));
-extern int vsprintf(char *, const char *, va_list) __attribute__((unsupported("vsprintf() is not supported by this compiler")));
-extern int vscanf(const char *, va_list ap) __attribute__((unsupported("vscanf() is not supported by this compiler")));
-extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupported("vsscanf() is not supported by this compiler")));
-
-#pragma printf_check(printf) const
-#pragma printf_check(sprintf) const
-extern int sprintf(char *, const char *, ...);
-extern int printf(const char *, ...);
-
-# 7 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdlib.h"
-typedef unsigned short wchar_t;
-
-# 15
-typedef struct {
-int rem;
-int quot;
-} div_t;
-typedef struct {
-unsigned rem;
-unsigned quot;
-} udiv_t;
-typedef struct {
-long quot;
-long rem;
-} ldiv_t;
-typedef struct {
-unsigned long quot;
-unsigned long rem;
-} uldiv_t;
-
-# 53
-extern double atof(const char *);
-extern double strtod(const char *, const char **);
-extern int atoi(const char *);
-extern unsigned xtoi(const char *);
-extern long atol(const char *);
-extern long strtol(const char *, char **, int);
-
-extern int rand(void);
-extern void srand(unsigned int);
-extern void * calloc(size_t, size_t);
-extern div_t div(int numer, int denom);
-extern udiv_t udiv(unsigned numer, unsigned denom);
-extern ldiv_t ldiv(long numer, long denom);
-extern uldiv_t uldiv(unsigned long numer,unsigned long denom);
-extern unsigned long _lrotl(unsigned long value, unsigned int shift);
-extern unsigned long _lrotr(unsigned long value, unsigned int shift);
-extern unsigned int _rotl(unsigned int value, unsigned int shift);
-extern unsigned int _rotr(unsigned int value, unsigned int shift);
-
-
-
-
-extern void * malloc(size_t);
-extern void free(void *);
-extern void * realloc(void *, size_t);
-
-# 86
-extern int atexit(void (*)(void));
-extern char * getenv(const char *);
-extern char ** environ;
-extern int system(char *);
-extern void qsort(void *, size_t, size_t, int (*)(const void *, const void *));
-extern void * bsearch(const void *, void *, size_t, size_t, int(*)(const void *, const void *));
-extern int abs(int);
-extern long labs(long);
-
-extern char * itoa(char * buf, int val, int base);
-extern char * utoa(char * buf, unsigned val, int base);
-
-
-
-
-extern char * ltoa(char * buf, long val, int base);
-extern char * ultoa(char * buf, unsigned long val, int base);
-
-extern char * ftoa(float f, int * status);
 
 # 50 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\PIC16F887.h"
 extern volatile unsigned char INDF @ 0x000;
@@ -4288,7 +4289,7 @@ extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
 
 # 19 "encode_AX25.h"
 void SendPacketWithDataSize(UBYTE *,UINT);
-void SendPacket(UBYTE *);
+void SendPacket(UBYTE *,UINT);
 
 # 21 "I2C.h"
 void InitI2CMaster(const UDWORD c);
@@ -4312,7 +4313,7 @@ UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
 void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
 void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 
-# 32 "FMCW.h"
+# 36 "FMCW.h"
 void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
 
 
@@ -4320,6 +4321,9 @@ void _NOP(void);
 
 
 void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
+void readDataSizeAndDownlinkFMSignal(UBYTE, UBYTE, UBYTE, UINT, UBYTE, UBYTE);
+void commandSwitchFMDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE*);
+void testForFMFunctions(void);
 
 
 void HKDownlink(void);
@@ -4354,20 +4358,21 @@ void Init_WDT(void);
 void resetWDT();
 void sendPulseWDT(void);
 
-# 14 "CRC16.h"
+# 16 "CRC16.h"
 UWORD crc16(UWORD, UBYTE *, UINT);
 UWORD Identify_CRC16(UBYTE *);
 UWORD CRC_check(UBYTE *, UINT);
 
-# 13 "ADC.h"
+# 18 "ADC.h"
 void measureAllChanelADC(void);
 void measureDcDcTemperature(void);
 void measureChannel2(void);
 void measureChannel3(void);
 void measureChannel4(void);
 void commandSwitchHKdata(UBYTE, UBYTE, UBYTE, UBYTE);
+UBYTE read5VBusAndSwitchNtrxPower(void);
 
-# 43 "OkError.h"
+# 45 "OkError.h"
 void switchOk(UBYTE);
 void switchError(UBYTE);
 void putErrorNoDownlink(UBYTE);
@@ -4391,7 +4396,44 @@ void interrupt InterReceiver(void);
 #pragma config BOR4V = BOR40V
 #pragma config WRT = OFF
 
-# 270
+
+UBYTE RXDATA[10];
+UBYTE ReceiveFlag = 0x00;
+
+
+void interrupt InterReceiver(void){
+
+
+if (RCIF == 1) {
+putChar('U');
+RXDATA[0] = 0x21;
+for(UINT i=0;i<10;i++){
+RXDATA[i] = getChar();
+}
+for(UINT i=0;i<10;i++){
+putChar(RXDATA[i]);
+}
+
+# 63
+ReceiveFlag = 0x01;
+if(crc16(0,RXDATA,8) == CRC_check(RXDATA, 8)){
+ReceiveFlag = 0x02;
+}
+if(RXDATA[0] == 't'){
+__nop();
+}else if(RXDATA[0] == 'g'){
+__nop();
+
+# 76
+}else{
+ReceiveFlag = 0x01;
+}
+RCIF = 0;
+putChar(0xff);
+put_lf();
+}
+}
+
 void main(void) {
 
 _delay((unsigned long)((1000)*(10000000/4000.0)));
@@ -4399,29 +4441,77 @@ Init_MPU();
 InitI2CMaster(100000);
 Init_SERIAL();
 
-sendPulseWDT();
+
 delay_s(2);
 putChar('S');
 
-# 301
-HK_test_setting();
-
+# 100
 while(1){
 
 putChar('m');
-
+delay_ms(3000);
 
 sendPulseWDT();
 _delay((unsigned long)((5000)*(10000000/4000.0)));
 
-measureDcDcTemperature();
-if(RC2 == 0){
-measureChannel2();
-}else{
-}
-
+# 115
 HKDownlink();
 
-# 360
+
+
+
+if(ReceiveFlag == 0x02){
+
+# 132
+UBYTE commandID;
+
+# 138
+switch(RXDATA[1]){
+
+
+case 0x75:
+putChar('R');
+putChar(0xa4);
+downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+break;
+
+
+case 0x63:
+putChar(0xa5);
+commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
+break;
+case 0x66:
+putChar(0xa6);
+downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+break;
+case 'p':
+putChar(0xa7);
+commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+break;
+case 0x68:
+measureDcDcTemperature();
+break;
+case 0x72:
+sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
+break;
+
+
+case 0x80:
+putChar(0x80);
+put_ok();
+break;
+default:
+
+put_error();
+break;
+}
+WriteLastCommandIdToEEPROM(commandID);
+ReceiveFlag = 0x00;
+putChar(0x39);
+}
+
+
+
+
 }
 }

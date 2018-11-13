@@ -2029,7 +2029,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 16 "UART.h"
+# 20 "UART.h"
 UBYTE UPLINK_COMMAND_SIZE = 32;
 
 void Init_SERIAL(void);
@@ -2042,6 +2042,7 @@ void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
 void put_error(void);
 void put_ok(void);
+void put_lf(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void UARTbufferClear(void);
 void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
@@ -2072,7 +2073,7 @@ UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
 void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
 void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 
-# 43 "OkError.h"
+# 45 "OkError.h"
 void switchOk(UBYTE);
 void switchError(UBYTE);
 void putErrorNoDownlink(UBYTE);

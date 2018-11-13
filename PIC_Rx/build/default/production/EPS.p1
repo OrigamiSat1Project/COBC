@@ -1069,12 +1069,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> -> -> 24916 `i `m `um
 ]
 [; ;FMCW.h: 25: USLONG FMRX_Nprg = 24916;
-[; ;FMCW.h: 32: void FMTX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 33: void CWTX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 34: void FMRX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 35: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 36: void setNref(UBYTE unitID, int Nref);
-[; ;FMCW.h: 40: void setPLL(void);
+[; ;FMCW.h: 29: void FMTX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 30: void CWTX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 31: void FMRX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 32: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 33: void setNref(UBYTE unitID, int Nref);
+[; ;FMCW.h: 37: void setPLL(void);
 "9 EPS.c
 [v _Reset_EPS `(v ~T0 @X0 1 ef ]
 {

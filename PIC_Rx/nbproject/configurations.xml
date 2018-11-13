@@ -15,11 +15,12 @@
       <itemPath>decodeAX25.h</itemPath>
       <itemPath>timer.h</itemPath>
       <itemPath>FMCW.h</itemPath>
-      <itemPath>ADC.h</itemPath>
       <itemPath>MPU.h</itemPath>
-      <itemPath>OkError.h</itemPath>
       <itemPath>pinDefine.h</itemPath>
       <itemPath>initial_operation.h</itemPath>
+      <itemPath>OkError.h</itemPath>
+      <itemPath>SatMode.h</itemPath>
+      <itemPath>ADC.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -38,8 +39,8 @@
       <itemPath>decodeAX25.c</itemPath>
       <itemPath>timer.c</itemPath>
       <itemPath>FMCW.c</itemPath>
-      <itemPath>ADC.c</itemPath>
       <itemPath>MPU.c</itemPath>
+      <itemPath>ADC.c</itemPath>
       <itemPath>initial_operation.c</itemPath>
       <itemPath>OkError.c</itemPath>
     </logicalFolder>
@@ -172,6 +173,7 @@
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="false"/>

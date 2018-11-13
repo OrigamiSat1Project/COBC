@@ -33,7 +33,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S7 . . ]
 "231
 [v _PORTBbits `VS7 ~T0 @X0 0 e@6 ]
-"56 OkError.h
+"63 OkError.h
 [v _switchError `(v ~T0 @X0 0 ef1`uc ]
 "29 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v ___nop `(v ~T0 @X0 0 ef ]
@@ -1081,17 +1081,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> -> -> 24916 `i `m `um
 ]
 [; ;FMCW.h: 25: USLONG FMRX_Nprg = 24916;
-[; ;FMCW.h: 32: void FMTX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 33: void CWTX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 34: void FMRX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 35: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 36: void setNref(UBYTE unitID, int Nref);
-[; ;FMCW.h: 40: void setPLL(void);
+[; ;FMCW.h: 29: void FMTX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 30: void CWTX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 31: void FMRX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 32: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 33: void setNref(UBYTE unitID, int Nref);
+[; ;FMCW.h: 37: void setPLL(void);
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
-[; ;OkError.h: 55: void switchOk(UBYTE);
-[; ;OkError.h: 56: void switchError(UBYTE);
+[; ;OkError.h: 62: void switchOk(UBYTE);
+[; ;OkError.h: 63: void switchError(UBYTE);
 [; ;FMCW.c: 16: void sendLow(UBYTE unitID);
 [; ;FMCW.c: 17: void sendHigh(UBYTE unitID);
 [; ;FMCW.c: 18: void sendSTB(UBYTE unitID);
@@ -1733,29 +1733,29 @@ Version 3.2 HI-TECH Software Intermediate Code
 "313
 [e :UE 146 ]
 }
-"339
+"318
 [v _setPLL `(v ~T0 @X0 1 ef ]
 {
-[; ;FMCW.c: 339: void setPLL(void){
+[; ;FMCW.c: 318: void setPLL(void){
 [e :U _setPLL ]
 [f ]
-[; ;FMCW.c: 340: FMTX(2560, FMTX_Nprg);
-"340
+[; ;FMCW.c: 319: FMTX(2560, FMTX_Nprg);
+"319
 [e ( _FMTX (2 , -> 2560 `i _FMTX_Nprg ]
-[; ;FMCW.c: 341: CWTX(128, CWTX_Nprg);
-"341
+[; ;FMCW.c: 320: CWTX(128, CWTX_Nprg);
+"320
 [e ( _CWTX (2 , -> 128 `i _CWTX_Nprg ]
-[; ;FMCW.c: 342: FMRX(2560, FMRX_Nprg);
-"342
+[; ;FMCW.c: 321: FMRX(2560, FMRX_Nprg);
+"321
 [e ( _FMRX (2 , -> 2560 `i _FMRX_Nprg ]
-[; ;FMCW.c: 343: }
-"343
+[; ;FMCW.c: 322: }
+"322
 [e :UE 147 ]
 }
-"347
+"326
 [v _commandSwitchFMCW `(v ~T0 @X0 1 ef6`uc`uc`uc`uc`uc`uc ]
 {
-[; ;FMCW.c: 347: void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBYTE Nprg2, UBYTE Nprg3){
+[; ;FMCW.c: 326: void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBYTE Nprg2, UBYTE Nprg3){
 [e :U _commandSwitchFMCW ]
 [v _command `uc ~T0 @X0 1 r1 ]
 [v _Nref1 `uc ~T0 @X0 1 r2 ]
@@ -1764,61 +1764,61 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _Nprg2 `uc ~T0 @X0 1 r5 ]
 [v _Nprg3 `uc ~T0 @X0 1 r6 ]
 [f ]
-[; ;FMCW.c: 348: switch(command){
-"348
+[; ;FMCW.c: 327: switch(command){
+"327
 [e $U 150  ]
 {
-[; ;FMCW.c: 349: case 't':
-"349
+[; ;FMCW.c: 328: case 't':
+"328
 [e :U 151 ]
-[; ;FMCW.c: 351: break;
-"351
+[; ;FMCW.c: 330: break;
+"330
 [e $U 149  ]
-[; ;FMCW.c: 352: case 'c':
-"352
+[; ;FMCW.c: 331: case 'c':
+"331
 [e :U 152 ]
-[; ;FMCW.c: 354: break;
-"354
+[; ;FMCW.c: 333: break;
+"333
 [e $U 149  ]
-[; ;FMCW.c: 355: case 'f':
-"355
+[; ;FMCW.c: 334: case 'f':
+"334
 [e :U 153 ]
-[; ;FMCW.c: 357: break;
-"357
+[; ;FMCW.c: 336: break;
+"336
 [e $U 149  ]
-[; ;FMCW.c: 358: default:
-"358
+[; ;FMCW.c: 337: default:
+"337
 [e :U 154 ]
-[; ;FMCW.c: 359: switchError(0xf0);
-"359
+[; ;FMCW.c: 338: switchError(0xf0);
+"338
 [e ( _switchError (1 -> -> 240 `i `uc ]
-[; ;FMCW.c: 360: break;
-"360
+[; ;FMCW.c: 339: break;
+"339
 [e $U 149  ]
-"361
+"340
 }
-[; ;FMCW.c: 361: }
+[; ;FMCW.c: 340: }
 [e $U 149  ]
-"348
+"327
 [e :U 150 ]
 [e [\ _command , $ -> -> 116 `ui `uc 151
  , $ -> -> 99 `ui `uc 152
  , $ -> -> 102 `ui `uc 153
  154 ]
-"361
+"340
 [e :U 149 ]
-[; ;FMCW.c: 362: }
-"362
+[; ;FMCW.c: 341: }
+"341
 [e :UE 148 ]
 }
-"368
+"347
 [v __NOP `(v ~T0 @X0 1 ef ]
 {
-[; ;FMCW.c: 368: void _NOP(void) {
+[; ;FMCW.c: 347: void _NOP(void) {
 [e :U __NOP ]
 [f ]
-[; ;FMCW.c: 369: for(UBYTE i=0; i<5; i++){
-"369
+[; ;FMCW.c: 348: for(UBYTE i=0; i<5; i++){
+"348
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
@@ -1826,19 +1826,19 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 157  ]
 [e :U 156 ]
 {
-[; ;FMCW.c: 370: __nop();
-"370
+[; ;FMCW.c: 349: __nop();
+"349
 [e ( ___nop ..  ]
-"371
+"350
 }
-"369
+"348
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> 5 `i 156  ]
 [e :U 157 ]
-"371
+"350
 }
-[; ;FMCW.c: 371: }
-[; ;FMCW.c: 372: }
-"372
+[; ;FMCW.c: 350: }
+[; ;FMCW.c: 351: }
+"351
 [e :UE 155 ]
 }
