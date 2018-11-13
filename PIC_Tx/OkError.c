@@ -44,8 +44,6 @@ void switchError(UBYTE action_select){
     WriteToEEPROM(EEPROM_subaddress, HighAddress_for_Error, LowAddress_for_Error, error_data);
     //for debug
     put_error();
-    putChar(error_data[0]);
-    putChar(action_select);
     //TODO:need debug
     //only FM downlink? need CW?
     UBYTE downlinlTimes = 36;
@@ -66,8 +64,6 @@ void putErrorNoDownlink(UBYTE action_select){
     WriteToEEPROM(EEPROM_subaddress, HighAddress_for_Error, LowAddress_for_Error, error_data);
     //for debug
     put_error();
-    putChar(error_data[0]);
-    putChar(action_select);
 }
 
 //TODO:need debug

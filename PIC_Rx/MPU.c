@@ -9,6 +9,7 @@
 #include "EEPROM.h"
 #include "I2C.h"
 #include "OkError.h"
+#include "WDT.h"
 
 /*******************************************************************************
 *Initialize MPU 
@@ -158,30 +159,31 @@ void switchPowerSpply1pin(UBYTE target_select, UBYTE onOff, UBYTE timeHigh, UBYT
 /*******************************************************************************
 *Swticch Power EPS 
 ******************************************************************************/
-/*
- *	EPS Power OFF
- *	arg      :   void
- *	return   :   SEP_SW(Short Separation switch 1&2) & RBF_SW(Short Remove before flight switch 1&2) = HIGH  -> EPS Power OFF
- *	TODO     :   need debug
- *	FIXME    :   not yet
- *	XXX      :   not yet
- */
 void killEPS(void){
-    SEP_SW = HIGH;  
-    RBF_SW = LOW;  
+    sendPulseWDT();
+    SEP_SW = HIGH;     //EPS off -> 5VBUS off
+    RBF_SW = LOW;
+    __delay_ms(500);  
+    sendPulseWDT(); 
 }
 
-/*
- *	EPS Power ON
- *	arg      :   void
- *	return   :   SEP_SW(Short Separation switch 1&2) & RBF_SW(Short Remove before flight switch 1&2) = LOW  -> EPS Power ON
- *	TODO     :   need debug
- *	FIXME    :   not yet
- *	XXX      :   not yet
- */
 void onEPS(void){
-    SEP_SW = LOW;  
-    RBF_SW = LOW;  
+    sendPulseWDT();
+    SEP_SW = LOW;      //EPS on  -> 800ms INTERVAL ->5VBUS on
+    RBF_SW = LOW;
+    __delay_ms(2000);
+    sendPulseWDT();  
+}
+
+void resetEPS(void){
+    sendPulseWDT();
+    SEP_SW = HIGH;     //EPS off -> 5VBUS off
+    RBF_SW = LOW;
+    __delay_ms(500);  
+    SEP_SW = LOW;      //EPS on  -> 800ms INTERVAL ->5VBUS on
+    RBF_SW = LOW;
+    __delay_ms(2000);
+    sendPulseWDT();
 }
 
 /*
@@ -244,9 +246,11 @@ void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){
     if ( onOff == 0x00 ){        //EPS off
             SEP_SW = HIGH;
             RBF_SW = LOW;
+            __delay_ms(500);
     } else {                     //EPS on
             SEP_SW = LOW;
             RBF_SW = LOW;
+            __delay_ms(1000);
     }
     
     if(timeHigh == 0x00 && timeLow == 0x00){   
@@ -375,67 +379,6 @@ void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
     }
 }
 
-/*******************************************************************************
-*command swtich feature 
-******************************************************************************/
-/*
- *	change satellite mode
- *	arg      :   command, timeHigh, timeLow
- *	return   :   0x00 -> Nominal mode (ON: CIB, EPS, OBC, Tx(CW), Rx)
- *               0x0F -> Power saving mode (ON: CIB, Tx(CW), Rx / OFF: EPS, OBC)
- *               0xFF -> Survival mode (ON: CIB / OFF: EPS, OBC, Tx(CW), Rx)             
- *	TODO     :   need debug
- *	FIXME    :   not yet
- *	XXX      :   add error messege
- */
-void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times are given in ms
-    switch(command){    
-        case 0x00: 
-            /*---------------------------*/
-            /* method for nominal mode (ON: CIB, EPS, OBC, Tx(CW), Rx)
-             * 1.SEP_SW & RBF_SW = LOW -> EPS switch ON
-             * 2.then Rx/Tx/OBC switch  ON
-             * TODO:how to turn on CIB? */
-            /*---------------------------*/
-            switchPowerEPS(0x00, timeHigh, timeLow);
-            WriteOneByteToMainAndSubB0EEPROM(deviceOnOff_addressHigh, deviceOnOff_addressLow, all_device_ON);
-            break;
-        case 0x0F: 
-            /*----------------------------*/
-            /*method for power saving mode (ON: CIB, Tx(CW), Rx / OFF: EPS, OBC)
-             * 1.first kill EPS (this also kills Rx/Tx/OBC)
-             * 2.send command to TXCOBC to turn back on RX and TX  (Radio Unit)
-             *      task target:t(TX COBC)
-             *      CommandType:p(power)
-             *      Parameter1:0x01(on) / 2:timeHigh / 3:timeLow
-             * 3.RXCOBC reset PLL data
-             * 4.after setting time, revive EPS (this also revive OBC)
-            /*----------------------------*/
-            killEPS();
-            onNtrxPowerSupplyCIB(timeHigh,timeLow);
-            WriteOneByteToMainAndSubB0EEPROM(deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_TX_RX_ON);
-            break;
-        case 0xFF: 
-            /*---------------------------*/
-            /* method for nominal mode (ON: CIB / OFF: EPS, OBC, Tx(CW), Rx)
-             * only enter if time in survival mode is specified 
-             * set automatical revival time
-             * 1.SEP_SW & RBF_SW = HIGH -> EPS switch OFF
-             * 2.then Rx/Tx/OBC switch  OFF
-             * 3.if time has run out switch to power saving mode
-            /*---------------------------*/
-            switchPowerEPS(0x01, timeHigh, timeLow);
-//            FMTX(FMTX_Nref, FMTX_Nprg);
-//            CWTX(CWTX_Nref, CWTX_Nprg);
-//            FMRX(FMRX_Nref, FMRX_Nprg);
-            setPLL();
-            WriteOneByteToMainAndSubB0EEPROM(deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_ON);
-            break;
-        default:
-            switchError(error_MPU_commandSwitchSatMode);
-            break;
-    }
-}
 
 //process command data if the command type is 'power supply'
 void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //times are given in ms
@@ -488,6 +431,7 @@ void commandSwitchIntProcess(UBYTE command, UBYTE data1, UBYTE data2){
     }
 }
 
+//turn ON NTRX(CIB power supply)
 void onNtrxPowerSupplyCIB(UBYTE timeHigh,UBYTE timeLow){
     UBYTE send_command[8];
     send_command[0] = 't';
@@ -499,12 +443,12 @@ void onNtrxPowerSupplyCIB(UBYTE timeHigh,UBYTE timeLow){
     send_command[6] = 0x00;
     send_command[7] = 0x00;
     sendCommandByPointer(send_command);
-    FMTX(FMTX_Nref, FMTX_Nprg);
-    CWTX(CWTX_Nref, CWTX_Nprg);
-    FMRX(FMRX_Nref, FMRX_Nprg);
+    __delay_ms(1000);//wait EPS ON
+    setPLL();
 //    reviveEPS(timeHigh, timeLow);           
 }
 
+//turn off NTRX(CIB power supply)
 void offNtrxPowerSupplyCIB(void){
     UBYTE send_command[8];
     send_command[0] = 't';
@@ -515,5 +459,6 @@ void offNtrxPowerSupplyCIB(void){
     send_command[5] = 0x00;
     send_command[6] = 0x00;
     send_command[7] = 0x00;
-    sendCommandByPointer(send_command);         
+    sendCommandByPointer(send_command);
+    __delay_ms(500);
 }

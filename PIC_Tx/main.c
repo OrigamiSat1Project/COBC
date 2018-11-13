@@ -54,10 +54,10 @@ void interrupt InterReceiver(void){
         for(UINT i=0;i<commandSize;i++){
             putChar(RXDATA[i]);
         }
-
-        putChar(0xcc);
-        putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
-        putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
+//            /*for debug
+//        putChar(0xcc);
+//        putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
+//        putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
 //             end*/
         if(RXDATA[0] == 'g'){
             ReceiveFlag = CORRECT_RECEIVE;
@@ -80,90 +80,37 @@ void interrupt InterReceiver(void){
 }
 
 void main(void) {
-    
+
     __delay_ms(1000);
-    Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);
+    Init_SERIAL();
 //    Init_WDT();
+//    sendPulseWDT();
+    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
+    putChar('S');
+
+
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
 //    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
 
-    putChar('S');
-    put_ok();
-    
-    //FIXME:write melting status for debug
-//    UBYTE main_test_melting_status = 0b00000011;
-//    UBYTE sub_test_melting_status = 0b01111111;
-//    WriteOneByteToEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow, main_test_melting_status);
-//    WriteOneByteToEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh, MeltingStatus_addressLow, sub_test_melting_status);
-//    putChar(0xa1);
-////    
-//    UBYTE main_melting_status;
-//    UBYTE sub_melting_status;
-//    main_melting_status = ReadEEPROM(EEPROM_address, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-//    sub_melting_status = ReadEEPROM(EEPROM_subaddress, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-//    putChar(0xa2);
-//    putChar(main_melting_status);
-//    putChar(sub_melting_status);
-    
     while(1){
-        __delay_ms(1000);
-        putChar(0xaa);
-        
 
-        //TODO send pulse to WDT
-        
+        putChar('m');
+        delay_ms(3000);
+
+        sendPulseWDT();
+        __delay_ms(5000);
+
 //        measureDcDcTemperature();
-//        if(OBC_STATUS == low){          
-//            measureChannel2();//read 5V Bus
+//        if(read5VBusAndSwitchNtrxPower() != 0){
+//            if(read5VBusAndSwitchNtrxPower() != 0){
+//                onOffNTRX(0x01,0,0);//subPower ON
+//            }
 //        }
-//        //TODO debug send HK 
-//        HKDownlink();
-        
-        
-        /*---------------------------------------------------------------*/
-        //FIXME:[start]debug for downlink FM signal        
-        // FMPTT = 1;
-        // UBYTE eDataField[36];
-        // for(UBYTE i=0; i<36; i++){
-        //     eDataField[i] = i;
-        // }
-        // SendPacket(eDataField);
-        // __delay_ms(2000);
-        //  FMPTT = 0;
-        //FIXME:[finish]debug for downlink CW signal
-        /*---------------------------------------------------------------*/
+        //TODO debug send HK
+        HKDownlink();
 
-        /*---------------------------------------------------------------*/
-        //FIXME:[start]check for CW signal       
-//       __delay_ms(1000);
-//        CWKEY = 1;
-//        __delay_ms(2000);
-//        CWKEY =0;
-        //FIXME:[finish]check for  CW signal
-        /*---------------------------------------------------------------*/
-        
-        /*---------------------------------------------------------------*/
-        //FIXME:[start]debug for downlink CW signal
-        // testForCwFunctions();
-        //FIXME:[finish]debug for downlink CW signal
-        /*---------------------------------------------------------------*/
-        
-       /*----------------------------------------------------------*/
-       //FIXME : method for test to measure ADC start
-//       putChar(0xaa);
-//       putChar(0xaa);
-//       putChar(0xaa);
-//       measureAllChanelADC();
-//       putChar(0xbb);
-//       putChar(0xbb);
-//       putChar(0xbb);
-       //method for test to measure ADC finish
-       /*----------------------------------------------------------*/
-        
-        
-        
         //======================================================================
         //UART receive process
 
@@ -172,21 +119,21 @@ void main(void) {
             UBYTE command_status = 0x00;
             UBYTE ID_add_high = 0x00;
             UBYTE ID_add_low = 0x00;
-            
+
             //Calculate Address for CRCcheck byte
             ID_add_high   = RXDATA[3];
             ID_add_low    = RXDATA[4] + OffSet_for_CommandID;
             putChar(0xc4);
             putChar(ID_add_high);
             putChar(ID_add_low);
-                    
+
             //Read Command ID byte from EEPROM
             command_ID = ReadEEPROM(RXDATA[2], ID_add_high, ID_add_low);
             putChar(0xc5);
             putChar(command_ID);
             WriteLastCommandIdToEEPROM(command_ID);
             WriteLastCommandStatusToEEPROM(UNEXECUTED);
-            
+
             if(RXDATA[0] == 'g'){
                 if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
                     //Write status to EEPROM
@@ -197,7 +144,7 @@ void main(void) {
                     continue;
                 }
             }
-            
+
             /*---Define if command target is 't' or 'g' and read in task target ---*/
             /*------------------------------------------------------------------*/
             switch(RXDATA[1]){
@@ -219,7 +166,7 @@ void main(void) {
                     downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 'p':/*'p':power*/
-                    putChar(0xa7); 
+                    putChar(0xa7);
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
@@ -244,7 +191,7 @@ void main(void) {
         }
         /*---write CRC result 6bit 1 ---*/
 //        switchOk(error_main_crcCheck);
-        
+
     //======================================================================
     }
 }

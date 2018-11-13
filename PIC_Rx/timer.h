@@ -15,21 +15,24 @@
 #define one_day 24
 #define one_week 7
 
-#define WDT_INTERVAL             5
+#define NTRX_PLL_INTERVAL        1
+//#define WDT_INTERVAL             5
 #define EPS_RSET_INTERVAL_LONG   10
-#define EPS_RSET_INTERVAL_SHORT  5
-#define INITIAL_OPE_INTERVAL     10
-#define COMMAND_COUNTER_INTERVAL 3      //for debug 1min
-#define EPS_MEASURE_INTERVAL 10          //for debug 1min
-#define WDT_PULSE_INTERVAL       8
-
+#define EPS_RSET_INTERVAL_SHORT  3
+#define INITIAL_OPE_INTERVAL     7
+#define COMMAND_COUNTER_INTERVAL 60       //for debug 1min
+#define EPS_MEASURE_INTERVAL     3          //for debug 1min
+//#define WDT_PULSE_INTERVAL       8
 
 
 void initTimer(void);
 void interrupt TimerCheck(void);
 
-void set_wdt_pulse_counter(UINT time_sec);
-UINT get_wdt_pulse_counter_sec(void);
+void set_NTRX_pll_setting_counter(UINT, UINT, UINT, UINT);
+UINT get_NTRX_pll_setting_counter_sec(void);  
+UINT get_NTRX_pll_setting_counter_min(void);
+UINT get_NTRX_pll_setting_counter_hour(void);  
+UINT get_NTRX_pll_setting_counter_day(void); 
 
 void set_eps_reset_counter(UINT, UINT);  //FIXME:for debug
 UINT get_eps_reset_counter_sec(void);   //FIXME:for debug
@@ -45,7 +48,7 @@ UINT get_init_ope_counter_min(void);
 
 void set_bat_meas_counter(UINT, UINT);
 UINT get_bat_meas_counter_sec(void);   //FIXME:for debug
-UINT get_bat_meas_counter_min(void);
+UINT get_bat_meas_counter_min(void);  
 
 UINT get_timer_counter(UBYTE unit);
 

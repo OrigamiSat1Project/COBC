@@ -5,6 +5,7 @@
  * Created on 2018/05/23, 0:45
  */
 
+
 #ifndef CRC16_H
 #define	CRC16_H
 

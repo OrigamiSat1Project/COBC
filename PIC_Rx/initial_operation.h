@@ -10,7 +10,15 @@
 
 #include "typeDefine.h"
 
-void InitialOperation(void);
+/*---Initial Operation---*/
+#define MELTING_FINISH        4  
+#define WAIT_TIME_FOR_SETTING 4  //[s] 
+#define MELTING_COUNTER_LIMIT 71
+
+
+void testInitialOpe(void); //for debug
+void errorCheckInitialOpe(void); //for debug
+UBYTE InitialOperation(void);
 UBYTE bitCalResult(UBYTE);
 UBYTE checkMeltingStatus(UBYTE);
 
