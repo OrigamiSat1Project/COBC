@@ -40,36 +40,44 @@ void interrupt InterReceiver(void);
 
 #define commandSize 10
 UBYTE RXDATA[commandSize];
+UBYTE STOCKDATA[commandSize];
 UBYTE ReceiveFlag = NOT_RECEIVE;
 
 
 void interrupt InterReceiver(void){
     if (RCIF == 1) {
         putChar('U');
+        STOCKDATA[0] = 0x21;
         RXDATA[0] = 0x21;
         for(UINT i=0;i<commandSize;i++){
-            RXDATA[i] = getChar();
+            STOCKDATA[i] = getChar();
         }
 //            /*for debug
         for(UINT i=0;i<commandSize;i++){
-            putChar(RXDATA[i]);
+            putChar(STOCKDATA[i]);
         }
 
         putChar(0xcc);
-        putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
-        putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
+        putChar((UBYTE)(crc16(0,STOCKDATA,8) >> 8));
+        putChar((UBYTE)(crc16(0,STOCKDATA,8) & 0xff));
 //             end*/
-        if(RXDATA[0] == 'g'){
+        if(STOCKDATA[0] == 'g'){
             ReceiveFlag = CORRECT_RECEIVE;
+            for(UBYTE i=0; i<commandSize; i++){
+                RXDATA[i] = STOCKDATA[i];
+            }
             RCIF = 0;
             putChar(0xb9);
             return;
         }
-        if(crc16(0,RXDATA,8) == CRC_check(RXDATA, 8)){
+        if(crc16(0,STOCKDATA,8) == CRC_check(STOCKDATA, 8)){
             ReceiveFlag = CORRECT_RECEIVE;
         }
-        if(RXDATA[0] == 't'){
+        if(STOCKDATA[0] == 't'){
             ReceiveFlag = CORRECT_RECEIVE;
+            for(UBYTE i=0; i<commandSize; i++){
+                RXDATA[i] = STOCKDATA[i];
+            }            
         }else{
             ReceiveFlag = UNCORRECT_RECEIVE;
         }
@@ -96,11 +104,13 @@ void main(void) {
     
     while(1){
         
+        put_lf();
         putChar('m');
-        delay_ms(3000);
+        put_lf();
+        delay_ms(300);
 
-        sendPulseWDT();
-        __delay_ms(5000);
+//        sendPulseWDT();
+//        __delay_ms(5000);
          
 //        measureDcDcTemperature();
 //        if(read5VBusAndSwitchNtrxPower() != 0){
@@ -109,7 +119,7 @@ void main(void) {
 //            }
 //        }  
         //TODO debug send HK 
-        HKDownlink();
+//        HKDownlink();
        
         //======================================================================
         //UART receive process
@@ -134,6 +144,9 @@ void main(void) {
             WriteLastCommandIdToEEPROM(command_ID);
             WriteLastCommandStatusToEEPROM(UNEXECUTED);
             
+            putChar(0xc6);
+            putChar(RXDATA[0]);
+            
             if(RXDATA[0] == 'g'){
                 if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
                     //Write status to EEPROM
@@ -144,6 +157,8 @@ void main(void) {
                     continue;
                 }
             }
+            putChar(0xc7);
+            putChar(RXDATA[1]);
             
             /*---Define if command target is 't' or 'g' and read in task target ---*/
             /*------------------------------------------------------------------*/
@@ -166,7 +181,7 @@ void main(void) {
                     downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 'p':/*'p':power*/
-                    putChar(0xa7);
+                    for(UBYTE i=0; i<20; i++) putChar(0xa7);
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
@@ -181,10 +196,12 @@ void main(void) {
                     put_ok();
                     break;
                 default:
+                    putChar(0xc8);
 //                    switchError(error_main_commandfromOBCorRXCOBC);
                     put_error();
                     break;
             }
+            putChar(0xc9);
             WriteLastCommandStatusToEEPROM(command_status);
             ReceiveFlag = NOT_RECEIVE;
             putChar(0x39);
