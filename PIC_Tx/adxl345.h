@@ -2,7 +2,7 @@
 #define	ADXL_H
 
 
-
+int readADXLAddr(char);
 int initADXL();
 int readADXL(unsigned char *, int);
 

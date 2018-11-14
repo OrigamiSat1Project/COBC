@@ -1,17 +1,12 @@
 #include <xc.h>
 #include "Type_define.h"
-//#include "CommonDefine.h"
 #include "ICM20601.h"
-//#include "I2Clib.h"
 #include "EEPROM.h"
 #include "I2C.h"
 #include "time.h"
-//#include "init.h"
-//#include "CAN.h"
 
 const UBYTE ICM_ADDR            = 0x68;
-const UBYTE ICM_DATA_START      = 0x3B;
-const UBYTE ICM_DATA_STOP       = 0x48;
+const UBYTE ICM_DATA            = 0x3B;
 const UBYTE ICM_WHO_AM_I        = 0x75;
 const UBYTE ICM_WHO_VALUE       = 0xAC;
 //const UBYTE SMPLRT_DIV      = 0x19;
@@ -27,31 +22,27 @@ const UBYTE ICM_PWR_MGMT_1      = 0x6B;
 const UBYTE ICM_PWR_MGMT_2      = 0x6C;
 
 
-UBYTE readICMAddr(UBYTE);
-void writeICMAddr(UBYTE , UBYTE);
-
-UBYTE readICMAddr(UBYTE address)
+int readICMAddr(char address)
 {
-    UBYTE Address = ICM_ADDR << 1;
-    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
-    UBYTE ans;
-    I2CMasterStart();                   //Start condition
-    I2CMasterWrite(ICM_ADDR);           //7 bit address + Write
-    I2CMasterWrite(address);            //7 bit address + Write
-    I2CMasterRepeatedStart();           //Restart condition
-    I2CMasterWrite(ReadAddress);        //7 bit address + Read
-    ans = I2CMasterRead(0);
-    I2CMasterStop();                    //Stop condition
+    int ans;
+    ans = I2CMasterStart(ICM_ADDR,0);
+    if(ans == 0){
+        I2CMasterWrite(address);
+        I2CMasterRepeatedStart(ICM_ADDR,1);
+        ans = I2CMasterRead(1);
+    }else ans = -1;
+    I2CMasterStop();
     return ans;
 }
 
-void writeICMAddr(UBYTE address , UBYTE data)
+int writeICMAddr(char address , char val)
 {
-    UBYTE Address = ICM_ADDR << 1;
-    I2CMasterStart();               //Start condition
-    I2CMasterWrite(address);        //7 bit address + Write
-    I2CMasterWrite(data);      //Data
-    I2CMasterStop();                //Stop condition
+    int ans;
+    ans = I2CMasterStart(ICM_ADDR,0);
+    if(ans == 0){
+        I2CMasterWrite(address);
+        I2CMasterWrite(val);
+    }else ans = -1;
 }
 
 int initICM()
@@ -75,28 +66,25 @@ int initICM()
     return ans;
 }
 
-int readICM(UBYTE *data, UINT offset)
+int readICM(UBYTE *data, int offset)
 {
-    UBYTE Address = ICM_ADDR << 1;
-    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
-    int ans , ack ;
-    UBYTE dataNumber;
-    dataNumber = ICM_DATA_STOP - ICM_DATA_STOP +1;
-
+    int ans , i , ack ;
     
     while(ans != 0x01){
         ans = readICMAddr(ICM_INT_STATUS);
         ans = ans & 0x01;
     }
-    
-    I2CMasterStart();                   //Start condition
-    I2CMasterWrite(Address);           //7 bit address + Write
-    I2CMasterWrite(ICM_DATA_START);            //7 bit address + Write
-    I2CMasterRepeatedStart();           //Restart condition
-    I2CMasterWrite(ReadAddress);        //7 bit address + Read
-    for (UINT i = 0; i < dataNumber-1; i++){
-        data[offset+i] = I2CMasterRead(1);
-    }
-    data[offset + dataNumber-1] = I2CMasterRead(0);
-    I2CMasterStop();                //Stop condition
+
+    ans = I2CMasterStart(ICM_ADDR,0);
+    if(ans == 0){
+        I2CMasterWrite(ICM_DATA);
+        I2CMasterRepeatedStart(ICM_ADDR,1);
+        ack = 0;
+        for(i=0;i<14;i++){
+            if(i==13) ack = 1;
+            data[offset+i] = I2CMasterRead(ack);
+        }
+    }else ans = -1;
+    I2CMasterStop();
+    return ans;
 }

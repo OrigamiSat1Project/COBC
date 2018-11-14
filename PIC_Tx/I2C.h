@@ -19,19 +19,6 @@
 *setting
 ******************************************************************************/ 
 void InitI2CMaster(const UDWORD c);
-void I2CMasterWait(void);
-void I2CMasterStart(void);
-void I2CMasterRepeatedStart(void);
-void I2CMasterStop(void);
-
-
-/*******************************************************************************
-*Method for EEPROM Write 
-******************************************************************************/
-void I2CMasterWrite(UBYTE);
-UBYTE I2CMasterRead(UBYTE);
-void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
-void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
 void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
@@ -40,9 +27,20 @@ void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 *Method for EEPROM Read
 ******************************************************************************/
 void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
-UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
 void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
 void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
+
+void interruptI2C(void);
+void I2CMasterWait(char);                                               
+int I2CMasterStart(unsigned char, unsigned char);                                              
+int I2CMasterRepeatedStart(unsigned char, unsigned char);                                   
+int I2CMasterStop(void);                                               
+int I2CMasterWrite(UBYTE);                                        
+int I2CMasterRead(UBYTE);  
+
+void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+UBYTE ReadEEPROM(UBYTE,UBYTE,UBYTE);
 
 
 #endif	/* I2C_H */
