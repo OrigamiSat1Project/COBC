@@ -1848,8 +1848,6 @@ setPLL();
 
 _delay((unsigned long)((500)*(10000000/4000.0)));
 
-putChar('S');
-
 # 76
 UBYTE error_status = 0x00;
 
@@ -1861,7 +1859,7 @@ delay_ms(2000);
 
 
 
-UBYTE commandData[30];
+UBYTE commandData[32];
 UBYTE commandID;
 
 
@@ -1873,28 +1871,17 @@ UBYTE subControlByte;
 UBYTE downlinkTimes;
 
 
-for(UBYTE i=0; i<30; i++){
+for(UBYTE i=0; i<32; i++){
 commandData[i] = 0;
 }
 
 receiveDataPacket(commandData);
 
-# 177
-if(commandData[0]==0) {
-continue;
-}
-
-
-commandID = commandData[1];
-if (commandID == lastCommandID) {
-continue;
-}
-lastCommandID = commandID;
-
-B0select = commandData[19];
-wHighAddress = commandData[20];
-wLowAddress = commandData[21];
-downlinkTimes = commandData[22];
+# 192
+B0select = 0x00;
+wHighAddress = 0x00;
+wLowAddress = 0x80;
+downlinkTimes = 0x05;
 mainControlByte = 0x50 | B0select;
 subControlByte = 0x52 | B0select;
 
@@ -1904,7 +1891,7 @@ UWORD crcResult, crcValue;
 crcResult = crc16(0,commandData,29);
 crcValue = checkCRC(commandData,29);
 
-# 211
+# 215
 if(crcResult != crcValue){
 commandData[31] = commandData[31] & 0b01111111;
 
@@ -1919,14 +1906,14 @@ WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
 WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
 WriteLastCommandIdToEEPROM(commandData[1]);
 
-# 237
+# 241
 sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
-putChar('G');
 
-for(int i=0; i<30; i++){
+
+for(int i=0; i<32; i++){
 
 }
-putChar('H');
+
 
 
 if(commandData[0]=='R'){
@@ -1966,7 +1953,7 @@ default:
 break;
 }
 
-# 289
+# 293
 }
 }else{
 

@@ -60,7 +60,7 @@ void main(void) {
 //    LED_WHITE = 0;              //for debugging of PLL setting
     __delay_ms(500);           //wait for circuit of PLL
     
-   putChar('S');
+//   putChar('S');
 
     /*----------------------------------------------------------------------*/
     //for debug BatVoltage measure
@@ -174,21 +174,25 @@ void main(void) {
         // putChar('4');
         
         //XXX if () continue, IF COMMAND IS STILL RESET
-        if(commandData[0]==0) {
-            continue;      //not receive command-->continue
-        } 
-         
-        /*---check command ID---*/
-        commandID = commandData[1];     
-        if (commandID == lastCommandID) {
-            continue;       //same uplink command-->continue
-        }
-        lastCommandID = commandID;                      //update command ID
+//        if(commandData[0]==0) {
+//            continue;      //not receive command-->continue
+//        } 
+//         
+//        /*---check command ID---*/
+//        commandID = commandData[1];     
+//        if (commandID == lastCommandID) {
+//            continue;       //same uplink command-->continue
+//        }
+//        lastCommandID = commandID;                      //update command ID
         
-        B0select = commandData[19];
-        wHighAddress = commandData[20];
-        wLowAddress = commandData[21];
-        downlinkTimes = commandData[22];
+//        B0select = commandData[19];
+//        wHighAddress = commandData[20];
+//        wLowAddress = commandData[21];
+//        downlinkTimes = commandData[22];
+        B0select = 0x00;
+        wHighAddress = 0x00;
+        wLowAddress = 0x80;
+        downlinkTimes = 0x05;
         mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
         subControlByte = SUB_EEPROM_ADDRESS | B0select;
         
@@ -235,12 +239,12 @@ void main(void) {
 //        send_command[7] = 0x00;
 //        sendCommandByPointer(send_command);
         sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
-        putChar('G');
+//        putChar('G');
         
         for(int i=0; i<DATA_SIZE; i++){
 //            putChar(commandData[i]);
         }
-        putChar('H');
+//        putChar('H');
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/
         if(commandData[0]=='R'){                //command target = PIC_RX
