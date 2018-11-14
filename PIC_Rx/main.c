@@ -69,7 +69,7 @@ void main(void) {
     // WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow,0x1D);
     //
     // for debug initial ope
-    // testInitialOpe(); 
+    //testInitialOpe(); 
     /*----------------------------------------------------------------------*/
        
     
@@ -80,69 +80,63 @@ void main(void) {
         /*---timer interrupt---*/
         /*----------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------*/
-//        /*---timer process for EPS reset (1week)---*/       
+        /*---timer process for EPS reset (1week)---*/       
 //        if(get_timer_counter('w') >= 1){  //for FM
-//        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
-////            putChar('E');
-////            putChar('E');
-////            putChar('E');
-////            Reset_EPS();
-//            sendPulseWDT();
-//            Reset_EPS();
-//            sendPulseWDT();
-//            delay_ms(5000);
-//            sendPulseWDT();
-//            setPLL();
-////            // Execute 1week reset
-//            reset_timer();
-//            set_eps_reset_counter(0,0);  //for debug
-//        }
-//
-//        /*---timer process for NTRX PLL setting(every day) & EPS reset (if initial Ope / everyday)---*/
-////        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   //FM
-//        if(get_NTRX_pll_setting_counter_sec() >= 5){   //for debug
-////            putChar('N');
-////            putChar('N');
-////            putChar('N');            
-//            UBYTE melting_status[2] = {0x00};
-//            melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-//            melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-//            if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
-//                sendPulseWDT();
-//                Reset_EPS();  //only initial ope -> reset EPS
-//                sendPulseWDT();
-//                delay_ms(5000);
-//                sendPulseWDT();
-//            }
-//            setPLL();  // set PLL every day
-//            set_NTRX_pll_setting_counter(0,0,0,0);
-//        }        
-//        
-//        /*---timer process for initial operation (22.5min)---*/
-//        // //       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
-//        // if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
-//        //     //error_status = InitialOperation();
-//        //     WriteOneByteToMainAndSubB0EEPROM(InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow,error_status);
-//        //     //errorCheckInitialOpe();  //*******for debug (initial ope) ************
-//        //     set_init_ope_counter(0,0);
-//        // }
-//
-//        /*---timer process for measure EPS BATTERY---*/
-//        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
-//        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
-////            putChar('B');
-////            putChar('B');
-////            putChar('B');           
-//            
-//            //TODO:debug function to measure EPS Battery
-//           UBYTE SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-//                  
-//           if (SatMode_error_status != 0){
-//               SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-//           }
-//           WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatMode_error_status_addresshigh, SatMode_error_status_addresslow, SatMode_error_status);
-//           set_bat_meas_counter(0,0);
-//        }
+        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
+            putChar('E');
+            putChar('E');
+            putChar('E');
+            resetEPS();
+            setPLL();
+//            // Execute 1week reset
+            reset_timer();
+            set_eps_reset_counter(0,0);  //for debug
+        }
+
+        /*---timer process for NTRX PLL setting(every day) & EPS reset (if initial Ope / everyday)---*/
+//        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   //FM
+        if(get_NTRX_pll_setting_counter_sec() >= 8){   //for debug
+            putChar('N');
+            putChar('N');
+            putChar('N');            
+            UBYTE melting_status[2] = {0x00};
+            melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+            melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+            if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
+                resetEPS();  //only initial ope -> reset EPS
+            }
+            setPLL();  // set PLL every day
+            set_NTRX_pll_setting_counter(0,0,0,0);
+        }        
+        
+        /*---timer process for initial operation (22.5min)---*/
+        // //       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
+        // if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
+        //     putChar('I');
+        //     putChar('I');
+        //     putChar('I');             
+        //    //error_status = InitialOperation();
+        //     WriteOneByteToMainAndSubB0EEPROM(InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow,error_status);
+        //     errorCheckInitialOpe();  //*******for debug (initial ope) ************
+        //     set_init_ope_counter(0,0);
+        // }
+
+        /*---timer process for measure EPS BATTERY---*/
+        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
+        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
+            putChar('B');
+            putChar('B');
+            putChar('B');           
+            
+            //TODO:debug function to measure EPS Battery
+           UBYTE SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+                  
+           if (SatMode_error_status != 0){
+               SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+           }
+           WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatMode_error_status_addresshigh, SatMode_error_status_addresslow, SatMode_error_status);
+           set_bat_meas_counter(0,0);
+        }
         /*----------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------*/
         

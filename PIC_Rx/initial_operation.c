@@ -151,12 +151,12 @@ UBYTE InitialOperation(void){
                         } else {
 //                            putChar(0xa8);
                             
-                            /*---wait for 200s---*/
-                            for(UBYTE i=0; i<50; i++){
-                                sendPulseWDT();
-                                delay_s(WAIT_TIME_FOR_SETTING);
-                            }
-                            sendPulseWDT();
+                            // /*---wait for 200s---*/    ***FIXME need to delete comment out!!
+                            // for(UBYTE i=0; i<50; i++){
+                            //     sendPulseWDT();
+                            //     delay_s(WAIT_TIME_FOR_SETTING);
+                            // }
+                            // sendPulseWDT();
                             
                             if(melting_counter<4){
 //                                putChar(0xa9);
