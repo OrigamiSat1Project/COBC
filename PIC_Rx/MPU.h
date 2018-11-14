@@ -58,5 +58,7 @@ void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
 void offNtrxPowerSupplyCIB(void);
 
+void SetRegister(UBYTE, UBYTE);
+
 #endif /*INITMPU_H*/
 

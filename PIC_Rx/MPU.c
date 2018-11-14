@@ -462,3 +462,81 @@ void offNtrxPowerSupplyCIB(void){
     sendCommandByPointer(send_command);
     __delay_ms(500);
 }
+
+void SetRegister(UBYTE add, UBYTE value){
+    
+    switch(add){
+        case 0x05:
+            PORTA   = value;
+            break;
+        case 0x06:
+            PORTB   = value;
+            break;
+        case 0x07:
+            PORTC   = value;
+            break;
+        case 0x08:
+            PORTD   = value;
+            break;
+        case 0x09:
+            PORTE   = value;
+            break;
+        case 0x0b:
+            INTCON  = value;
+            break;
+        case 0x0c:
+            PIR1    = value;
+            break;
+        case 0x0d:
+            PIR2    = value;
+            break;
+        case 0x14:
+            SSPCON  = value;
+            break;
+        case 0x18:
+            RCSTA   = value;
+            break;
+        case 0x1f:
+            ADCON0  = value;
+            break;
+        case 0x81:
+            OPTION_REG  = value;
+            break;
+        case 0x85:
+            TRISA   = value;
+            break;
+        case 0x86:
+            TRISB   = value;
+            break;
+        case 0x87:
+            TRISC   = value;
+            break;
+        case 0x88:
+            TRISD   = value;
+            break;
+        case 0x89:
+            TRISE   = value;
+            break;
+        case 0x8c:
+            PIE1    = value;
+            break;
+        case 0x8d:
+            PIE2    = value;
+            break;
+        case 0x91:
+            SSPCON2 = value;
+            break;
+        case 0x93:
+            SSPADD  = value;
+            break;
+        case 0x98:
+            TXSTA   = value;
+            break;
+        case 0x99:
+            SPBRG   = value;
+            break;
+        case 0x9f:
+            ADCON1  = value;
+            break;
+    }
+}

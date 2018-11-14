@@ -108,6 +108,12 @@ void main(void) {
         putChar('m');
         put_lf();
         delay_ms(300);
+        
+        putChar(0x0b);
+        putChar(INTCON);
+        SetRegister(0x0b, 0x67);
+        putChar(0x0a);
+        putChar(INTCON);
 
 //        sendPulseWDT();
 //        __delay_ms(5000);
