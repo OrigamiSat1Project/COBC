@@ -4,6 +4,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _InitSerial `(v ~T0 @X0 0 ef ]
 "32 MPU.h
 [v _InitMPU `(v ~T0 @X0 0 ef ]
+"17 WDT.h
+[v _InitWDT `(v ~T0 @X0 0 ef ]
 "20 I2C.h
 [v _InitI2CMaster `(v ~T0 @X0 0 ef1`Cul ]
 "28 timer.h
@@ -14,48 +16,48 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p i __delay ]
 "37 FMCW.h
 [v _setPLL `(v ~T0 @X0 0 ef ]
-"23 UART.h
+"30 UART.h
+[v _put_lf `(v ~T0 @X0 0 ef ]
+"23
 [v _putChar `(v ~T0 @X0 0 ef1`uc ]
+"44 SatMode.h
+[v _testInitSatMode `(v ~T0 @X0 0 ef ]
+"19 initial_operation.h
+[v _testInitialOpe `(v ~T0 @X0 0 ef ]
+"39 timer.h
+[v _get_eps_reset_counter_min `(ui ~T0 @X0 0 ef ]
+"47 MPU.h
+[v _resetEPS `(v ~T0 @X0 0 ef ]
+"55 timer.h
+[v _reset_timer `(v ~T0 @X0 0 ef ]
+"37
+[v _set_eps_reset_counter `(v ~T0 @X0 0 ef2`ui`ui ]
+"33
+[v _get_NTRX_pll_setting_counter_min `(ui ~T0 @X0 0 ef ]
+"23 initial_operation.h
+[v _checkMeltingStatus `(uc ~T0 @X0 0 ef1`uc ]
+"31 timer.h
+[v _set_NTRX_pll_setting_counter `(v ~T0 @X0 0 ef4`ui`ui`ui`ui ]
+"47
+[v _get_init_ope_counter_min `(ui ~T0 @X0 0 ef ]
+"21 initial_operation.h
+[v _InitialOperation `(uc ~T0 @X0 0 ef ]
+"33 I2C.h
+[v _WriteOneByteToMainAndSubB0EEPROM `(v ~T0 @X0 0 ef3`uc`uc`uc ]
+"20 initial_operation.h
+[v _errorCheckInitialOpe `(v ~T0 @X0 0 ef ]
+"45 timer.h
+[v _set_init_ope_counter `(v ~T0 @X0 0 ef2`ui`ui ]
+"50
+[v _get_bat_meas_counter_sec `(ui ~T0 @X0 0 ef ]
+"40 SatMode.h
+[v _MeasureBatVoltageAndChangeSatMode `(us ~T0 @X0 0 ef ]
+"49 timer.h
+[v _set_bat_meas_counter `(v ~T0 @X0 0 ef2`ui`ui ]
 "20 WDT.h
 [v _sendPulseWDT `(v ~T0 @X0 0 ef ]
-"30 time.h
-[v _delay_ms `(v ~T0 @X0 0 ef1`us ]
-"26 decodeAX25.h
-[v _receiveDataPacket `(v ~T0 @X0 0 ef1`*uc ]
-"13 CRC16.h
-[v _crc16 `(us ~T0 @X0 0 ef3`us`*uc`ui ]
-"15
-[v _checkCRC `(us ~T0 @X0 0 ef2`*uc`ui ]
-"29 I2C.h
-[v _WriteToEEPROM `(v ~T0 @X0 0 ef4`uc`uc`uc`*uc ]
-"35
-[v _WriteLastCommandIdToEEPROM `(v ~T0 @X0 0 ef1`uc ]
-"34 UART.h
-[v _sendCommand `(v ~T0 @X0 0 ef8`uc`uc`uc`uc`uc`uc`uc`uc ]
-"43 SatMode.h
-[v _commandSwitchSatMode `(v ~T0 @X0 0 ef3`uc`uc`uc ]
-"55 MPU.h
-[v _commandSwitchPowerSupply `(v ~T0 @X0 0 ef4`uc`uc`uc`uc ]
-"32 FMCW.h
-[v _commandSwitchFMCW `(v ~T0 @X0 0 ef6`uc`uc`uc`uc`uc`uc ]
-"47 I2C.h
-[v _commandSwitchI2C `(v ~T0 @X0 0 ef5`uc`uc`uc`uc`uc ]
-"48
-[v _commandSwitchEEPROM `(v ~T0 @X0 0 ef6`uc`uc`uc`uc`uc`uc ]
-"39 UART.h
-[v _commandSwitchUART `(v ~T0 @X0 0 ef6`uc`uc`uc`uc`uc`uc ]
-"18 WDT.h
-[v _commandWDT `(v ~T0 @X0 0 ef1`uc ]
-"56 MPU.h
-[v _commandSwitchIntProcess `(v ~T0 @X0 0 ef3`uc`uc`uc ]
-"220 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
-[s S13 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S13 . RB0 RB1 RB2 RB3 RB4 RB5 RB6 RB7 ]
-"219
-[u S12 `S13 1 ]
-[n S12 . . ]
-"231
-[v _PORTBbits `VS12 ~T0 @X0 0 e@6 ]
+"29 time.h
+[v _delay_s `(v ~T0 @X0 0 ef1`us ]
 [; ;__size_t.h: 4: typedef unsigned size_t;
 [; ;stdarg.h: 7: typedef void * va_list[1];
 [; ;stdarg.h: 10: extern void * __va_start(void);
@@ -1191,7 +1193,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ADC.h: 18: void ReadBatVoltage(void);
 [; ;ADC.h: 19: void SendBatVoltage(void);
 [; ;ADC.h: 21: void ReadBatVoltageWithPointer(UBYTE*);
-[; ;ADC.h: 22: UBYTE MeasureBatVoltageAndChangeSatMode(void);
 [; ;MPU.h: 32: void InitMPU(void);
 [; ;MPU.h: 35: void LEDOnOff(void);
 [; ;MPU.h: 36: void debugLEDyellow(void);
@@ -1318,10 +1319,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;timer.h: 51: UINT get_bat_meas_counter_min(void);
 [; ;timer.h: 53: UINT get_timer_counter(UBYTE unit);
 [; ;timer.h: 55: void reset_timer(void);
-[; ;SatMode.h: 40: UBYTE MeasureBatVoltageAndChangeSatMode(void);
+[; ;SatMode.h: 40: UWORD MeasureBatVoltageAndChangeSatMode(void);
 [; ;SatMode.h: 41: UBYTE BitCount(UBYTE);
 [; ;SatMode.h: 42: void SwitchToSavingMode(void);
 [; ;SatMode.h: 43: void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
+[; ;SatMode.h: 44: void testInitSatMode(void);
 "27 main.c
 [p x FOSC=HS ]
 "28
@@ -1357,6 +1359,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 47: InitMPU();
 "47
 [e ( _InitMPU ..  ]
+[; ;main.c: 48: InitWDT();
+"48
+[e ( _InitWDT ..  ]
 [; ;main.c: 49: InitI2CMaster(100000);
 "49
 [e ( _InitI2CMaster (1 -> -> 100000 `l `ul ]
@@ -1372,328 +1377,459 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 61: _delay((unsigned long)((500)*(10000000/4000.0)));
 "61
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 63: putChar('S');
+[; ;main.c: 63: put_lf();
 "63
+[e ( _put_lf ..  ]
+[; ;main.c: 64: putChar('S');
+"64
 [e ( _putChar (1 -> -> 83 `ui `uc ]
-"76
-[v _error_status `uc ~T0 @X0 1 a ]
-[; ;main.c: 76: UBYTE error_status = 0x00;
-[e = _error_status -> -> 0 `i `uc ]
-[; ;main.c: 78: while(1){
-"78
-[e :U 102 ]
-{
-[; ;main.c: 150: sendPulseWDT();
-"150
-[e ( _sendPulseWDT ..  ]
-[; ;main.c: 151: delay_ms(2000);
-"151
-[e ( _delay_ms (1 -> -> 2000 `i `us ]
-"155
-[v _commandData `uc ~T0 @X0 -> 32 `i a ]
-"156
-[v _commandID `uc ~T0 @X0 1 a ]
-"159
-[v _B0select `uc ~T0 @X0 1 a ]
-"160
-[v _wHighAddress `uc ~T0 @X0 1 a ]
-"161
-[v _wLowAddress `uc ~T0 @X0 1 a ]
-"162
-[v _mainControlByte `uc ~T0 @X0 1 a ]
-"163
-[v _subControlByte `uc ~T0 @X0 1 a ]
-"164
-[v _downlinkTimes `uc ~T0 @X0 1 a ]
-[; ;main.c: 155: UBYTE commandData[32];
-[; ;main.c: 156: UBYTE commandID;
-[; ;main.c: 159: UBYTE B0select;
-[; ;main.c: 160: UBYTE wHighAddress;
-[; ;main.c: 161: UBYTE wLowAddress;
-[; ;main.c: 162: UBYTE mainControlByte;
-[; ;main.c: 163: UBYTE subControlByte;
-[; ;main.c: 164: UBYTE downlinkTimes;
-[; ;main.c: 167: for(UBYTE i=0; i<32; i++){
-"167
+[; ;main.c: 65: for(UBYTE i=0; i<12; i++){
+"65
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 32 `i 104  ]
-[e $U 105  ]
-[e :U 104 ]
+[e $ < -> _i `i -> 12 `i 101  ]
+[e $U 102  ]
+[e :U 101 ]
 {
-[; ;main.c: 168: commandData[i] = 0;
-"168
-[e = *U + &U _commandData * -> _i `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
-"169
+[; ;main.c: 66: putChar(0x53);
+"66
+[e ( _putChar (1 -> -> 83 `i `uc ]
+"67
 }
-"167
+"65
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 32 `i 104  ]
+[e $ < -> _i `i -> 12 `i 101  ]
+[e :U 102 ]
+"67
+}
+[; ;main.c: 67: }
+[; ;main.c: 68: put_lf();
+"68
+[e ( _put_lf ..  ]
+[; ;main.c: 72: testInitSatMode();
+"72
+[e ( _testInitSatMode ..  ]
+[; ;main.c: 74: testInitialOpe();
+"74
+[e ( _testInitialOpe ..  ]
+"78
+[v _error_status `uc ~T0 @X0 1 a ]
+[; ;main.c: 78: UBYTE error_status = 0x00;
+[e = _error_status -> -> 0 `i `uc ]
+[; ;main.c: 80: while(1){
+"80
 [e :U 105 ]
-"169
-}
-[; ;main.c: 169: }
-[; ;main.c: 171: receiveDataPacket(commandData);
-"171
-[e ( _receiveDataPacket (1 &U _commandData ]
-[; ;main.c: 177: if(commandData[0]==0) {
-"177
-[e $ ! == -> *U + &U _commandData * -> -> -> 0 `i `ui `ux -> -> # *U &U _commandData `ui `ux `i -> 0 `i 107  ]
 {
-[; ;main.c: 178: continue;
-"178
-[e $U 101  ]
-"179
-}
-[e :U 107 ]
-[; ;main.c: 179: }
-[; ;main.c: 182: commandID = commandData[1];
-"182
-[e = _commandID *U + &U _commandData * -> -> -> 1 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 183: if (commandID == lastCommandID) {
-"183
-[e $ ! == -> _commandID `i -> _lastCommandID `i 108  ]
+[; ;main.c: 88: if(get_eps_reset_counter_min() >= 2){
+"88
+[e $ ! >= ( _get_eps_reset_counter_min ..  -> -> 2 `i `ui 107  ]
 {
-[; ;main.c: 184: continue;
-"184
-[e $U 101  ]
-"185
-}
+[; ;main.c: 89: put_lf();
+"89
+[e ( _put_lf ..  ]
+[; ;main.c: 90: for(UBYTE i=0; i<6; i++){
+"90
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 6 `i 108  ]
+[e $U 109  ]
 [e :U 108 ]
-[; ;main.c: 185: }
-[; ;main.c: 186: lastCommandID = commandID;
-"186
-[e = _lastCommandID _commandID ]
-[; ;main.c: 188: B0select = commandData[19];
-"188
-[e = _B0select *U + &U _commandData * -> -> -> 19 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 189: wHighAddress = commandData[20];
-"189
-[e = _wHighAddress *U + &U _commandData * -> -> -> 20 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 190: wLowAddress = commandData[21];
-"190
-[e = _wLowAddress *U + &U _commandData * -> -> -> 21 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 191: downlinkTimes = commandData[22];
-"191
-[e = _downlinkTimes *U + &U _commandData * -> -> -> 22 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 192: mainControlByte = 0x50 | B0select;
-"192
-[e = _mainControlByte -> | -> 80 `i -> _B0select `i `uc ]
-[; ;main.c: 193: subControlByte = 0x52 | B0select;
-"193
-[e = _subControlByte -> | -> 82 `i -> _B0select `i `uc ]
-"197
-[v _crcResult `us ~T0 @X0 1 a ]
-[v _crcValue `us ~T0 @X0 1 a ]
-[; ;main.c: 197: UWORD crcResult, crcValue;
-[; ;main.c: 198: crcResult = crc16(0,commandData,29);
-"198
-[e = _crcResult ( _crc16 (3 , , -> -> 0 `i `us &U _commandData -> -> 29 `i `ui ]
-[; ;main.c: 199: crcValue = checkCRC(commandData,29);
-"199
-[e = _crcValue ( _checkCRC (2 , &U _commandData -> -> 29 `i `ui ]
-[; ;main.c: 211: if(crcResult != crcValue){
-"211
-[e $ ! != -> _crcResult `ui -> _crcValue `ui 109  ]
 {
-[; ;main.c: 212: commandData[31] = commandData[31] & 0b01111111;
-"212
-[e = *U + &U _commandData * -> -> -> 31 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> & -> *U + &U _commandData * -> -> -> 31 `i `ui `ux -> -> # *U &U _commandData `ui `ux `i -> 127 `i `uc ]
-"214
+[; ;main.c: 91: putChar(0xF1);
+"91
+[e ( _putChar (1 -> -> 241 `i `uc ]
+"92
 }
-[; ;main.c: 214: }else{
-[e $U 110  ]
+"90
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 108  ]
 [e :U 109 ]
-{
-[; ;main.c: 215: commandData[31] = commandData[31] | 0b10000000;
-"215
-[e = *U + &U _commandData * -> -> -> 31 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> | -> *U + &U _commandData * -> -> -> 31 `i `ui `ux -> -> # *U &U _commandData `ui `ux `i -> 128 `i `uc ]
-"217
+"92
 }
-[e :U 110 ]
-[; ;main.c: 217: }
-[; ;main.c: 221: WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
-"221
-[e ( _WriteToEEPROM (4 , , , _mainControlByte _wHighAddress _wLowAddress &U _commandData ]
-[; ;main.c: 222: WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
-"222
-[e ( _WriteToEEPROM (4 , , , _subControlByte _wHighAddress _wLowAddress &U _commandData ]
-[; ;main.c: 223: WriteLastCommandIdToEEPROM(commandData[1]);
-"223
-[e ( _WriteLastCommandIdToEEPROM (1 *U + &U _commandData * -> -> -> 1 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 237: sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
-"237
-[e ( _sendCommand (4 , , , , , , , -> -> 103 `ui `uc -> -> 117 `ui `uc _B0select _wHighAddress _wLowAddress _downlinkTimes -> -> 0 `i `uc -> -> 0 `i `uc ]
-[; ;main.c: 238: putChar('G');
-"238
-[e ( _putChar (1 -> -> 71 `ui `uc ]
-[; ;main.c: 240: for(int i=0; i<32; i++){
-"240
+[; ;main.c: 92: }
+[; ;main.c: 93: put_lf();
+"93
+[e ( _put_lf ..  ]
+[; ;main.c: 94: resetEPS();
+"94
+[e ( _resetEPS ..  ]
+[; ;main.c: 95: setPLL();
+"95
+[e ( _setPLL ..  ]
+[; ;main.c: 97: reset_timer();
+"97
+[e ( _reset_timer ..  ]
+[; ;main.c: 98: set_eps_reset_counter(0,0);
+"98
+[e ( _set_eps_reset_counter (2 , -> -> 0 `i `ui -> -> 0 `i `ui ]
+[; ;main.c: 99: for(UBYTE i=0; i<6; i++){
+"99
 {
-[v _i `i ~T0 @X0 1 a ]
-[e = _i -> 0 `i ]
-[e $ < _i -> 32 `i 111  ]
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 6 `i 111  ]
 [e $U 112  ]
 [e :U 111 ]
 {
-"242
+[; ;main.c: 100: putChar(0xF2);
+"100
+[e ( _putChar (1 -> -> 242 `i `uc ]
+"101
 }
-"240
-[e ++ _i -> 1 `i ]
-[e $ < _i -> 32 `i 111  ]
+"99
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 111  ]
 [e :U 112 ]
-"242
+"101
 }
-[; ;main.c: 242: }
-[; ;main.c: 243: putChar('H');
-"243
-[e ( _putChar (1 -> -> 72 `ui `uc ]
-[; ;main.c: 246: if(commandData[0]=='R'){
-"246
-[e $ ! == -> *U + &U _commandData * -> -> -> 0 `i `ui `ux -> -> # *U &U _commandData `ui `ux `ui -> 82 `ui 114  ]
-{
-[; ;main.c: 248: if(commandData[2] == 'r'){
-"248
-[e $ ! == -> *U + &U _commandData * -> -> -> 2 `i `ui `ux -> -> # *U &U _commandData `ui `ux `ui -> 114 `ui 115  ]
-{
-[; ;main.c: 250: switch(commandData[3]){
-"250
-[e $U 117  ]
-{
-[; ;main.c: 251: case 'm':
-"251
-[e :U 118 ]
-[; ;main.c: 252: commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
-"252
-[e ( _commandSwitchSatMode (3 , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 253: break;
-"253
-[e $U 116  ]
-[; ;main.c: 254: case 'p':
-"254
-[e :U 119 ]
-[; ;main.c: 255: commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
-"255
-[e ( _commandSwitchPowerSupply (4 , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 256: break;
-"256
-[e $U 116  ]
-[; ;main.c: 257: case 'n':
-"257
-[e :U 120 ]
-[; ;main.c: 258: commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-"258
-[e ( _commandSwitchFMCW (4 , , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 259: break;
-"259
-[e $U 116  ]
-[; ;main.c: 260: case 'i':
-"260
-[e :U 121 ]
-[; ;main.c: 261: commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
-"261
-[e ( _commandSwitchI2C (4 , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 262: break;
-"262
-[e $U 116  ]
-[; ;main.c: 263: case 'e':
-"263
-[e :U 122 ]
-[; ;main.c: 264: commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-"264
-[e ( _commandSwitchEEPROM (4 , , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 265: break;
-"265
-[e $U 116  ]
-[; ;main.c: 266: case 'u':
-"266
-[e :U 123 ]
-[; ;main.c: 267: commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-"267
-[e ( _commandSwitchUART (4 , , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 268: break;
-"268
-[e $U 116  ]
-[; ;main.c: 269: case 'w':
-"269
-[e :U 124 ]
-[; ;main.c: 270: commandWDT(commandData[4]);
-"270
-[e ( _commandWDT (1 *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 271: break;
-"271
-[e $U 116  ]
-[; ;main.c: 272: case 'h':
-"272
-[e :U 125 ]
-[; ;main.c: 274: break;
-"274
-[e $U 116  ]
-[; ;main.c: 275: case 'r':
-"275
-[e :U 126 ]
-[; ;main.c: 276: commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-"276
-[e ( _commandSwitchIntProcess (3 , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 277: break;
-"277
-[e $U 116  ]
-[; ;main.c: 278: default:
-"278
-[e :U 127 ]
-[; ;main.c: 280: break;
-"280
-[e $U 116  ]
-"281
+"102
 }
-[; ;main.c: 281: }
+[e :U 107 ]
+[; ;main.c: 101: }
+[; ;main.c: 102: }
+[; ;main.c: 106: if(get_NTRX_pll_setting_counter_min() >= 1){
+"106
+[e $ ! >= ( _get_NTRX_pll_setting_counter_min ..  -> -> 1 `i `ui 114  ]
+{
+[; ;main.c: 108: put_lf();
+"108
+[e ( _put_lf ..  ]
+[; ;main.c: 109: for(UBYTE i=0; i<6; i++){
+"109
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 6 `i 115  ]
 [e $U 116  ]
-"250
-[e :U 117 ]
-[e [\ *U + &U _commandData * -> -> -> 3 `i `ui `ux -> -> # *U &U _commandData `ui `ux , $ -> -> 109 `ui `uc 118
- , $ -> -> 112 `ui `uc 119
- , $ -> -> 110 `ui `uc 120
- , $ -> -> 105 `ui `uc 121
- , $ -> -> 101 `ui `uc 122
- , $ -> -> 117 `ui `uc 123
- , $ -> -> 119 `ui `uc 124
- , $ -> -> 104 `ui `uc 125
- , $ -> -> 114 `ui `uc 126
- 127 ]
-"281
-[e :U 116 ]
-"289
-}
 [e :U 115 ]
-"290
-}
-[; ;main.c: 289: }
-[; ;main.c: 290: }else{
-[e $U 128  ]
-[e :U 114 ]
 {
-[; ;main.c: 292: PORTBbits.RB2 = 1;
-"292
-[e = . . _PORTBbits 0 2 -> -> 1 `i `uc ]
-[; ;main.c: 293: _delay((unsigned long)((1000)*(10000000/4000.0)));
-"293
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 294: PORTBbits.RB2 = 0;
-"294
-[e = . . _PORTBbits 0 2 -> -> 0 `i `uc ]
-"295
+[; ;main.c: 110: putChar(0xF3);
+"110
+[e ( _putChar (1 -> -> 243 `i `uc ]
+"111
 }
-[e :U 128 ]
-"296
+"109
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 115  ]
+[e :U 116 ]
+"111
 }
-[e :U 101 ]
-"78
-[e $U 102  ]
-[e :U 103 ]
-[; ;main.c: 295: }
-[; ;main.c: 296: }
-[; ;main.c: 298: }
-"298
+[; ;main.c: 111: }
+[; ;main.c: 112: put_lf();
+"112
+[e ( _put_lf ..  ]
+[v F1711 `uc ~T0 @X0 -> 2 `i s ]
+[i F1711
+:U ..
+"113
+-> -> 0 `i `uc
+..
+]
+[v _melting_status `uc ~T0 @X0 -> 2 `i a ]
+[; ;main.c: 113: UBYTE melting_status[2] = {0x00};
+[e = _melting_status F1711 ]
+[; ;main.c: 114: melting_status[0] = checkMeltingStatus(0x50);
+"114
+[e = *U + &U _melting_status * -> -> -> 0 `i `ui `ux -> -> # *U &U _melting_status `ui `ux ( _checkMeltingStatus (1 -> -> 80 `i `uc ]
+[; ;main.c: 115: melting_status[1] = checkMeltingStatus(0x52);
+"115
+[e = *U + &U _melting_status * -> -> -> 1 `i `ui `ux -> -> # *U &U _melting_status `ui `ux ( _checkMeltingStatus (1 -> -> 82 `i `uc ]
+[; ;main.c: 116: if((melting_status[0] < 4)&&(melting_status[1] < 4)) {
+"116
+[e $ ! && < -> *U + &U _melting_status * -> -> -> 0 `i `ui `ux -> -> # *U &U _melting_status `ui `ux `i -> 4 `i < -> *U + &U _melting_status * -> -> -> 1 `i `ui `ux -> -> # *U &U _melting_status `ui `ux `i -> 4 `i 118  ]
+{
+[; ;main.c: 117: resetEPS();
+"117
+[e ( _resetEPS ..  ]
+"118
+}
+[e :U 118 ]
+[; ;main.c: 118: }
+[; ;main.c: 119: setPLL();
+"119
+[e ( _setPLL ..  ]
+[; ;main.c: 120: set_NTRX_pll_setting_counter(0,0,0,0);
+"120
+[e ( _set_NTRX_pll_setting_counter (4 , , , -> -> 0 `i `ui -> -> 0 `i `ui -> -> 0 `i `ui -> -> 0 `i `ui ]
+[; ;main.c: 121: for(UBYTE i=0; i<6; i++){
+"121
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 6 `i 119  ]
+[e $U 120  ]
+[e :U 119 ]
+{
+[; ;main.c: 122: putChar(0xF4);
+"122
+[e ( _putChar (1 -> -> 244 `i `uc ]
+"123
+}
+"121
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 119  ]
+[e :U 120 ]
+"123
+}
+"124
+}
+[e :U 114 ]
+[; ;main.c: 123: }
+[; ;main.c: 124: }
+[; ;main.c: 127: if(get_init_ope_counter_min() >= 1){
+"127
+[e $ ! >= ( _get_init_ope_counter_min ..  -> -> 1 `i `ui 122  ]
+{
+[; ;main.c: 129: put_lf();
+"129
+[e ( _put_lf ..  ]
+[; ;main.c: 130: for(UBYTE i=0; i<6; i++){
+"130
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 6 `i 123  ]
+[e $U 124  ]
+[e :U 123 ]
+{
+[; ;main.c: 131: putChar(0xF5);
+"131
+[e ( _putChar (1 -> -> 245 `i `uc ]
+"132
+}
+"130
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 123  ]
+[e :U 124 ]
+"132
+}
+[; ;main.c: 132: }
+[; ;main.c: 133: put_lf();
+"133
+[e ( _put_lf ..  ]
+[; ;main.c: 134: error_status = InitialOperation();
+"134
+[e = _error_status ( _InitialOperation ..  ]
+[; ;main.c: 135: WriteOneByteToMainAndSubB0EEPROM(0x81,0x0c,error_status);
+"135
+[e ( _WriteOneByteToMainAndSubB0EEPROM (3 , , -> -> 129 `i `uc -> -> 12 `i `uc _error_status ]
+[; ;main.c: 136: errorCheckInitialOpe();
+"136
+[e ( _errorCheckInitialOpe ..  ]
+[; ;main.c: 137: set_init_ope_counter(0,0);
+"137
+[e ( _set_init_ope_counter (2 , -> -> 0 `i `ui -> -> 0 `i `ui ]
+[; ;main.c: 138: for(UBYTE i=0; i<6; i++){
+"138
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 6 `i 126  ]
+[e $U 127  ]
+[e :U 126 ]
+{
+[; ;main.c: 139: putChar(0xF6);
+"139
+[e ( _putChar (1 -> -> 246 `i `uc ]
+"140
+}
+"138
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 126  ]
+[e :U 127 ]
+"140
+}
+"141
+}
+[e :U 122 ]
+[; ;main.c: 140: }
+[; ;main.c: 141: }
+[; ;main.c: 145: if(get_bat_meas_counter_sec() >= 10){
+"145
+[e $ ! >= ( _get_bat_meas_counter_sec ..  -> -> 10 `i `ui 129  ]
+{
+[; ;main.c: 146: put_lf();
+"146
+[e ( _put_lf ..  ]
+[; ;main.c: 147: for(UBYTE i=0; i<6; i++){
+"147
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 6 `i 130  ]
+[e $U 131  ]
+[e :U 130 ]
+{
+[; ;main.c: 148: putChar(0xF7);
+"148
+[e ( _putChar (1 -> -> 247 `i `uc ]
+"149
+}
+"147
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 130  ]
+[e :U 131 ]
+"149
+}
+[; ;main.c: 149: }
+[; ;main.c: 150: put_lf();
+"150
+[e ( _put_lf ..  ]
+"152
+[v _SatMode_error_status `us ~T0 @X0 1 a ]
+[; ;main.c: 152: UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+[e = _SatMode_error_status ( _MeasureBatVoltageAndChangeSatMode ..  ]
+[; ;main.c: 153: put_lf();
+"153
+[e ( _put_lf ..  ]
+[; ;main.c: 154: putChar(0xAA);
+"154
+[e ( _putChar (1 -> -> 170 `i `uc ]
+[; ;main.c: 155: putChar(0xAA);
+"155
+[e ( _putChar (1 -> -> 170 `i `uc ]
+[; ;main.c: 156: putChar(0xAA);
+"156
+[e ( _putChar (1 -> -> 170 `i `uc ]
+[; ;main.c: 157: putChar((UBYTE)(SatMode_error_status>>8));
+"157
+[e ( _putChar (1 -> >> -> _SatMode_error_status `ui -> 8 `i `uc ]
+[; ;main.c: 158: putChar((UBYTE)SatMode_error_status);
+"158
+[e ( _putChar (1 -> _SatMode_error_status `uc ]
+[; ;main.c: 159: putChar(0xAA);
+"159
+[e ( _putChar (1 -> -> 170 `i `uc ]
+[; ;main.c: 160: putChar(0xAA);
+"160
+[e ( _putChar (1 -> -> 170 `i `uc ]
+[; ;main.c: 161: putChar(0xAA);
+"161
+[e ( _putChar (1 -> -> 170 `i `uc ]
+[; ;main.c: 162: put_lf();
+"162
+[e ( _put_lf ..  ]
+[; ;main.c: 163: if (SatMode_error_status != 0){
+"163
+[e $ ! != -> _SatMode_error_status `ui -> -> 0 `i `ui 133  ]
+{
+[; ;main.c: 164: SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+"164
+[e = _SatMode_error_status ( _MeasureBatVoltageAndChangeSatMode ..  ]
+[; ;main.c: 165: put_lf();
+"165
+[e ( _put_lf ..  ]
+[; ;main.c: 166: putChar(0xBB);
+"166
+[e ( _putChar (1 -> -> 187 `i `uc ]
+[; ;main.c: 167: putChar(0xBB);
+"167
+[e ( _putChar (1 -> -> 187 `i `uc ]
+[; ;main.c: 168: putChar(0xBB);
+"168
+[e ( _putChar (1 -> -> 187 `i `uc ]
+[; ;main.c: 169: putChar((UBYTE)(SatMode_error_status>>8));
+"169
+[e ( _putChar (1 -> >> -> _SatMode_error_status `ui -> 8 `i `uc ]
+[; ;main.c: 170: putChar((UBYTE)SatMode_error_status);
+"170
+[e ( _putChar (1 -> _SatMode_error_status `uc ]
+[; ;main.c: 171: putChar(0xBB);
+"171
+[e ( _putChar (1 -> -> 187 `i `uc ]
+[; ;main.c: 172: putChar(0xBB);
+"172
+[e ( _putChar (1 -> -> 187 `i `uc ]
+[; ;main.c: 173: putChar(0xBB);
+"173
+[e ( _putChar (1 -> -> 187 `i `uc ]
+[; ;main.c: 174: put_lf();
+"174
+[e ( _put_lf ..  ]
+"175
+}
+[e :U 133 ]
+[; ;main.c: 175: }
+[; ;main.c: 176: WriteOneByteToMainAndSubB0EEPROM(0x81, 0x14, (UBYTE)(SatMode_error_status>>8));
+"176
+[e ( _WriteOneByteToMainAndSubB0EEPROM (3 , , -> -> 129 `i `uc -> -> 20 `i `uc -> >> -> _SatMode_error_status `ui -> 8 `i `uc ]
+[; ;main.c: 177: WriteOneByteToMainAndSubB0EEPROM(0x81, 0x15, (UBYTE)SatMode_error_status);
+"177
+[e ( _WriteOneByteToMainAndSubB0EEPROM (3 , , -> -> 129 `i `uc -> -> 21 `i `uc -> _SatMode_error_status `uc ]
+[; ;main.c: 178: set_bat_meas_counter(0,0);
+"178
+[e ( _set_bat_meas_counter (2 , -> -> 0 `i `ui -> -> 0 `i `ui ]
+[; ;main.c: 179: put_lf();
+"179
+[e ( _put_lf ..  ]
+[; ;main.c: 180: for(UBYTE i=0; i<6; i++){
+"180
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 6 `i 134  ]
+[e $U 135  ]
+[e :U 134 ]
+{
+[; ;main.c: 181: putChar(0xF8);
+"181
+[e ( _putChar (1 -> -> 248 `i `uc ]
+"182
+}
+"180
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 6 `i 134  ]
+[e :U 135 ]
+"182
+}
+[; ;main.c: 182: }
+[; ;main.c: 183: put_lf();
+"183
+[e ( _put_lf ..  ]
+"184
+}
+[e :U 129 ]
+[; ;main.c: 184: }
+[; ;main.c: 187: putChar('m');
+"187
+[e ( _putChar (1 -> -> 109 `ui `uc ]
+[; ;main.c: 188: putChar('m');
+"188
+[e ( _putChar (1 -> -> 109 `ui `uc ]
+[; ;main.c: 189: putChar('m');
+"189
+[e ( _putChar (1 -> -> 109 `ui `uc ]
+[; ;main.c: 190: putChar('m');
+"190
+[e ( _putChar (1 -> -> 109 `ui `uc ]
+[; ;main.c: 191: putChar('m');
+"191
+[e ( _putChar (1 -> -> 109 `ui `uc ]
+[; ;main.c: 192: putChar('m');
+"192
+[e ( _putChar (1 -> -> 109 `ui `uc ]
+[; ;main.c: 193: putChar('m');
+"193
+[e ( _putChar (1 -> -> 109 `ui `uc ]
+[; ;main.c: 194: sendPulseWDT();
+"194
+[e ( _sendPulseWDT ..  ]
+[; ;main.c: 195: put_lf();
+"195
+[e ( _put_lf ..  ]
+[; ;main.c: 196: delay_s(1);
+"196
+[e ( _delay_s (1 -> -> 1 `i `us ]
+"342
+}
+[e :U 104 ]
+"80
+[e $U 105  ]
+[e :U 106 ]
+[; ;main.c: 342: }
+[; ;main.c: 344: }
+"344
 [e :UE 100 ]
 }

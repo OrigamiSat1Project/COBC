@@ -88,8 +88,10 @@
 #define InitialOpe_error_status_addressLow      0x0c
 
 
-#define SatMode_error_status_addresshigh 0x81
-#define SatMode_error_status_addresslow 0x09
+#define SatMode_error_status1_addresshigh 0x81
+#define SatMode_error_status1_addresslow 0x14
+#define SatMode_error_status2_addresshigh 0x81
+#define SatMode_error_status2_addresslow 0x15
 #define SW_Change_SavingMode_ADC_addresshigh 0x81
 #define SW_Change_SavingMode_ADC_addresslow 0x13
 

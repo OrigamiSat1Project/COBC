@@ -38,8 +38,8 @@ void Init_MPU(void)
     TRISE  = 0b00000000;	
 
 	//Port Initial Value Setting	
-//	PORTA  = 0x00;          //WDT on
-    PORTA  = 0b00000010;    //WDT off   //FIXME: for debug !!!!
+	PORTA  = 0x00;          //WDT on
+//    PORTA  = 0b00000010;    //WDT off   //FIXME: for debug !!!!
 	PORTB  = 0x00;
 	PORTC  = 0x00;
     //PORTD  = 0x00;

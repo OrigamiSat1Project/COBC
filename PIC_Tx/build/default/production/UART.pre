@@ -2029,7 +2029,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 16 "UART.h"
+# 20 "UART.h"
 UBYTE UPLINK_COMMAND_SIZE = 32;
 
 void Init_SERIAL(void);
@@ -2042,6 +2042,7 @@ void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
 void put_error(void);
 void put_ok(void);
+void put_lf(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void UARTbufferClear(void);
 void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
@@ -4274,7 +4275,7 @@ UINT get_timer_counter_only_getChar(void);
 void SendPacketWithDataSize(UBYTE *,UINT);
 void SendPacket(UBYTE *);
 
-# 14 "CRC16.h"
+# 16 "CRC16.h"
 UWORD crc16(UWORD, UBYTE *, UINT);
 UWORD Identify_CRC16(UBYTE *);
 UWORD CRC_check(UBYTE *, UINT);
@@ -4293,9 +4294,10 @@ void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
 void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
+void WriteLastCommandStatusToEEPROM(UBYTE);
 void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 
-# 42
+# 43
 void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
 void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
@@ -4306,18 +4308,21 @@ void Init_SERIAL(void){
 
 SPBRG = 10;
 
-GIE = 1;
-PEIE = 1;
+
+
 BRGH = 0;
 
 SYNC = 0;
 SPEN = 1;
 CREN = 1;
 SREN = 0;
-RCIF = 0;
-TXIE = 0;
+INTCON = 0b11000000;
+PIR1 = 0b00100000;
+PIE1 = 0b00100000;
+PIE2 = 0b00000000;
 
-RCIE = 1;
+
+
 TX9 = 0;
 RX9 = 0;
 TXEN = 0;
@@ -4334,11 +4339,20 @@ __nop();
 CREN = 1;
 }
 
+UINT break_counter = 0;
 
-set_timer_counter_only_getChar(0);
+
+
 while(!RCIF){
-if(get_timer_counter_only_getChar() > 1000) break;
+break_counter ++;
+if(break_counter >= 100){
+
+__nop();
+break_counter = 0;
+break;
 }
+}
+RCIF = 0;
 return RCREG;
 }
 
@@ -4372,7 +4386,7 @@ Command[9] = CRC & 0x00FF;
 putString(Command);
 }
 
-# 89
+# 101
 void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 if (GIE_status == 0x01){
 INTCONbits.GIE = 1;
@@ -4389,18 +4403,26 @@ INTCONbits.PEIE = 0;
 
 
 void put_error(void){
-putch('E');
-putch('R');
-putch('R');
-putch('O');
-putch('R');
-putch('!');
+putChar('E');
+putChar('R');
+putChar('R');
+putChar('O');
+putChar('R');
+putChar('\r');
+putChar('\n');
 }
 
 void put_ok(void){
-putch('O');
-putch('K');
-putch('!');
+putChar('O');
+putChar('K');
+putChar('\r');
+putChar('\n');
+
+}
+
+void put_lf(void){
+putChar('\r');
+putChar('\n');
 }
 
 void changeBaudRate(UBYTE type_select,UBYTE SPBRG_number,UBYTE BRGH_number){
@@ -4448,11 +4470,10 @@ data[5] = CRC >> 8;
 data[6] = CRC & 0x00FF;
 for(UBYTE i=0; i<7; i++){
 putChar(data[i]);
-__nop();
 }
 }
 
-# 201
+# 220
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){
 UBYTE ReadData[];
 switch(command){

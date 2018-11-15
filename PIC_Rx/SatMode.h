@@ -37,11 +37,11 @@
 #define Init_TheresholdBatVol_saving_revival_high 0x02
 #define Init_TheresholdBatVol_saving_revival_low 0x08
     
-UBYTE MeasureBatVoltageAndChangeSatMode(void);
+UWORD MeasureBatVoltageAndChangeSatMode(void);
 UBYTE BitCount(UBYTE);
 void SwitchToSavingMode(void);
 void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
-    
+void testInitSatMode(void);
 
 #endif	/* SATMODE_H */
 

@@ -38,8 +38,8 @@ void InitMPU(void)
 
 	//Port Initial Value Setting	
 	PORTA  = 0x00;
-//	PORTB  = 0x00; //WDT on
-    PORTB  = 0b00001000;  //WDT off
+	PORTB  = 0x00; //WDT on
+//    PORTB  = 0b00001000;  //WDT off
 	PORTC  = 0x00;
     PORTD  = 0x00;
     PORTE  = 0x00;
@@ -250,7 +250,7 @@ void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){
     } else {                     //EPS on
             SEP_SW = LOW;
             RBF_SW = LOW;
-            __delay_ms(1000);
+            __delay_ms(2000);
     }
     
     if(timeHigh == 0x00 && timeLow == 0x00){   
@@ -443,7 +443,7 @@ void onNtrxPowerSupplyCIB(UBYTE timeHigh,UBYTE timeLow){
     send_command[6] = 0x00;
     send_command[7] = 0x00;
     sendCommandByPointer(send_command);
-    __delay_ms(1000);//wait EPS ON
+    __delay_ms(2000);//wait EPS ON
     setPLL();
 //    reviveEPS(timeHigh, timeLow);           
 }

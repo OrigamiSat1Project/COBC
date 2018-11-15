@@ -2029,7 +2029,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 16 "UART.h"
+# 20 "UART.h"
 UBYTE UPLINK_COMMAND_SIZE = 32;
 
 void Init_SERIAL(void);
@@ -2042,6 +2042,7 @@ void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
 void put_error(void);
 void put_ok(void);
+void put_lf(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void UARTbufferClear(void);
 void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
@@ -4304,9 +4305,10 @@ void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
 void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
+void WriteLastCommandStatusToEEPROM(UBYTE);
 void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 
-# 42
+# 43
 void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
 void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
@@ -4354,20 +4356,21 @@ void Init_WDT(void);
 void resetWDT();
 void sendPulseWDT(void);
 
-# 14 "CRC16.h"
+# 16 "CRC16.h"
 UWORD crc16(UWORD, UBYTE *, UINT);
 UWORD Identify_CRC16(UBYTE *);
 UWORD CRC_check(UBYTE *, UINT);
 
-# 13 "ADC.h"
+# 18 "ADC.h"
 void measureAllChanelADC(void);
 void measureDcDcTemperature(void);
 void measureChannel2(void);
 void measureChannel3(void);
 void measureChannel4(void);
 void commandSwitchHKdata(UBYTE, UBYTE, UBYTE, UBYTE);
+UBYTE read5VBusAndSwitchNtrxPower(void);
 
-# 43 "OkError.h"
+# 44 "OkError.h"
 void switchOk(UBYTE);
 void switchError(UBYTE);
 void putErrorNoDownlink(UBYTE);
@@ -4391,37 +4394,25 @@ void interrupt InterReceiver(void);
 #pragma config BOR4V = BOR40V
 #pragma config WRT = OFF
 
-# 270
+
+UBYTE RXDATA[10];
+UBYTE STOCKDATA[10];
+UBYTE ReceiveFlag = 0x00;
+
+# 90
 void main(void) {
 
 _delay((unsigned long)((1000)*(10000000/4000.0)));
 Init_MPU();
 InitI2CMaster(100000);
 Init_SERIAL();
-
+Init_WDT();
 sendPulseWDT();
 delay_s(2);
-putChar('S');
 
-# 301
-HK_test_setting();
-
+# 105
 while(1){
 
-putChar('m');
-
-
-sendPulseWDT();
-_delay((unsigned long)((5000)*(10000000/4000.0)));
-
-measureDcDcTemperature();
-if(RC2 == 0){
-measureChannel2();
-}else{
-}
-
-HKDownlink();
-
-# 360
+# 214
 }
 }
