@@ -60,7 +60,7 @@ void interrupt InterReceiver(void){
 //        putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
 //        putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
 //             end*/
-        ReceiveFlag = UNCORRECT_RECEIVE;
+        ReceiveFlag = CORRECT_RECEIVE;
         if(crc16(0,RXDATA,8) == CRC_check(RXDATA, 8)){
             ReceiveFlag = CORRECT_RECEIVE;
         }
@@ -74,7 +74,8 @@ void interrupt InterReceiver(void){
             //Write to EEPROM for CW Downlink
 //            WriteOneByteToEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow, ReceiveFlag);
         }else{
-            ReceiveFlag = UNCORRECT_RECEIVE;
+//            ReceiveFlag = UNCORRECT_RECEIVE;
+            NOP();
         }
         RCIF = 0;
         putChar(0xff);
@@ -92,8 +93,6 @@ void main(void) {
 //    sendPulseWDT();
     delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
     putChar('S');
-
-
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
 //    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
     
@@ -112,7 +111,7 @@ void main(void) {
 //            }
 //        }  
         //TODO debug send HK 
-        HKDownlink();
+//        HKDownlink();
        
         //======================================================================
         //UART receive process

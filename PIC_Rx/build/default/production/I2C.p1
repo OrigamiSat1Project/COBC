@@ -27,7 +27,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p i __delay ]
 "2661 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
 [v _SMP `Vb ~T0 @X0 0 e@1191 ]
-"56 OkError.h
+"63 OkError.h
 [v _switchError `(v ~T0 @X0 0 ef1`uc ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
@@ -1079,8 +1079,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 45: void TestEEPROM(UBYTE);
 [; ;I2C.h: 47: void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 [; ;I2C.h: 48: void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;OkError.h: 55: void switchOk(UBYTE);
-[; ;OkError.h: 56: void switchError(UBYTE);
+[; ;OkError.h: 62: void switchOk(UBYTE);
+[; ;OkError.h: 63: void switchError(UBYTE);
 [; ;UART.h: 22: void InitSerial(void);
 [; ;UART.h: 23: void putChar(UBYTE c);
 [; ;UART.h: 24: void putString(UBYTE *);
@@ -1088,15 +1088,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 26: void putCrLf(void);
 [; ;UART.h: 28: void put_error(void);
 [; ;UART.h: 29: void put_ok(void);
-[; ;UART.h: 30: void NM_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 31: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 32: void sendCommandByPointer(UBYTE*);
-[; ;UART.h: 33: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE,UBYTE, UBYTE);
-[; ;UART.h: 34: void WriteUART( UBYTE* );
-[; ;UART.h: 35: void UART_buffer_clear(void);
-[; ;UART.h: 36: void changeBaudRate(UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 37: void changeInterruptPermission(UBYTE, UBYTE);
-[; ;UART.h: 38: void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 30: void put_lf(void);
+[; ;UART.h: 31: void NM_waddress(UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 32: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 33: void sendCommandByPointer(UBYTE*);
+[; ;UART.h: 34: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE,UBYTE, UBYTE);
+[; ;UART.h: 35: void WriteUART( UBYTE* );
+[; ;UART.h: 36: void UART_buffer_clear(void);
+[; ;UART.h: 37: void changeBaudRate(UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 38: void changeInterruptPermission(UBYTE, UBYTE);
+[; ;UART.h: 39: void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 "16 I2C.c
 [v _InitI2CMaster `(v ~T0 @X0 1 ef1`Cul ]
 {
@@ -1858,9 +1859,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 337: case 'm':
 "337
 [e :U 148 ]
-[; ;I2C.c: 338: WriteCheckByteToEEPROMs(0x00, 0x97, 0x07, 0b11111111);
-"338
-[e ( _WriteCheckByteToEEPROMs (4 , , , -> -> 0 `i `uc -> -> 151 `i `uc -> -> 7 `i `uc -> -> 255 `i `uc ]
+[; ;I2C.c: 339: WriteOneByteToMainAndSubB0EEPROM(0x97, 0x07, 0b01111110);
+"339
+[e ( _WriteOneByteToMainAndSubB0EEPROM (3 , , -> -> 151 `i `uc -> -> 7 `i `uc -> -> 126 `i `uc ]
 [; ;I2C.c: 340: break;
 "340
 [e $U 142  ]

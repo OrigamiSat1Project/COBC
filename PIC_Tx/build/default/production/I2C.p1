@@ -1455,25 +1455,26 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 22: typedef unsigned short long USLONG;
 [; ;Type_define.h: 23: typedef signed long SDWORD;
 [; ;Type_define.h: 24: typedef unsigned long UDWORD;
-"16 UART.h
+"20 UART.h
 [v _UPLINK_COMMAND_SIZE `uc ~T0 @X0 1 e ]
 [i _UPLINK_COMMAND_SIZE
 -> -> 32 `i `uc
 ]
-[; ;UART.h: 16: UBYTE UPLINK_COMMAND_SIZE = 32;
-[; ;UART.h: 18: void Init_SERIAL(void);
-[; ;UART.h: 19: UBYTE getChar(void);
-[; ;UART.h: 20: void putChar(UBYTE);
-[; ;UART.h: 21: void putString(UBYTE *);
-[; ;UART.h: 22: void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 25: void changeInterruptPermission(UBYTE, UBYTE);
-[; ;UART.h: 26: void put_error(void);
-[; ;UART.h: 27: void put_ok(void);
-[; ;UART.h: 28: void changeBaudRate(UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 29: void UARTbufferClear(void);
-[; ;UART.h: 30: void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
-[; ;UART.h: 31: void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 34: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
+[; ;UART.h: 20: UBYTE UPLINK_COMMAND_SIZE = 32;
+[; ;UART.h: 22: void Init_SERIAL(void);
+[; ;UART.h: 23: UBYTE getChar(void);
+[; ;UART.h: 24: void putChar(UBYTE);
+[; ;UART.h: 25: void putString(UBYTE *);
+[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 29: void changeInterruptPermission(UBYTE, UBYTE);
+[; ;UART.h: 30: void put_error(void);
+[; ;UART.h: 31: void put_ok(void);
+[; ;UART.h: 32: void put_lf(void);
+[; ;UART.h: 33: void changeBaudRate(UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 34: void UARTbufferClear(void);
+[; ;UART.h: 35: void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
+[; ;UART.h: 36: void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 39: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
 [; ;I2C.h: 21: void InitI2CMaster(const UDWORD c);
 [; ;I2C.h: 22: void I2CMasterWait(void);
 [; ;I2C.h: 23: void I2CMasterStart(void);

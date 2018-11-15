@@ -1476,7 +1476,8 @@ USLONG FMTX_Nprg = 87501;
 USLONG CWTX_Nprg = 1400;
 USLONG FMRX_Nprg = 24916;
 
-# 32
+
+
 void FMTX(int Nref, USLONG Nprg);
 void CWTX(int Nref, USLONG Nprg);
 void FMRX(int Nref, USLONG Nprg);
@@ -1492,7 +1493,7 @@ void delay_s(UWORD);
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
-# 55 "OkError.h"
+# 62 "OkError.h"
 void switchOk(UBYTE);
 void switchError(UBYTE);
 
@@ -1693,7 +1694,7 @@ setNref(fmrx, Nref);
 setNprg(fmrx, Nprg);
 }
 
-# 339
+# 318
 void setPLL(void){
 FMTX(2560, FMTX_Nprg);
 CWTX(128, CWTX_Nprg);
@@ -1719,7 +1720,7 @@ break;
 }
 }
 
-# 368
+# 347
 void _NOP(void) {
 for(UBYTE i=0; i<5; i++){
 __nop();

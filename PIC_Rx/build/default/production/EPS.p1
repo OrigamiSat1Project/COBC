@@ -1,4 +1,6 @@
 Version 3.2 HI-TECH Software Intermediate Code
+"20 WDT.h
+[v _sendPulseWDT `(v ~T0 @X0 0 ef ]
 "220 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
 [s S8 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S8 . RB0 RB1 RB2 RB3 RB4 RB5 RB6 RB7 ]
@@ -19,8 +21,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v __delay `JF1089 ~T0 @X0 0 e ]
 [p i __delay ]
-"30 time.h
-[v _delay_ms `(v ~T0 @X0 0 ef1`us ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1069,56 +1069,69 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> -> -> 24916 `i `m `um
 ]
 [; ;FMCW.h: 25: USLONG FMRX_Nprg = 24916;
-[; ;FMCW.h: 32: void FMTX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 33: void CWTX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 34: void FMRX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 35: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 36: void setNref(UBYTE unitID, int Nref);
-[; ;FMCW.h: 40: void setPLL(void);
-"9 EPS.c
+[; ;FMCW.h: 29: void FMTX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 30: void CWTX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 31: void FMRX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 32: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 33: void setNref(UBYTE unitID, int Nref);
+[; ;FMCW.h: 37: void setPLL(void);
+[; ;MPU.h: 32: void InitMPU(void);
+[; ;MPU.h: 35: void LEDOnOff(void);
+[; ;MPU.h: 36: void debugLEDyellow(void);
+[; ;MPU.h: 38: UBYTE invertState(UBYTE);
+[; ;MPU.h: 40: void onOff5R8G(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 41: void onOffOBC(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 42: void onOffWDT(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 43: void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 45: void killEPS(void);
+[; ;MPU.h: 46: void onEPS(void);
+[; ;MPU.h: 47: void resetEPS(void);
+[; ;MPU.h: 48: void switchPowerEPS(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 49: void reviveEPS(UBYTE, UBYTE);
+[; ;MPU.h: 51: void changeInOut(UINT, UBYTE);
+[; ;MPU.h: 52: void changeHighLow(UINT, UBYTE);
+[; ;MPU.h: 53: void changeXtalFrequency(UBYTE);
+[; ;MPU.h: 55: void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 56: void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 57: void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 59: void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
+[; ;MPU.h: 60: void offNtrxPowerSupplyCIB(void);
+[; ;WDT.h: 17: void InitWDT(void);
+[; ;WDT.h: 18: void commandWDT(UBYTE);
+[; ;WDT.h: 19: void resetWDT();
+[; ;WDT.h: 20: void sendPulseWDT(void);
+[; ;WDT.h: 21: void WDTwait(void);
+"11 EPS.c
 [v _Reset_EPS `(v ~T0 @X0 1 ef ]
 {
-[; ;EPS.c: 9: void Reset_EPS(void){
+[; ;EPS.c: 11: void Reset_EPS(void){
 [e :U _Reset_EPS ]
 [f ]
-[; ;EPS.c: 10: PORTBbits.RB4 = 1;
-"10
-[e = . . _PORTBbits 0 4 -> -> 1 `i `uc ]
-[; ;EPS.c: 11: PORTAbits.RA1 = 1;
-"11
-[e = . . _PORTAbits 0 1 -> -> 1 `i `uc ]
-[; ;EPS.c: 12: _delay((unsigned long)((5000)*(10000000/4000.0)));
+[; ;EPS.c: 12: sendPulseWDT();
 "12
-[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 13: PORTBbits.RB4 = 0;
+[e ( _sendPulseWDT ..  ]
+[; ;EPS.c: 13: PORTBbits.RB4 = 1;
 "13
-[e = . . _PORTBbits 0 4 -> -> 0 `i `uc ]
+[e = . . _PORTBbits 0 4 -> -> 1 `i `uc ]
 [; ;EPS.c: 14: PORTAbits.RA1 = 0;
 "14
 [e = . . _PORTAbits 0 1 -> -> 0 `i `uc ]
 [; ;EPS.c: 15: _delay((unsigned long)((500)*(10000000/4000.0)));
 "15
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 16: }
+[; ;EPS.c: 16: PORTBbits.RB4 = 0;
 "16
-[e :UE 95 ]
-}
+[e = . . _PORTBbits 0 4 -> -> 0 `i `uc ]
+[; ;EPS.c: 17: PORTAbits.RA1 = 0;
+"17
+[e = . . _PORTAbits 0 1 -> -> 0 `i `uc ]
+[; ;EPS.c: 18: _delay((unsigned long)((2000)*(10000000/4000.0)));
 "18
-[v _ResetEPSandSetPLL `(v ~T0 @X0 1 ef ]
-{
-[; ;EPS.c: 18: void ResetEPSandSetPLL(void){
-[e :U _ResetEPSandSetPLL ]
-[f ]
-[; ;EPS.c: 19: Reset_EPS();
+[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;EPS.c: 19: sendPulseWDT();
 "19
-[e ( _Reset_EPS ..  ]
-[; ;EPS.c: 20: delay_ms(5000);
+[e ( _sendPulseWDT ..  ]
+[; ;EPS.c: 20: }
 "20
-[e ( _delay_ms (1 -> -> 5000 `i `us ]
-[; ;EPS.c: 24: delay_ms(5000);
-"24
-[e ( _delay_ms (1 -> -> 5000 `i `us ]
-[; ;EPS.c: 25: }
-"25
-[e :UE 96 ]
+[e :UE 95 ]
 }

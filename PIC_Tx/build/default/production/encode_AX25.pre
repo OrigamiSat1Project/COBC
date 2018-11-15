@@ -2029,7 +2029,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 16 "UART.h"
+# 20 "UART.h"
 UBYTE UPLINK_COMMAND_SIZE = 32;
 
 void Init_SERIAL(void);
@@ -2042,6 +2042,7 @@ void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
 void put_error(void);
 void put_ok(void);
+void put_lf(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void UARTbufferClear(void);
 void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
@@ -4278,39 +4279,40 @@ void SendPacket(UBYTE *);
 void SendByte(UBYTE);
 void flipout(void);
 void fcsbit(UBYTE);
-UBYTE Packetmaker(UBYTE *);
+UINT Packetmaker(UBYTE *);
 
 
 
 
-UBYTE eflag = 0;
-UBYTE efcsflag = 0;
-UBYTE estuff = 0;
+UINT eflag = 0;
+UINT efcsflag = 0;
+UINT estuff = 0;
 UBYTE efcslo, efcshi;
 UBYTE ePacket[52];
-BIT ebitstatus = 0;
+UINT ebitstatus = 0;
 
 # 39
-UBYTE Packetmaker(UBYTE *eDataField){
-for(UBYTE i=0;i<6;i++){
+UINT Packetmaker(UBYTE *eDataField){
+for(UINT i=0;i<6;i++){
 ePacket[i] = "JQ1YCZ"[i] << 1;
 }
 ePacket[6] = 0x60;
-for(UBYTE i=0;i<6;i++){
+for(UINT i=0;i<6;i++){
 ePacket[i+7] = "JS1YAX"[i] << 1;
 }
 ePacket[13] = 0xe1;
 ePacket[14] = 0x03;
 ePacket[15] = 0xf0;
-const UBYTE Datanum = 36;
+
+UINT Datanum = 36;
 
 
-for(UBYTE i=0;i<Datanum;i++){
+for(UINT i=0;i<Datanum;i++){
 ePacket[16+i] = eDataField[i];
 }
 
 
-for(UBYTE i=0;i<16+Datanum;i++){
+for(UINT i=0;i<16+Datanum;i++){
 putch(ePacket[i]);
 }
 return 16+Datanum;
@@ -4318,7 +4320,7 @@ return 16+Datanum;
 
 void SendPacket(UBYTE *eDataField){
 
-UBYTE Packetnum;
+UINT Packetnum;
 Packetnum = 0;
 Packetnum = Packetmaker(eDataField);
 ebitstatus = 1;
@@ -4327,27 +4329,29 @@ estuff = 0;
 
 eflag = 1;
 efcsflag = 0;
-for(UBYTE i=0;i<27;i++){
+for(UINT i=0;i<27;i++){
 SendByte(0x7e);
 }
 eflag = 0;
 
-for(UBYTE i=0;i<Packetnum;i++){
+for(UINT i=0;i<Packetnum;i++){
 SendByte(ePacket[i]);
 }
 
 
 
 efcsflag = 1;
-efcslo ^= 0xff;
-efcshi ^= 0xff;
+
+
+efcslo = efcslo ^ 0xff;
+efcshi = efcshi ^ 0xff;
 SendByte(efcslo);
 SendByte(efcshi);
 efcsflag = 0;
 
 
 eflag = 1;
-for(UBYTE i=0;i<6;i++){
+for(UINT i=0;i<6;i++){
 SendByte(0x7e);
 }
 }
@@ -4355,8 +4359,8 @@ SendByte(0x7e);
 
 void SendByte(UBYTE byte){
 UBYTE bt;
-for(UBYTE i=0;i<8;i++){
-bt = (UBYTE)(byte & 0x01);
+for(UINT i=0;i<8;i++){
+bt = byte & 0x01;
 
 if(efcsflag == 0 && eflag == 0){
 fcsbit(bt);
@@ -4373,7 +4377,7 @@ flipout();
 }
 }
 _delay((unsigned long)((795)*(10000000/4000000.0)));
-byte = (UBYTE)(byte >> 1);
+byte = byte >> 1;
 }
 }
 
@@ -4392,8 +4396,14 @@ ebitstatus = 0;
 
 void fcsbit(UBYTE tbyte){
 
-# 145
-if(((STATUS & 0x01)^(tbyte)) == 0x01){
+
+# 143
+#asm
+        BCF 03,0
+        RRF _efcshi,F
+        RRF _efcslo,F
+#endasm 
+    if(((STATUS & 0x01)^(tbyte)) == 0x01){
 efcshi ^= 0x84;
 efcslo ^= 0x08;
 }

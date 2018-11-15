@@ -1507,7 +1507,7 @@ void TestEEPROM(UBYTE);
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
-# 55 "OkError.h"
+# 62 "OkError.h"
 void switchOk(UBYTE);
 void switchError(UBYTE);
 
@@ -1520,6 +1520,7 @@ void putCrLf(void);
 
 void put_error(void);
 void put_ok(void);
+void put_lf(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 void sendCommandByPointer(UBYTE*);
@@ -1780,8 +1781,8 @@ case 't':
 TestEEPROM(slaveAdress);
 break;
 case 'm':
-WriteCheckByteToEEPROMs(0x00, 0x97, 0x07, 0b11111111);
 
+WriteOneByteToMainAndSubB0EEPROM(0x97, 0x07, 0b01111110);
 break;
 default:
 switchError(0x21);

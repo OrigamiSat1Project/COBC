@@ -4,6 +4,140 @@
 # 4 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\__size_t.h"
 typedef unsigned size_t;
 
+# 7 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdarg.h"
+typedef void * va_list[1];
+
+#pragma intrinsic(__va_start)
+extern void * __va_start(void);
+
+#pragma intrinsic(__va_arg)
+extern void * __va_arg(void *, ...);
+
+# 43 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h"
+struct __prbuf
+{
+char * ptr;
+void (* func)(char);
+};
+
+# 29 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\errno.h"
+extern int errno;
+
+# 12 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\conio.h"
+extern void init_uart(void);
+
+extern char getch(void);
+extern char getche(void);
+extern void putch(char);
+extern void ungetch(char);
+
+extern __bit kbhit(void);
+
+# 23
+extern char * cgets(char *);
+extern void cputs(const char *);
+
+# 88 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdio.h"
+extern int cprintf(char *, ...);
+#pragma printf_check(cprintf)
+
+
+
+extern int _doprnt(struct __prbuf *, const register char *, register va_list);
+
+
+# 180
+#pragma printf_check(vprintf) const
+#pragma printf_check(vsprintf) const
+
+extern char * gets(char *);
+extern int puts(const char *);
+extern int scanf(const char *, ...) __attribute__((unsupported("scanf() is not supported by this compiler")));
+extern int sscanf(const char *, const char *, ...) __attribute__((unsupported("sscanf() is not supported by this compiler")));
+extern int vprintf(const char *, va_list) __attribute__((unsupported("vprintf() is not supported by this compiler")));
+extern int vsprintf(char *, const char *, va_list) __attribute__((unsupported("vsprintf() is not supported by this compiler")));
+extern int vscanf(const char *, va_list ap) __attribute__((unsupported("vscanf() is not supported by this compiler")));
+extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupported("vsscanf() is not supported by this compiler")));
+
+#pragma printf_check(printf) const
+#pragma printf_check(sprintf) const
+extern int sprintf(char *, const char *, ...);
+extern int printf(const char *, ...);
+
+# 7 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdlib.h"
+typedef unsigned short wchar_t;
+
+# 15
+typedef struct {
+int rem;
+int quot;
+} div_t;
+typedef struct {
+unsigned rem;
+unsigned quot;
+} udiv_t;
+typedef struct {
+long quot;
+long rem;
+} ldiv_t;
+typedef struct {
+unsigned long quot;
+unsigned long rem;
+} uldiv_t;
+
+# 53
+extern double atof(const char *);
+extern double strtod(const char *, const char **);
+extern int atoi(const char *);
+extern unsigned xtoi(const char *);
+extern long atol(const char *);
+extern long strtol(const char *, char **, int);
+
+extern int rand(void);
+extern void srand(unsigned int);
+extern void * calloc(size_t, size_t);
+extern div_t div(int numer, int denom);
+extern udiv_t udiv(unsigned numer, unsigned denom);
+extern ldiv_t ldiv(long numer, long denom);
+extern uldiv_t uldiv(unsigned long numer,unsigned long denom);
+extern unsigned long _lrotl(unsigned long value, unsigned int shift);
+extern unsigned long _lrotr(unsigned long value, unsigned int shift);
+extern unsigned int _rotl(unsigned int value, unsigned int shift);
+extern unsigned int _rotr(unsigned int value, unsigned int shift);
+
+
+
+
+extern void * malloc(size_t);
+extern void free(void *);
+extern void * realloc(void *, size_t);
+
+
+# 13 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\xc8debug.h"
+#pragma intrinsic(__builtin_software_breakpoint)
+extern void __builtin_software_breakpoint(void);
+
+# 86 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdlib.h"
+extern int atexit(void (*)(void));
+extern char * getenv(const char *);
+extern char ** environ;
+extern int system(char *);
+extern void qsort(void *, size_t, size_t, int (*)(const void *, const void *));
+extern void * bsearch(const void *, void *, size_t, size_t, int(*)(const void *, const void *));
+extern int abs(int);
+extern long labs(long);
+
+extern char * itoa(char * buf, int val, int base);
+extern char * utoa(char * buf, unsigned val, int base);
+
+
+
+
+extern char * ltoa(char * buf, long val, int base);
+extern char * ultoa(char * buf, unsigned long val, int base);
+
+extern char * ftoa(float f, int * status);
+
 # 14 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\string.h"
 extern void * memcpy(void *, const void *, size_t);
 extern void * memmove(void *, const void *, size_t);
@@ -40,11 +174,6 @@ extern char * strrichr(const char *, int);
 extern const char __xc8_OPTIM_SPEED;
 
 extern double __fpnormalize(double);
-
-
-# 13 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\xc8debug.h"
-#pragma intrinsic(__builtin_software_breakpoint)
-extern void __builtin_software_breakpoint(void);
 
 # 50 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h"
 extern volatile unsigned char INDF @ 0x000;
@@ -1506,13 +1635,13 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 22 "ADC.h"
+# 17 "ADC.h"
 void initADC(void);
 void ReadBatVoltage(void);
 void SendBatVoltage(void);
 
 void ReadBatVoltageWithPointer(UBYTE*);
-void MeasureBatVoltageAnChangeSatMode(void);
+UBYTE MeasureBatVoltageAndChangeSatMode(void);
 
 # 32 "MPU.h"
 void InitMPU(void);
@@ -1530,6 +1659,7 @@ void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
 
 void killEPS(void);
 void onEPS(void);
+void resetEPS(void);
 void switchPowerEPS(UBYTE, UBYTE, UBYTE);
 void reviveEPS(UBYTE, UBYTE);
 
@@ -1558,6 +1688,7 @@ void putCrLf(void);
 
 void put_error(void);
 void put_ok(void);
+void put_lf(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 void sendCommandByPointer(UBYTE*);
@@ -1569,7 +1700,7 @@ void changeInterruptPermission(UBYTE, UBYTE);
 void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
 # 25 "decodeAX25.h"
-UBYTE getBit(void);
+UINT getBit(void);
 void receiveDataPacket(UBYTE*);
 
 # 20 "I2C.h"
@@ -1603,8 +1734,10 @@ void TestEEPROM(UBYTE);
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
-# 13 "initial_operation.h"
-void InitialOperation(void);
+# 19 "initial_operation.h"
+void testInitialOpe(void);
+void errorCheckInitialOpe(void);
+UBYTE InitialOperation(void);
 UBYTE bitCalResult(UBYTE);
 UBYTE checkMeltingStatus(UBYTE);
 
@@ -1613,7 +1746,8 @@ USLONG FMTX_Nprg = 87501;
 USLONG CWTX_Nprg = 1400;
 USLONG FMRX_Nprg = 24916;
 
-# 32
+
+
 void FMTX(int Nref, USLONG Nprg);
 void CWTX(int Nref, USLONG Nprg);
 void FMRX(int Nref, USLONG Nprg);
@@ -1640,7 +1774,7 @@ UWORD crc16(UWORD, UBYTE *, UINT);
 UWORD identifyCRC16(UBYTE *);
 UWORD checkCRC(UBYTE *, UINT);
 
-# 55 "OkError.h"
+# 62 "OkError.h"
 void switchOk(UBYTE);
 void switchError(UBYTE);
 
@@ -1648,8 +1782,11 @@ void switchError(UBYTE);
 void initTimer(void);
 void interrupt TimerCheck(void);
 
-void set_wdt_pulse_counter(UINT time_sec);
-UINT get_wdt_pulse_counter_sec(void);
+void set_NTRX_pll_setting_counter(UINT, UINT, UINT, UINT);
+UINT get_NTRX_pll_setting_counter_sec(void);
+UINT get_NTRX_pll_setting_counter_min(void);
+UINT get_NTRX_pll_setting_counter_hour(void);
+UINT get_NTRX_pll_setting_counter_day(void);
 
 void set_eps_reset_counter(UINT, UINT);
 UINT get_eps_reset_counter_sec(void);
@@ -1671,8 +1808,11 @@ UINT get_timer_counter(UBYTE unit);
 
 void reset_timer(void);
 
+# 39 "SatMode.h"
+UBYTE MeasureBatVoltageAndChangeSatMode(void);
 
-# 26 "main.c"
+
+# 27 "main.c"
 #pragma config FOSC = HS
 #pragma config WDTE = OFF
 #pragma config PWRTE = ON
@@ -1684,7 +1824,8 @@ void reset_timer(void);
 
 
 
-UBYTE lastCommandID;
+
+UBYTE lastCommandID=0xff;
 
 
 void main(void) {
@@ -1697,73 +1838,33 @@ InitMPU();
 InitI2CMaster(100000);
 initTimer();
 
-# 69
-_delay((unsigned long)((2000)*(10000000/4000.0)));
+RC5 = 1;
 
-# 86
+
+_delay((unsigned long)((500)*(10000000/4000.0)));
+
+
+
 setPLL();
 
 
 
 _delay((unsigned long)((500)*(10000000/4000.0)));
 
-# 100
-putChar('Y');
 putChar('S');
 
-
-WriteOneByteToEEPROM(0x50,0x84,0x80,0x50);
-WriteOneByteToEEPROM(0x50, 0x89, 0x00,0x02);
-WriteOneByteToEEPROM(0x50, 0x8A, 0x00,0x1D);
-
-putChar('A');
-
-
-
-putChar('B');
+# 78
+UBYTE error_status = 0x00;
 
 while(1){
 
-delay_ms(500);
-putChar('m');
-delay_ms(500);
-
-# 124
-if(get_eps_reset_counter_sec() >= 5){
-putChar('E');
-putChar('E');
-putChar('E');
-Reset_EPS();
-setPLL();
-
-reset_timer();
-set_eps_reset_counter(0,0);
-}
+# 152
+sendPulseWDT();
+delay_ms(2000);
 
 
 
-if(get_init_ope_counter_sec() >= 10){
-putChar('I');
-putChar('I');
-putChar('I');
-InitialOperation();
-set_init_ope_counter(0,0);
-}
-
-
-
-if(get_bat_meas_counter_sec() >= 10){
-putChar('B');
-putChar('B');
-putChar('B');
-
-MeasureBatVoltageAnChangeSatMode();
-set_bat_meas_counter(0,0);
-}
-
-# 168
 UBYTE commandData[32];
-
 UBYTE commandID;
 
 
@@ -1780,11 +1881,9 @@ commandData[i] = 0;
 }
 
 receiveDataPacket(commandData);
-putChar('F');
-putChar('4');
 
-
-if(commandData[32]==0) {
+# 179
+if(commandData[0]==0) {
 continue;
 }
 
@@ -1795,20 +1894,21 @@ continue;
 }
 lastCommandID = commandID;
 
-
-B0select = commandData[19];
-wHighAddress = commandData[20];
-wLowAddress = commandData[21];
-downlinkTimes = commandData[22];
+# 194
+B0select = 0x00;
+wHighAddress = 0x00;
+wLowAddress = 0x80;
+downlinkTimes = 0x05;
 mainControlByte = 0x50 | B0select;
 subControlByte = 0x52 | B0select;
 
-# 213
+
+
 UWORD crcResult, crcValue;
 crcResult = crc16(0,commandData,29);
 crcValue = checkCRC(commandData,29);
 
-# 227
+# 217
 if(crcResult != crcValue){
 commandData[31] = commandData[31] & 0b01111111;
 
@@ -1817,20 +1917,20 @@ commandData[31] = commandData[31] | 0b10000000;
 
 }
 
-# 248
+
+
 WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
 WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
 WriteLastCommandIdToEEPROM(commandData[1]);
-putChar('S');
 
-# 265
+# 243
 sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
-putChar('G');
+
 
 for(int i=0; i<32; i++){
 
 }
-putChar('H');
+
 
 
 if(commandData[0]=='R'){
@@ -1870,7 +1970,7 @@ default:
 break;
 }
 
-# 317
+# 295
 }
 }else{
 
@@ -1878,11 +1978,6 @@ PORTBbits.RB2 = 1;
 _delay((unsigned long)((1000)*(10000000/4000.0)));
 PORTBbits.RB2 = 0;
 }
-
-# 517
-_delay((unsigned long)((500)*(10000000/4000.0)));
-
-
 }
 
 }

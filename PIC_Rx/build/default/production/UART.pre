@@ -1543,6 +1543,7 @@ void putCrLf(void);
 
 void put_error(void);
 void put_ok(void);
+void put_lf(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 void sendCommandByPointer(UBYTE*);
@@ -1563,7 +1564,7 @@ UWORD crc16(UWORD, UBYTE *, UINT);
 UWORD identifyCRC16(UBYTE *);
 UWORD checkCRC(UBYTE *, UINT);
 
-# 55 "OkError.h"
+# 62 "OkError.h"
 void switchOk(UBYTE);
 void switchError(UBYTE);
 
@@ -1579,30 +1580,50 @@ CREN = 1;
 SREN = 0;
 RCIF = 0;
 TXIE = 0;
-RCIE = 1;
+RCIE = 0;
+
 TX9 = 0;
 RX9 = 0;
 TXEN = 0;
 TXEN = 1;
 }
 
-# 40
+# 41
 void putChar(UBYTE byte){
 while(!TXIF);
 TXREG = byte;
 }
 
-# 59
+# 60
 void put_error(void){
+putChar('\r');
+putChar('\n');
 putChar('E');
 putChar('R');
 putChar('R');
 putChar('O');
 putChar('R');
 putChar('!');
+putChar('\r');
+putChar('\n');
 }
 
-# 90
+void put_ok(void){
+putChar('\r');
+putChar('\n');
+putChar('O');
+putChar('K');
+putChar('!');
+putChar('\r');
+putChar('\n');
+}
+
+void put_lf(void){
+putChar('\r');
+putChar('\n');
+}
+
+# 104
 void sendCommandByPointer(UBYTE* Parameter){
 UBYTE Command[10];
 UWORD CRC;
@@ -1620,7 +1641,6 @@ Command[9] = (UBYTE)(CRC & 0x00FF);
 
 for(UBYTE i=0; i<10; i++){
 putChar(Command[i]);
-__nop();
 }
 }
 
@@ -1674,7 +1694,7 @@ BRGH = BRGH_number;
 }
 }
 
-# 171
+# 184
 void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 if (GIE_status == 0x01){
 INTCONbits.GIE = 1;

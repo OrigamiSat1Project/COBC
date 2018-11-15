@@ -1485,7 +1485,8 @@ USLONG FMTX_Nprg = 87501;
 USLONG CWTX_Nprg = 1400;
 USLONG FMRX_Nprg = 24916;
 
-# 32
+
+
 void FMTX(int Nref, USLONG Nprg);
 void CWTX(int Nref, USLONG Nprg);
 void FMRX(int Nref, USLONG Nprg);
@@ -1496,22 +1497,53 @@ void setNref(UBYTE unitID, int Nref);
 
 void setPLL(void);
 
-# 9 "EPS.c"
+# 32 "MPU.h"
+void InitMPU(void);
+
+
+void LEDOnOff(void);
+void debugLEDyellow(void);
+
+UBYTE invertState(UBYTE);
+
+void onOff5R8G(UBYTE, UBYTE, UBYTE);
+void onOffOBC(UBYTE, UBYTE, UBYTE);
+void onOffWDT(UBYTE, UBYTE, UBYTE);
+void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
+
+void killEPS(void);
+void onEPS(void);
+void resetEPS(void);
+void switchPowerEPS(UBYTE, UBYTE, UBYTE);
+void reviveEPS(UBYTE, UBYTE);
+
+void changeInOut(UINT, UBYTE);
+void changeHighLow(UINT, UBYTE);
+void changeXtalFrequency(UBYTE);
+
+void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
+void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
+
+void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
+void offNtrxPowerSupplyCIB(void);
+
+# 17 "WDT.h"
+void InitWDT(void);
+void commandWDT(UBYTE);
+void resetWDT();
+void sendPulseWDT(void);
+void WDTwait(void);
+
+# 11 "EPS.c"
 void Reset_EPS(void){
+sendPulseWDT();
 PORTBbits.RB4 = 1;
-PORTAbits.RA1 = 1;
-_delay((unsigned long)((5000)*(10000000/4000.0)));
-PORTBbits.RB4 = 0;
 PORTAbits.RA1 = 0;
 _delay((unsigned long)((500)*(10000000/4000.0)));
-}
-
-void ResetEPSandSetPLL(void){
-Reset_EPS();
-delay_ms(5000);
-
-
-
-delay_ms(5000);
+PORTBbits.RB4 = 0;
+PORTAbits.RA1 = 0;
+_delay((unsigned long)((2000)*(10000000/4000.0)));
+sendPulseWDT();
 }
 
