@@ -16,8 +16,8 @@ UBYTE ReserveBeforeSatMode = SATMODE_SAVING;//spare BeforeSatMode (when can't re
 UWORD MeasureBatVoltageAndChangeSatMode(){
           //------battery voltage measure-------------
 //        debug : error handling is not determined
-            for(UBYTE i=0; i<4; i++)putChar(0x11);
-            put_lf(); 
+//            for(UBYTE i=0; i<4; i++)putChar(0x11);
+//            put_lf(); 
             UBYTE bat_voltage[2];
             UWORD Voltage;//Voltage is 10 bit           
             UBYTE error_status = 0;            
@@ -26,7 +26,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
             ReadBatVoltageWithPointer(bat_voltage);
             WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressLow,bat_voltage);
             Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1];
-            if(Voltage == 0x0000 | (bat_voltage[0] & 0xFC) != 0){
+            if(Voltage == 0x0000 || (bat_voltage[0] & 0xFC) != 0){
 //                putChar(0xA0);
 //                putChar(bat_voltage[0]);
 //                putChar(bat_voltage[1]);
@@ -34,7 +34,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                 ReadBatVoltageWithPointer(bat_voltage);
                 WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressLow,bat_voltage);
                 Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1];
-                if(Voltage == 0x0000 | (bat_voltage[0] & 0xFC) != 0){ //ADC read error
+                if(Voltage == 0x0000 || (bat_voltage[0] & 0xFC) != 0){ //ADC read error
 //                    putChar(0xB0);
 //                    putChar(bat_voltage[0]);
 //                    putChar(bat_voltage[1]);
@@ -73,25 +73,69 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                 }
             }
             
-            for(UBYTE i=0; i<4; i++)putChar(0x22);
-            put_lf();
-            putChar(bat_voltage[0]);
-            putChar(bat_voltage[1]);
-            put_lf();
+//            for(UBYTE i=0; i<4; i++)putChar(0x22);
+//            put_lf();
+//            putChar(bat_voltage[0]);
+//            putChar(bat_voltage[1]);
+//            put_lf();
             
             
-            putChar(0xC0);
+//            putChar(0xC0);
+//            putChar(0xC0);
+//            putChar(0xC0);
+//            putChar(0xC0);
+//            putChar(0xC0);
+//            putChar(0xC0);
+//            putChar(0xC0);
+//            putChar(0xC0);
+//            putChar(0xC0);
+//            put_lf();
             //if BatVol_nominal_saving_high is very large,read one more time. Then it is still very large,thereshold BatVol is Initial Value.
             UWORD BatVol_nominal_saving_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow);
             UWORD BatVol_nominal_saving_low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow);    
-            if((BatVol_nominal_saving_high & 0b11111100) != 0){
-                putChar(0xC1);
+            UWORD BatVol_nominal_saving = (BatVol_nominal_saving_high << 8) | BatVol_nominal_saving_low;
+//            putChar((UBYTE)BatVol_nominal_saving_high);
+//            putChar((UBYTE)BatVol_nominal_saving_low);
+            if(((BatVol_nominal_saving_high & 0b11111100) != 0) || (BatVol_nominal_saving <= TheresholdBatVol_lower_limit)){
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                putChar(0xC1);
+//                put_lf();
                 BatVol_nominal_saving_high = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow);
                 BatVol_nominal_saving_low = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow);
-                if((BatVol_nominal_saving_high & 0b11111100) != 0){
-                    putChar(0xC2);
+                BatVol_nominal_saving = (BatVol_nominal_saving_high << 8) | BatVol_nominal_saving_low;
+//                putChar((UBYTE)BatVol_nominal_saving_high);
+//                putChar((UBYTE)BatVol_nominal_saving_low);
+                if(((BatVol_nominal_saving_high & 0b11111100) != 0) || (BatVol_nominal_saving <= TheresholdBatVol_lower_limit)){
+//                    putChar(0xC2);
+//                    putChar(0xC2);
+//                    putChar(0xC2);
+//                    putChar(0xC2);
+//                    putChar(0xC2);
+//                    putChar(0xC2);
+//                    putChar(0xC2);
+//                    putChar(0xC2);
+//                    putChar(0xC2);
+//                    putChar(0xC2);
+//                    putChar(0xC2);
+//                    put_lf();
                     BatVol_nominal_saving_high = Init_TheresholdBatVol_nominal_saving_high;
                     BatVol_nominal_saving_low = Init_TheresholdBatVol_nominal_saving_low;
+                    BatVol_nominal_saving = (BatVol_nominal_saving_high << 8) | BatVol_nominal_saving_low;
+//                    putChar((UBYTE)BatVol_nominal_saving_high);
+//                    putChar((UBYTE)BatVol_nominal_saving_low);
                     error_status = error_status | 0x000C; //0b 00000000 00001100
                 }              
             }    
@@ -100,17 +144,20 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
 //            putChar((UBYTE)BatVol_nominal_saving_low);
 //            put_lf();
             
-            putChar(0xD0);
+//            putChar(0xD0);
             UWORD BatVol_saving_survival_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_saving_survival_datahigh_addressHigh, BatVol_saving_survival_datahigh_addressLow);
             UWORD BatVol_saving_survival_low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_saving_survival_datalow_addressHigh, BatVol_saving_survival_datalow_addressLow);
-            if((BatVol_saving_survival_high & 0b11111100) != 0){
-                putChar(0xD1);
+            UWORD BatVol_saving_survival = (BatVol_saving_survival_high << 8) | BatVol_saving_survival_low;
+            if(((BatVol_saving_survival_high & 0b11111100) != 0) || (BatVol_saving_survival <= TheresholdBatVol_lower_limit)){
+//                putChar(0xD1);
                 BatVol_saving_survival_high = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_saving_survival_datahigh_addressHigh, BatVol_saving_survival_datahigh_addressLow);
                 BatVol_saving_survival_low = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_saving_survival_datalow_addressHigh, BatVol_saving_survival_datalow_addressLow);
-                if((BatVol_saving_survival_high & 0b11111100) != 0){
-                    putChar(0xD2);
+                BatVol_saving_survival = (BatVol_saving_survival_high << 8) | BatVol_saving_survival_low;
+                if(((BatVol_saving_survival_high & 0b11111100) != 0) || (BatVol_saving_survival <= TheresholdBatVol_lower_limit)){
+//                    putChar(0xD2);
                     BatVol_saving_survival_high = Init_TheresholdBatVol_saving_survival_high;
                     BatVol_saving_survival_low = Init_TheresholdBatVol_saving_survival_low;
+                    BatVol_saving_survival = (BatVol_saving_survival_high << 8) | BatVol_saving_survival_low;
                     error_status = error_status | 0x0030; //0b 00000000 00110000;
                 }              
             }
@@ -119,17 +166,36 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
 //            putChar((UBYTE)BatVol_saving_survival_low);
 //            put_lf();
             
-            putChar(0xE0);
+//            putChar(0xE0);
+//            putChar(0xE0);
+//            putChar(0xE0);
+//            putChar(0xE0);
+//            putChar(0xE0);
+//            putChar(0xE0);
+//            putChar(0xE0);
+//            putChar(0xE0);
+//            putChar(0xE0);
+//            putChar(0xE0);
+//            put_lf();
             UWORD BatVol_nominal_revival_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_revival_datahigh_addressHigh, BatVol_nominal_revival_datahigh_addressLow);
             UWORD BatVol_nominal_revival_low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_revival_datalow_addressHigh, BatVol_nominal_revival_datalow_addressLow);
-            if((BatVol_nominal_revival_high & 0b11111100) != 0){
-                putChar(0xE1);
+            UWORD BatVol_nominal_revival = (BatVol_nominal_revival_high << 8) | BatVol_nominal_revival_low;
+//            putChar((UBYTE)BatVol_nominal_revival_high);
+//            putChar((UBYTE)BatVol_nominal_revival_low);
+            if(((BatVol_nominal_revival_high & 0b11111100) != 0) || (BatVol_nominal_revival <= TheresholdBatVol_lower_limit)){
+//                putChar(0xE1);
                 BatVol_nominal_revival_high = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_nominal_revival_datahigh_addressHigh, BatVol_nominal_revival_datahigh_addressLow);
                 BatVol_nominal_revival_low = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_nominal_revival_datalow_addressHigh, BatVol_nominal_revival_datalow_addressLow);
-                if((BatVol_nominal_revival_high & 0b11111100) != 0){
-                    putChar(0xE2);
+                BatVol_nominal_revival = (BatVol_nominal_revival_high << 8) | BatVol_nominal_revival_low;
+//                putChar((UBYTE)BatVol_nominal_revival_high);
+//            putChar((UBYTE)BatVol_nominal_revival_low);
+                if(((BatVol_nominal_revival_high & 0b11111100) != 0) || (BatVol_nominal_revival <= TheresholdBatVol_lower_limit)){
+//                    putChar(0xE2);
                     BatVol_nominal_revival_high = Init_TheresholdBatVol_nominal_revival_high;
                     BatVol_nominal_revival_low = Init_TheresholdBatVol_nominal_revival_low;
+                    BatVol_nominal_revival = (BatVol_nominal_revival_high << 8) | BatVol_nominal_revival_low;
+//                    putChar((UBYTE)BatVol_nominal_revival_high);
+//            putChar((UBYTE)BatVol_nominal_revival_low);
                     error_status = error_status | 0x00C0; // 0b 00000000 11000000;
                 }              
             }
@@ -138,17 +204,20 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
 //            putChar((UBYTE)BatVol_nominal_revival_low);
 //            put_lf();
             
-            putChar(0xF0);
+//            putChar(0xF0);
             UWORD BatVol_saving_revival_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_saving_revival_datahigh_addressHigh, BatVol_saving_revival_datahigh_addressLow);
             UWORD BatVol_saving_revival_low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_saving_revival_datalow_addressHigh, BatVol_saving_revival_datalow_addressLow);
-            if((BatVol_saving_revival_high & 0b11111100) != 0){
-                putChar(0xF1);
+            UWORD BatVol_saving_revival = (BatVol_saving_revival_high << 8) | BatVol_saving_revival_low;
+            if(((BatVol_saving_revival_high & 0b11111100) != 0) || (BatVol_saving_revival <= TheresholdBatVol_lower_limit)){
+//                putChar(0xF1);
                 BatVol_saving_revival_high = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_saving_revival_datahigh_addressHigh, BatVol_saving_revival_datahigh_addressLow);
                 BatVol_saving_revival_low = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_saving_revival_datalow_addressHigh, BatVol_saving_revival_datalow_addressLow);
-                if((BatVol_saving_revival_high & 0b11111100) != 0){
-                    putChar(0xF2);
+                BatVol_saving_revival = (BatVol_saving_revival_high << 8) | BatVol_saving_revival_low;
+                if(((BatVol_saving_revival_high & 0b11111100) != 0) || (BatVol_saving_revival <= TheresholdBatVol_lower_limit)){
+//                    putChar(0xF2);
                     BatVol_saving_revival_high = Init_TheresholdBatVol_saving_revival_high;
                     BatVol_saving_revival_low = Init_TheresholdBatVol_saving_revival_low;
+                    BatVol_saving_revival = (BatVol_saving_revival_high << 8) | BatVol_saving_revival_low;
                     error_status = error_status | 0x0300; //0b 00000011 00000000;
                 }              
             }
@@ -184,28 +253,28 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     }
                     break;
             }
-            for(UBYTE i=0; i<4; i++)putChar(0x33);
-            put_lf();
+//            for(UBYTE i=0; i<4; i++)putChar(0x33);
+//            put_lf();
             switch(ChoicedSatMode){
                 case SATMODE_NOMINAL:
                     putChar(0xAA);
-                    if(Voltage >= (BatVol_nominal_saving_high << 8 | BatVol_nominal_saving_low)) {
+                    if(Voltage >= BatVol_nominal_saving) {
                         putChar(0x11);
                         //write SatMode nominal(SEP -> ON, RBF -> ON)                        
                         switch(OBC_STATUS){
                             case OBC_ALIVE:                               
                                 break;
                             case OBC_DIED:
-                                killEPS();
-                                onEPS();                                                                          
-                                setPLL();
+//                                killEPS();
+//                                onEPS();                                                                          
+//                                setPLL();
                                 break;
                             default:    
                                 break;
                         }
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
                         ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
-                    }else if(Voltage <= ((UWORD)BatVol_saving_survival_high<<8 | (UWORD)BatVol_saving_survival_low)){
+                    }else if(Voltage <= BatVol_saving_survival){
                         putChar(0x22);
                         //write SatMode survival(SEP -> OFF, RBF -> ON)                      
                         killEPS();
@@ -222,7 +291,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     break;
                 case SATMODE_SAVING:
                     putChar(0xBB);
-                    if(Voltage >= ((UWORD)BatVol_nominal_revival_high <<8 |(UWORD)BatVol_nominal_revival_low)){
+                    if(Voltage >= BatVol_nominal_revival){
                         putChar(0x11);
                         //write SatMode nominal(SEP -> ON, RBF -> ON)                                               
                         offNtrxPowerSupplyCIB();
@@ -230,7 +299,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                         setPLL();
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
                         ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
-                    }else if (Voltage <= ((UWORD)BatVol_saving_survival_high << 8 | (UWORD)BatVol_saving_survival_low)){
+                    }else if (Voltage <= BatVol_saving_survival){
                         putChar(0x22);
                         //write SatMode survival(SEP -> OFF, RBF -> ON)                       
                         offNtrxPowerSupplyCIB();
@@ -245,14 +314,14 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     break;
                 case SATMODE_SURVIVAL:
                     putChar(0xCC);
-                    if(Voltage >= ((UWORD)BatVol_nominal_revival_high <<8 | (UWORD)BatVol_nominal_revival_low)){
+                    if(Voltage >= BatVol_nominal_revival){
                         putChar(0x11);
                         //write SatMode nominal(SEP -> ON, RBF -> ON)                       
                         onEPS();
                         setPLL();
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
                         ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
-                    }else if (Voltage <= ((UWORD)BatVol_saving_revival_high << 8 | (UWORD)BatVol_saving_revival_low)){
+                    }else if (Voltage <= BatVol_saving_revival){
                         putChar(0x22);
                         //write SatMode survival(SEP -> OFF, RBF -> ON)
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
@@ -270,25 +339,25 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     error_status = error_status | 0x3000;// 0b 00110000 00000000;
                     break;
         }
-            put_lf();
-            for(UBYTE i=0; i<4; i++) putChar(0x44);
-            putChar(ChoicedSatMode);
-            putChar((UBYTE)(error_status>>8));
-            putChar((UBYTE)error_status);
-            put_lf();
+//            put_lf();
+//            for(UBYTE i=0; i<4; i++) putChar(0x44);
+//            putChar(ChoicedSatMode);
+//            putChar((UBYTE)(error_status>>8));
+//            putChar((UBYTE)error_status);
+//            put_lf();
             
-            putChar((UBYTE)BatVol_nominal_saving_high);
-            putChar((UBYTE)BatVol_nominal_saving_low);
-            put_lf();
-            putChar((UBYTE)BatVol_saving_survival_high);
-            putChar((UBYTE)BatVol_saving_survival_low);
-            put_lf();
-            putChar((UBYTE)BatVol_nominal_revival_high);
-            putChar((UBYTE)BatVol_nominal_revival_low);
-            put_lf();
-            putChar((UBYTE)BatVol_saving_revival_high);
-            putChar((UBYTE)BatVol_saving_revival_low);
-            put_lf();
+//            putChar((UBYTE)BatVol_nominal_saving_high);
+//            putChar((UBYTE)BatVol_nominal_saving_low);
+//            put_lf();
+//            putChar((UBYTE)BatVol_saving_survival_high);
+//            putChar((UBYTE)BatVol_saving_survival_low);
+//            put_lf();
+//            putChar((UBYTE)BatVol_nominal_revival_high);
+//            putChar((UBYTE)BatVol_nominal_revival_low);
+//            put_lf();
+//            putChar((UBYTE)BatVol_saving_revival_high);
+//            putChar((UBYTE)BatVol_saving_revival_low);
+//            put_lf();
             
             return error_status;
 }
@@ -372,12 +441,18 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
 
 void testInitSatMode(){
     WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh,SatelliteMode_addressLow,SATMODE_NOMINAL_SEPON_RBFON);
-    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow,Init_TheresholdBatVol_nominal_saving_high);
-    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow,Init_TheresholdBatVol_nominal_saving_low);
-    WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_survival_datahigh_addressHigh, BatVol_saving_survival_datahigh_addressLow,Init_TheresholdBatVol_saving_survival_high);
-    WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_survival_datalow_addressHigh,BatVol_saving_survival_datalow_addressLow ,Init_TheresholdBatVol_saving_survival_low);
-    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_revival_datahigh_addressHigh,BatVol_nominal_revival_datahigh_addressLow,Init_TheresholdBatVol_nominal_revival_high);
-    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_revival_datalow_addressHigh,BatVol_nominal_revival_datalow_addressLow,Init_TheresholdBatVol_nominal_revival_low );
+//    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow,Init_TheresholdBatVol_nominal_saving_high);
+//    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow,Init_TheresholdBatVol_nominal_saving_low);
+    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow,0x01);
+    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow,0xD1);
+//    WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_survival_datahigh_addressHigh, BatVol_saving_survival_datahigh_addressLow,Init_TheresholdBatVol_saving_survival_high);
+//    WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_survival_datalow_addressHigh,BatVol_saving_survival_datalow_addressLow ,Init_TheresholdBatVol_saving_survival_low);
+    WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_survival_datahigh_addressHigh, BatVol_saving_survival_datahigh_addressLow,0x02);
+    WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_survival_datalow_addressHigh,BatVol_saving_survival_datalow_addressLow ,0x8B);
+//    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_revival_datahigh_addressHigh,BatVol_nominal_revival_datahigh_addressLow,Init_TheresholdBatVol_nominal_revival_high);
+//    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_revival_datalow_addressHigh,BatVol_nominal_revival_datalow_addressLow,Init_TheresholdBatVol_nominal_revival_low );
+    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_revival_datahigh_addressHigh,BatVol_nominal_revival_datahigh_addressLow,0x03);
+    WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_revival_datalow_addressHigh,BatVol_nominal_revival_datalow_addressLow,0x07 );
     WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_revival_datahigh_addressHigh,BatVol_saving_revival_datahigh_addressLow,Init_TheresholdBatVol_saving_revival_high);
     WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_revival_datalow_addressHigh,BatVol_saving_revival_datalow_addressLow,Init_TheresholdBatVol_saving_revival_low);    
     WriteOneByteToMainAndSubB0EEPROM(SW_Change_SavingMode_ADC_addresshigh,SW_Change_SavingMode_ADC_addresslow,0b11100000);

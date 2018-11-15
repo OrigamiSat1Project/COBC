@@ -3170,9 +3170,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.c: 49: break_counter ++;
 "49
 [e ++ _break_counter -> -> 1 `i `ui ]
-[; ;UART.c: 50: if(break_counter >= 100){
+[; ;UART.c: 50: if(break_counter >= 2000){
 "50
-[e $ ! >= _break_counter -> -> 100 `i `ui 282  ]
+[e $ ! >= _break_counter -> -> 2000 `i `ui 282  ]
 {
 [; ;UART.c: 52: __nop();
 "52

@@ -1806,7 +1806,7 @@ UINT get_timer_counter(UBYTE unit);
 
 void reset_timer(void);
 
-# 40 "SatMode.h"
+# 42 "SatMode.h"
 UWORD MeasureBatVoltageAndChangeSatMode(void);
 UBYTE BitCount(UBYTE);
 void SwitchToSavingMode(void);
@@ -1873,7 +1873,7 @@ while(1){
 # 88
 if(get_eps_reset_counter_min() >= 2){
 put_lf();
-for(UBYTE i=0; i<6; i++){
+for(UBYTE i=0; i<3; i++){
 putChar(0xF1);
 }
 put_lf();
@@ -1882,7 +1882,7 @@ setPLL();
 
 reset_timer();
 set_eps_reset_counter(0,0);
-for(UBYTE i=0; i<6; i++){
+for(UBYTE i=0; i<3; i++){
 putChar(0xF2);
 }
 }
@@ -1892,7 +1892,7 @@ putChar(0xF2);
 if(get_NTRX_pll_setting_counter_min() >= 1){
 
 put_lf();
-for(UBYTE i=0; i<6; i++){
+for(UBYTE i=0; i<3; i++){
 putChar(0xF3);
 }
 put_lf();
@@ -1904,7 +1904,7 @@ resetEPS();
 }
 setPLL();
 set_NTRX_pll_setting_counter(0,0,0,0);
-for(UBYTE i=0; i<6; i++){
+for(UBYTE i=0; i<3; i++){
 putChar(0xF4);
 }
 }
@@ -1913,7 +1913,7 @@ putChar(0xF4);
 if(get_init_ope_counter_min() >= 1){
 
 put_lf();
-for(UBYTE i=0; i<6; i++){
+for(UBYTE i=0; i<3; i++){
 putChar(0xF5);
 }
 put_lf();
@@ -1921,7 +1921,7 @@ error_status = InitialOperation();
 WriteOneByteToMainAndSubB0EEPROM(0x81,0x0c,error_status);
 errorCheckInitialOpe();
 set_init_ope_counter(0,0);
-for(UBYTE i=0; i<6; i++){
+for(UBYTE i=0; i<3; i++){
 putChar(0xF6);
 }
 }
@@ -1930,58 +1930,45 @@ putChar(0xF6);
 
 if(get_bat_meas_counter_sec() >= 10){
 put_lf();
-for(UBYTE i=0; i<6; i++){
+for(UBYTE i=0; i<3; i++){
 putChar(0xF7);
 }
 put_lf();
 
 UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
 put_lf();
+
+
 putChar(0xAA);
-putChar(0xAA);
-putChar(0xAA);
+putChar(0xAB);
+putChar(0xAC);
 putChar((UBYTE)(SatMode_error_status>>8));
 putChar((UBYTE)SatMode_error_status);
-putChar(0xAA);
-putChar(0xAA);
-putChar(0xAA);
-put_lf();
+
+
+
+
 if (SatMode_error_status != 0){
 SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-put_lf();
-putChar(0xBB);
-putChar(0xBB);
-putChar(0xBB);
-putChar((UBYTE)(SatMode_error_status>>8));
-putChar((UBYTE)SatMode_error_status);
-putChar(0xBB);
-putChar(0xBB);
-putChar(0xBB);
-put_lf();
+
+# 177
 }
 WriteOneByteToMainAndSubB0EEPROM(0x81, 0x14, (UBYTE)(SatMode_error_status>>8));
 WriteOneByteToMainAndSubB0EEPROM(0x81, 0x15, (UBYTE)SatMode_error_status);
 set_bat_meas_counter(0,0);
-put_lf();
-for(UBYTE i=0; i<6; i++){
+
+for(UBYTE i=0; i<3; i++){
 putChar(0xF8);
 }
 put_lf();
 }
 
-
-putChar('m');
-putChar('m');
-putChar('m');
-putChar('m');
-putChar('m');
-putChar('m');
-putChar('m');
+# 196
 sendPulseWDT();
-put_lf();
+
 delay_s(1);
 
-# 342
+# 344
 }
 
 }

@@ -16,19 +16,19 @@
 void testInitialOpe(void){
     UBYTE temp;
 //    /*--melting status---*/
-//    temp = 0b00000011;
-//    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
-//    temp = 0b00000011;
-//    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
+    temp = 0b00000011;
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
+    temp = 0b00000011;
+    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
 //    /*---sat mode---*/
 //    temp = SATMODE_NOMINAL; //SATMODE_NOMINAL / SATMODE_SAVING / SATMODE_SURVIVAL
 //    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh, SatelliteMode_addressLow, temp);
 //    temp = SATMODE_NOMINAL; //SATMODE_NOMINAL / SATMODE_SAVING / SATMODE_SURVIVAL
 //    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,SatelliteMode_addressHigh, SatelliteMode_addressLow, temp);    
     /*---melting counter---*/
-    temp = 3;  //0-MELTING_COUNTER_LIMIT
+    temp = 0;  //0-MELTING_COUNTER_LIMIT
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
-    temp = 3;  //0-MELTING_COUNTER_LIMIT
+    temp = 0;  //0-MELTING_COUNTER_LIMIT
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
 //    put_ok();
 }
@@ -162,12 +162,12 @@ UBYTE InitialOperation(void){
 //                                putChar(0xa9);
 //                                putChar('9');
 //                                //***FIXME*** wire melting!! be careful!!
-//                                //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x01, 0x00);
+                                sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x01, 0x00);
                             } else {
 //                                putChar(0xa0);
 //                                putChar('0');
 //                                //***FIXME***  wire melting!! be careful!!
-//                                //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x01, 0x00);
+                                sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x01, 0x00);
                             }
                             melting_counter++;
 //                            putChar(0xb1);

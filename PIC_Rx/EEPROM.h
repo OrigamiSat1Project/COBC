@@ -107,8 +107,8 @@
 *DATA
 ******************************************************************************/
 /*---initial operation---*/
-#define MeltingStatus_addressHigh      0x97
-#define MeltingStatus_addressLow       0x07
+#define MeltingStatus_addressHigh      0x85
+#define MeltingStatus_addressLow       0x00
 #define BatteryVoltage_addressHigh     0x81
 #define BatteryVoltage_addressLow      0x87
 #define MeltingCounter_addressHigh     0x81

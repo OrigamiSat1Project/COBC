@@ -4399,7 +4399,26 @@ UBYTE RXDATA[10];
 UBYTE STOCKDATA[10];
 UBYTE ReceiveFlag = 0x00;
 
-# 90
+
+void interrupt InterReceiver(void){
+if(RCIF==1){
+STOCKDATA[0] = 0x21;
+STOCKDATA[0] = getChar();
+if(STOCKDATA[0] != 'g' && STOCKDATA[0] != 't'){
+ReceiveFlag = 0x01;
+} else {
+RXDATA[0] = STOCKDATA[0];
+for(UBYTE i=1 ;i< 10; i++) RXDATA[i] = getChar();
+put_lf();
+for(UBYTE i=0 ;i< 10; i++) putChar(RXDATA[i]);
+put_lf();
+ReceiveFlag = 0x02;
+}
+RCIF = 0;
+}
+}
+
+# 113
 void main(void) {
 
 _delay((unsigned long)((1000)*(10000000/4000.0)));
@@ -4410,9 +4429,111 @@ Init_WDT();
 sendPulseWDT();
 delay_s(2);
 
-# 105
+for(UBYTE i=0; i<6 ; i++){
+putChar(0xF0);
+}
+put_lf();
+
+HK_test_setting();
+
+# 134
 while(1){
+put_lf();
+for(UBYTE i=0; i<3 ; i++){
+putChar(0xE1);
+}
+put_lf();
+sendPulseWDT();
+
+# 148
+measureAllChanelADC();
+if(read5VBusAndSwitchNtrxPower() != 0){
+if(read5VBusAndSwitchNtrxPower() != 0){
+onOffNTRX(0x01,0,0);
+}
+}
+
+HKDownlink();
+
+
+
+
+if(ReceiveFlag == 0x02){
+UBYTE command_ID = 0x00;
+UBYTE command_status = 0x00;
+UBYTE ID_add_high = 0x00;
+UBYTE ID_add_low = 0x00;
+
+
+ID_add_high = RXDATA[3];
+ID_add_low = RXDATA[4] + 1;
+putChar(0xc4);
+putChar(ID_add_high);
+putChar(ID_add_low);
+
+
+if(RXDATA[0] == 'g'){
+command_ID = ReadEEPROM(RXDATA[2], ID_add_high, ID_add_low);
+putChar(0xc5);
+putChar(command_ID);
+WriteLastCommandIdToEEPROM(command_ID);
+WriteLastCommandStatusToEEPROM(0x55);
+if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
+
+WriteLastCommandStatusToEEPROM(0x10);
+ReceiveFlag = 0x01;
+putChar(0x98);
+put_lf();
+continue;
+}
+}
+if(RXDATA[0] == 't'){
+if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
+ReceiveFlag = 0x01;
+continue;
+}
+}
+putChar(0xc7);
+putChar(RXDATA[1]);
+
+
+
+switch(RXDATA[1]){
 
 # 214
+case 0x66:
+putChar(0xa6);
+downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+break;
+case 'p':
+for(UBYTE i=0; i<20; i++) putChar(0xa7);
+commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+break;
+case 0x68:
+measureDcDcTemperature();
+break;
+case 0x72:
+sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
+break;
+
+case 0x80:
+putChar(0x80);
+put_ok();
+break;
+default:
+putChar(0xc8);
+
+put_error();
+break;
+}
+putChar(0xc9);
+WriteLastCommandStatusToEEPROM(command_status);
+ReceiveFlag = 0x00;
+putChar(0x39);
+}
+
+
+
+
 }
 }

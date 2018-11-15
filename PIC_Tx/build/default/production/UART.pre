@@ -4345,7 +4345,7 @@ UINT break_counter = 0;
 
 while(!RCIF){
 break_counter ++;
-if(break_counter >= 100){
+if(break_counter >= 2000){
 
 __nop();
 break_counter = 0;

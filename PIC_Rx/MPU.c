@@ -160,6 +160,10 @@ void switchPowerSpply1pin(UBYTE target_select, UBYTE onOff, UBYTE timeHigh, UBYT
 *Swticch Power EPS 
 ******************************************************************************/
 void killEPS(void){
+    putChar('K');
+    putChar('I');
+    putChar('L');
+    putChar('L');
     sendPulseWDT();
     SEP_SW = HIGH;     //EPS off -> 5VBUS off
     RBF_SW = LOW;

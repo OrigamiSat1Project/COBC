@@ -1782,7 +1782,7 @@ TestEEPROM(slaveAdress);
 break;
 case 'm':
 
-WriteOneByteToMainAndSubB0EEPROM(0x97, 0x07, 0b01111110);
+WriteOneByteToMainAndSubB0EEPROM(0x85, 0x00, 0b01111110);
 break;
 default:
 switchError(0x21);

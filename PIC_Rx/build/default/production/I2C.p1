@@ -1859,9 +1859,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 337: case 'm':
 "337
 [e :U 148 ]
-[; ;I2C.c: 339: WriteOneByteToMainAndSubB0EEPROM(0x97, 0x07, 0b01111110);
+[; ;I2C.c: 339: WriteOneByteToMainAndSubB0EEPROM(0x85, 0x00, 0b01111110);
 "339
-[e ( _WriteOneByteToMainAndSubB0EEPROM (3 , , -> -> 151 `i `uc -> -> 7 `i `uc -> -> 126 `i `uc ]
+[e ( _WriteOneByteToMainAndSubB0EEPROM (3 , , -> -> 133 `i `uc -> -> 0 `i `uc -> -> 126 `i `uc ]
 [; ;I2C.c: 340: break;
 "340
 [e $U 142  ]
