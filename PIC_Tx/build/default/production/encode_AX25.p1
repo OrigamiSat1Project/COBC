@@ -1441,7 +1441,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 22: typedef unsigned short long USLONG;
 [; ;Type_define.h: 23: typedef signed long SDWORD;
 [; ;Type_define.h: 24: typedef unsigned long UDWORD;
-"20 UART.h
+"19 UART.h
+[v _ReceiveFlag `uc ~T0 @X0 1 e ]
+[i _ReceiveFlag
+-> -> 0 `i `uc
+]
+[; ;UART.h: 19: UBYTE ReceiveFlag = 0x00;
+"20
 [v _UPLINK_COMMAND_SIZE `uc ~T0 @X0 1 e ]
 [i _UPLINK_COMMAND_SIZE
 -> -> 32 `i `uc

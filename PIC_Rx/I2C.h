@@ -36,7 +36,7 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID);
 
 /*read*/
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE);
+UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE,UBYTE);
 void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
 
 void I2CBufferClear(void);

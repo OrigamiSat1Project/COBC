@@ -40,7 +40,7 @@ void interrupt InterReceiver(void);
 
 #define commandSize 10
 UBYTE RXDATA[commandSize];
-UBYTE ReceiveFlag = NOT_RECEIVE;
+
 
 
 void interrupt InterReceiver(void){
@@ -75,6 +75,7 @@ void interrupt InterReceiver(void){
 //            WriteOneByteToEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow, ReceiveFlag);
         }else{
             ReceiveFlag = UNCORRECT_RECEIVE;
+//            NOP();
         }
         RCIF = 0;
         putChar(0xff);
@@ -100,10 +101,10 @@ void main(void) {
     while(1){
         
         putChar('m');
-        delay_ms(3000);
+//        delay_ms(3000);
 
         sendPulseWDT();
-        __delay_ms(5000);
+//        __delay_ms(5000);
          
 //        measureDcDcTemperature();
 //        if(read5VBusAndSwitchNtrxPower() != 0){

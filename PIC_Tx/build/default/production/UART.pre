@@ -2029,7 +2029,8 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 20 "UART.h"
+# 19 "UART.h"
+UBYTE ReceiveFlag = 0x00;
 UBYTE UPLINK_COMMAND_SIZE = 32;
 
 void Init_SERIAL(void);

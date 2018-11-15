@@ -174,16 +174,18 @@ void main(void) {
         // putChar('4');
         
         //XXX if () continue, IF COMMAND IS STILL RESET
-//        if(commandData[0]==0) {
-//            continue;      //not receive command-->continue
-//        } 
-//         
+        if(commandData[0]==0) {
+            continue;      //not receive command-->continue
+        }
+        
 //        /*---check command ID---*/
-//        commandID = commandData[1];     
-//        if (commandID == lastCommandID) {
-//            continue;       //same uplink command-->continue
-//        }
-//        lastCommandID = commandID;                      //update command ID
+        lastCommandID = ReadEEPROMmainAndSub(B0select_for_RXCOBCLastCommand,HighAddress_for_LastCommandID,LowAddress_for_LastCommandID);
+        commandID = commandData[1];     
+        if (commandID == lastCommandID) {
+            putChar(commandID);
+            continue;       //same uplink command-->continue
+        }
+        lastCommandID = commandID;                      //update command ID
         
 //        B0select = commandData[19];
 //        wHighAddress = commandData[20];

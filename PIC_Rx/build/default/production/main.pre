@@ -1722,7 +1722,7 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID);
 
 
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE);
+UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE,UBYTE);
 void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
 
 void I2CBufferClear(void);
@@ -1877,7 +1877,21 @@ commandData[i] = 0;
 
 receiveDataPacket(commandData);
 
-# 192
+# 177
+if(commandData[0]==0) {
+continue;
+}
+
+
+lastCommandID = ReadEEPROMmainAndSub(0x00,0x82,0x00);
+commandID = commandData[1];
+if (commandID == lastCommandID) {
+putChar(commandID);
+continue;
+}
+lastCommandID = commandID;
+
+# 194
 B0select = 0x00;
 wHighAddress = 0x00;
 wLowAddress = 0x80;
@@ -1891,7 +1905,7 @@ UWORD crcResult, crcValue;
 crcResult = crc16(0,commandData,29);
 crcValue = checkCRC(commandData,29);
 
-# 215
+# 217
 if(crcResult != crcValue){
 commandData[31] = commandData[31] & 0b01111111;
 
@@ -1906,7 +1920,7 @@ WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
 WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
 WriteLastCommandIdToEEPROM(commandData[1]);
 
-# 241
+# 243
 sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
 
 
@@ -1953,7 +1967,7 @@ default:
 break;
 }
 
-# 293
+# 295
 }
 }else{
 

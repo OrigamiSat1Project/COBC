@@ -13,6 +13,7 @@
 #include "time.h"
 #include "OkError.h"
 #include "WDT.h"
+#include "UART.h"
 
 /*******************************************************************************
 *Marco, Enum / Global data / Method 
@@ -61,7 +62,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
     __delay_us(200);
     FMPTT = 1;
     for(UBYTE sendCounter = 0; sendCounter < downlinlkTimes; sendCounter++){
-//        SendPacket(commandData);
+        SendPacket(commandData,EEPROM_COMMAND_DATA_SIZE);
         // SendPacketWithDataSize(commandData,EEPROM_COMMAND_DATA_SIZE);
         __delay_ms(300);
     }
@@ -689,46 +690,64 @@ Frame
 void HKDownlinkFR0(void){
     UBYTE MYCALL[6] = {'J', 'S', '1', 'Y','A','X'};
     sendMorse(MYCALL,sizeof(MYCALL)/sizeof(MYCALL[0]));
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
     __delay_us(LONG_DELAYTIMES_FOR_MORSE);
     UBYTE SatName[7] = {'o', 'r', 'i', 'g', 'a','m','i'};
     sendMorse(SatName,sizeof(SatName)/sizeof(SatName[0]));
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 }
 
 void HKDownlinkFR1(void){
     UBYTE DATA[2];//for ReadDatasFromEEPROMWithDataSizeAndSendMorse()
     //Sattellite Mode
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
     //battery Temperature
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
     //latest execution command ID(RX)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
     //command error status(RX)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,RXCOBC_CommandErrorStatus_addressHigh,RXCOBC_CommandErrorStatus_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //latest execution command ID(TX)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //command error status(TX)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,TXCOBC_CommandErrorStatus_addressHigh,TXCOBC_CommandErrorStatus_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //battery Voltage (CIB)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,BatteryVoltageCIB_addressHigh,BatteryVoltageCIB_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
     //5VBus Voltage 
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA,2);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    
 //    //3V3Bus Voltage 
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH3_addressHigh,adcValue_CH3_addressLow,DATA,2);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //battery Voltage (OBC)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,BatteryVoltageOBC_addressHigh,BatteryVoltageOBC_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //latest execution command ID (OBC)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,LatestExcutionCommandID_addressHigh,LatestExcutionCommandID_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //command error status(OBC)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,OBC_CommandErrorStatus_addressHigh,OBC_CommandErrorStatus_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //Battery Current
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,BatteryCurrent_addressHigh,BatteryCurrent_addressLow,DATA,2);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //EPS switch status
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,EpsSwitchStatus_addressHigh,EpsSwitchStatus_addressLow,DATA,2);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //TX temperature
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,TxTemperature_addressHigh,TxTemperature_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //RX temperature
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,RxTemperature_addressHigh,RxTemperature_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 }
 
 void HKDownlinkFR2(void){
@@ -736,11 +755,13 @@ void HKDownlinkFR2(void){
     UBYTE ReadData1_addressHigh = ReadEEPROM(EEPROM_address, FreeData1Highaddress_addressHigh, FreeData1Highaddress_addressLow); 
     UBYTE ReadData1_addressLow = ReadEEPROM(EEPROM_address, FreeData1Lowaddress_addressHigh, FreeData1Lowaddress_addressLow); 
     ReadOneByteDataFromEEPROMandSendMorse(ReadData1_slaveaddress,ReadData1_addressHigh,ReadData1_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
     __delay_us(LONG_DELAYTIMES_FOR_MORSE);
     UBYTE ReadData2_slaveaddress = ReadEEPROM(EEPROM_address,FreeData2_slaveaddress_addressHigh,FreeData2_slaveaddress_addressLow);
     UBYTE ReadData2_addressHigh = ReadEEPROM(EEPROM_address, FreeData2Highaddress_addressHigh, FreeData2Highaddress_addressLow); 
     UBYTE ReadData2_addressLow = ReadEEPROM(EEPROM_address, FreeData2Lowaddress_addressHigh, FreeData2Lowaddress_addressLow); 
     ReadOneByteDataFromEEPROMandSendMorse(ReadData2_slaveaddress,ReadData2_addressHigh,ReadData2_addressLow);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
 }
 
 /*******************************************************************************

@@ -2161,7 +2161,8 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 20 "UART.h"
+# 19 "UART.h"
+UBYTE ReceiveFlag = 0x00;
 UBYTE UPLINK_COMMAND_SIZE = 32;
 
 void Init_SERIAL(void);
@@ -4398,7 +4399,7 @@ void interrupt InterReceiver(void);
 
 
 UBYTE RXDATA[10];
-UBYTE ReceiveFlag = 0x00;
+
 
 
 void interrupt InterReceiver(void){
@@ -4427,6 +4428,7 @@ __nop();
 # 76
 }else{
 ReceiveFlag = 0x01;
+
 }
 RCIF = 0;
 putChar(0xff);
@@ -4445,16 +4447,15 @@ Init_SERIAL();
 delay_s(2);
 putChar('S');
 
-# 100
+# 101
 while(1){
 
 putChar('m');
-delay_ms(3000);
+
 
 sendPulseWDT();
-_delay((unsigned long)((5000)*(10000000/4000.0)));
 
-# 115
+# 116
 HKDownlink();
 
 
@@ -4462,10 +4463,10 @@ HKDownlink();
 
 if(ReceiveFlag == 0x02){
 
-# 132
+# 133
 UBYTE commandID;
 
-# 138
+# 139
 UBYTE FMdata[8];
 switch(RXDATA[1]){
 

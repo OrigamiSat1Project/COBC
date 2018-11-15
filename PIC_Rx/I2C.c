@@ -140,7 +140,7 @@ void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,U
 }
 
 void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
-    WriteCheckByteToEEPROMs(B0select_for_RXCOBCLastCommand, HighAddress_for_RXCOBCLastCommand, LowAddress_for_RXCOBCLastCommand, last_command_ID);
+    WriteCheckByteToEEPROMs(B0select_for_RXCOBCLastCommand, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID, last_command_ID);
 }
 
 /*******************************************************************************
@@ -174,14 +174,18 @@ UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
     __delay_ms(200);  
 }
 
-UBYTE ReadEEPROMmainAndSub(UBYTE high_address,UBYTE low_address){
+UBYTE ReadEEPROMmainAndSub(UBYTE B0select,UBYTE high_address,UBYTE low_address){
+    UBYTE mainaddress = MAIN_EEPROM_ADDRESS | B0select;
+    UBYTE subaddress = SUB_EEPROM_ADDRESS | B0select;
     UBYTE ReadData;
-    ReadData = ReadEEPROM(MAIN_EEPROM_ADDRESS,high_address,low_address);
+    ReadData = ReadEEPROM(mainaddress ,high_address,low_address);
     if (ReadData==0xFF){
-        ReadData = ReadEEPROM(SUB_EEPROM_ADDRESS, high_address,low_address);
+        ReadData = ReadEEPROM(subaddress, high_address,low_address);
     }
     return ReadData;
 }
+
+
 
 /*
  *  Read Data From EEPROM With DataSize
