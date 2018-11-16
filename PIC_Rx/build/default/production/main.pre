@@ -1877,7 +1877,7 @@ for(UBYTE i=0; i<3; i++){
 putChar(0xF1);
 }
 put_lf();
-resetEPS();
+
 setPLL();
 
 reset_timer();
@@ -1900,7 +1900,7 @@ UBYTE melting_status[2] = {0x00};
 melting_status[0] = checkMeltingStatus(0x50);
 melting_status[1] = checkMeltingStatus(0x52);
 if((melting_status[0] < 4)&&(melting_status[1] < 4)) {
-resetEPS();
+
 }
 setPLL();
 set_NTRX_pll_setting_counter(0,0,0,0);

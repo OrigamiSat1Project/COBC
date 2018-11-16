@@ -26,9 +26,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _testInitialOpe `(v ~T0 @X0 0 ef ]
 "39 timer.h
 [v _get_eps_reset_counter_min `(ui ~T0 @X0 0 ef ]
-"47 MPU.h
-[v _resetEPS `(v ~T0 @X0 0 ef ]
-"55 timer.h
+"55
 [v _reset_timer `(v ~T0 @X0 0 ef ]
 "37
 [v _set_eps_reset_counter `(v ~T0 @X0 0 ef2`ui`ui ]
@@ -1452,9 +1450,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 93: put_lf();
 "93
 [e ( _put_lf ..  ]
-[; ;main.c: 94: resetEPS();
-"94
-[e ( _resetEPS ..  ]
 [; ;main.c: 95: setPLL();
 "95
 [e ( _setPLL ..  ]
@@ -1540,9 +1535,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "116
 [e $ ! && < -> *U + &U _melting_status * -> -> -> 0 `i `ui `ux -> -> # *U &U _melting_status `ui `ux `i -> 4 `i < -> *U + &U _melting_status * -> -> -> 1 `i `ui `ux -> -> # *U &U _melting_status `ui `ux `i -> 4 `i 118  ]
 {
-[; ;main.c: 117: resetEPS();
-"117
-[e ( _resetEPS ..  ]
 "118
 }
 [e :U 118 ]

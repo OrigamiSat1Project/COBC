@@ -91,7 +91,7 @@ void main(void) {
                 putChar(0xF1);
             } 
             put_lf();    
-            resetEPS();
+//            resetEPS();
             setPLL();
 //            // Execute 1week reset
             reset_timer();
@@ -114,7 +114,7 @@ void main(void) {
             melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
             if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
-                resetEPS();  //only initial ope -> reset EPS
+//                resetEPS();  //only initial ope -> reset EPS
             }
             setPLL();  // set PLL every day
             set_NTRX_pll_setting_counter(0,0,0,0);

@@ -46,10 +46,11 @@ UBYTE ReceiveFlag = NOT_RECEIVE;
 
 void interrupt InterReceiver(void){
     if(RCIF==1){
+        putChar('U');
         STOCKDATA[0] = 0x21;
         STOCKDATA[0] = getChar();
         if(STOCKDATA[0] != 'g' && STOCKDATA[0] != 't'){
-            ReceiveFlag = UNCORRECT_RECEIVE;
+//            ReceiveFlag = UNCORRECT_RECEIVE;
         } else {
             RXDATA[0] = STOCKDATA[0];
             for(UBYTE i=1 ;i< commandSize; i++) RXDATA[i] = getChar();
@@ -60,6 +61,13 @@ void interrupt InterReceiver(void){
         }
         RCIF = 0;
     }
+    putChar('V');
+    putChar('V');
+    putChar('V');
+    putChar('V');
+    putChar('V');
+    putChar('V');
+    put_lf();
 }
 //    if (RCIF == 1) {
 ////        put_lf();
@@ -152,12 +160,28 @@ void main(void) {
             }
         }  
         //TODO debug send HK 
+        
+        put_lf();
+        for(UBYTE i=0; i<3 ; i++){
+            putChar(0xE2);
+        }
+        put_lf();
         HKDownlink();
+        put_lf();
+        for(UBYTE i=0; i<3 ; i++){
+            putChar(0xE3);
+        }
+        put_lf();
 
         //======================================================================
         //UART receive process
 
         if(ReceiveFlag == CORRECT_RECEIVE){
+            put_lf();
+            for(UBYTE i=0; i<10 ; i++){
+                putChar(RXDATA[i]);
+            }
+            put_lf();
             UBYTE command_ID = 0x00;
             UBYTE command_status = 0x00;
             UBYTE ID_add_high = 0x00;
@@ -181,7 +205,7 @@ void main(void) {
                     //Write status to EEPROM
                     WriteLastCommandStatusToEEPROM(error_main_crcCheck);
                     ReceiveFlag = UNCORRECT_RECEIVE;
-                    putChar(0x98);
+                    putChar(0xc6);
                     put_lf();
                     continue;
                 }
@@ -192,6 +216,13 @@ void main(void) {
                     continue;
                 }
             }
+            putChar(0xc7);
+            putChar(0xc7);
+            putChar(0xc7);
+            putChar(0xc7);
+            putChar(0xc7);
+            putChar(0xc7);
+            putChar(0xc7);
             putChar(0xc7);
             putChar(RXDATA[1]);
             
