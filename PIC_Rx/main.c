@@ -205,13 +205,28 @@ void main(void) {
             commandData[i] = 0;
         }
         
+        UBYTE writedata[32];
+        for(int i = 0 ; i < 32 ; i++){
+            writedata[i] = i + 0x30;
+        } 
+//        WriteToEEPROM(0x50,0x01,0x80,writedata);
+//        WriteToEEPROM(0x50,0x01,0xa0,writedata);
+//        WriteToEEPROM(0x50,0x01,0xc0,writedata);
+//        WriteToEEPROM(0x50,0x01,0xe0,writedata);
+//        WriteToEEPROM(0x50,0x02,0x00,writedata);
+//        WriteToEEPROM(0x50,0x02,0x20,writedata);
+//        WriteToEEPROM(0x50,0x02,0x40,writedata);
+//        WriteToEEPROM(0x50,0x02,0x60,writedata);
+//        WriteToEEPROM(0x50,0x02,0x80,writedata);
+        
         receiveDataPacket(commandData);
+        delay_ms(5000);
         
         
         //XXX if () continue, IF COMMAND IS STILL RESET
-        if(commandData[0]==0) {
-            continue;      //not receive command-->continue
-        }
+//        if(commandData[0]==0) {
+//            continue;      //not receive command-->continue
+//        }
         
 //        /*---check command ID---*/
 //        lastCommandID = ReadEEPROMmainAndSub(B0select_for_RXCOBCLastCommand,HighAddress_for_LastCommandID,LowAddress_for_LastCommandID);
@@ -266,11 +281,12 @@ void main(void) {
         commandData[3] = 'f';
         commandData[4] = 0xAA;
         commandData[5] = 0x50;
-        commandData[6] = 0x00;
+        commandData[6] = 0x01;
         commandData[7] = 0x80;
         commandData[8] = 0x01;
         commandData[9] = 0x01;
-        commandData[10] = 0x00;
+        commandData[10] = 0x10;
+        
         
         /*---Write uplink command in EEPROM---*/
         /*------------------------------------------------------------------*/
@@ -294,8 +310,9 @@ void main(void) {
 //        putChar('G');
         
         for(int i=0; i<DATA_SIZE; i++){
-            putChar(commandData[i]);
+//            putChar(commandData[i]);
         }
+        
 //        putChar('H');
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/

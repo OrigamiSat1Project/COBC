@@ -101,8 +101,8 @@ void main(void) {
     while(1){
         
         putChar('m');
-//        delay_ms(3000);
-
+        delay_ms(3000);
+        
         sendPulseWDT();
 //        __delay_ms(5000);
          

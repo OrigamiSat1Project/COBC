@@ -4451,7 +4451,7 @@ putChar('S');
 while(1){
 
 putChar('m');
-
+delay_ms(3000);
 
 sendPulseWDT();
 
