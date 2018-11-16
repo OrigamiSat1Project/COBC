@@ -55,12 +55,6 @@ UINT Packetmaker(UBYTE *eDataField,UINT num){
     ePacket[14] = 0x03; //Control.30?
     ePacket[15] = 0xf0; //PID
     UINT Datanum = num;
-//    for(Datanum=0;eDataField[Datanum] != '\0';Datanum++);
-//    Datanum -= 1;
-//    while(*eDataField){
-//        Datanum ++;
-//        ++eDataField;
-//    }
     for(UINT i=0;i<Datanum;i++){
         ePacket[16+i] = eDataField[i];
     }

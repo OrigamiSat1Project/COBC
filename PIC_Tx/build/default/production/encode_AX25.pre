@@ -4304,13 +4304,11 @@ ePacket[13] = 0xe1;
 ePacket[14] = 0x03;
 ePacket[15] = 0xf0;
 UINT Datanum = num;
-
-# 64
 for(UINT i=0;i<Datanum;i++){
 ePacket[16+i] = eDataField[i];
 }
 
-# 72
+# 66
 return 16+Datanum;
 }
 
@@ -4390,13 +4388,13 @@ ebitstatus = 0;
 void fcsbit(UBYTE tbyte){
 
 
-# 150
+# 144
 #asm
         BCF 03,0
         RRF _efcshi,F
         RRF _efcslo,F
 #endasm 
-# 159
+# 153
     if(((STATUS & 0x01)^(tbyte)) == 0x01){
 efcshi ^= 0x84;
 efcslo ^= 0x08;

@@ -8,6 +8,7 @@
 #include "decodeAX25.h"
 #include "pinDefine.h"
 #include "timer.h"
+#include "WDT.h"
 
 //Macro
 #define BIT_HIGH 0x01               
@@ -80,7 +81,10 @@ void waitFlag(void){
     set_receive_command_counter(0,0);
     
     while(rcvState < 2){
-        while(buf != FLAG_AX25){    //Wait for the flag to come
+        //kick WDT
+        sendPulseWDT();
+        //Wait for the flag to come
+        while(buf != FLAG_AX25){    
             readBit = getBit();
             buf = buf << 1;         // TODO: Changed bit shift direction, bit_H, bit_L according to LSB, MSB.
             if(readBit == 0){

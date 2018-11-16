@@ -31,13 +31,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _delay_ms `(v ~T0 @X0 0 ef1`us ]
 "22 WDT.h
 [v _sendPulseWDT `(v ~T0 @X0 0 ef ]
-"48 FMCW.h
+"49 FMCW.h
 [v _HKDownlink `(v ~T0 @X0 0 ef ]
 "36
 [v _downlinkReceivedCommand `(v ~T0 @X0 0 ef4`uc`uc`uc`uc ]
-"55
+"56
 [v _commandSwitchCWDownlink `(v ~T0 @X0 0 ef7`uc`uc`uc`uc`uc`uc`uc ]
-"44
+"45
 [v _commandSwitchFMDownlink `(v ~T0 @X0 0 ef2`uc`*uc ]
 "35 MPU.h
 [v _commandSwitchPowerSupply `(v ~T0 @X0 0 ef5`uc`uc`uc`uc`uc ]
@@ -3094,26 +3094,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;FMCW.h: 39: void _NOP(void);
 [; ;FMCW.h: 42: void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 [; ;FMCW.h: 43: void readDataSizeAndDownlinkFMSignal(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 44: void commandSwitchFMDownlink(UBYTE, UBYTE*);
-[; ;FMCW.h: 45: void testForFMFunctions(void);
-[; ;FMCW.h: 48: void HKDownlink(void);
-[; ;FMCW.h: 49: void HKDownlinkFR0(void);
-[; ;FMCW.h: 50: void HKDownlinkFR1(void);
-[; ;FMCW.h: 51: void HKDownlinkFR2(void);
-[; ;FMCW.h: 55: void commandSwitchCWDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 56: long changeCharMorse (char);
-[; ;FMCW.h: 57: char changeBinaryToChar(UBYTE);
-[; ;FMCW.h: 58: void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
-[; ;FMCW.h: 59: void sendMorse(char*,size_t);
-[; ;FMCW.h: 60: void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 61: void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
-[; ;FMCW.h: 62: void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
-[; ;FMCW.h: 63: void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE, UBYTE);
-[; ;FMCW.h: 66: void testForCwFunctions(void);
-[; ;FMCW.h: 67: void Morse_V(void);
-[; ;FMCW.h: 68: void Morse_Y(void);
-[; ;FMCW.h: 69: void Morse_J(void);
-[; ;FMCW.h: 72: void HK_test_setting(void);
+[; ;FMCW.h: 44: void FMdownlink32byte(UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 45: void commandSwitchFMDownlink(UBYTE, UBYTE*);
+[; ;FMCW.h: 46: void testForFMFunctions(void);
+[; ;FMCW.h: 49: void HKDownlink(void);
+[; ;FMCW.h: 50: void HKDownlinkFR0(void);
+[; ;FMCW.h: 51: void HKDownlinkFR1(void);
+[; ;FMCW.h: 52: void HKDownlinkFR2(void);
+[; ;FMCW.h: 56: void commandSwitchCWDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 57: long changeCharMorse (char);
+[; ;FMCW.h: 58: char changeBinaryToChar(UBYTE);
+[; ;FMCW.h: 59: void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
+[; ;FMCW.h: 60: void sendMorse(char*,size_t);
+[; ;FMCW.h: 61: void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 62: void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
+[; ;FMCW.h: 63: void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
+[; ;FMCW.h: 64: void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE, UBYTE);
+[; ;FMCW.h: 67: void testForCwFunctions(void);
+[; ;FMCW.h: 68: void Morse_V(void);
+[; ;FMCW.h: 69: void Morse_Y(void);
+[; ;FMCW.h: 70: void Morse_J(void);
+[; ;FMCW.h: 73: void HK_test_setting(void);
 [; ;WDT.h: 19: void commandWDT(UBYTE);
 [; ;WDT.h: 20: void Init_WDT(void);
 [; ;WDT.h: 21: void resetWDT();
@@ -3161,9 +3162,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _RXDATA `uc ~T0 @X0 -> 10 `i e ]
 [; ;main.c: 42: UBYTE RXDATA[10];
 [v $root$_InterReceiver `(v ~T0 @X0 0 e ]
-[v F3144 `(v ~T0 @X0 1 tf ]
+[v F3149 `(v ~T0 @X0 1 tf ]
 "46
-[v _InterReceiver `IF3144 ~T0 @X0 1 e ]
+[v _InterReceiver `IF3149 ~T0 @X0 1 e ]
 {
 [; ;main.c: 46: void interrupt InterReceiver(void){
 [e :U _InterReceiver ]
