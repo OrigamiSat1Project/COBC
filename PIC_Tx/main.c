@@ -153,7 +153,7 @@ void main(void) {
                     break;
                 case 0x66:  /*'f':FM Downlink*/
                     putChar(0xa6);
-                    for(UBYTE i=0; i<8; i++){
+                    for(UBYTE i=0; i<7; i++){
                         FMdata[i] = RXDATA[i+3];
                     }    
                     commandSwitchFMDownlink(RXDATA[2], FMdata);

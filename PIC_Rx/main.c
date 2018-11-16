@@ -76,7 +76,44 @@ void main(void) {
     UBYTE error_status = 0x00;
     
     while(1){
-              
+//        UBYTE DataLengthHigh = 0x01;
+//        UBYTE DataLengthLow = 0x00;
+//        UBYTE addressHigh = 0x00;
+//        UBYTE addressLow = 0x80;
+//        UBYTE downlinkTimes = 0x01;
+//            UBYTE *readData;
+//            UINT DataLength = (UINT)((DataLengthHigh << 8) + DataLengthLow);
+//            UINT address = (UINT)((addressHigh << 8) + addressLow);
+//            UBYTE flag = 0;
+//
+//            for(UBYTE sendCounter = 0; sendCounter < downlinkTimes; sendCounter++){
+//                while(!flag){
+//                    __delay_ms(300);
+////                    SendPacket(readData,32);
+//                    putChar(addressHigh);
+//                    putChar(addressLow);
+//                    putChar(DataLengthHigh);
+//                    putChar(DataLengthLow);
+//                    
+//                    __delay_ms(300);
+//                    address += 0x0020;
+//                    addressHigh = (UBYTE)(address >> 8);
+//                    addressLow = (UBYTE)address;
+//                    if(DataLength < 32){
+//                        flag = 1;
+//                    }else{
+//                    DataLength -= 32;
+//                    DataLengthHigh = (UBYTE)(DataLength >> 8);
+//                    DataLengthLow = (UBYTE)DataLength;
+//                    }
+//                    __delay_ms(500);
+//                }
+//            }
+//        
+//            while(1){
+//                putChar(0xFF);
+//            }
+//              
         /*---timer interrupt---*/
         /*----------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------*/
@@ -170,8 +207,6 @@ void main(void) {
         
         receiveDataPacket(commandData);
         
-        // putChar('F');
-        // putChar('4');
         
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[0]==0) {
@@ -179,14 +214,16 @@ void main(void) {
         }
         
 //        /*---check command ID---*/
-        lastCommandID = ReadEEPROMmainAndSub(B0select_for_RXCOBCLastCommand,HighAddress_for_LastCommandID,LowAddress_for_LastCommandID);
-        commandID = commandData[1];     
-        if (commandID == lastCommandID) {
-            putChar(commandID);
-            continue;       //same uplink command-->continue
-        }
-        lastCommandID = commandID;                      //update command ID
+//        lastCommandID = ReadEEPROMmainAndSub(B0select_for_RXCOBCLastCommand,HighAddress_for_LastCommandID,LowAddress_for_LastCommandID);
+//        commandID = commandData[1];     
+//        if (commandID == lastCommandID) {
+//            putChar(commandID);
+//            continue;       //same uplink command-->continue
+//        }
+//        lastCommandID = commandID;                      //update command ID
         
+        
+        /*-------------Substitute EEPROM ADDRESS DATA-------------------*/
 //        B0select = commandData[19];
 //        wHighAddress = commandData[20];
 //        wLowAddress = commandData[21];
@@ -222,6 +259,19 @@ void main(void) {
 //            switchOk(ok_main_crcCheck);           
         }  
         
+        /*-----------for debug------------*/
+        commandData[0] = 'T';
+        commandData[1] = 1;
+        commandData[2] = 't';
+        commandData[3] = 'f';
+        commandData[4] = 0xAA;
+        commandData[5] = 0x50;
+        commandData[6] = 0x00;
+        commandData[7] = 0x80;
+        commandData[8] = 0x01;
+        commandData[9] = 0x01;
+        commandData[10] = 0x00;
+        
         /*---Write uplink command in EEPROM---*/
         /*------------------------------------------------------------------*/
         WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
@@ -244,7 +294,7 @@ void main(void) {
 //        putChar('G');
         
         for(int i=0; i<DATA_SIZE; i++){
-//            putChar(commandData[i]);
+            putChar(commandData[i]);
         }
 //        putChar('H');
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
