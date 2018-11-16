@@ -69,14 +69,14 @@
 #define adcValue_CH1_addressHigh 0x81
 #define adcValue_CH1_addressLow  0x81
 //ch2 (5VBUS voltage(EPS 5V))
-#define adcValue_CH2_addressHigh 0x50
-#define adcValue_CH2_addressLow  0x00
+#define adcValue_CH2_addressHigh 0x81
+#define adcValue_CH2_addressLow  0x8B
 //ch3 (3V3BUS voltage(EPS 3.3V))
 #define adcValue_CH3_addressHigh 0x81
 #define adcValue_CH3_addressLow  0x89
 //ch4
-#define adcValue_CH4_addressHigh 0x00
-#define adcValue_CH4_addressLow  0x00
+#define adcValue_CH4_addressHigh 0x80
+#define adcValue_CH4_addressLow  0x80
 
 /*******************************************************************************
 *address for satellite mode
@@ -142,6 +142,10 @@
 ******************************************************************************/
 #define HighAddress_for_meltingCompelationFlag      0xE0
 #define LowAddress_for_meltingCompelationFlag       0x00
+
+#define NTRX_subpower_status_addressHigh 0x80
+#define NTRX_subpower_status_addressLow 0x80
+
 
 #endif	/* EEPROM_H */
 

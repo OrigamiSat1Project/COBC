@@ -1194,23 +1194,24 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;MPU.h: 32: void InitMPU(void);
 [; ;MPU.h: 35: void LEDOnOff(void);
 [; ;MPU.h: 36: void debugLEDyellow(void);
-[; ;MPU.h: 38: UBYTE invertState(UBYTE);
-[; ;MPU.h: 40: void onOff5R8G(UBYTE, UBYTE, UBYTE);
-[; ;MPU.h: 41: void onOffOBC(UBYTE, UBYTE, UBYTE);
-[; ;MPU.h: 42: void onOffWDT(UBYTE, UBYTE, UBYTE);
-[; ;MPU.h: 43: void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;MPU.h: 45: void killEPS(void);
-[; ;MPU.h: 46: void onEPS(void);
-[; ;MPU.h: 47: void resetEPS(void);
-[; ;MPU.h: 48: void switchPowerEPS(UBYTE, UBYTE, UBYTE);
-[; ;MPU.h: 49: void reviveEPS(UBYTE, UBYTE);
-[; ;MPU.h: 51: void changeInOut(UINT, UBYTE);
-[; ;MPU.h: 52: void changeHighLow(UINT, UBYTE);
-[; ;MPU.h: 53: void changeXtalFrequency(UBYTE);
-[; ;MPU.h: 55: void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;MPU.h: 56: void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
-[; ;MPU.h: 58: void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
-[; ;MPU.h: 59: void offNtrxPowerSupplyCIB(void);
+[; ;MPU.h: 37: void testEPSonoff(void);
+[; ;MPU.h: 39: UBYTE invertState(UBYTE);
+[; ;MPU.h: 41: void onOff5R8G(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 42: void onOffOBC(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 43: void onOffWDT(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 44: void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 46: void killEPS(void);
+[; ;MPU.h: 47: void onEPS(void);
+[; ;MPU.h: 48: void resetEPS(void);
+[; ;MPU.h: 49: void switchPowerEPS(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 50: void reviveEPS(UBYTE, UBYTE);
+[; ;MPU.h: 52: void changeInOut(UINT, UBYTE);
+[; ;MPU.h: 53: void changeHighLow(UINT, UBYTE);
+[; ;MPU.h: 54: void changeXtalFrequency(UBYTE);
+[; ;MPU.h: 56: void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 57: void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 59: void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
+[; ;MPU.h: 60: void offNtrxPowerSupplyCIB(void);
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
@@ -1515,8 +1516,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 112: put_lf();
 "112
 [e ( _put_lf ..  ]
-[v F1711 `uc ~T0 @X0 -> 2 `i s ]
-[i F1711
+[v F1713 `uc ~T0 @X0 -> 2 `i s ]
+[i F1713
 :U ..
 "113
 -> -> 0 `i `uc
@@ -1524,7 +1525,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [v _melting_status `uc ~T0 @X0 -> 2 `i a ]
 [; ;main.c: 113: UBYTE melting_status[2] = {0x00};
-[e = _melting_status F1711 ]
+[e = _melting_status F1713 ]
 [; ;main.c: 114: melting_status[0] = checkMeltingStatus(0x50);
 "114
 [e = *U + &U _melting_status * -> -> -> 0 `i `ui `ux -> -> # *U &U _melting_status `ui `ux ( _checkMeltingStatus (1 -> -> 80 `i `uc ]
@@ -1742,17 +1743,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 196: sendPulseWDT();
 "196
 [e ( _sendPulseWDT ..  ]
-[; ;main.c: 198: delay_s(1);
-"198
+[; ;main.c: 197: delay_s(1);
+"197
 [e ( _delay_s (1 -> -> 1 `i `us ]
-"344
+"343
 }
 [e :U 104 ]
 "80
 [e $U 105  ]
 [e :U 106 ]
-[; ;main.c: 344: }
-[; ;main.c: 346: }
-"346
+[; ;main.c: 343: }
+[; ;main.c: 345: }
+"345
 [e :UE 100 ]
 }

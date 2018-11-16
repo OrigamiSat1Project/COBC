@@ -34,6 +34,7 @@ void InitMPU(void);
 /*---for debug---*/
 void LEDOnOff(void);
 void debugLEDyellow(void);
+void testEPSonoff(void);
 
 UBYTE invertState(UBYTE);
 

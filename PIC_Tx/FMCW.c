@@ -513,9 +513,9 @@ void HKDownlink(void){
 //    HKDownlinkFR0();   
 //    __delay_s(1);
     HKDownlinkFR1();
-//    __delay_s(1);
-//    HKDownlinkFR2();
-//    __delay_s(1);
+    __delay_s(1);
+    HKDownlinkFR2();
+    __delay_s(1);
 }
 
 /*******************************************************************************
@@ -538,8 +538,8 @@ void HKDownlinkFR1(void){
     sendPulseWDT();
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow);
 //    //battery Temperature
-//    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
-//    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow,DATA,2);
+    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow,DATA,2);
 //    //latest execution command ID(RX)
 //    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
 //    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID);
@@ -553,8 +553,8 @@ void HKDownlinkFR1(void){
 //    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
 //    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,TXCOBC_CommandErrorStatus_addressHigh,TXCOBC_CommandErrorStatus_addressLow);
 ////    //battery Voltage (CIB)
-//    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
-//    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,BatteryVoltageCIB_addressHigh,BatteryVoltageCIB_addressLow);
+    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,BatteryVoltageCIB_addressHigh,BatteryVoltageCIB_addressLow,DATA,2);
     //5VBus Voltage 
     __delay_us(LONG_DELAYTIMES_FOR_MORSE);
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA,2);
@@ -723,11 +723,11 @@ void HK_test_setting(void){
     
     //FR2
     WriteOneByteToEEPROM(EEPROM_address,FreeData1_slaveaddress_addressHigh,FreeData1_slaveaddress_addressLow,EEPROM_address);
-    WriteOneByteToEEPROM(EEPROM_address,FreeData1Highaddress_addressHigh,FreeData1Highaddress_addressLow,0x86);
-    WriteOneByteToEEPROM(EEPROM_address,FreeData1Lowaddress_addressHigh,FreeData1Lowaddress_addressLow,0x00);
-    WriteOneByteToEEPROM(EEPROM_address,0x86,0x00,0xDE);
+    WriteOneByteToEEPROM(EEPROM_address,FreeData1Highaddress_addressHigh,FreeData1Highaddress_addressLow,0x81);
+    WriteOneByteToEEPROM(EEPROM_address,FreeData1Lowaddress_addressHigh,FreeData1Lowaddress_addressLow,0x14);
+//    WriteOneByteToEEPROM(EEPROM_address,0x81,0x14,0xDE);
     WriteOneByteToEEPROM(EEPROM_address,FreeData2_slaveaddress_addressHigh,FreeData2_slaveaddress_addressLow,EEPROM_address);
     WriteOneByteToEEPROM(EEPROM_address,FreeData2Highaddress_addressHigh,FreeData2Highaddress_addressLow,0x81);
-    WriteOneByteToEEPROM(EEPROM_address,FreeData2Lowaddress_addressHigh,FreeData2Lowaddress_addressLow,0x09);
+    WriteOneByteToEEPROM(EEPROM_address,FreeData2Lowaddress_addressHigh,FreeData2Lowaddress_addressLow,0x15);
 //    WriteOneByteToEEPROM(EEPROM_address,0x87,0x00,0xA6);
 }

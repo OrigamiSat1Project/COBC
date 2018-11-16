@@ -159,6 +159,21 @@ void switchPowerSpply1pin(UBYTE target_select, UBYTE onOff, UBYTE timeHigh, UBYT
 /*******************************************************************************
 *Swticch Power EPS 
 ******************************************************************************/
+//void testEPSonoff(void){
+//    sendPulseWDT();    
+//    putChar('A');
+//    killEPS();
+//    putChar('B');
+//    resetEPS();
+//    delay_s(2);
+//    putChar('C');
+//    onEPS();
+//    putChar('D');
+//    resetEPS();
+//    delay_s(2);
+//    sendPulseWDT();    
+//}
+
 void killEPS(void){
     putChar('K');
     putChar('I');

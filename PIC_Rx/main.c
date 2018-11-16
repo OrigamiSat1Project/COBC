@@ -194,7 +194,6 @@ void main(void) {
 //        putChar('m');
 //        putChar('m');
         sendPulseWDT();
-//        put_lf();
         delay_s(1);
         
 //        

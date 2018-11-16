@@ -1503,6 +1503,7 @@ void InitMPU(void);
 
 void LEDOnOff(void);
 void debugLEDyellow(void);
+void testEPSonoff(void);
 
 UBYTE invertState(UBYTE);
 
@@ -1534,8 +1535,9 @@ void resetWDT();
 void sendPulseWDT(void);
 void WDTwait(void);
 
-# 11 "EPS.c"
+# 12 "EPS.c"
 void Reset_EPS(void){
+if( PORTBbits.RB4 == 0 ){
 sendPulseWDT();
 PORTBbits.RB4 = 1;
 PORTAbits.RA1 = 0;
@@ -1544,5 +1546,6 @@ PORTBbits.RB4 = 0;
 PORTAbits.RA1 = 0;
 _delay((unsigned long)((2000)*(10000000/4000.0)));
 sendPulseWDT();
+}
 }
 

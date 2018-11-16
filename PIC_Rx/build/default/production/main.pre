@@ -1648,6 +1648,7 @@ void InitMPU(void);
 
 void LEDOnOff(void);
 void debugLEDyellow(void);
+void testEPSonoff(void);
 
 UBYTE invertState(UBYTE);
 
@@ -1965,10 +1966,9 @@ put_lf();
 
 # 196
 sendPulseWDT();
-
 delay_s(1);
 
-# 344
+# 343
 }
 
 }

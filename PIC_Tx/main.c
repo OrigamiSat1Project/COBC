@@ -159,7 +159,8 @@ void main(void) {
                 onOffNTRX(0x01,0,0);//subPower ON
             }
         }  
-        //TODO debug send HK 
+        
+        
         
         put_lf();
         for(UBYTE i=0; i<3 ; i++){

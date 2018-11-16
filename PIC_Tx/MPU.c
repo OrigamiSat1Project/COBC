@@ -283,3 +283,7 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
     }
 }
 
+//void CheckNTRXsubpower(void){
+//    
+//}
+
