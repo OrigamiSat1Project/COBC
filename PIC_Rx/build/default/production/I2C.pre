@@ -1598,7 +1598,21 @@ WriteToEEPROM(0x50,addressHigh,addressLow,data);
 WriteToEEPROM(0x52,addressHigh,addressLow,data);
 }
 
-# 115
+# 100
+void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE dataSize){
+UBYTE address = addressEEPROM << 1;
+
+I2CMasterStart();
+I2CMasterWrite(address);
+I2CMasterWrite(addressHigh);
+I2CMasterWrite(addressLow);
+for (UBYTE i = 0; i< dataSize; i++){
+I2CMasterWrite(data[i]);
+}
+I2CMasterStop();
+_delay((unsigned long)((300)*(10000000/4000.0)));
+}
+
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
 UBYTE address;
 address= addressEEPROM << 1;
@@ -1630,7 +1644,7 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
 WriteCheckByteToEEPROMs(0x00, 0x82, 0x00, last_command_ID);
 }
 
-# 157
+# 156
 UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
 UBYTE Address = EEPROM_address << 1;
 UBYTE ReadAddress = Address | 0x01;
@@ -1662,7 +1676,7 @@ ReadData = ReadEEPROM(subaddress, high_address,low_address);
 return ReadData;
 }
 
-# 198
+# 197
 void ReadDataFromEEPROMWithDataSize(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
 UBYTE Address = EEPROM_address << 1;
 UBYTE ReadAddress = Address | 0x01;
@@ -1682,12 +1696,12 @@ I2CMasterStop();
 _delay((unsigned long)((200)*(10000000/4000.0)));
 }
 
-# 222
+# 221
 void I2CBufferClear(void){
 SSPBUF = 0;
 }
 
-# 235
+# 234
 void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
 switch (I2C_baud_rate_type){
 case 0x00:
@@ -1701,7 +1715,7 @@ break;
 }
 }
 
-# 253
+# 252
 void TestEEPROM(UBYTE slaveaddress){
 UBYTE commandData[4];
 UBYTE ControlByte;
@@ -1723,7 +1737,7 @@ ReadDataFromEEPROMWithDataSize(ControlByte, 0xE0, 0x00, ReadData, 4);
 
 }
 
-# 277
+# 276
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data){
 switch(command){
 case 'w':
@@ -1758,7 +1772,7 @@ break;
 }
 }
 
-# 314
+# 313
 void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE data2){
 UBYTE data_length;
 UBYTE *read_data;
@@ -1774,7 +1788,7 @@ ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data1)
 break;
 case 'e':
 
-# 334
+# 333
 data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
 ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data_length);
 

@@ -1875,11 +1875,6 @@ for(UBYTE i=0; i<32; i++){
 commandData[i] = 0;
 }
 
-UBYTE writedata[32];
-for(int i = 0 ; i < 32 ; i++){
-writedata[i] = i + 0x30;
-}
-
 # 222
 receiveDataPacket(commandData);
 delay_ms(5000);
@@ -1887,7 +1882,7 @@ delay_ms(5000);
 # 246
 B0select = 0x00;
 wHighAddress = 0x00;
-wLowAddress = 0x80;
+wLowAddress = 0x20;
 downlinkTimes = 0x05;
 mainControlByte = 0x50 | B0select;
 subControlByte = 0x52 | B0select;
@@ -1917,17 +1912,15 @@ commandData[5] = 0x50;
 commandData[6] = 0x01;
 commandData[7] = 0x80;
 commandData[8] = 0x01;
-commandData[9] = 0x01;
+commandData[9] = 0x00;
 commandData[10] = 0x10;
 
-
-
-
-WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
-WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
+# 294
+WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,32);
+WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,32);
 WriteLastCommandIdToEEPROM(commandData[1]);
 
-# 309
+# 310
 sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
 
 
@@ -1975,7 +1968,7 @@ default:
 break;
 }
 
-# 362
+# 363
 }
 }else{
 

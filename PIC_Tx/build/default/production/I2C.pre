@@ -2063,12 +2063,13 @@ void I2CMasterStop(void);
 void I2CMasterWrite(UBYTE);
 UBYTE I2CMasterRead(UBYTE);
 void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
 void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
 void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 
-# 42
+# 43
 void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
 void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
@@ -2143,6 +2144,20 @@ I2CMasterWrite(*data);
 I2CMasterStop();
 _delay((unsigned long)((200)*(10000000/4000.0)));
 }
+void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE dataSize){
+UBYTE address = addressEEPROM << 1;
+
+I2CMasterStart();
+I2CMasterWrite(address);
+I2CMasterWrite(addressHigh);
+I2CMasterWrite(addressLow);
+for (UBYTE i = 0; i< dataSize; i++){
+I2CMasterWrite(data[i]);
+}
+I2CMasterStop();
+_delay((unsigned long)((300)*(10000000/4000.0)));
+}
+
 
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
 UBYTE address;
@@ -2175,7 +2190,7 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
 WriteCheckByteToEEPROMs(0x00, 0x81, 0x85, last_command_ID);
 }
 
-# 116
+# 130
 void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UBYTE EEPROMDataLength){
 
 UBYTE Address = (UBYTE)(Address7Bytes << 1);
@@ -2193,11 +2208,11 @@ ReadData[i] = I2CMasterRead(1);
 ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
 I2CMasterStop();
 
-# 141
+# 155
 _delay((unsigned long)((200)*(10000000/4000.0)));
 }
 
-# 152
+# 166
 UBYTE ReadEEPROM(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address){
 UBYTE Address = (UBYTE)(Address7Bytes << 1);
 UBYTE ReadAddress = (UBYTE)(Address | 0x01);
@@ -2235,7 +2250,7 @@ ReadData[i] = I2CMasterRead(1);
 ReadData[*EEPROMDataLength] = I2CMasterRead(0);
 I2CMasterStop();
 
-# 197
+# 211
 _delay((unsigned long)((200)*(10000000/4000.0)));
 }
 
@@ -2300,7 +2315,7 @@ if(data2=='f'){
 break;
 case 'e':
 
-# 266
+# 280
 data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
 ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, data_length);
 

@@ -205,10 +205,10 @@ void main(void) {
             commandData[i] = 0;
         }
         
-        UBYTE writedata[32];
-        for(int i = 0 ; i < 32 ; i++){
-            writedata[i] = i + 0x30;
-        } 
+//        UBYTE writedata[32];
+//        for(int i = 0 ; i < 32 ; i++){
+//            writedata[i] = i + 0x30;
+//        } 
 //        WriteToEEPROM(0x50,0x01,0x80,writedata);
 //        WriteToEEPROM(0x50,0x01,0xa0,writedata);
 //        WriteToEEPROM(0x50,0x01,0xc0,writedata);
@@ -245,7 +245,7 @@ void main(void) {
 //        downlinkTimes = commandData[22];
         B0select = 0x00;
         wHighAddress = 0x00;
-        wLowAddress = 0x80;
+        wLowAddress = 0x20;
         downlinkTimes = 0x05;
         mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
         subControlByte = SUB_EEPROM_ADDRESS | B0select;
@@ -274,7 +274,7 @@ void main(void) {
 //            switchOk(ok_main_crcCheck);           
         }  
         
-        /*-----------for debug------------*/
+        /*-----------for debug of TXPIC------------*/
         commandData[0] = 'T';
         commandData[1] = 1;
         commandData[2] = 't';
@@ -288,10 +288,11 @@ void main(void) {
         commandData[10] = 0x10;
         
         
+        
         /*---Write uplink command in EEPROM---*/
         /*------------------------------------------------------------------*/
-        WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
-        WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
+        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,DATA_SIZE);
+        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,DATA_SIZE);
         WriteLastCommandIdToEEPROM(commandData[1]);
 
         /*---Send address using UART to OBC and TXCOBC---*/

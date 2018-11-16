@@ -49,7 +49,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _put_ok `(v ~T0 @X0 0 ef ]
 "30
 [v _put_error `(v ~T0 @X0 0 ef ]
-"36 I2C.h
+"37 I2C.h
 [v _WriteLastCommandIdToEEPROM `(v ~T0 @X0 0 ef1`uc ]
 [; ;__size_t.h: 4: typedef unsigned size_t;
 [; ;stdarg.h: 7: typedef void * va_list[1];
@@ -3081,14 +3081,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 31: void I2CMasterWrite(UBYTE);
 [; ;I2C.h: 32: UBYTE I2CMasterRead(UBYTE);
 [; ;I2C.h: 33: void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
-[; ;I2C.h: 34: void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;I2C.h: 35: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
-[; ;I2C.h: 36: void WriteLastCommandIdToEEPROM(UBYTE);
-[; ;I2C.h: 37: void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;I2C.h: 42: void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
-[; ;I2C.h: 43: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-[; ;I2C.h: 44: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
-[; ;I2C.h: 45: void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
+[; ;I2C.h: 34: void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+[; ;I2C.h: 35: void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+[; ;I2C.h: 36: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+[; ;I2C.h: 37: void WriteLastCommandIdToEEPROM(UBYTE);
+[; ;I2C.h: 38: void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
+[; ;I2C.h: 43: void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
+[; ;I2C.h: 44: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
+[; ;I2C.h: 45: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
+[; ;I2C.h: 46: void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 [; ;FMCW.h: 36: void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
 [; ;FMCW.h: 39: void _NOP(void);
 [; ;FMCW.h: 42: void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
@@ -3160,9 +3161,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _RXDATA `uc ~T0 @X0 -> 10 `i e ]
 [; ;main.c: 42: UBYTE RXDATA[10];
 [v $root$_InterReceiver `(v ~T0 @X0 0 e ]
-[v F3138 `(v ~T0 @X0 1 tf ]
+[v F3144 `(v ~T0 @X0 1 tf ]
 "46
-[v _InterReceiver `IF3138 ~T0 @X0 1 e ]
+[v _InterReceiver `IF3144 ~T0 @X0 1 e ]
 {
 [; ;main.c: 46: void interrupt InterReceiver(void){
 [e :U _InterReceiver ]
