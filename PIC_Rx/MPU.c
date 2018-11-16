@@ -161,24 +161,24 @@ void switchPowerSpply1pin(UBYTE target_select, UBYTE onOff, UBYTE timeHigh, UBYT
 ******************************************************************************/
 //void testEPSonoff(void){
 //    sendPulseWDT();    
-//    putChar('A');
+//    //putChar('A');
 //    killEPS();
-//    putChar('B');
+//    //putChar('B');
 //    resetEPS();
 //    delay_s(2);
-//    putChar('C');
+//    //putChar('C');
 //    onEPS();
-//    putChar('D');
+//    //putChar('D');
 //    resetEPS();
 //    delay_s(2);
 //    sendPulseWDT();    
 //}
 
 void killEPS(void){
-    putChar('K');
-    putChar('I');
-    putChar('L');
-    putChar('L');
+    //putChar('K');
+    //putChar('I');
+    //putChar('L');
+    //putChar('L');
     sendPulseWDT();
     SEP_SW = HIGH;     //EPS off -> 5VBUS off
     RBF_SW = LOW;
@@ -220,43 +220,43 @@ void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){
     /*-------------------------------------------------------*/
     //FIXME:for debug to test switch start
 //     if ( onOff == 0x00 ){        
-//             putChar(0xA0);
+//             //putChar(0xA0);
 //             SEP_SW = HIGH;
 //             RBF_SW = HIGH;
-//             putChar(0xA0);
+//             //putChar(0xA0);
 //     } else {                     
-//             putChar(0xA1);
+//             //putChar(0xA1);
 //             SEP_SW = LOW;
 //             RBF_SW = LOW;
-//             putChar(0xA1);
+//             //putChar(0xA1);
 //     }
     
 //     if(timeHigh == 0x00 && timeLow == 0x00){     
-//         putChar(0xB0);
-//         putChar(0xB0);
+//         //putChar(0xB0);
+//         //putChar(0xB0);
 // //    }else if(timeLow == 0x00){                    
 // //        __delay_s(timeHigh);                     
 // //        SEP_SW =invertState(onOff);
 // //        RBF_SW =invertState(onOff);
-// //        putChar(0xFF);
-// //        putChar(timeHigh);
-// //        putChar(0x0c);
+// //        //putChar(0xFF);
+// //        //putChar(timeHigh);
+// //        //putChar(0x0c);
 //     }else {        
-//         putChar(0xB1);
-//         putChar(0xB1);
+//         //putChar(0xB1);
+//         //putChar(0xB1);
 //         UWORD wait_time;
 //         wait_time = (timeHigh << 8 | timeLow);
 //         delay_s(wait_time);
-//         putChar(0xB2);
-//         putChar(0xB2);
+//         //putChar(0xB2);
+//         //putChar(0xB2);
 //         delay_ms(1500);
 //         SEP_SW =invertState(onOff);
 //         RBF_SW =invertState(onOff);
-//         putChar(0xB3);
-//         putChar(0xB3);
+//         //putChar(0xB3);
+//         //putChar(0xB3);
 //         delay_ms(100);
-//         putChar(0xB4);
-//         putChar(0xB4);
+//         //putChar(0xB4);
+//         //putChar(0xB4);
 //         delay_ms(100);
 //     }
     //FIXME:for debug to test switch finish

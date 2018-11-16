@@ -12,7 +12,7 @@
 
 /*---Initial Operation---*/
 #define MELTING_FINISH        4  
-#define WAIT_TIME_FOR_SETTING 4  //[s] 
+#define WAIT_TIME_FOR_SETTING 0  //[s] 
 #define MELTING_COUNTER_LIMIT 71
 
 

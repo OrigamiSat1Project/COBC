@@ -16,10 +16,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p i __delay ]
 "37 FMCW.h
 [v _setPLL `(v ~T0 @X0 0 ef ]
-"30 UART.h
-[v _put_lf `(v ~T0 @X0 0 ef ]
-"23
-[v _putChar `(v ~T0 @X0 0 ef1`uc ]
 "46 SatMode.h
 [v _testInitSatMode `(v ~T0 @X0 0 ef ]
 "19 initial_operation.h
@@ -36,8 +32,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _checkMeltingStatus `(uc ~T0 @X0 0 ef1`uc ]
 "31 timer.h
 [v _set_NTRX_pll_setting_counter `(v ~T0 @X0 0 ef4`ui`ui`ui`ui ]
-"47
-[v _get_init_ope_counter_min `(ui ~T0 @X0 0 ef ]
+"46
+[v _get_init_ope_counter_sec `(ui ~T0 @X0 0 ef ]
 "21 initial_operation.h
 [v _InitialOperation `(uc ~T0 @X0 0 ef ]
 "33 I2C.h
@@ -1376,12 +1372,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 61: _delay((unsigned long)((500)*(10000000/4000.0)));
 "61
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 63: put_lf();
-"63
-[e ( _put_lf ..  ]
-[; ;main.c: 64: putChar('S');
-"64
-[e ( _putChar (1 -> -> 83 `ui `uc ]
 [; ;main.c: 65: for(UBYTE i=0; i<12; i++){
 "65
 {
@@ -1391,9 +1381,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 102  ]
 [e :U 101 ]
 {
-[; ;main.c: 66: putChar(0x53);
-"66
-[e ( _putChar (1 -> -> 83 `i `uc ]
 "67
 }
 "65
@@ -1403,9 +1390,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "67
 }
 [; ;main.c: 67: }
-[; ;main.c: 68: put_lf();
-"68
-[e ( _put_lf ..  ]
 [; ;main.c: 72: testInitSatMode();
 "72
 [e ( _testInitSatMode ..  ]
@@ -1424,9 +1408,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "88
 [e $ ! >= ( _get_eps_reset_counter_min ..  -> -> 2 `i `ui 107  ]
 {
-[; ;main.c: 89: put_lf();
-"89
-[e ( _put_lf ..  ]
 [; ;main.c: 90: for(UBYTE i=0; i<3; i++){
 "90
 {
@@ -1436,9 +1417,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 109  ]
 [e :U 108 ]
 {
-[; ;main.c: 91: putChar(0xF1);
-"91
-[e ( _putChar (1 -> -> 241 `i `uc ]
 "92
 }
 "90
@@ -1448,9 +1426,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "92
 }
 [; ;main.c: 92: }
-[; ;main.c: 93: put_lf();
-"93
-[e ( _put_lf ..  ]
 [; ;main.c: 95: setPLL();
 "95
 [e ( _setPLL ..  ]
@@ -1469,9 +1444,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 112  ]
 [e :U 111 ]
 {
-[; ;main.c: 100: putChar(0xF2);
-"100
-[e ( _putChar (1 -> -> 242 `i `uc ]
 "101
 }
 "99
@@ -1489,9 +1461,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "106
 [e $ ! >= ( _get_NTRX_pll_setting_counter_min ..  -> -> 1 `i `ui 114  ]
 {
-[; ;main.c: 108: put_lf();
-"108
-[e ( _put_lf ..  ]
 [; ;main.c: 109: for(UBYTE i=0; i<3; i++){
 "109
 {
@@ -1501,9 +1470,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 116  ]
 [e :U 115 ]
 {
-[; ;main.c: 110: putChar(0xF3);
-"110
-[e ( _putChar (1 -> -> 243 `i `uc ]
 "111
 }
 "109
@@ -1512,10 +1478,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 116 ]
 "111
 }
-[; ;main.c: 111: }
-[; ;main.c: 112: put_lf();
-"112
-[e ( _put_lf ..  ]
 [v F1713 `uc ~T0 @X0 -> 2 `i s ]
 [i F1713
 :U ..
@@ -1524,6 +1486,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ]
 [v _melting_status `uc ~T0 @X0 -> 2 `i a ]
+[; ;main.c: 111: }
 [; ;main.c: 113: UBYTE melting_status[2] = {0x00};
 [e = _melting_status F1713 ]
 [; ;main.c: 114: melting_status[0] = checkMeltingStatus(0x50);
@@ -1555,9 +1518,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 120  ]
 [e :U 119 ]
 {
-[; ;main.c: 122: putChar(0xF4);
-"122
-[e ( _putChar (1 -> -> 244 `i `uc ]
 "123
 }
 "121
@@ -1571,13 +1531,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 114 ]
 [; ;main.c: 123: }
 [; ;main.c: 124: }
-[; ;main.c: 127: if(get_init_ope_counter_min() >= 1){
-"127
-[e $ ! >= ( _get_init_ope_counter_min ..  -> -> 1 `i `ui 122  ]
+[; ;main.c: 128: if(get_init_ope_counter_sec() >= 20){
+"128
+[e $ ! >= ( _get_init_ope_counter_sec ..  -> -> 20 `i `ui 122  ]
 {
-[; ;main.c: 129: put_lf();
-"129
-[e ( _put_lf ..  ]
 [; ;main.c: 130: for(UBYTE i=0; i<3; i++){
 "130
 {
@@ -1587,9 +1544,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 124  ]
 [e :U 123 ]
 {
-[; ;main.c: 131: putChar(0xF5);
-"131
-[e ( _putChar (1 -> -> 245 `i `uc ]
 "132
 }
 "130
@@ -1599,9 +1553,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "132
 }
 [; ;main.c: 132: }
-[; ;main.c: 133: put_lf();
-"133
-[e ( _put_lf ..  ]
 [; ;main.c: 134: error_status = InitialOperation();
 "134
 [e = _error_status ( _InitialOperation ..  ]
@@ -1623,9 +1574,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 127  ]
 [e :U 126 ]
 {
-[; ;main.c: 139: putChar(0xF6);
-"139
-[e ( _putChar (1 -> -> 246 `i `uc ]
 "140
 }
 "138
@@ -1643,9 +1591,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "145
 [e $ ! >= ( _get_bat_meas_counter_sec ..  -> -> 10 `i `ui 129  ]
 {
-[; ;main.c: 146: put_lf();
-"146
-[e ( _put_lf ..  ]
 [; ;main.c: 147: for(UBYTE i=0; i<3; i++){
 "147
 {
@@ -1655,9 +1600,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 131  ]
 [e :U 130 ]
 {
-[; ;main.c: 148: putChar(0xF7);
-"148
-[e ( _putChar (1 -> -> 247 `i `uc ]
 "149
 }
 "147
@@ -1666,32 +1608,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 131 ]
 "149
 }
-[; ;main.c: 149: }
-[; ;main.c: 150: put_lf();
-"150
-[e ( _put_lf ..  ]
 "152
 [v _SatMode_error_status `us ~T0 @X0 1 a ]
+[; ;main.c: 149: }
 [; ;main.c: 152: UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
 [e = _SatMode_error_status ( _MeasureBatVoltageAndChangeSatMode ..  ]
-[; ;main.c: 153: put_lf();
-"153
-[e ( _put_lf ..  ]
-[; ;main.c: 156: putChar(0xAA);
-"156
-[e ( _putChar (1 -> -> 170 `i `uc ]
-[; ;main.c: 157: putChar(0xAB);
-"157
-[e ( _putChar (1 -> -> 171 `i `uc ]
-[; ;main.c: 158: putChar(0xAC);
-"158
-[e ( _putChar (1 -> -> 172 `i `uc ]
-[; ;main.c: 159: putChar((UBYTE)(SatMode_error_status>>8));
-"159
-[e ( _putChar (1 -> >> -> _SatMode_error_status `ui -> 8 `i `uc ]
-[; ;main.c: 160: putChar((UBYTE)SatMode_error_status);
-"160
-[e ( _putChar (1 -> _SatMode_error_status `uc ]
 [; ;main.c: 165: if (SatMode_error_status != 0){
 "165
 [e $ ! != -> _SatMode_error_status `ui -> -> 0 `i `ui 133  ]
@@ -1721,9 +1642,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 135  ]
 [e :U 134 ]
 {
-[; ;main.c: 183: putChar(0xF8);
-"183
-[e ( _putChar (1 -> -> 248 `i `uc ]
 "184
 }
 "182
@@ -1732,13 +1650,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 135 ]
 "184
 }
-[; ;main.c: 184: }
-[; ;main.c: 185: put_lf();
-"185
-[e ( _put_lf ..  ]
 "186
 }
 [e :U 129 ]
+[; ;main.c: 184: }
 [; ;main.c: 186: }
 [; ;main.c: 196: sendPulseWDT();
 "196

@@ -1852,12 +1852,12 @@ setPLL();
 
 _delay((unsigned long)((500)*(10000000/4000.0)));
 
-put_lf();
-putChar('S');
+
+
 for(UBYTE i=0; i<12; i++){
-putChar(0x53);
+
 }
-put_lf();
+
 
 
 
@@ -1873,18 +1873,18 @@ while(1){
 
 # 88
 if(get_eps_reset_counter_min() >= 2){
-put_lf();
+
 for(UBYTE i=0; i<3; i++){
-putChar(0xF1);
+
 }
-put_lf();
+
 
 setPLL();
 
 reset_timer();
 set_eps_reset_counter(0,0);
 for(UBYTE i=0; i<3; i++){
-putChar(0xF2);
+
 }
 }
 
@@ -1892,11 +1892,11 @@ putChar(0xF2);
 
 if(get_NTRX_pll_setting_counter_min() >= 1){
 
-put_lf();
+
 for(UBYTE i=0; i<3; i++){
-putChar(0xF3);
+
 }
-put_lf();
+
 UBYTE melting_status[2] = {0x00};
 melting_status[0] = checkMeltingStatus(0x50);
 melting_status[1] = checkMeltingStatus(0x52);
@@ -1906,49 +1906,39 @@ if((melting_status[0] < 4)&&(melting_status[1] < 4)) {
 setPLL();
 set_NTRX_pll_setting_counter(0,0,0,0);
 for(UBYTE i=0; i<3; i++){
-putChar(0xF4);
+
 }
 }
 
 
-if(get_init_ope_counter_min() >= 1){
 
-put_lf();
+if(get_init_ope_counter_sec() >= 20){
+
 for(UBYTE i=0; i<3; i++){
-putChar(0xF5);
+
 }
-put_lf();
+
 error_status = InitialOperation();
 WriteOneByteToMainAndSubB0EEPROM(0x81,0x0c,error_status);
 errorCheckInitialOpe();
 set_init_ope_counter(0,0);
 for(UBYTE i=0; i<3; i++){
-putChar(0xF6);
+
 }
 }
 
 
 
 if(get_bat_meas_counter_sec() >= 10){
-put_lf();
+
 for(UBYTE i=0; i<3; i++){
-putChar(0xF7);
+
 }
-put_lf();
+
 
 UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-put_lf();
 
-
-putChar(0xAA);
-putChar(0xAB);
-putChar(0xAC);
-putChar((UBYTE)(SatMode_error_status>>8));
-putChar((UBYTE)SatMode_error_status);
-
-
-
-
+# 165
 if (SatMode_error_status != 0){
 SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
 
@@ -1959,9 +1949,9 @@ WriteOneByteToMainAndSubB0EEPROM(0x81, 0x15, (UBYTE)SatMode_error_status);
 set_bat_meas_counter(0,0);
 
 for(UBYTE i=0; i<3; i++){
-putChar(0xF8);
+
 }
-put_lf();
+
 }
 
 # 196

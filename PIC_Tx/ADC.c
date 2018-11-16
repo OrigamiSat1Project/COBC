@@ -134,11 +134,11 @@ void measureAllChanelADC(){
     /*----------------------------------------------*/
     //FIXME:[start]debug for check the adcValue--->success 
 //    for (UBYTE i=0; i<Channel_Size; i++){
-//        putChar(i);
-//        putChar(i);
-//        putChar(i);
-//        putChar((UBYTE)(adcValue[i] >> 8));
-//        putChar((UBYTE)(adcValue[i] & 0xff));
+//        //putChar(i);
+//        //putChar(i);
+//        //putChar(i);
+//        //putChar((UBYTE)(adcValue[i] >> 8));
+//        //putChar((UBYTE)(adcValue[i] & 0xff));
 //    }
     //FIXME:[finish]debug for check the adcValue 
     /*------------------------------------------------*
@@ -146,19 +146,19 @@ void measureAllChanelADC(){
     //FIXME:[start]debug for write/read adc value--->success
 //    for (UBYTE i=0; i<4; i++){    
 //        WriteOneByteToEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow, (UBYTE)(adcValue[i] >> 8));
-//        putChar(ReadEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow));
+//        //putChar(ReadEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow));
 //        WriteOneByteToEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow, (UBYTE)(adcValue[i] & 0xff));
-//        putChar(ReadEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow));
+//        //putChar(ReadEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow));
 //    }
     //FIXME:[finish]debug for write/read adc value
     /*--------------------------------------------------*/
     
     /*--------------------------------------------------*/
     //FIXME:[start]debug for change address--->success
-//    putChar(adcValue_addressLow);
+//    //putChar(adcValue_addressLow);
 //    UBYTE address;
 //    address = adcValue_addressLow+0x08;
-//    putChar(address);
+//    //putChar(address);
     //FIXME:[finish]debug for change address
     /*--------------------------------------------------*/
     
@@ -166,10 +166,10 @@ void measureAllChanelADC(){
     //FIXME:[start]debug for write adc value--->successs
     //write data to main and sub EEPROM
 //    for (UBYTE i=0; i<Channel_Size; i++){
-//        putChar(adcValue_dataHigh_addressHigh[i]);
-//        putChar(adcValue_dataHigh_addressLow[i]);
-//        putChar(adcValue_dataLow_addressHigh[i]);
-//        putChar(adcValue_dataLow_addressLow[i]);
+//        //putChar(adcValue_dataHigh_addressHigh[i]);
+//        //putChar(adcValue_dataHigh_addressLow[i]);
+//        //putChar(adcValue_dataLow_addressHigh[i]);
+//        //putChar(adcValue_dataLow_addressLow[i]);
 //        //data High
 //        WriteOneByteToEEPROM(EEPROM_address, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i], (UBYTE)(adcValue[i] >> 8));
 //        WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i], (UBYTE)(adcValue[i] >> 8));
@@ -177,11 +177,11 @@ void measureAllChanelADC(){
 //        WriteOneByteToEEPROM(EEPROM_address, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i], (UBYTE)(adcValue[i] & 0xff));
 //        WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i], (UBYTE)(adcValue[i] & 0xff));
 //        //data High
-//        putChar(ReadEEPROM(EEPROM_address, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i]));
-//        putChar(ReadEEPROM(EEPROM_subaddress, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i]));
+//        //putChar(ReadEEPROM(EEPROM_address, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i]));
+//        //putChar(ReadEEPROM(EEPROM_subaddress, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i]));
 //        //data Low
-//        putChar(ReadEEPROM(EEPROM_address, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i]));
-//        putChar(ReadEEPROM(EEPROM_subaddress, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i]));
+//        //putChar(ReadEEPROM(EEPROM_address, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i]));
+//        //putChar(ReadEEPROM(EEPROM_subaddress, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i]));
 //    }
     //FIXME:[finish]debug for write adc value
     /*--------------------------------------------------*/
@@ -219,20 +219,20 @@ void measureDcDcTemperature() {
     /*--------------------------------------------------*/
     //FIXME:[start]debug for write adc value--->successs
     //write data to EEPROM
-//    putChar((UBYTE)(adcValue[0] >> 8));
-//    putChar((UBYTE)(adcValue[0] & 0xff));
+//    //putChar((UBYTE)(adcValue[0] >> 8));
+//    //putChar((UBYTE)(adcValue[0] & 0xff));
 //    
 //    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] >> 8));  //data high
-//    putChar(ReadEEPROM(slaveaddress, high_address, low_address));
+//    //putChar(ReadEEPROM(slaveaddress, high_address, low_address));
 //    
 //    high_address = high_address + 0x08;
 //    low_address = low_address + 0x08;
 //    
-//    putChar(high_address);
-//    putChar(low_address);
+//    //putChar(high_address);
+//    //putChar(low_address);
 //
 //    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] & 0xff)); //data low
-//    putChar(ReadEEPROM(slaveaddress, high_address, low_address));
+//    //putChar(ReadEEPROM(slaveaddress, high_address, low_address));
     //FIXME:[finish]debug for write adc value
     /*--------------------------------------------------*/
 }
@@ -256,16 +256,16 @@ void measureChannel2(){
     //data low
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow+0x01, (UBYTE)(adcValue[1] & 0xff));   
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH2_addressHigh, adcValue_CH2_addressLow+0x01, (UBYTE)(adcValue[1] & 0xff));
-    putChar(0x99);
-    putChar(0x99);
-    putChar(0x99);
-    putChar(0x99);
-    putChar(0x99);
-    putChar(0x99);
-    putChar(0x99);
-    putChar(0x99);
-    putChar((UBYTE)(adcValue[1] >> 8));
-    putChar((UBYTE)(adcValue[1] & 0xff));
+    //putChar(0x99);
+    //putChar(0x99);
+    //putChar(0x99);
+    //putChar(0x99);
+    //putChar(0x99);
+    //putChar(0x99);
+    //putChar(0x99);
+    //putChar(0x99);
+    //putChar((UBYTE)(adcValue[1] >> 8));
+    //putChar((UBYTE)(adcValue[1] & 0xff));
     put_lf();
 }
 void measureChannel3(){
@@ -318,16 +318,16 @@ void commandSwitchHKdata(UBYTE type_sellect, UBYTE data1, UBYTE data2, UBYTE dat
 }
 
 UBYTE read5VBusAndSwitchNtrxPower(void){
-//    putChar('A');
-//    putChar('A');
-    putChar(0x0A);
-    putChar(0x0A);
-    putChar(0x0A);
-    putChar(0x0A);
-    putChar(0x0A);
-    putChar(0x0A);
-//    putChar('\r');
-//    putChar('\n');
+//    //putChar('A');
+//    //putChar('A');
+    //putChar(0x0A);
+    //putChar(0x0A);
+    //putChar(0x0A);
+    //putChar(0x0A);
+    //putChar(0x0A);
+    //putChar(0x0A);
+//    //putChar('\r');
+//    //putChar('\n');
     UBYTE SatMode;
     UBYTE error_status = 0;   
     measureChannel2();//read 5V Bus
@@ -335,82 +335,82 @@ UBYTE read5VBusAndSwitchNtrxPower(void){
     UBYTE adcValue_low = ReadEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow +1);
     UWORD adcValue = (UWORD)adcValue_high << 8 | (UWORD)adcValue_low;
     
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar('\r');
-//    putChar('\n');
-//    putChar(adcValue_high);
-//    putChar(adcValue_low);
-//    putChar('\r');
-//    putChar('\n');
+//    //putChar(0x11);
+//    //putChar(0x11);
+//    //putChar(0x11);
+//    //putChar(0x11);
+//    //putChar(0x11);
+//    //putChar(0x11);
+//    //putChar('\r');
+//    //putChar('\n');
+//    //putChar(adcValue_high);
+//    //putChar(adcValue_low);
+//    //putChar('\r');
+//    //putChar('\n');
 
         if(adcValue <= ADC_Value_4V){
-//            putChar('B');
-            putChar(0x0B);
-            putChar(0x0B);
-            putChar(0x0B);
-            putChar(0x0B);
-            putChar(0x0B);
-//            putChar('\r');
-//            putChar('\n');
+//            //putChar('B');
+            //putChar(0x0B);
+            //putChar(0x0B);
+            //putChar(0x0B);
+            //putChar(0x0B);
+            //putChar(0x0B);
+//            //putChar('\r');
+//            //putChar('\n');
             SatMode = ReadEEPROM(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow);
             SatMode = SatMode & 0xF0;
-            putChar(SatMode);
+            //putChar(SatMode);
             switch(SatMode){
                 case SatMode_Nominal:
-//                    putChar('C');
-                    putChar(0x0C);
-                    putChar('\r');
-                    putChar('\n');
+//                    //putChar('C');
+                    //putChar(0x0C);
+                    //putChar('\r');
+                    //putChar('\n');
                     error_status = 1;
                     break;
                 case SatMode_Saving:
                 case SatMode_Survival:
-//                    putChar('D');
-                    putChar(0x0D);
-                    putChar('\r');
-                    putChar('\n');
+//                    //putChar('D');
+                    //putChar(0x0D);
+                    //putChar('\r');
+                    //putChar('\n');
                     break;
                 default:
-                    putChar(0x0E);
-                    putChar('\r');
-                    putChar('\n');
+                    //putChar(0x0E);
+                    //putChar('\r');
+                    //putChar('\n');
                     SatMode = ReadEEPROM(EEPROM_subaddress,satelliteMode_addressHigh,satelliteMode_addressLow);
                     SatMode = SatMode & 0xF0;
                     switch(SatMode){
                         case SatMode_Nominal:
-                            putChar('F');
-                            putChar('\r');
-                            putChar('\n');
+                            //putChar('F');
+                            //putChar('\r');
+                            //putChar('\n');
                             error_status = 1;
                             break;
                         case SatMode_Saving:
                         case SatMode_Survival:
-                            putChar('G');
-                            putChar('\r');
-                            putChar('\n');
+                            //putChar('G');
+                            //putChar('\r');
+                            //putChar('\n');
                             break;
                         default:
-                            putChar('H');
-                            putChar('\r');
-                            putChar('\n');
+                            //putChar('H');
+                            //putChar('\r');
+                            //putChar('\n');
                             onOffNTRX(1,0,0);//subPower ON
                             break;
                     }
                     break;
             }          
         }else{
-            putChar('I');
-            putChar('\r');
-            putChar('\n');
+            //putChar('I');
+            //putChar('\r');
+            //putChar('\n');
             onOffNTRX(0,0,0);//subPower off
         }
-    putChar(error_status);
-    putChar('\r');
-    putChar('\n');
+    //putChar(error_status);
+    //putChar('\r');
+    //putChar('\n');
     return error_status;
 }

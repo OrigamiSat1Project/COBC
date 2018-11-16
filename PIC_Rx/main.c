@@ -60,12 +60,12 @@ void main(void) {
 //    LED_WHITE = 0;              //for debugging of PLL setting
     __delay_ms(500);           //wait for circuit of PLL
     
-    put_lf(); 
-    putChar('S'); 
+    //put_lf(); 
+    //putChar('S'); 
     for(UBYTE i=0; i<12; i++){
-       putChar(0x53);
+       //putChar(0x53);
     } 
-    put_lf();  
+    //put_lf();  
 
     /*----------------------------------------------------------------------*/
     //for debug BatVoltage measure
@@ -86,18 +86,18 @@ void main(void) {
 ////        if(get_timer_counter('w') >= 1){  //for FM
 //        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
         if(get_eps_reset_counter_min() >= EPS_RSET_INTERVAL_SHORT){   //for debug    
-            put_lf();
+            //put_lf();
             for(UBYTE i=0; i<3; i++){
-                putChar(0xF1);
+                //putChar(0xF1);
             } 
-            put_lf();    
+            //put_lf();    
 //            resetEPS();
             setPLL();
 //            // Execute 1week reset
             reset_timer();
             set_eps_reset_counter(0,0);  //for debug
             for(UBYTE i=0; i<3; i++){
-                putChar(0xF2);
+                //putChar(0xF2);
             }            
         }
 //
@@ -105,11 +105,11 @@ void main(void) {
 //        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   //FM
         if(get_NTRX_pll_setting_counter_min() >= NTRX_PLL_INTERVAL){  //for debug
 //        if(get_NTRX_pll_setting_counter_sec() >= 8){   //for debug
-            put_lf();
+            //put_lf();
             for(UBYTE i=0; i<3; i++){
-                putChar(0xF3);
+                //putChar(0xF3);
             } 
-            put_lf();                
+            //put_lf();                
             UBYTE melting_status[2] = {0x00};
             melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
@@ -119,80 +119,80 @@ void main(void) {
             setPLL();  // set PLL every day
             set_NTRX_pll_setting_counter(0,0,0,0);
             for(UBYTE i=0; i<3; i++){
-                putChar(0xF4);
+                //putChar(0xF4);
             }            
         }        
         
         //*---timer process for initial operation (22.5min)---*/
-        if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
-//         if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
-            put_lf();
+//        if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
+         if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
+            //put_lf();
             for(UBYTE i=0; i<3; i++){
-                putChar(0xF5);
+                //putChar(0xF5);
             } 
-            put_lf();                
+            //put_lf();                
             error_status = InitialOperation();
              WriteOneByteToMainAndSubB0EEPROM(InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow,error_status);
              errorCheckInitialOpe();  //*******for debug (initial ope) ************
              set_init_ope_counter(0,0);
             for(UBYTE i=0; i<3; i++){
-                putChar(0xF6);
+                //putChar(0xF6);
             }             
          }
 
 //        /*---timer process for measure EPS BATTERY---*/
         //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
         if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
-            put_lf();
+            //put_lf();
             for(UBYTE i=0; i<3; i++){
-                putChar(0xF7);
+                //putChar(0xF7);
             } 
-            put_lf();          
+            //put_lf();          
             //TODO:debug function to measure EPS Battery
            UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-            put_lf();
-//            putChar(0xAA);
-//            putChar(0xAA);
-            putChar(0xAA);
-            putChar(0xAB);
-            putChar(0xAC);
-            putChar((UBYTE)(SatMode_error_status>>8));
-            putChar((UBYTE)SatMode_error_status);
-//            putChar(0xAA);
-//            putChar(0xAA);
-//            putChar(0xAA);
-//            put_lf();      
+            //put_lf();
+//            //putChar(0xAA);
+//            //putChar(0xAA);
+//            //putChar(0xAA);
+//            //putChar(0xAB);
+//            //putChar(0xAC);
+//            //putChar((UBYTE)(SatMode_error_status>>8));
+//            //putChar((UBYTE)SatMode_error_status);
+//            //putChar(0xAA);
+//            //putChar(0xAA);
+//            //putChar(0xAA);
+//            //put_lf();      
            if (SatMode_error_status != 0){
                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-//               put_lf();
-//               putChar(0xBB);
-//               putChar(0xBB);
-//               putChar(0xBB);
-//               putChar((UBYTE)(SatMode_error_status>>8));
-//               putChar((UBYTE)SatMode_error_status);
-//               putChar(0xBB);
-//               putChar(0xBB);
-//               putChar(0xBB);
-//               put_lf();
+//               //put_lf();
+//               //putChar(0xBB);
+//               //putChar(0xBB);
+//               //putChar(0xBB);
+//               //putChar((UBYTE)(SatMode_error_status>>8));
+//               //putChar((UBYTE)SatMode_error_status);
+//               //putChar(0xBB);
+//               //putChar(0xBB);
+//               //putChar(0xBB);
+//               //put_lf();
            }            
            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, (UBYTE)(SatMode_error_status>>8));
            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status2_addresshigh, SatMode_error_status2_addresslow, (UBYTE)SatMode_error_status);
            set_bat_meas_counter(0,0);
-//           put_lf();
+//           //put_lf();
            for(UBYTE i=0; i<3; i++){
-                putChar(0xF8);
+                //putChar(0xF8);
            } 
-           put_lf();
+           //put_lf();
         }
         /*----------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------*/
-//        putChar('m');
-//        putChar('m');
-//        putChar('m');
-//        putChar('m');
-//        putChar('m');
-//        putChar('m');
-//        putChar('m');
+//        //putChar('m');
+//        //putChar('m');
+//        //putChar('m');
+//        //putChar('m');
+//        //putChar('m');
+//        //putChar('m');
+//        //putChar('m');
         sendPulseWDT();
         delay_s(1);
         
@@ -217,8 +217,8 @@ void main(void) {
 //        
 //        receiveDataPacket(commandData);
 //        
-//        // putChar('F');
-//        // putChar('4');
+//        // //putChar('F');
+//        // //putChar('4');
 //        
 //        //XXX if () continue, IF COMMAND IS STILL RESET
 //        if(commandData[0]==0) {
@@ -282,12 +282,12 @@ void main(void) {
 ////        send_command[7] = 0x00;
 ////        sendCommandByPointer(send_command);
 //        sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
-//        putChar('G');
+//        //putChar('G');
 //        
 //        for(int i=0; i<DATA_SIZE; i++){
-////            putChar(commandData[i]);
+////            //putChar(commandData[i]);
 //        }
-//        putChar('H');
+//        //putChar('H');
 //        /*---Define if command target is RXCOBC 'R' and read in task target ---*/
 //        /*------------------------------------------------------------------*/
 //        if(commandData[0]=='R'){                //command target = PIC_RX
