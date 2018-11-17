@@ -3,13 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/COBC/PIC_Rx/WDT.c</file>
-            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/COBC/PIC_Rx/SatMode.c</file>
-            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/COBC/PIC_Rx/UART.c</file>
-            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/COBC/PIC_Rx/SatMode.h</file>
-            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/COBC/PIC_Rx/EEPROM.h</file>
-            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/COBC/PIC_Rx/main.c</file>
-            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/COBC/PIC_Rx/timer.h</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/initial_operation.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/SatMode.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/I2C.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/MPU.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/main.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/MPU.h</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/EEPROM.h</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/EPS.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/time.h</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/I2C.h</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/COBC/PIC_Rx/OkError.c</file>
         </group>
     </open-files>
 </project-private>

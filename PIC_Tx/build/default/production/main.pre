@@ -4302,7 +4302,7 @@ void I2CMasterStop(void);
 # 31
 void I2CMasterWrite(UBYTE);
 UBYTE I2CMasterRead(UBYTE);
-void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
 void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
@@ -4533,6 +4533,13 @@ putChar(RXDATA[1]);
 
 
 switch(RXDATA[1]){
+
+
+case 0x75:
+putChar('R');
+putChar(0xa4);
+downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+break;
 
 # 247
 case 0x66:

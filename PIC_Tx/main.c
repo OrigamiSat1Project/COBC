@@ -233,11 +233,11 @@ void main(void) {
             switch(RXDATA[1]){
                 /*---Command from RXCOBC---*/
                 /*------------------------------------------------------------------*/
-//                case 0x75:  //'u'
-//                    putChar('R');
-//                    putChar(0xa4);
-//                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-//                    break;
+                case 0x75:  //'u'
+                    putChar('R');
+                    putChar(0xa4);
+                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+                    break;
                 /*---Command from OBC---*/
                 /*------------------------------------------------------------------*/
 //                case 0x63: /*'c':CW Downlink*/

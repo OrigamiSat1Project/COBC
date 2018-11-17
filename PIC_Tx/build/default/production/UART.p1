@@ -3071,7 +3071,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 25: void I2CMasterStop(void);
 [; ;I2C.h: 31: void I2CMasterWrite(UBYTE);
 [; ;I2C.h: 32: UBYTE I2CMasterRead(UBYTE);
-[; ;I2C.h: 33: void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+[; ;I2C.h: 33: void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
 [; ;I2C.h: 34: void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 [; ;I2C.h: 35: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 [; ;I2C.h: 36: void WriteLastCommandIdToEEPROM(UBYTE);

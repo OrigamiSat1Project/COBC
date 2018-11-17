@@ -23,8 +23,8 @@ void switchOk(UBYTE action_select){
     /*Ok_data[0]->coomandID*/
     Ok_data[0] = ReadEEPROM(mainAddress, HighAddress_for_commandID, LowAddress_for_commandID);
     Ok_data[1] = action_select;
-    WriteToEEPROM(EEPROM_address, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data);
-    WriteToEEPROM(EEPROM_subaddress, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data);
+    WriteToEEPROMWithDataSize(EEPROM_address, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data,2);
+    WriteToEEPROMWithDataSize(EEPROM_subaddress, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data,2);
     //for debug
     put_ok();
     putChar(Ok_data[0]);
@@ -40,8 +40,8 @@ void switchError(UBYTE action_select){
     /*error_data[0]->coomandID*/
     error_data[0] = ReadEEPROM(mainAddress, HighAddress_for_commandID, LowAddress_for_commandID);
     error_data[1] = action_select;
-    WriteToEEPROM(EEPROM_address, HighAddress_for_Error, LowAddress_for_Error, error_data);
-    WriteToEEPROM(EEPROM_subaddress, HighAddress_for_Error, LowAddress_for_Error, error_data);
+    WriteToEEPROMWithDataSize(EEPROM_address, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
+    WriteToEEPROMWithDataSize(EEPROM_subaddress, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
     //for debug
     put_error();
     //TODO:need debug
@@ -60,8 +60,8 @@ void putErrorNoDownlink(UBYTE action_select){
     /*error_data[0]->coomandID*/
     error_data[0] = ReadEEPROM(mainAddress, HighAddress_for_commandID, LowAddress_for_commandID);
     error_data[1] = action_select;
-    WriteToEEPROM(EEPROM_address, HighAddress_for_Error, LowAddress_for_Error, error_data);
-    WriteToEEPROM(EEPROM_subaddress, HighAddress_for_Error, LowAddress_for_Error, error_data);
+    WriteToEEPROMWithDataSize(EEPROM_address, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
+    WriteToEEPROMWithDataSize(EEPROM_subaddress, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
     //for debug
     put_error();
 }

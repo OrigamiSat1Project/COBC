@@ -684,7 +684,7 @@ void HK_test_setting(void){
     WriteOneByteToEEPROM(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow,0x5A);
     //battery Temperature
     DATA[0] = 0x00; DATA[1] = 0x11;
-    WriteToEEPROM(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow,DATA);
+    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow,DATA,2);
     //latest execution command ID(RX)
     WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID,0x22);
     //command error status(RX)
@@ -697,12 +697,12 @@ void HK_test_setting(void){
     WriteOneByteToEEPROM(EEPROM_address,BatteryVoltageCIB_addressHigh,BatteryVoltageCIB_addressLow,0x66);   
 //    //5VBus Voltage 
     DATA[0] = 0x77;  DATA[1] = 0x88;  
-    WriteToEEPROM(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA); 
+    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA,2); 
     sendPulseWDT();
     
 //    //3V3Bus Voltage 
     DATA[0] = 0x99; DATA[1] = 0xAA;
-    WriteToEEPROM(EEPROM_address,adcValue_CH3_addressHigh,adcValue_CH3_addressLow,DATA);
+    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH3_addressHigh,adcValue_CH3_addressLow,DATA,2);
 //    //battery Voltage (OBC)
     WriteOneByteToEEPROM(EEPROM_address,BatteryVoltageOBC_addressHigh,BatteryVoltageOBC_addressLow,0xBB);
 //    //latest execution command ID (OBC)
@@ -711,10 +711,10 @@ void HK_test_setting(void){
     WriteOneByteToEEPROM(EEPROM_address,OBC_CommandErrorStatus_addressHigh,OBC_CommandErrorStatus_addressLow,0xDD);
 //    //Battery Current
     DATA[0] = 0xEE; DATA[1] = 0xFF;
-    WriteToEEPROM(EEPROM_address,BatteryCurrent_addressHigh,BatteryCurrent_addressLow,DATA);
+    WriteToEEPROMWithDataSize(EEPROM_address,BatteryCurrent_addressHigh,BatteryCurrent_addressLow,DATA,2);
 //    //EPS switch status
     DATA[0] = 0xA1; DATA[1] = 0xA2;
-    WriteToEEPROM(EEPROM_address,EpsSwitchStatus_addressHigh,EpsSwitchStatus_addressLow,DATA);
+    WriteToEEPROMWithDataSize(EEPROM_address,EpsSwitchStatus_addressHigh,EpsSwitchStatus_addressLow,DATA,2);
 //    //TX temperature
     WriteOneByteToEEPROM(EEPROM_address,TxTemperature_addressHigh,TxTemperature_addressLow,0xA3);
 //    //RX temperature

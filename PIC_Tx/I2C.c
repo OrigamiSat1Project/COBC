@@ -61,22 +61,21 @@ UBYTE I2CMasterRead(UBYTE a){
 /*******************************************************************************
 *Method for EEPROM Write 
 ******************************************************************************/
-void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
-    UBYTE address;
-    address= (UBYTE)(addressEEPROM << 1);
-    //UINT Datasize = sizeof(data);
-    /**/
+void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE dataSize){
+    UBYTE address = addressEEPROM << 1;
+
     I2CMasterStart();               //Start condition
     I2CMasterWrite(address);        //7 bit address + Write
     I2CMasterWrite(addressHigh);    //Adress High Byte
     I2CMasterWrite(addressLow);     //Adress Low Byte
-    while(*data){
+    for (UBYTE i = 0; i< dataSize; i++){
         I2CMasterWrite(*data);      //Data
         ++data;
     }
     I2CMasterStop();                //Stop condition
-    __delay_ms(200);
+    __delay_ms(300);
 }
+
 /**/
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     UBYTE address;
@@ -237,45 +236,6 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             break;
         default:
             switchError(error_I2C_commandSwitchI2C);
-            break;
-    }
-}
-
-void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE data2){ 
-    UBYTE data_length = 0;
-    UBYTE *read_data;
-    switch(command){    
-        case 'w': //write data to EEPROM
-            //TODO:now send data is only 1byte. change data size
-            WriteToEEPROM(slaveAdress, dataHigh, dataLow, &data1);  //data1 is the data to send
-            break;
-        case 'r': //read data from EEPROM
-            data_length = data1;
-            //FIXME : read_data is a single pointer, maybe not worked as you think
-            ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, (UINT)data1);
-            if(data2=='f'){
-                //fm downlink
-            } else if(data2=='c'){
-               // cw downlink
-            } else {
-                //TODO:add error
-            }
-            break;
-        case 'e': //read any size of data from EEPROM 
-            /* this function for read any size of data from EEPROM
-             * 1.read data from EEPROM
-             * 2.get data size
-             * 3.read data from EEPROM (RX pic gets data size at step2)
-             * 4.get any size of data 
-             */
-            data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
-            ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, data_length);
-            
-        case 't': //EEPROM test
-//            TestEEPROM(slaveAdress);
-            break;
-        default:
-            // switchError(error_I2C_commandSwitchEEPROM);
             break;
     }
 }

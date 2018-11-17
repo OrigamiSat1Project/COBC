@@ -2061,7 +2061,7 @@ void I2CMasterStop(void);
 # 31
 void I2CMasterWrite(UBYTE);
 UBYTE I2CMasterRead(UBYTE);
-void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
 void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
@@ -2127,22 +2127,21 @@ return temp;
 }
 
 # 64
-void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
-UBYTE address;
-address= (UBYTE)(addressEEPROM << 1);
-
+void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE dataSize){
+UBYTE address = addressEEPROM << 1;
 
 I2CMasterStart();
 I2CMasterWrite(address);
 I2CMasterWrite(addressHigh);
 I2CMasterWrite(addressLow);
-while(*data){
+for (UBYTE i = 0; i< dataSize; i++){
 I2CMasterWrite(*data);
 ++data;
 }
 I2CMasterStop();
-_delay((unsigned long)((200)*(10000000/4000.0)));
+_delay((unsigned long)((300)*(10000000/4000.0)));
 }
+
 
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
 UBYTE address;
@@ -2179,7 +2178,7 @@ void WriteLastCommandStatusToEEPROM(UBYTE command_status){
 WriteCheckByteToEEPROMs(0x50, 0x81, 0x86, command_status);
 }
 
-# 121
+# 120
 void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
 
 UBYTE Address = (UBYTE)(Address7Bytes << 1);
@@ -2197,11 +2196,11 @@ ReadData[i] = I2CMasterRead(1);
 ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
 I2CMasterStop();
 
-# 146
+# 145
 _delay((unsigned long)((200)*(10000000/4000.0)));
 }
 
-# 157
+# 156
 UBYTE ReadEEPROM(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address){
 UBYTE Address = (UBYTE)(Address7Bytes << 1);
 UBYTE ReadAddress = (UBYTE)(Address | 0x01);
@@ -2239,7 +2238,7 @@ ReadData[i] = I2CMasterRead(1);
 ReadData[*EEPROMDataLength] = I2CMasterRead(0);
 I2CMasterStop();
 
-# 202
+# 201
 _delay((unsigned long)((200)*(10000000/4000.0)));
 }
 
@@ -2278,41 +2277,6 @@ case 'i':
 break;
 default:
 switchError(0x20);
-break;
-}
-}
-
-void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE data2){
-UBYTE data_length = 0;
-UBYTE *read_data;
-switch(command){
-case 'w':
-
-WriteToEEPROM(slaveAdress, dataHigh, dataLow, &data1);
-break;
-case 'r':
-data_length = data1;
-
-ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, (UINT)data1);
-if(data2=='f'){
-
-} else if(data2=='c'){
-
-} else {
-
-}
-break;
-case 'e':
-
-# 271
-data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
-ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, data_length);
-
-case 't':
-
-break;
-default:
-
 break;
 }
 }

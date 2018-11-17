@@ -69,24 +69,10 @@ UBYTE I2CMasterRead(UBYTE address){
  *	FIXME    :   not yet
  *	XXX      :   not yet
  */
-void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
-    UBYTE address = addressEEPROM << 1;
- 
-    I2CMasterStart();               //Start condition
-    I2CMasterWrite(address);        //7 bit address + Write
-    I2CMasterWrite(addressHigh);    //Adress High Byte
-    I2CMasterWrite(addressLow);     //Adress Low Byte
-    while(*data){
-        I2CMasterWrite(*data);      //Data
-        ++data;
-    }
-    I2CMasterStop();                //Stop condition
-    __delay_ms(200);
-}
 
-void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
-    WriteToEEPROM(MAIN_EEPROM_ADDRESS,addressHigh,addressLow,data);
-    WriteToEEPROM(SUB_EEPROM_ADDRESS,addressHigh,addressLow,data);
+void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data,UBYTE datasize){
+    WriteToEEPROMWithDataSize(MAIN_EEPROM_ADDRESS,addressHigh,addressLow,data,datasize);
+    WriteToEEPROMWithDataSize(SUB_EEPROM_ADDRESS,addressHigh,addressLow,data,datasize);
 }
 
 /*
@@ -97,20 +83,20 @@ void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
  *	FIXME    :   not yet
  *	XXX      :   not yet
  */
-//void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE dataSize){
-//    UBYTE address = addressEEPROM << 1;
-//
-//    I2CMasterStart();               //Start condition
-//    I2CMasterWrite(address);        //7 bit address + Write
-//    I2CMasterWrite(addressHigh);    //Adress High Byte
-//    I2CMasterWrite(addressLow);     //Adress Low Byte
-//    for (UBYTE i = 0; i< dataSize; i++){
-//        I2CMasterWrite(*data);      //Data
-//        ++data;
-//    }
-//    I2CMasterStop();                //Stop condition
-//    __delay_ms(300);
-//}
+void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE dataSize){
+    UBYTE address = addressEEPROM << 1;
+
+    I2CMasterStart();               //Start condition
+    I2CMasterWrite(address);        //7 bit address + Write
+    I2CMasterWrite(addressHigh);    //Adress High Byte
+    I2CMasterWrite(addressLow);     //Adress Low Byte
+    for (UBYTE i = 0; i< dataSize; i++){
+        I2CMasterWrite(*data);      //Data
+        ++data;
+    }
+    I2CMasterStop();                //Stop condition
+    __delay_ms(300);
+}
 
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     UBYTE address;
@@ -258,10 +244,10 @@ void TestEEPROM(UBYTE slaveaddress){
 
         ControlByte = slaveaddress | B0select_for_testEEPROM;
         
-        for (UBYTE i=0; i<datalength_for_test; i++){
-            WriteToEEPROM(ControlByte, HighAddress_for_testEEPROM, LowAddress_for_testEEPROM, commandData[i]);
-        }
-        
+//        for (UBYTE i=0; i<datalength_for_test; i++){
+//            WriteToEEPROM(ControlByte, HighAddress_for_testEEPROM, LowAddress_for_testEEPROM, commandData[i]);
+//        }
+//        
         ReadDataFromEEPROMWithDataSize(ControlByte, HighAddress_for_testEEPROM, LowAddress_for_testEEPROM, ReadData, datalength_for_test);
         
         //TODO:where send to read data
@@ -307,30 +293,18 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE da
 /*******************************************************************************
 *process command data if the command type is 'EEPROM'
 ******************************************************************************/
-void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE data2){ 
+void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE *data2){ 
     UBYTE data_length;
     UBYTE *read_data;
     switch(command){    
         case 'w': //write data to EEPROM
-            //TODO:now send data is only 1byte. change data size
-            WriteToEEPROM(slaveAdress, dataHigh, dataLow, data1);  //data1 is the data to send
+            WriteToEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, data2, data1);  //data1 is the data to send
             break;
         case 'r': //read data from EEPROM
             data_length = data1;
             ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data1);
             //TODO: send data to TXCOBC or/and OBC by I2C or UART
             break;
-        case 'e': //read any size of data from EEPROM 
-            /* this function for read any size of data from EEPROM
-             * 1.read data from EEPROM
-             * 2.get data size
-             * 3.read data from EEPROM (RX pic gets data size at step2)
-             * 4.get any size of data 
-             */
-            data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
-            ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data_length);
-            //TODO: send data to TXCOBC or/and OBC by I2C or UART
-            // sendCommand('t', 'f', 0xaa, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4, UBYTE Parameter5, UBYTE Parameter6);
         case 't': //EEPROM test
             TestEEPROM(slaveAdress);
             break;

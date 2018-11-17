@@ -26,9 +26,8 @@ void I2CMasterWrite(UBYTE);
 UBYTE I2CMasterRead(UBYTE a);  
 
 /*write*/
-void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
 void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+void WriteToMainAndSubB0EEPROM(UBYTE ,UBYTE ,UBYTE *,UBYTE);
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
@@ -45,7 +44,7 @@ void ChangeI2CBaudRate(UBYTE);
 void TestEEPROM(UBYTE);
 
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE*);
 
 
 #endif	/* I2C_H */

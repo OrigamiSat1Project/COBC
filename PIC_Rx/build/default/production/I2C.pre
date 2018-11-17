@@ -1486,9 +1486,8 @@ void I2CMasterWrite(UBYTE);
 UBYTE I2CMasterRead(UBYTE a);
 
 
-void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
 void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+void WriteToMainAndSubB0EEPROM(UBYTE ,UBYTE ,UBYTE *,UBYTE);
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
@@ -1505,7 +1504,7 @@ void ChangeI2CBaudRate(UBYTE);
 void TestEEPROM(UBYTE);
 
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE*);
 
 # 62 "OkError.h"
 void switchOk(UBYTE);
@@ -1577,28 +1576,28 @@ ACKEN = 1;
 return temp;
 }
 
-# 72
-void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
+# 73
+void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data,UBYTE datasize){
+WriteToEEPROMWithDataSize(0x50,addressHigh,addressLow,data,datasize);
+WriteToEEPROMWithDataSize(0x52,addressHigh,addressLow,data,datasize);
+}
+
+# 86
+void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE dataSize){
 UBYTE address = addressEEPROM << 1;
 
 I2CMasterStart();
 I2CMasterWrite(address);
 I2CMasterWrite(addressHigh);
 I2CMasterWrite(addressLow);
-while(*data){
+for (UBYTE i = 0; i< dataSize; i++){
 I2CMasterWrite(*data);
 ++data;
 }
 I2CMasterStop();
-_delay((unsigned long)((200)*(10000000/4000.0)));
+_delay((unsigned long)((300)*(10000000/4000.0)));
 }
 
-void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
-WriteToEEPROM(0x50,addressHigh,addressLow,data);
-WriteToEEPROM(0x52,addressHigh,addressLow,data);
-}
-
-# 115
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
 UBYTE address;
 address= addressEEPROM << 1;
@@ -1630,7 +1629,7 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
 WriteCheckByteToEEPROMs(0x00, 0x97, 0x08, last_command_ID);
 }
 
-# 157
+# 143
 UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
 UBYTE Address = EEPROM_address << 1;
 UBYTE ReadAddress = Address | 0x01;
@@ -1660,7 +1659,7 @@ ReadData = ReadEEPROM(0x52, high_address,low_address);
 return ReadData;
 }
 
-# 194
+# 180
 void ReadDataFromEEPROMWithDataSize(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
 UBYTE Address = EEPROM_address << 1;
 UBYTE ReadAddress = Address | 0x01;
@@ -1680,12 +1679,12 @@ I2CMasterStop();
 _delay((unsigned long)((200)*(10000000/4000.0)));
 }
 
-# 218
+# 204
 void I2CBufferClear(void){
 SSPBUF = 0;
 }
 
-# 231
+# 217
 void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
 switch (I2C_baud_rate_type){
 case 0x00:
@@ -1699,7 +1698,7 @@ break;
 }
 }
 
-# 249
+# 235
 void TestEEPROM(UBYTE slaveaddress){
 UBYTE commandData[4];
 UBYTE ControlByte;
@@ -1712,16 +1711,13 @@ commandData[3] = 0x04;
 
 ControlByte = slaveaddress | 0x00;
 
-for (UBYTE i=0; i<4; i++){
-WriteToEEPROM(ControlByte, 0xE0, 0x00, commandData[i]);
-}
-
+# 251
 ReadDataFromEEPROMWithDataSize(ControlByte, 0xE0, 0x00, ReadData, 4);
 
 
 }
 
-# 273
+# 259
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data){
 switch(command){
 case 'w':
@@ -1756,27 +1752,19 @@ break;
 }
 }
 
-# 310
-void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE data2){
+# 296
+void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE *data2){
 UBYTE data_length;
 UBYTE *read_data;
 switch(command){
 case 'w':
-
-WriteToEEPROM(slaveAdress, dataHigh, dataLow, data1);
+WriteToEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, data2, data1);
 break;
 case 'r':
 data_length = data1;
 ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data1);
 
 break;
-case 'e':
-
-# 330
-data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
-ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data_length);
-
-
 case 't':
 TestEEPROM(slaveAdress);
 break;

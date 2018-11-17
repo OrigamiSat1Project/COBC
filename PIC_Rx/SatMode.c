@@ -26,7 +26,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
             
             //if Voltage is 0x0000 or very large,read one more time. Then it is still 0x0000 or very large,CHange SafeMode.
             ReadBatVoltageWithPointer(bat_voltage);
-            WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressLow,bat_voltage);
+            WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressLow,bat_voltage,2);
             Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1];
             if(Voltage == 0x0000 || (bat_voltage[0] & 0xFC) != 0){
 //                putChar(0xA0);
@@ -34,7 +34,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
 //                putChar(bat_voltage[1]);
 //                put_lf();
                 ReadBatVoltageWithPointer(bat_voltage);
-                WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressLow,bat_voltage);
+                WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressLow,bat_voltage,2);
                 Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1];
                 if(Voltage == 0x0000 || (bat_voltage[0] & 0xFC) != 0){ //ADC read error
 //                    putChar(0xB0);
