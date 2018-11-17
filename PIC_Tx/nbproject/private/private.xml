@@ -3,14 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Tx/PIC_Tx/main.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Tx/PIC_Tx/FMCW.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Tx/PIC_Tx/EEPROM.h</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Tx/PIC_Tx/ADC.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Tx/PIC_Tx/ADC.h</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Tx/PIC_Tx/MPU.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Tx/PIC_Tx/Type_define.h</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Tx/PIC_Tx/I2C.c</file>
+            <file>file:/C:/Users/keisuke/Documents/COBC/PIC_Tx/encode_AX25.c</file>
+            <file>file:/C:/Users/keisuke/Documents/COBC/PIC_Tx/main.c</file>
+            <file>file:/C:/Users/keisuke/Documents/COBC/PIC_Tx/I2C.h</file>
+            <file>file:/C:/Users/keisuke/Documents/COBC/PIC_Tx/FMCW.h</file>
+            <file>file:/C:/Users/keisuke/Documents/COBC/PIC_Tx/MPU.c</file>
+            <file>file:/C:/Users/keisuke/Documents/COBC/PIC_Tx/UART.c</file>
+            <file>file:/C:/Users/keisuke/Documents/COBC/PIC_Tx/I2C.c</file>
+            <file>file:/C:/Users/keisuke/Documents/COBC/PIC_Tx/EEPROM.h</file>
+            <file>file:/C:/Users/keisuke/Documents/COBC/PIC_Tx/FMCW.c</file>
+            <file>file:/C:/Users/keisuke/Documents/COBC/PIC_Tx/WDT.c</file>
         </group>
     </open-files>
 </project-private>
