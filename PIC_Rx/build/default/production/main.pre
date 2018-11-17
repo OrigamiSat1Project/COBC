@@ -1673,6 +1673,8 @@ void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
 void offNtrxPowerSupplyCIB(void);
 
+UBYTE ReadNtrxSubPowerStatus(void);
+
 # 29 "time.h"
 void delay_s(UWORD);
 void delay_ms(UWORD);
@@ -1931,13 +1933,12 @@ putChar(0xF6);
 
 if(get_bat_meas_counter_sec() >= 10){
 put_lf();
-for(UBYTE i=0; i<3; i++){
+for(UBYTE i=0; i<5; i++){
 putChar(0xF7);
 }
 put_lf();
 
 UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-put_lf();
 
 
 putChar(0xAA);
@@ -1948,27 +1949,26 @@ putChar((UBYTE)SatMode_error_status);
 
 
 
-
+put_lf();
 if (SatMode_error_status != 0){
 SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
 
-# 177
+# 176
 }
 WriteOneByteToMainAndSubB0EEPROM(0x81, 0x14, (UBYTE)(SatMode_error_status>>8));
 WriteOneByteToMainAndSubB0EEPROM(0x81, 0x15, (UBYTE)SatMode_error_status);
 set_bat_meas_counter(0,0);
 
-for(UBYTE i=0; i<3; i++){
+for(UBYTE i=0; i<5; i++){
 putChar(0xF8);
 }
-put_lf();
 }
 
-# 196
+# 194
 sendPulseWDT();
 delay_s(1);
 
-# 343
+# 341
 }
 
 }

@@ -134,5 +134,8 @@
 #define BatVol_saving_revival_datalow_addressHigh 0x81
 #define BatVol_saving_revival_datalow_addressLow 0x12
 
+#define NTRX_subpower_status_addressHigh 0x80
+#define NTRX_subpower_status_addressLow 0x80
+
 #endif	/* EEPROM_H */
 

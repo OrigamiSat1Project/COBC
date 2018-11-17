@@ -1212,6 +1212,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;MPU.h: 57: void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 [; ;MPU.h: 59: void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
 [; ;MPU.h: 60: void offNtrxPowerSupplyCIB(void);
+[; ;MPU.h: 62: UBYTE ReadNtrxSubPowerStatus(void);
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
@@ -1516,8 +1517,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 112: put_lf();
 "112
 [e ( _put_lf ..  ]
-[v F1713 `uc ~T0 @X0 -> 2 `i s ]
-[i F1713
+[v F1715 `uc ~T0 @X0 -> 2 `i s ]
+[i F1715
 :U ..
 "113
 -> -> 0 `i `uc
@@ -1525,7 +1526,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [v _melting_status `uc ~T0 @X0 -> 2 `i a ]
 [; ;main.c: 113: UBYTE melting_status[2] = {0x00};
-[e = _melting_status F1713 ]
+[e = _melting_status F1715 ]
 [; ;main.c: 114: melting_status[0] = checkMeltingStatus(0x50);
 "114
 [e = *U + &U _melting_status * -> -> -> 0 `i `ui `ux -> -> # *U &U _melting_status `ui `ux ( _checkMeltingStatus (1 -> -> 80 `i `uc ]
@@ -1646,12 +1647,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 146: put_lf();
 "146
 [e ( _put_lf ..  ]
-[; ;main.c: 147: for(UBYTE i=0; i<3; i++){
+[; ;main.c: 147: for(UBYTE i=0; i<5; i++){
 "147
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 3 `i 130  ]
+[e $ < -> _i `i -> 5 `i 130  ]
 [e $U 131  ]
 [e :U 130 ]
 {
@@ -1662,7 +1663,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "147
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 3 `i 130  ]
+[e $ < -> _i `i -> 5 `i 130  ]
 [e :U 131 ]
 "149
 }
@@ -1674,86 +1675,83 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _SatMode_error_status `us ~T0 @X0 1 a ]
 [; ;main.c: 152: UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
 [e = _SatMode_error_status ( _MeasureBatVoltageAndChangeSatMode ..  ]
-[; ;main.c: 153: put_lf();
-"153
-[e ( _put_lf ..  ]
-[; ;main.c: 156: putChar(0xAA);
-"156
+[; ;main.c: 155: putChar(0xAA);
+"155
 [e ( _putChar (1 -> -> 170 `i `uc ]
-[; ;main.c: 157: putChar(0xAB);
-"157
+[; ;main.c: 156: putChar(0xAB);
+"156
 [e ( _putChar (1 -> -> 171 `i `uc ]
-[; ;main.c: 158: putChar(0xAC);
-"158
+[; ;main.c: 157: putChar(0xAC);
+"157
 [e ( _putChar (1 -> -> 172 `i `uc ]
-[; ;main.c: 159: putChar((UBYTE)(SatMode_error_status>>8));
-"159
+[; ;main.c: 158: putChar((UBYTE)(SatMode_error_status>>8));
+"158
 [e ( _putChar (1 -> >> -> _SatMode_error_status `ui -> 8 `i `uc ]
-[; ;main.c: 160: putChar((UBYTE)SatMode_error_status);
-"160
+[; ;main.c: 159: putChar((UBYTE)SatMode_error_status);
+"159
 [e ( _putChar (1 -> _SatMode_error_status `uc ]
-[; ;main.c: 165: if (SatMode_error_status != 0){
-"165
+[; ;main.c: 163: put_lf();
+"163
+[e ( _put_lf ..  ]
+[; ;main.c: 164: if (SatMode_error_status != 0){
+"164
 [e $ ! != -> _SatMode_error_status `ui -> -> 0 `i `ui 133  ]
 {
-[; ;main.c: 166: SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-"166
+[; ;main.c: 165: SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+"165
 [e = _SatMode_error_status ( _MeasureBatVoltageAndChangeSatMode ..  ]
-"177
+"176
 }
 [e :U 133 ]
-[; ;main.c: 177: }
-[; ;main.c: 178: WriteOneByteToMainAndSubB0EEPROM(0x81, 0x14, (UBYTE)(SatMode_error_status>>8));
-"178
+[; ;main.c: 176: }
+[; ;main.c: 177: WriteOneByteToMainAndSubB0EEPROM(0x81, 0x14, (UBYTE)(SatMode_error_status>>8));
+"177
 [e ( _WriteOneByteToMainAndSubB0EEPROM (3 , , -> -> 129 `i `uc -> -> 20 `i `uc -> >> -> _SatMode_error_status `ui -> 8 `i `uc ]
-[; ;main.c: 179: WriteOneByteToMainAndSubB0EEPROM(0x81, 0x15, (UBYTE)SatMode_error_status);
-"179
+[; ;main.c: 178: WriteOneByteToMainAndSubB0EEPROM(0x81, 0x15, (UBYTE)SatMode_error_status);
+"178
 [e ( _WriteOneByteToMainAndSubB0EEPROM (3 , , -> -> 129 `i `uc -> -> 21 `i `uc -> _SatMode_error_status `uc ]
-[; ;main.c: 180: set_bat_meas_counter(0,0);
-"180
+[; ;main.c: 179: set_bat_meas_counter(0,0);
+"179
 [e ( _set_bat_meas_counter (2 , -> -> 0 `i `ui -> -> 0 `i `ui ]
-[; ;main.c: 182: for(UBYTE i=0; i<3; i++){
-"182
+[; ;main.c: 181: for(UBYTE i=0; i<5; i++){
+"181
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 3 `i 134  ]
+[e $ < -> _i `i -> 5 `i 134  ]
 [e $U 135  ]
 [e :U 134 ]
 {
-[; ;main.c: 183: putChar(0xF8);
-"183
-[e ( _putChar (1 -> -> 248 `i `uc ]
-"184
-}
+[; ;main.c: 182: putChar(0xF8);
 "182
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 3 `i 134  ]
-[e :U 135 ]
-"184
+[e ( _putChar (1 -> -> 248 `i `uc ]
+"183
 }
-[; ;main.c: 184: }
-[; ;main.c: 185: put_lf();
-"185
-[e ( _put_lf ..  ]
-"186
+"181
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 5 `i 134  ]
+[e :U 135 ]
+"183
+}
+"184
 }
 [e :U 129 ]
-[; ;main.c: 186: }
-[; ;main.c: 196: sendPulseWDT();
-"196
+[; ;main.c: 183: }
+[; ;main.c: 184: }
+[; ;main.c: 194: sendPulseWDT();
+"194
 [e ( _sendPulseWDT ..  ]
-[; ;main.c: 197: delay_s(1);
-"197
+[; ;main.c: 195: delay_s(1);
+"195
 [e ( _delay_s (1 -> -> 1 `i `us ]
-"343
+"341
 }
 [e :U 104 ]
 "80
 [e $U 105  ]
 [e :U 106 ]
+[; ;main.c: 341: }
 [; ;main.c: 343: }
-[; ;main.c: 345: }
-"345
+"343
 [e :UE 100 ]
 }

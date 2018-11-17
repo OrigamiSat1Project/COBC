@@ -2051,7 +2051,7 @@ void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
 
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
 
-# 22 "MPU.h"
+# 25 "MPU.h"
 void Init_MPU(void);
 
 
@@ -2066,6 +2066,7 @@ void onOffTXWDT(UBYTE,UBYTE, UBYTE);
 void onOffFMPTT(UBYTE,UBYTE, UBYTE);
 void onOffCWKEY(UBYTE,UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE , UBYTE , UBYTE , UBYTE, UBYTE);
+void CheckNTRXsubpower(void);
 
 # 30 "time.h"
 void delay_ms(UWORD);
@@ -4461,6 +4462,8 @@ onOffNTRX(0x01,0,0);
 }
 }
 
+CheckNTRXsubpower();
+
 
 put_lf();
 for(UBYTE i=0; i<3 ; i++){
@@ -4531,7 +4534,7 @@ putChar(RXDATA[1]);
 
 switch(RXDATA[1]){
 
-# 245
+# 247
 case 0x66:
 putChar(0xa6);
 downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);

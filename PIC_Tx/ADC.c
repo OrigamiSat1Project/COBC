@@ -335,18 +335,18 @@ UBYTE read5VBusAndSwitchNtrxPower(void){
     UBYTE adcValue_low = ReadEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow +1);
     UWORD adcValue = (UWORD)adcValue_high << 8 | (UWORD)adcValue_low;
     
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar('\r');
-//    putChar('\n');
-//    putChar(adcValue_high);
-//    putChar(adcValue_low);
-//    putChar('\r');
-//    putChar('\n');
+    putChar(0x11);
+    putChar(0x11);
+    putChar(0x11);
+    putChar(0x11);
+    putChar(0x11);
+    putChar(0x11);
+    putChar('\r');
+    putChar('\n');
+    putChar(adcValue_high);
+    putChar(adcValue_low);
+    putChar('\r');
+    putChar('\n');
 
         if(adcValue <= ADC_Value_4V){
 //            putChar('B');

@@ -283,7 +283,11 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
     }
 }
 
-//void CheckNTRXsubpower(void){
-//    
-//}
+void CheckNTRXsubpower(void){
+    if(NTRX == 1){
+        WriteOneByteToMainAndSubB0EEPROM(NTRX_subpower_status_addressHigh,NTRX_subpower_status_addressLow,NTRXsub_ON);
+    }else{
+        WriteOneByteToMainAndSubB0EEPROM(NTRX_subpower_status_addressHigh,NTRX_subpower_status_addressLow,NTRXsub_OFF);
+    }
+}
 

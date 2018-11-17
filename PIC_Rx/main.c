@@ -98,7 +98,7 @@ void main(void) {
             set_eps_reset_counter(0,0);  //for debug
             for(UBYTE i=0; i<3; i++){
                 putChar(0xF2);
-            }            
+            }       
         }
 //
         /*---timer process for NTRX PLL setting(every day) & EPS reset (if initial Ope / everyday)---*/
@@ -137,20 +137,19 @@ void main(void) {
              set_init_ope_counter(0,0);
             for(UBYTE i=0; i<3; i++){
                 putChar(0xF6);
-            }             
+            }   
          }
 
 //        /*---timer process for measure EPS BATTERY---*/
         //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
         if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
             put_lf();
-            for(UBYTE i=0; i<3; i++){
+            for(UBYTE i=0; i<5; i++){
                 putChar(0xF7);
             } 
             put_lf();          
             //TODO:debug function to measure EPS Battery
            UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-            put_lf();
 //            putChar(0xAA);
 //            putChar(0xAA);
             putChar(0xAA);
@@ -161,7 +160,7 @@ void main(void) {
 //            putChar(0xAA);
 //            putChar(0xAA);
 //            putChar(0xAA);
-//            put_lf();      
+            put_lf();      
            if (SatMode_error_status != 0){
                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
 //               put_lf();
@@ -179,10 +178,9 @@ void main(void) {
            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status2_addresshigh, SatMode_error_status2_addresslow, (UBYTE)SatMode_error_status);
            set_bat_meas_counter(0,0);
 //           put_lf();
-           for(UBYTE i=0; i<3; i++){
+           for(UBYTE i=0; i<5; i++){
                 putChar(0xF8);
            } 
-           put_lf();
         }
         /*----------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------*/

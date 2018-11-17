@@ -160,6 +160,7 @@ void main(void) {
             }
         }  
         
+        CheckNTRXsubpower();
         
         
         put_lf();
