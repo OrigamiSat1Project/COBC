@@ -19,6 +19,6 @@ void ReadBatVoltage(void);
 void SendBatVoltage(void);
 
 void ReadBatVoltageWithPointer(UBYTE*);
-UBYTE MeasureBatVoltageAndChangeSatMode(void);
+
 
 #endif	/* ADC_H */

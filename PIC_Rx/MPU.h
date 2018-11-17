@@ -34,6 +34,7 @@ void InitMPU(void);
 /*---for debug---*/
 void LEDOnOff(void);
 void debugLEDyellow(void);
+void testEPSonoff(void);
 
 UBYTE invertState(UBYTE);
 
@@ -57,6 +58,8 @@ void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 
 void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
 void offNtrxPowerSupplyCIB(void);
+
+UBYTE ReadNtrxSubPowerStatus(void);
 
 #endif /*INITMPU_H*/
 

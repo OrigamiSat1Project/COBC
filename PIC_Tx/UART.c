@@ -47,7 +47,7 @@ UBYTE getChar(void){                //TODO: add time out feature
     
 	while(!RCIF){
         break_counter ++;
-        if(break_counter >= 100){
+        if(break_counter >= 2000){
 //            putChar(0xbb);
             NOP();
             break_counter = 0;

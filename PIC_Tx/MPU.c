@@ -38,8 +38,8 @@ void Init_MPU(void)
     TRISE  = 0b00000000;	
 
 	//Port Initial Value Setting	
-//	PORTA  = 0x00;          //WDT on
-    PORTA  = 0b00000010;    //WDT off   //FIXME: for debug !!!!
+	PORTA  = 0x00;          //WDT on
+//    PORTA  = 0b00000010;    //WDT off   //FIXME: for debug !!!!
 	PORTB  = 0x00;
 	PORTC  = 0x00;
     //PORTD  = 0x00;
@@ -280,6 +280,14 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
         default:
             switchError(error_MPU_commandSwitchPowerSupply);
             break;
+    }
+}
+
+void CheckNTRXsubpower(void){
+    if(NTRX == 1){
+        WriteOneByteToMainAndSubB0EEPROM(NTRX_subpower_status_addressHigh,NTRX_subpower_status_addressLow,NTRXsub_ON);
+    }else{
+        WriteOneByteToMainAndSubB0EEPROM(NTRX_subpower_status_addressHigh,NTRX_subpower_status_addressLow,NTRXsub_OFF);
     }
 }
 

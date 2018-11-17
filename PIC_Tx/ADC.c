@@ -129,7 +129,6 @@ void measureAllChanelADC(){
     PORTBbits.RB1 = 0;        //Set LED off
     measureDcDcTemperature();
     measureChannel2();
-    measureChannel3();
     measureChannel4();
     
     /*----------------------------------------------*/
@@ -257,6 +256,17 @@ void measureChannel2(){
     //data low
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow+0x01, (UBYTE)(adcValue[1] & 0xff));   
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH2_addressHigh, adcValue_CH2_addressLow+0x01, (UBYTE)(adcValue[1] & 0xff));
+    putChar(0x99);
+    putChar(0x99);
+    putChar(0x99);
+    putChar(0x99);
+    putChar(0x99);
+    putChar(0x99);
+    putChar(0x99);
+    putChar(0x99);
+    putChar((UBYTE)(adcValue[1] >> 8));
+    putChar((UBYTE)(adcValue[1] & 0xff));
+    put_lf();
 }
 void measureChannel3(){
     initADC();
@@ -308,11 +318,16 @@ void commandSwitchHKdata(UBYTE type_sellect, UBYTE data1, UBYTE data2, UBYTE dat
 }
 
 UBYTE read5VBusAndSwitchNtrxPower(void){
-    putChar('A');
-    putChar('A');
+//    putChar('A');
+//    putChar('A');
     putChar(0x0A);
-    putChar('\r');
-    putChar('\n');
+    putChar(0x0A);
+    putChar(0x0A);
+    putChar(0x0A);
+    putChar(0x0A);
+    putChar(0x0A);
+//    putChar('\r');
+//    putChar('\n');
     UBYTE SatMode;
     UBYTE error_status = 0;   
     measureChannel2();//read 5V Bus
@@ -334,16 +349,20 @@ UBYTE read5VBusAndSwitchNtrxPower(void){
     putChar('\n');
 
         if(adcValue <= ADC_Value_4V){
-            putChar('B');
+//            putChar('B');
             putChar(0x0B);
-            putChar('\r');
-            putChar('\n');
+            putChar(0x0B);
+            putChar(0x0B);
+            putChar(0x0B);
+            putChar(0x0B);
+//            putChar('\r');
+//            putChar('\n');
             SatMode = ReadEEPROM(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow);
             SatMode = SatMode & 0xF0;
             putChar(SatMode);
             switch(SatMode){
                 case SatMode_Nominal:
-                    putChar('C');
+//                    putChar('C');
                     putChar(0x0C);
                     putChar('\r');
                     putChar('\n');
@@ -351,13 +370,13 @@ UBYTE read5VBusAndSwitchNtrxPower(void){
                     break;
                 case SatMode_Saving:
                 case SatMode_Survival:
-                    putChar('D');
+//                    putChar('D');
                     putChar(0x0D);
                     putChar('\r');
                     putChar('\n');
                     break;
                 default:
-                    putChar('E');
+                    putChar(0x0E);
                     putChar('\r');
                     putChar('\n');
                     SatMode = ReadEEPROM(EEPROM_subaddress,satelliteMode_addressHigh,satelliteMode_addressLow);

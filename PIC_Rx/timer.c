@@ -38,7 +38,7 @@ static UINT receive_command_counter_min = 0;
 static UINT bat_meas_counter_sec        = 0;
 static UINT bat_meas_counter_min        = 0;
 //static UINT eps_rest_counter_sec        = 0;
-static UINT init_ope_counter_sec        = 0;
+static UINT init_ope_counter_sec        = 25;
 static UINT init_ope_counter_min        = 0;
 UBYTE WDT_flag = 0x00;
 

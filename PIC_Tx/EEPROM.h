@@ -45,8 +45,8 @@
 #define LowAddress_for_TXCOBCLastCommandID          0x85
 #define HighAddress_for_TXCOBCLastCommandStatus     0x81
 #define LowAddress_for_TXCOBCLastCommandStatus      0x86
-#define HighAddress_for_RXCOBCLastCommandID         0x00
-#define LowAddress_for_RXCOBCLastCommandID          0x00
+#define HighAddress_for_RXCOBCLastCommandID         0x81
+#define LowAddress_for_RXCOBCLastCommandID          0x83
 
 #define OffSet_for_CommandID 1
 
@@ -75,8 +75,8 @@
 #define adcValue_CH3_addressHigh 0x81
 #define adcValue_CH3_addressLow  0x89
 //ch4
-#define adcValue_CH4_addressHigh 0x00
-#define adcValue_CH4_addressLow  0x00
+#define adcValue_CH4_addressHigh 0x80
+#define adcValue_CH4_addressLow  0x80
 
 /*******************************************************************************
 *address for satellite mode
@@ -84,7 +84,7 @@
 //TODO:change address
 #define satelliteMode_EEPROMAndB0Select 0x00
 #define satelliteMode_addressHigh       0x81//include SEP(3,2bit) and RBF(1,0bit)
-#define satelliteMode_addressLow        0x00//include SEP(3,2bit) and RBF(1,0bit)
+#define satelliteMode_addressLow        0x80//include SEP(3,2bit) and RBF(1,0bit)
 #define satelliteMode_DataSize          1
 
 /*******************************************************************************
@@ -142,5 +142,9 @@
 ******************************************************************************/
 #define HighAddress_for_meltingCompelationFlag      0xE0
 #define LowAddress_for_meltingCompelationFlag       0x00
+
+#define NTRX_subpower_status_addressHigh 0x80
+#define NTRX_subpower_status_addressLow 0x80
+
 
 #endif	/* EEPROM_H */

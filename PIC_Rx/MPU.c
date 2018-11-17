@@ -10,6 +10,7 @@
 #include "I2C.h"
 #include "OkError.h"
 #include "WDT.h"
+#include "SatMode.h"
 
 /*******************************************************************************
 *Initialize MPU 
@@ -38,8 +39,8 @@ void InitMPU(void)
 
 	//Port Initial Value Setting	
 	PORTA  = 0x00;
-//	PORTB  = 0x00; //WDT on
-    PORTB  = 0b00001000;  //WDT off
+	PORTB  = 0x00; //WDT on
+//    PORTB  = 0b00001000;  //WDT off
 	PORTC  = 0x00;
     PORTD  = 0x00;
     PORTE  = 0x00;
@@ -159,7 +160,26 @@ void switchPowerSpply1pin(UBYTE target_select, UBYTE onOff, UBYTE timeHigh, UBYT
 /*******************************************************************************
 *Swticch Power EPS 
 ******************************************************************************/
+//void testEPSonoff(void){
+//    sendPulseWDT();    
+//    putChar('A');
+//    killEPS();
+//    putChar('B');
+//    resetEPS();
+//    delay_s(2);
+//    putChar('C');
+//    onEPS();
+//    putChar('D');
+//    resetEPS();
+//    delay_s(2);
+//    sendPulseWDT();    
+//}
+
 void killEPS(void){
+    putChar('K');
+    putChar('I');
+    putChar('L');
+    putChar('L');
     sendPulseWDT();
     SEP_SW = HIGH;     //EPS off -> 5VBUS off
     RBF_SW = LOW;
@@ -250,7 +270,7 @@ void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){
     } else {                     //EPS on
             SEP_SW = LOW;
             RBF_SW = LOW;
-            __delay_ms(1000);
+            __delay_ms(2000);
     }
     
     if(timeHigh == 0x00 && timeLow == 0x00){   
@@ -443,7 +463,7 @@ void onNtrxPowerSupplyCIB(UBYTE timeHigh,UBYTE timeLow){
     send_command[6] = 0x00;
     send_command[7] = 0x00;
     sendCommandByPointer(send_command);
-    __delay_ms(1000);//wait EPS ON
+    __delay_ms(2000);//wait EPS ON
     setPLL();
 //    reviveEPS(timeHigh, timeLow);           
 }
@@ -461,4 +481,25 @@ void offNtrxPowerSupplyCIB(void){
     send_command[7] = 0x00;
     sendCommandByPointer(send_command);
     __delay_ms(500);
+}
+
+//Read NTRX SubPower status and count HIGH bit and return count
+UBYTE ReadNtrxSubPowerStatus(void){
+    UBYTE status = ReadEEPROM(MAIN_EEPROM_ADDRESS,NTRX_subpower_status_addressHigh,NTRX_subpower_status_addressLow);
+    UBYTE count = BitCount(status);
+    if(count > 2 && count < 4){//subPower OFF
+        return 0;
+    }else if(count > 5 && count < 7){//subPower ON
+        return 1;
+    }else{
+        status = ReadEEPROM(SUB_EEPROM_ADDRESS,NTRX_subpower_status_addressHigh,NTRX_subpower_status_addressLow);
+        count = BitCount(status);
+        if(count > 2 && count < 4){//subPower OFF
+            return 0;
+        }else if(count > 5 && count < 7){//subPower ON
+            return 1;
+        }else{
+            return 15;//0x0F
+        }
+    }
 }

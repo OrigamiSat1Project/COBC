@@ -88,8 +88,10 @@
 #define InitialOpe_error_status_addressLow      0x0c
 
 
-#define SatMode_error_status_addresshigh 0x81
-#define SatMode_error_status_addresslow 0x09
+#define SatMode_error_status1_addresshigh 0x81
+#define SatMode_error_status1_addresslow 0x14
+#define SatMode_error_status2_addresshigh 0x81
+#define SatMode_error_status2_addresslow 0x15
 #define SW_Change_SavingMode_ADC_addresshigh 0x81
 #define SW_Change_SavingMode_ADC_addresslow 0x13
 
@@ -105,8 +107,8 @@
 *DATA
 ******************************************************************************/
 /*---initial operation---*/
-#define MeltingStatus_addressHigh      0x97
-#define MeltingStatus_addressLow       0x07
+#define MeltingStatus_addressHigh      0x85
+#define MeltingStatus_addressLow       0x00
 #define BatteryVoltage_addressHigh     0x81
 #define BatteryVoltage_addressLow      0x87
 #define MeltingCounter_addressHigh     0x81
@@ -131,6 +133,9 @@
 #define BatVol_saving_revival_datahigh_addressLow 0x11
 #define BatVol_saving_revival_datalow_addressHigh 0x81
 #define BatVol_saving_revival_datalow_addressLow 0x12
+
+#define NTRX_subpower_status_addressHigh 0x80
+#define NTRX_subpower_status_addressLow 0x80
 
 #endif	/* EEPROM_H */
 

@@ -36,12 +36,14 @@
 //initial saving revival thershold BatVol is 7.5V (0x02,0x08)
 #define Init_TheresholdBatVol_saving_revival_high 0x02
 #define Init_TheresholdBatVol_saving_revival_low 0x08
+
+#define TheresholdBatVol_lower_limit 0x0120// 4V
     
-UBYTE MeasureBatVoltageAndChangeSatMode(void);
+UWORD MeasureBatVoltageAndChangeSatMode(void);
 UBYTE BitCount(UBYTE);
 void SwitchToSavingMode(void);
 void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
-    
+void testInitSatMode(void);
 
 #endif	/* SATMODE_H */
 
