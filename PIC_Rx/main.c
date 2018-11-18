@@ -45,7 +45,7 @@ void main(void) {
     /*----------------------------------------------------------------------*/ 
     InitSerial();
     InitMPU();
-    InitWDT();
+//    InitWDT();
     InitI2CMaster(I2C_baud_rate_def);
     initTimer();
    
@@ -59,6 +59,8 @@ void main(void) {
     __delay_ms(500);           //wait for circuit of PLL
     
    putChar('S');
+   
+   RC5 = 1;
 
     /*----------------------------------------------------------------------*/
     //for debug BatVoltage measure
@@ -69,6 +71,7 @@ void main(void) {
     // for debug initial ope
     // testInitialOpe(); 
     /*----------------------------------------------------------------------*/
+   
    
    
        

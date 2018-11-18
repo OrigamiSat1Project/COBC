@@ -1704,18 +1704,17 @@ void receiveDataPacket(UBYTE*);
 
 # 20 "I2C.h"
 void InitI2CMaster(const UDWORD c);
-void I2CMasterWait(void);
-void I2CMasterStart(void);
-void I2CMasterRepeatedStart(void);
-void I2CMasterStop(void);
-void I2CMasterWrite(UBYTE);
-UBYTE I2CMasterRead(UBYTE a);
+void interruptI2C(void);
+void I2CMasterWait(char);
+int I2CMasterStart(unsigned char, unsigned char);
+int I2CMasterRepeatedStart(unsigned char, unsigned char);
+int I2CMasterStop(void);
 
 
-void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
-void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+int WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
 void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
-void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE last_command_ID);
@@ -1781,6 +1780,9 @@ void switchError(UBYTE);
 void initTimer(void);
 void interrupt TimerCheck(void);
 
+int CollisionCheck;
+int AckCheck;
+
 void set_NTRX_pll_setting_counter(UINT, UINT, UINT, UINT);
 UINT get_NTRX_pll_setting_counter_sec(void);
 UINT get_NTRX_pll_setting_counter_min(void);
@@ -1833,7 +1835,7 @@ void main(void) {
 
 InitSerial();
 InitMPU();
-InitWDT();
+
 InitI2CMaster(100000);
 initTimer();
 
@@ -1848,12 +1850,21 @@ _delay((unsigned long)((500)*(10000000/4000.0)));
 
 putChar('S');
 
-# 76
+RC5 = 1;
+
+# 75
+while(1){
+WriteOneByteToEEPROM(0x52,0x11,0x11,0xBB);
+}
+
+
+
+
 UBYTE error_status = 0x00;
 
 while(1){
 
-# 186
+# 192
 sendPulseWDT();
 delay_ms(2000);
 
@@ -1879,7 +1890,7 @@ commandData[i] = 0;
 receiveDataPacket(commandData);
 delay_ms(5000);
 
-# 232
+# 238
 B0select = 0x00;
 wHighAddress = 0x7C;
 wLowAddress = 0x00;
@@ -1893,7 +1904,7 @@ UWORD crcResult, crcValue;
 crcResult = crc16(0,commandData,29);
 crcValue = checkCRC(commandData,29);
 
-# 255
+# 261
 if(crcResult != crcValue){
 commandData[31] = commandData[31] & 0b01111111;
 
@@ -1926,12 +1937,12 @@ low += 0x01;
 sendPulseWDT();
 }
 
-# 294
+# 300
 WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,32);
 WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,32);
 WriteLastCommandIdToEEPROM(commandData[1]);
 
-# 310
+# 316
 sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
 
 
@@ -1979,7 +1990,7 @@ default:
 break;
 }
 
-# 363
+# 369
 }
 }else{
 

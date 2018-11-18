@@ -93,6 +93,7 @@ void main(void) {
 //    sendPulseWDT();
     delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
     putChar('S');
+//  
 
 
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC

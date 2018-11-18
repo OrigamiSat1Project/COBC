@@ -19,6 +19,20 @@ void initTimer(void){
     TMR0 = 0x00;    //Initializing Timer0 Module Register 
 }
 
+void interruptI2C(void)
+{
+     if (PIR1bits.SSPIF == 1) {
+          if (AckCheck == 1) {
+              AckCheck = 0;
+          }
+          PIR1bits.SSPIF = 0;
+     }
+     if (PIR2bits.BCLIF == 1) {
+          CollisionCheck = 1;
+          PIR2bits.BCLIF = 0;
+     }
+}
+
 UBYTE EPS_reset_time = EPS_RSET_INTERVAL_SHORT;
 UWORD time = 0;
 
@@ -48,6 +62,8 @@ static UINT eps_reset_counter_min = 0;
 
 //for debug function
 void interrupt TimerCheck(void){
+    interruptI2C();
+    
     if(INTCONbits.TMR0IF){
         INTCONbits.TMR0IF = 0;
         TMR0 = 0x00;

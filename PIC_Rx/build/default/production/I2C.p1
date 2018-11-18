@@ -7,20 +7,48 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _SSPADD `Vuc ~T0 @X0 0 e@147 ]
 "1828
 [v _SSPSTAT `Vuc ~T0 @X0 0 e@148 ]
-"2659
-[v _SEN `Vb ~T0 @X0 0 e@1160 ]
-"2649
-[v _RSEN `Vb ~T0 @X0 0 e@1161 ]
-"2543
-[v _PEN `Vb ~T0 @X0 0 e@1162 ]
+"1622
+[s S64 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S64 . TMR1IE TMR2IE CCP1IE SSPIE TXIE RCIE ADIE PSPIE ]
+"1621
+[u S63 `S64 1 ]
+[n S63 . . ]
+"1633
+[v _PIE1bits `VS63 ~T0 @X0 0 e@140 ]
+"1684
+[s S66 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S66 . CCP2IE . BCLIE EEIE . CMIE ]
+"1683
+[u S65 `S66 1 ]
+[n S65 . . ]
+"1693
+[v _PIE2bits `VS65 ~T0 @X0 0 e@141 ]
+"536
+[s S21 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S21 . TMR1IF TMR2IF CCP1IF SSPIF TXIF RCIF ADIF PSPIF ]
+"535
+[u S20 `S21 1 ]
+[n S20 . . ]
+"547
+[v _PIR1bits `VS20 ~T0 @X0 0 e@12 ]
+"598
+[s S23 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S23 . CCP2IF . BCLIF EEIF . CMIF ]
+"597
+[u S22 `S23 1 ]
+[n S22 . . ]
+"607
+[v _PIR2bits `VS22 ~T0 @X0 0 e@13 ]
+"1758
+[s S71 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S71 . SEN RSEN PEN RCEN ACKEN ACKDT ACKSTAT GCEN ]
+"1757
+[u S70 `S71 1 ]
+[n S70 . . ]
+"1769
+[v _SSPCON2bits `VS70 ~T0 @X0 0 e@145 ]
 "806
 [v _SSPBUF `Vuc ~T0 @X0 0 e@19 ]
-"2613
-[v _RCEN `Vb ~T0 @X0 0 e@1163 ]
-"2371
-[v _ACKDT `Vb ~T0 @X0 0 e@1165 ]
-"2373
-[v _ACKEN `Vb ~T0 @X0 0 e@1164 ]
 [v F1089 `(v ~T0 @X0 1 tf1`ul ]
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v __delay `JF1089 ~T0 @X0 0 e ]
@@ -1058,27 +1086,26 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
 [; ;I2C.h: 20: void InitI2CMaster(const UDWORD c);
-[; ;I2C.h: 21: void I2CMasterWait(void);
-[; ;I2C.h: 22: void I2CMasterStart(void);
-[; ;I2C.h: 23: void I2CMasterRepeatedStart(void);
-[; ;I2C.h: 24: void I2CMasterStop(void);
-[; ;I2C.h: 25: void I2CMasterWrite(UBYTE);
-[; ;I2C.h: 26: UBYTE I2CMasterRead(UBYTE a);
-[; ;I2C.h: 29: void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
-[; ;I2C.h: 30: void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-[; ;I2C.h: 31: void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
-[; ;I2C.h: 32: void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
-[; ;I2C.h: 33: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
-[; ;I2C.h: 34: void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
-[; ;I2C.h: 35: void WriteLastCommandIdToEEPROM(UBYTE last_command_ID);
-[; ;I2C.h: 38: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-[; ;I2C.h: 39: UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE,UBYTE);
-[; ;I2C.h: 40: void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
-[; ;I2C.h: 42: void I2CBufferClear(void);
-[; ;I2C.h: 43: void ChangeI2CBaudRate(UBYTE);
-[; ;I2C.h: 45: void TestEEPROM(UBYTE);
-[; ;I2C.h: 47: void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;I2C.h: 48: void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;I2C.h: 21: void interruptI2C(void);
+[; ;I2C.h: 22: void I2CMasterWait(char);
+[; ;I2C.h: 23: int I2CMasterStart(unsigned char, unsigned char);
+[; ;I2C.h: 24: int I2CMasterRepeatedStart(unsigned char, unsigned char);
+[; ;I2C.h: 25: int I2CMasterStop(void);
+[; ;I2C.h: 28: int WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+[; ;I2C.h: 29: int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+[; ;I2C.h: 30: void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+[; ;I2C.h: 31: int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+[; ;I2C.h: 32: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+[; ;I2C.h: 33: void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+[; ;I2C.h: 34: void WriteLastCommandIdToEEPROM(UBYTE last_command_ID);
+[; ;I2C.h: 37: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
+[; ;I2C.h: 38: UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE,UBYTE);
+[; ;I2C.h: 39: void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
+[; ;I2C.h: 41: void I2CBufferClear(void);
+[; ;I2C.h: 42: void ChangeI2CBaudRate(UBYTE);
+[; ;I2C.h: 44: void TestEEPROM(UBYTE);
+[; ;I2C.h: 46: void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;I2C.h: 47: void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 [; ;OkError.h: 62: void switchOk(UBYTE);
 [; ;OkError.h: 63: void switchError(UBYTE);
 [; ;UART.h: 22: void InitSerial(void);
@@ -1098,488 +1125,697 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 37: void changeBaudRate(UBYTE,UBYTE,UBYTE);
 [; ;UART.h: 38: void changeInterruptPermission(UBYTE, UBYTE);
 [; ;UART.h: 39: void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-"16 I2C.c
+[; ;timer.h: 28: void initTimer(void);
+[; ;timer.h: 29: void interrupt TimerCheck(void);
+"31 timer.h
+[v _CollisionCheck `i ~T0 @X0 1 e ]
+[; ;timer.h: 31: int CollisionCheck;
+"32
+[v _AckCheck `i ~T0 @X0 1 e ]
+[; ;timer.h: 32: int AckCheck;
+[; ;timer.h: 34: void set_NTRX_pll_setting_counter(UINT, UINT, UINT, UINT);
+[; ;timer.h: 35: UINT get_NTRX_pll_setting_counter_sec(void);
+[; ;timer.h: 36: UINT get_NTRX_pll_setting_counter_min(void);
+[; ;timer.h: 37: UINT get_NTRX_pll_setting_counter_hour(void);
+[; ;timer.h: 38: UINT get_NTRX_pll_setting_counter_day(void);
+[; ;timer.h: 40: void set_eps_reset_counter(UINT, UINT);
+[; ;timer.h: 41: UINT get_eps_reset_counter_sec(void);
+[; ;timer.h: 42: UINT get_eps_reset_counter_min(void);
+[; ;timer.h: 44: void set_receive_command_counter(UINT, UINT);
+[; ;timer.h: 45: UINT get_receive_command_counter_sec(void);
+[; ;timer.h: 46: UINT get_receive_command_counter_min(void);
+[; ;timer.h: 48: void set_init_ope_counter(UINT, UINT);
+[; ;timer.h: 49: UINT get_init_ope_counter_sec(void);
+[; ;timer.h: 50: UINT get_init_ope_counter_min(void);
+[; ;timer.h: 52: void set_bat_meas_counter(UINT, UINT);
+[; ;timer.h: 53: UINT get_bat_meas_counter_sec(void);
+[; ;timer.h: 54: UINT get_bat_meas_counter_min(void);
+[; ;timer.h: 56: UINT get_timer_counter(UBYTE unit);
+[; ;timer.h: 58: void reset_timer(void);
+"17 I2C.c
 [v _InitI2CMaster `(v ~T0 @X0 1 ef1`Cul ]
 {
-[; ;I2C.c: 16: void InitI2CMaster(const UDWORD c){
+[; ;I2C.c: 17: void InitI2CMaster(const UDWORD c){
 [e :U _InitI2CMaster ]
 [v _c `Cul ~T0 @X0 1 r1 ]
 [f ]
-[; ;I2C.c: 17: SSPCON = 0b00101000;
-"17
-[e = _SSPCON -> -> 40 `i `uc ]
-[; ;I2C.c: 18: SSPCON2 = 0;
+[; ;I2C.c: 18: SSPCON = 0b00101000;
 "18
-[e = _SSPCON2 -> -> 0 `i `uc ]
-[; ;I2C.c: 19: SSPADD = (10000000/(4*c))-1;
+[e = _SSPCON -> -> 40 `i `uc ]
+[; ;I2C.c: 19: SSPCON2 = 0;
 "19
-[e = _SSPADD -> - / -> -> 10000000 `l `ul * -> -> -> 4 `i `l `ul _c -> -> -> 1 `i `l `ul `uc ]
-[; ;I2C.c: 20: SSPSTAT = 0;
+[e = _SSPCON2 -> -> 0 `i `uc ]
+[; ;I2C.c: 20: SSPADD = (10000000/(4*c))-1;
 "20
-[e = _SSPSTAT -> -> 0 `i `uc ]
-[; ;I2C.c: 21: }
+[e = _SSPADD -> - / -> -> 10000000 `l `ul * -> -> -> 4 `i `l `ul _c -> -> -> 1 `i `l `ul `uc ]
+[; ;I2C.c: 21: SSPSTAT = 0;
 "21
+[e = _SSPSTAT -> -> 0 `i `uc ]
+[; ;I2C.c: 22: PIE1bits.SSPIE = 1 ;
+"22
+[e = . . _PIE1bits 0 3 -> -> 1 `i `uc ]
+[; ;I2C.c: 23: PIE2bits.BCLIE = 1 ;
+"23
+[e = . . _PIE2bits 0 2 -> -> 1 `i `uc ]
+[; ;I2C.c: 24: PIR1bits.SSPIF = 0 ;
+"24
+[e = . . _PIR1bits 0 3 -> -> 0 `i `uc ]
+[; ;I2C.c: 25: PIR2bits.BCLIF = 0 ;
+"25
+[e = . . _PIR2bits 0 2 -> -> 0 `i `uc ]
+[; ;I2C.c: 26: }
+"26
 [e :UE 95 ]
 }
-"23
-[v _I2CMasterWait `(v ~T0 @X0 1 ef ]
+"30
+[v _I2CMasterWait `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;I2C.c: 23: void I2CMasterWait(){
+[; ;I2C.c: 30: void I2CMasterWait(char mask){
 [e :U _I2CMasterWait ]
+[v _mask `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;I2C.c: 24: while ((SSPSTAT & 0x04) || (SSPCON2 & 0x1F));
-"24
+[; ;I2C.c: 31: while ((SSPSTAT & mask) || (SSPCON2 & 0x1F));
+"31
 [e $U 97  ]
 [e :U 98 ]
 [e :U 97 ]
-[e $ || != & -> _SSPSTAT `i -> 4 `i -> 0 `i != & -> _SSPCON2 `i -> 31 `i -> 0 `i 98  ]
+[e $ || != & -> _SSPSTAT `i -> _mask `i -> 0 `i != & -> _SSPCON2 `i -> 31 `i -> 0 `i 98  ]
 [e :U 99 ]
-[; ;I2C.c: 25: }
-"25
+[; ;I2C.c: 35: }
+"35
 [e :UE 96 ]
 }
-"28
-[v _I2CMasterStart `(v ~T0 @X0 1 ef ]
+"38
+[v _I2CMasterStart `(i ~T0 @X0 1 ef2`uc`uc ]
 {
-[; ;I2C.c: 28: void I2CMasterStart(){
+[; ;I2C.c: 38: int I2CMasterStart(UBYTE slave_address,UBYTE rw){
 [e :U _I2CMasterStart ]
+[v _slave_address `uc ~T0 @X0 1 r1 ]
+[v _rw `uc ~T0 @X0 1 r2 ]
 [f ]
-[; ;I2C.c: 29: I2CMasterWait();
-"29
-[e ( _I2CMasterWait ..  ]
-[; ;I2C.c: 30: SEN = 1;
-"30
-[e = _SEN -> -> 1 `i `b ]
-[; ;I2C.c: 31: }
-"31
+[; ;I2C.c: 41: CollisionCheck = 0 ;
+"41
+[e = _CollisionCheck -> 0 `i ]
+[; ;I2C.c: 42: I2CMasterWait(0x5) ;
+"42
+[e ( _I2CMasterWait (1 -> -> 5 `i `uc ]
+[; ;I2C.c: 43: SSPCON2bits.SEN = 1 ;
+"43
+[e = . . _SSPCON2bits 0 0 -> -> 1 `i `uc ]
+[; ;I2C.c: 44: I2CMasterWait(0x5) ;
+"44
+[e ( _I2CMasterWait (1 -> -> 5 `i `uc ]
+[; ;I2C.c: 45: if (CollisionCheck == 1) return -1 ;
+"45
+[e $ ! == _CollisionCheck -> 1 `i 101  ]
+[e ) -U -> 1 `i ]
+[e $UE 100  ]
+[e :U 101 ]
+[; ;I2C.c: 46: AckCheck = 1 ;
+"46
+[e = _AckCheck -> 1 `i ]
+[; ;I2C.c: 47: SSPBUF = (char)((slave_address<<1)+rw);
+"47
+[e = _SSPBUF -> + << -> _slave_address `i -> 1 `i -> _rw `i `uc ]
+[; ;I2C.c: 48: while (AckCheck);
+"48
+[e $U 102  ]
+[e :U 103 ]
+[e :U 102 ]
+[e $ != _AckCheck -> 0 `i 103  ]
+[e :U 104 ]
+[; ;I2C.c: 49: if (CollisionCheck == 1) return -1 ;
+"49
+[e $ ! == _CollisionCheck -> 1 `i 105  ]
+[e ) -U -> 1 `i ]
+[e $UE 100  ]
+[e :U 105 ]
+[; ;I2C.c: 50: return SSPCON2bits.ACKSTAT;
+"50
+[e ) -> . . _SSPCON2bits 0 6 `i ]
+[e $UE 100  ]
+[; ;I2C.c: 51: }
+"51
 [e :UE 100 ]
 }
-"33
-[v _I2CMasterRepeatedStart `(v ~T0 @X0 1 ef ]
+"53
+[v _I2CMasterRepeatedStart `(i ~T0 @X0 1 ef2`uc`uc ]
 {
-[; ;I2C.c: 33: void I2CMasterRepeatedStart(){
+[; ;I2C.c: 53: int I2CMasterRepeatedStart(UBYTE slave_address,UBYTE rw){
 [e :U _I2CMasterRepeatedStart ]
+[v _slave_address `uc ~T0 @X0 1 r1 ]
+[v _rw `uc ~T0 @X0 1 r2 ]
 [f ]
-[; ;I2C.c: 34: I2CMasterWait();
-"34
-[e ( _I2CMasterWait ..  ]
-[; ;I2C.c: 35: RSEN = 1;
-"35
-[e = _RSEN -> -> 1 `i `b ]
-[; ;I2C.c: 36: }
-"36
-[e :UE 101 ]
+[; ;I2C.c: 56: CollisionCheck = 0 ;
+"56
+[e = _CollisionCheck -> 0 `i ]
+[; ;I2C.c: 57: I2CMasterWait(0x5) ;
+"57
+[e ( _I2CMasterWait (1 -> -> 5 `i `uc ]
+[; ;I2C.c: 58: SSPCON2bits.RSEN = 1 ;
+"58
+[e = . . _SSPCON2bits 0 1 -> -> 1 `i `uc ]
+[; ;I2C.c: 59: I2CMasterWait(0x5) ;
+"59
+[e ( _I2CMasterWait (1 -> -> 5 `i `uc ]
+[; ;I2C.c: 60: if (CollisionCheck == 1) return -1 ;
+"60
+[e $ ! == _CollisionCheck -> 1 `i 107  ]
+[e ) -U -> 1 `i ]
+[e $UE 106  ]
+[e :U 107 ]
+[; ;I2C.c: 61: AckCheck = 1;
+"61
+[e = _AckCheck -> 1 `i ]
+[; ;I2C.c: 62: SSPBUF = (char)((slave_address<<1)+rw);
+"62
+[e = _SSPBUF -> + << -> _slave_address `i -> 1 `i -> _rw `i `uc ]
+[; ;I2C.c: 63: while (AckCheck);
+"63
+[e $U 108  ]
+[e :U 109 ]
+[e :U 108 ]
+[e $ != _AckCheck -> 0 `i 109  ]
+[e :U 110 ]
+[; ;I2C.c: 64: if (CollisionCheck == 1) return -1;
+"64
+[e $ ! == _CollisionCheck -> 1 `i 111  ]
+[e ) -U -> 1 `i ]
+[e $UE 106  ]
+[e :U 111 ]
+[; ;I2C.c: 65: return SSPCON2bits.ACKSTAT;
+"65
+[e ) -> . . _SSPCON2bits 0 6 `i ]
+[e $UE 106  ]
+[; ;I2C.c: 66: }
+"66
+[e :UE 106 ]
 }
-"38
-[v _I2CMasterStop `(v ~T0 @X0 1 ef ]
+"68
+[v _I2CMasterStop `(i ~T0 @X0 1 ef ]
 {
-[; ;I2C.c: 38: void I2CMasterStop(){
+[; ;I2C.c: 68: int I2CMasterStop(void){
 [e :U _I2CMasterStop ]
 [f ]
-[; ;I2C.c: 39: I2CMasterWait();
-"39
-[e ( _I2CMasterWait ..  ]
-[; ;I2C.c: 40: PEN = 1;
-"40
-[e = _PEN -> -> 1 `i `b ]
-[; ;I2C.c: 41: }
-"41
-[e :UE 102 ]
+[; ;I2C.c: 71: CollisionCheck = 0 ;
+"71
+[e = _CollisionCheck -> 0 `i ]
+[; ;I2C.c: 72: I2CMasterWait(0x5) ;
+"72
+[e ( _I2CMasterWait (1 -> -> 5 `i `uc ]
+[; ;I2C.c: 73: SSPCON2bits.PEN = 1 ;
+"73
+[e = . . _SSPCON2bits 0 2 -> -> 1 `i `uc ]
+[; ;I2C.c: 74: if (CollisionCheck == 1) return -1 ;
+"74
+[e $ ! == _CollisionCheck -> 1 `i 113  ]
+[e ) -U -> 1 `i ]
+[e $UE 112  ]
+[e $U 114  ]
+"75
+[e :U 113 ]
+[; ;I2C.c: 75: else return 0 ;
+[e ) -> 0 `i ]
+[e $UE 112  ]
+[e :U 114 ]
+[; ;I2C.c: 76: }
+"76
+[e :UE 112 ]
 }
-"43
-[v _I2CMasterWrite `(v ~T0 @X0 1 ef1`uc ]
+"78
+[v _I2CMasterWrite `(i ~T0 @X0 1 ef1`uc ]
 {
-[; ;I2C.c: 43: void I2CMasterWrite(UBYTE dataByte){
+[; ;I2C.c: 78: int I2CMasterWrite(UBYTE dataByte){
 [e :U _I2CMasterWrite ]
 [v _dataByte `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;I2C.c: 44: I2CMasterWait();
-"44
-[e ( _I2CMasterWait ..  ]
-[; ;I2C.c: 45: SSPBUF = dataByte;
-"45
+[; ;I2C.c: 81: CollisionCheck = 0 ;
+"81
+[e = _CollisionCheck -> 0 `i ]
+[; ;I2C.c: 82: I2CMasterWait(0x5) ;
+"82
+[e ( _I2CMasterWait (1 -> -> 5 `i `uc ]
+[; ;I2C.c: 83: if (CollisionCheck == 1) return -1;
+"83
+[e $ ! == _CollisionCheck -> 1 `i 116  ]
+[e ) -U -> 1 `i ]
+[e $UE 115  ]
+[e :U 116 ]
+[; ;I2C.c: 84: AckCheck = 1;
+"84
+[e = _AckCheck -> 1 `i ]
+[; ;I2C.c: 85: SSPBUF = dataByte;
+"85
 [e = _SSPBUF _dataByte ]
-[; ;I2C.c: 46: }
-"46
-[e :UE 103 ]
+[; ;I2C.c: 86: while (AckCheck);
+"86
+[e $U 117  ]
+[e :U 118 ]
+[e :U 117 ]
+[e $ != _AckCheck -> 0 `i 118  ]
+[e :U 119 ]
+[; ;I2C.c: 87: if (CollisionCheck == 1) return -1;
+"87
+[e $ ! == _CollisionCheck -> 1 `i 120  ]
+[e ) -U -> 1 `i ]
+[e $UE 115  ]
+[e :U 120 ]
+[; ;I2C.c: 88: return SSPCON2bits.ACKSTAT;
+"88
+[e ) -> . . _SSPCON2bits 0 6 `i ]
+[e $UE 115  ]
+[; ;I2C.c: 89: }
+"89
+[e :UE 115 ]
 }
-"49
-[v _I2CMasterRead `(uc ~T0 @X0 1 ef1`uc ]
+"92
+[v _I2CMasterRead `(i ~T0 @X0 1 ef1`uc ]
 {
-[; ;I2C.c: 49: UBYTE I2CMasterRead(UBYTE address){
+[; ;I2C.c: 92: int I2CMasterRead(UBYTE address){
 [e :U _I2CMasterRead ]
 [v _address `uc ~T0 @X0 1 r1 ]
 [f ]
-"50
-[v _temp `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 50: UBYTE temp;
-[; ;I2C.c: 51: I2CMasterWait();
-"51
-[e ( _I2CMasterWait ..  ]
-[; ;I2C.c: 52: RCEN = 1;
-"52
-[e = _RCEN -> -> 1 `i `b ]
-[; ;I2C.c: 53: I2CMasterWait();
-"53
-[e ( _I2CMasterWait ..  ]
-[; ;I2C.c: 54: temp = SSPBUF;
-"54
-[e = _temp _SSPBUF ]
-[; ;I2C.c: 55: I2CMasterWait();
-"55
-[e ( _I2CMasterWait ..  ]
-[; ;I2C.c: 56: ACKDT = (address)?0:1;
-"56
-[e = _ACKDT -> ? != -> _address `i -> -> -> 0 `i `uc `i : -> 0 `i -> 1 `i `b ]
-[; ;I2C.c: 57: ACKEN = 1;
-"57
-[e = _ACKEN -> -> 1 `i `b ]
-[; ;I2C.c: 58: return temp;
-"58
-[e ) _temp ]
-[e $UE 104  ]
-[; ;I2C.c: 59: }
-"59
-[e :UE 104 ]
+"93
+[v _data_from_slave `i ~T0 @X0 1 a ]
+[; ;I2C.c: 93: int data_from_slave ;
+[; ;I2C.c: 95: CollisionCheck = 0 ;
+"95
+[e = _CollisionCheck -> 0 `i ]
+[; ;I2C.c: 96: I2CMasterWait(0x5) ;
+"96
+[e ( _I2CMasterWait (1 -> -> 5 `i `uc ]
+[; ;I2C.c: 97: SSPCON2bits.RCEN = 1;
+"97
+[e = . . _SSPCON2bits 0 3 -> -> 1 `i `uc ]
+[; ;I2C.c: 98: I2CMasterWait(0x4) ;
+"98
+[e ( _I2CMasterWait (1 -> -> 4 `i `uc ]
+[; ;I2C.c: 99: if (CollisionCheck == 1) return -1 ;
+"99
+[e $ ! == _CollisionCheck -> 1 `i 122  ]
+[e ) -U -> 1 `i ]
+[e $UE 121  ]
+[e :U 122 ]
+[; ;I2C.c: 100: data_from_slave = SSPBUF;
+"100
+[e = _data_from_slave -> _SSPBUF `i ]
+[; ;I2C.c: 101: I2CMasterWait(0x5) ;
+"101
+[e ( _I2CMasterWait (1 -> -> 5 `i `uc ]
+[; ;I2C.c: 102: if (CollisionCheck == 1) return -1 ;
+"102
+[e $ ! == _CollisionCheck -> 1 `i 123  ]
+[e ) -U -> 1 `i ]
+[e $UE 121  ]
+[e :U 123 ]
+[; ;I2C.c: 103: SSPCON2bits.ACKDT = address;
+"103
+[e = . . _SSPCON2bits 0 5 _address ]
+[; ;I2C.c: 104: SSPCON2bits.ACKEN = 1;
+"104
+[e = . . _SSPCON2bits 0 4 -> -> 1 `i `uc ]
+[; ;I2C.c: 105: return data_from_slave;
+"105
+[e ) _data_from_slave ]
+[e $UE 121  ]
+[; ;I2C.c: 106: }
+"106
+[e :UE 121 ]
 }
-"72
-[v _WriteToEEPROM `(v ~T0 @X0 1 ef4`uc`uc`uc`*uc ]
+"120
+[v _WriteToEEPROM `(i ~T0 @X0 1 ef4`uc`uc`uc`*uc ]
 {
-[; ;I2C.c: 72: void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
+[; ;I2C.c: 120: int WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
 [e :U _WriteToEEPROM ]
 [v _addressEEPROM `uc ~T0 @X0 1 r1 ]
 [v _addressHigh `uc ~T0 @X0 1 r2 ]
 [v _addressLow `uc ~T0 @X0 1 r3 ]
 [v _data `*uc ~T0 @X0 1 r4 ]
 [f ]
-"73
-[v _address `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 73: UBYTE address = addressEEPROM << 1;
-[e = _address -> << -> _addressEEPROM `i -> 1 `i `uc ]
-[; ;I2C.c: 75: I2CMasterStart();
-"75
-[e ( _I2CMasterStart ..  ]
-[; ;I2C.c: 76: I2CMasterWrite(address);
-"76
-[e ( _I2CMasterWrite (1 _address ]
-[; ;I2C.c: 77: I2CMasterWrite(addressHigh);
-"77
-[e ( _I2CMasterWrite (1 _addressHigh ]
-[; ;I2C.c: 78: I2CMasterWrite(addressLow);
-"78
-[e ( _I2CMasterWrite (1 _addressLow ]
-[; ;I2C.c: 79: while(*data){
-"79
-[e $U 106  ]
-[e :U 107 ]
+"121
+[v _ans `i ~T0 @X0 1 a ]
+[; ;I2C.c: 121: int ans;
+[; ;I2C.c: 123: ans = I2CMasterStart(addressEEPROM,0);
+"123
+[e = _ans ( _I2CMasterStart (2 , _addressEEPROM -> -> 0 `i `uc ]
+[; ;I2C.c: 124: if (ans == 0){
+"124
+[e $ ! == _ans -> 0 `i 125  ]
 {
-[; ;I2C.c: 80: I2CMasterWrite(*data);
-"80
-[e ( _I2CMasterWrite (1 *U _data ]
-[; ;I2C.c: 81: ++data;
-"81
+[; ;I2C.c: 125: ans = I2CMasterWrite(addressHigh);
+"125
+[e = _ans ( _I2CMasterWrite (1 _addressHigh ]
+[; ;I2C.c: 126: ans = I2CMasterWrite(addressLow);
+"126
+[e = _ans ( _I2CMasterWrite (1 _addressLow ]
+[; ;I2C.c: 127: while(*data){
+"127
+[e $U 126  ]
+[e :U 127 ]
+{
+[; ;I2C.c: 128: ans = I2CMasterWrite(*data);
+"128
+[e = _ans ( _I2CMasterWrite (1 *U _data ]
+[; ;I2C.c: 129: ++data;
+"129
 [e =+ _data * -> -> 1 `i `x -> -> # *U _data `i `x ]
-"82
+"130
 }
-[e :U 106 ]
-"79
-[e $ != -> *U _data `i -> -> -> 0 `i `uc `i 107  ]
-[e :U 108 ]
-[; ;I2C.c: 82: }
-[; ;I2C.c: 83: I2CMasterStop();
-"83
+[e :U 126 ]
+"127
+[e $ != -> *U _data `i -> -> -> 0 `i `uc `i 127  ]
+[e :U 128 ]
+"131
+}
+[; ;I2C.c: 130: }
+[; ;I2C.c: 131: }else ans = -1;
+[e $U 129  ]
+[e :U 125 ]
+[e = _ans -U -> 1 `i ]
+[e :U 129 ]
+[; ;I2C.c: 132: I2CMasterStop();
+"132
 [e ( _I2CMasterStop ..  ]
-[; ;I2C.c: 84: _delay((unsigned long)((200)*(10000000/4000.0)));
-"84
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;I2C.c: 85: }
-"85
-[e :UE 105 ]
+[; ;I2C.c: 133: _delay((unsigned long)((5)*(10000000/4000.0)));
+"133
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;I2C.c: 134: return ans;
+"134
+[e ) _ans ]
+[e $UE 124  ]
+[; ;I2C.c: 135: }
+"135
+[e :UE 124 ]
 }
-"87
+"137
 [v _WriteToMainAndSubB0EEPROM `(v ~T0 @X0 1 ef3`uc`uc`*uc ]
 {
-[; ;I2C.c: 87: void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
+[; ;I2C.c: 137: void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
 [e :U _WriteToMainAndSubB0EEPROM ]
 [v _addressHigh `uc ~T0 @X0 1 r1 ]
 [v _addressLow `uc ~T0 @X0 1 r2 ]
 [v _data `*uc ~T0 @X0 1 r3 ]
 [f ]
-[; ;I2C.c: 88: WriteToEEPROM(0x50,addressHigh,addressLow,data);
-"88
+[; ;I2C.c: 138: WriteToEEPROM(0x50,addressHigh,addressLow,data);
+"138
 [e ( _WriteToEEPROM (4 , , , -> -> 80 `i `uc _addressHigh _addressLow _data ]
-[; ;I2C.c: 89: WriteToEEPROM(0x52,addressHigh,addressLow,data);
-"89
+[; ;I2C.c: 139: WriteToEEPROM(0x52,addressHigh,addressLow,data);
+"139
 [e ( _WriteToEEPROM (4 , , , -> -> 82 `i `uc _addressHigh _addressLow _data ]
-[; ;I2C.c: 90: }
-"90
-[e :UE 109 ]
+[; ;I2C.c: 140: }
+"140
+[e :UE 130 ]
 }
-"100
-[v _WriteToEEPROMWithDataSize `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`uc ]
+"150
+[v _WriteToEEPROMWithDataSize `(i ~T0 @X0 1 ef5`uc`uc`uc`*uc`uc ]
 {
-[; ;I2C.c: 100: void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE dataSize){
+[; ;I2C.c: 150: int WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE DataSize){
 [e :U _WriteToEEPROMWithDataSize ]
 [v _addressEEPROM `uc ~T0 @X0 1 r1 ]
 [v _addressHigh `uc ~T0 @X0 1 r2 ]
 [v _addressLow `uc ~T0 @X0 1 r3 ]
 [v _data `*uc ~T0 @X0 1 r4 ]
-[v _dataSize `uc ~T0 @X0 1 r5 ]
+[v _DataSize `uc ~T0 @X0 1 r5 ]
 [f ]
-"101
-[v _address `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 101: UBYTE address = addressEEPROM << 1;
-[e = _address -> << -> _addressEEPROM `i -> 1 `i `uc ]
-[; ;I2C.c: 103: I2CMasterStart();
-"103
-[e ( _I2CMasterStart ..  ]
-[; ;I2C.c: 104: I2CMasterWrite(address);
-"104
-[e ( _I2CMasterWrite (1 _address ]
-[; ;I2C.c: 105: I2CMasterWrite(addressHigh);
-"105
+"151
+[v _ans `i ~T0 @X0 1 a ]
+[; ;I2C.c: 151: int ans;
+[; ;I2C.c: 153: ans = I2CMasterStart(addressEEPROM,0);
+"153
+[e = _ans ( _I2CMasterStart (2 , _addressEEPROM -> -> 0 `i `uc ]
+[; ;I2C.c: 154: if (ans == 0){
+"154
+[e $ ! == _ans -> 0 `i 132  ]
+{
+[; ;I2C.c: 155: I2CMasterWrite(addressHigh);
+"155
 [e ( _I2CMasterWrite (1 _addressHigh ]
-[; ;I2C.c: 106: I2CMasterWrite(addressLow);
-"106
+[; ;I2C.c: 156: I2CMasterWrite(addressLow);
+"156
 [e ( _I2CMasterWrite (1 _addressLow ]
-[; ;I2C.c: 107: for (UBYTE i = 0; i< dataSize; i++){
-"107
+[; ;I2C.c: 157: for(UBYTE i = 0 ; i < DataSize ; i ++){
+"157
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $U 114  ]
-[e :U 111 ]
+[e $U 136  ]
+[e :U 133 ]
 {
-[; ;I2C.c: 108: I2CMasterWrite(data[i]);
-"108
+[; ;I2C.c: 158: I2CMasterWrite(data[i]);
+"158
 [e ( _I2CMasterWrite (1 *U + _data * -> _i `ux -> -> # *U _data `ui `ux ]
-"109
+"159
 }
-"107
+"157
 [e ++ _i -> -> 1 `i `uc ]
-[e :U 114 ]
-[e $ < -> _i `i -> _dataSize `i 111  ]
-[e :U 112 ]
-"109
+[e :U 136 ]
+[e $ < -> _i `i -> _DataSize `i 133  ]
+[e :U 134 ]
+"159
 }
-[; ;I2C.c: 109: }
-[; ;I2C.c: 110: I2CMasterStop();
-"110
+"160
+}
+[; ;I2C.c: 159: }
+[; ;I2C.c: 160: }else ans = -1;
+[e $U 137  ]
+[e :U 132 ]
+[e = _ans -U -> 1 `i ]
+[e :U 137 ]
+[; ;I2C.c: 161: I2CMasterStop();
+"161
 [e ( _I2CMasterStop ..  ]
-[; ;I2C.c: 111: _delay((unsigned long)((300)*(10000000/4000.0)));
-"111
-[e ( __delay (1 -> * -> -> 300 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;I2C.c: 112: }
-"112
-[e :UE 110 ]
+[; ;I2C.c: 162: _delay((unsigned long)((5)*(10000000/4000.0)));
+"162
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;I2C.c: 163: return ans;
+"163
+[e ) _ans ]
+[e $UE 131  ]
+[; ;I2C.c: 164: }
+"164
+[e :UE 131 ]
 }
-"114
-[v _WriteOneByteToEEPROM `(v ~T0 @X0 1 ef4`uc`uc`uc`uc ]
+"166
+[v _WriteOneByteToEEPROM `(i ~T0 @X0 1 ef4`uc`uc`uc`uc ]
 {
-[; ;I2C.c: 114: void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+[; ;I2C.c: 166: int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
 [e :U _WriteOneByteToEEPROM ]
 [v _addressEEPROM `uc ~T0 @X0 1 r1 ]
 [v _addressHigh `uc ~T0 @X0 1 r2 ]
 [v _addressLow `uc ~T0 @X0 1 r3 ]
 [v _data `uc ~T0 @X0 1 r4 ]
 [f ]
-"115
-[v _address `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 115: UBYTE address;
-[; ;I2C.c: 116: address= addressEEPROM << 1;
-"116
-[e = _address -> << -> _addressEEPROM `i -> 1 `i `uc ]
-[; ;I2C.c: 118: I2CMasterStart();
-"118
-[e ( _I2CMasterStart ..  ]
-[; ;I2C.c: 119: I2CMasterWrite(address);
-"119
-[e ( _I2CMasterWrite (1 _address ]
-[; ;I2C.c: 120: I2CMasterWrite(addressHigh);
-"120
+"167
+[v _ans `i ~T0 @X0 1 a ]
+[; ;I2C.c: 167: int ans = -1;
+[e = _ans -U -> 1 `i ]
+[; ;I2C.c: 168: ans = I2CMasterStart(addressEEPROM,0);
+"168
+[e = _ans ( _I2CMasterStart (2 , _addressEEPROM -> -> 0 `i `uc ]
+[; ;I2C.c: 169: if(ans == 0){
+"169
+[e $ ! == _ans -> 0 `i 139  ]
+{
+[; ;I2C.c: 170: I2CMasterWrite(addressHigh);
+"170
 [e ( _I2CMasterWrite (1 _addressHigh ]
-[; ;I2C.c: 121: I2CMasterWrite(addressLow);
-"121
+[; ;I2C.c: 171: I2CMasterWrite(addressLow);
+"171
 [e ( _I2CMasterWrite (1 _addressLow ]
-[; ;I2C.c: 122: I2CMasterWrite(data);
-"122
+[; ;I2C.c: 172: I2CMasterWrite(data);
+"172
 [e ( _I2CMasterWrite (1 _data ]
-[; ;I2C.c: 123: I2CMasterStop();
-"123
-[e ( _I2CMasterStop ..  ]
-[; ;I2C.c: 124: _delay((unsigned long)((10)*(10000000/4000.0)));
-"124
-[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;I2C.c: 125: }
-"125
-[e :UE 115 ]
+"173
 }
-"127
+[; ;I2C.c: 173: }else ans = -1;
+[e $U 140  ]
+[e :U 139 ]
+[e = _ans -U -> 1 `i ]
+[e :U 140 ]
+[; ;I2C.c: 174: I2CMasterStop();
+"174
+[e ( _I2CMasterStop ..  ]
+[; ;I2C.c: 175: _delay((unsigned long)((5)*(10000000/4000.0)));
+"175
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;I2C.c: 176: return ans;
+"176
+[e ) _ans ]
+[e $UE 138  ]
+[; ;I2C.c: 177: }
+"177
+[e :UE 138 ]
+}
+"179
 [v _WriteOneByteToMainAndSubB0EEPROM `(v ~T0 @X0 1 ef3`uc`uc`uc ]
 {
-[; ;I2C.c: 127: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+[; ;I2C.c: 179: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){
 [e :U _WriteOneByteToMainAndSubB0EEPROM ]
 [v _addressHigh `uc ~T0 @X0 1 r1 ]
 [v _addressLow `uc ~T0 @X0 1 r2 ]
 [v _data `uc ~T0 @X0 1 r3 ]
 [f ]
-[; ;I2C.c: 128: WriteOneByteToEEPROM(0x50,addressHigh,addressLow,data);
-"128
+[; ;I2C.c: 180: WriteOneByteToEEPROM(0x50,addressHigh,addressLow,data);
+"180
 [e ( _WriteOneByteToEEPROM (4 , , , -> -> 80 `i `uc _addressHigh _addressLow _data ]
-[; ;I2C.c: 129: WriteOneByteToEEPROM(0x52,addressHigh,addressLow,data);
-"129
+[; ;I2C.c: 181: WriteOneByteToEEPROM(0x52,addressHigh,addressLow,data);
+"181
 [e ( _WriteOneByteToEEPROM (4 , , , -> -> 82 `i `uc _addressHigh _addressLow _data ]
-[; ;I2C.c: 130: }
-"130
-[e :UE 116 ]
+[; ;I2C.c: 182: }
+"182
+[e :UE 141 ]
 }
-"132
+"184
 [v _WriteCheckByteToEEPROMs `(v ~T0 @X0 1 ef4`uc`uc`uc`uc ]
 {
-[; ;I2C.c: 132: void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+[; ;I2C.c: 184: void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
 [e :U _WriteCheckByteToEEPROMs ]
 [v _B0Select `uc ~T0 @X0 1 r1 ]
 [v _addressHigh `uc ~T0 @X0 1 r2 ]
 [v _addressLow `uc ~T0 @X0 1 r3 ]
 [v _data `uc ~T0 @X0 1 r4 ]
 [f ]
-"133
+"185
 [v _mainAddress `uc ~T0 @X0 1 a ]
-"134
+"186
 [v _subAddress `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 133: UBYTE mainAddress;
-[; ;I2C.c: 134: UBYTE subAddress;
-[; ;I2C.c: 135: mainAddress = 0x50 | B0Select;
-"135
+[; ;I2C.c: 185: UBYTE mainAddress;
+[; ;I2C.c: 186: UBYTE subAddress;
+[; ;I2C.c: 187: mainAddress = 0x50 | B0Select;
+"187
 [e = _mainAddress -> | -> 80 `i -> _B0Select `i `uc ]
-[; ;I2C.c: 136: subAddress = 0x52 | B0Select;
-"136
+[; ;I2C.c: 188: subAddress = 0x52 | B0Select;
+"188
 [e = _subAddress -> | -> 82 `i -> _B0Select `i `uc ]
-[; ;I2C.c: 137: WriteOneByteToEEPROM(mainAddress,addressHigh,addressLow,data);
-"137
+[; ;I2C.c: 189: WriteOneByteToEEPROM(mainAddress,addressHigh,addressLow,data);
+"189
 [e ( _WriteOneByteToEEPROM (4 , , , _mainAddress _addressHigh _addressLow _data ]
-[; ;I2C.c: 138: WriteOneByteToEEPROM(subAddress,addressHigh,addressLow,data);
-"138
+[; ;I2C.c: 190: WriteOneByteToEEPROM(subAddress,addressHigh,addressLow,data);
+"190
 [e ( _WriteOneByteToEEPROM (4 , , , _subAddress _addressHigh _addressLow _data ]
-[; ;I2C.c: 139: }
-"139
-[e :UE 117 ]
+[; ;I2C.c: 191: }
+"191
+[e :UE 142 ]
 }
-"141
+"193
 [v _WriteLastCommandIdToEEPROM `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;I2C.c: 141: void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
+[; ;I2C.c: 193: void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
 [e :U _WriteLastCommandIdToEEPROM ]
 [v _last_command_ID `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;I2C.c: 142: WriteCheckByteToEEPROMs(0x00, 0x82, 0x00, last_command_ID);
-"142
+[; ;I2C.c: 194: WriteCheckByteToEEPROMs(0x00, 0x82, 0x00, last_command_ID);
+"194
 [e ( _WriteCheckByteToEEPROMs (4 , , , -> -> 0 `i `uc -> -> 130 `i `uc -> -> 0 `i `uc _last_command_ID ]
-[; ;I2C.c: 143: }
-"143
-[e :UE 118 ]
+[; ;I2C.c: 195: }
+"195
+[e :UE 143 ]
 }
-"156
+"208
 [v _ReadEEPROM `(uc ~T0 @X0 1 ef3`uc`uc`uc ]
 {
-[; ;I2C.c: 156: UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
+[; ;I2C.c: 208: UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
 [e :U _ReadEEPROM ]
 [v _EEPROM_address `uc ~T0 @X0 1 r1 ]
 [v _high_address `uc ~T0 @X0 1 r2 ]
 [v _low_address `uc ~T0 @X0 1 r3 ]
 [f ]
-"157
-[v _Address `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 157: UBYTE Address = EEPROM_address << 1;
-[e = _Address -> << -> _EEPROM_address `i -> 1 `i `uc ]
-"158
-[v _ReadAddress `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 158: UBYTE ReadAddress = Address | 0x01;
-[e = _ReadAddress -> | -> _Address `i -> 1 `i `uc ]
-"159
-[v _ReadData `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 159: UBYTE ReadData;
-[; ;I2C.c: 161: I2CMasterStart();
-"161
-[e ( _I2CMasterStart ..  ]
-[; ;I2C.c: 162: I2CMasterWrite(Address);
-"162
-[e ( _I2CMasterWrite (1 _Address ]
-[; ;I2C.c: 163: I2CMasterWrite(high_address);
-"163
+"209
+[v _dat `uc ~T0 @X0 1 a ]
+"210
+[v _ans `i ~T0 @X0 1 a ]
+[; ;I2C.c: 209: UBYTE dat;
+[; ;I2C.c: 210: int ans = -1;
+[e = _ans -U -> 1 `i ]
+[; ;I2C.c: 211: ans = I2CMasterStart(EEPROM_address,0);
+"211
+[e = _ans ( _I2CMasterStart (2 , _EEPROM_address -> -> 0 `i `uc ]
+[; ;I2C.c: 212: if(ans == 0){
+"212
+[e $ ! == _ans -> 0 `i 145  ]
+{
+[; ;I2C.c: 213: I2CMasterWrite(high_address);
+"213
 [e ( _I2CMasterWrite (1 _high_address ]
-[; ;I2C.c: 164: I2CMasterWrite(low_address);
-"164
+[; ;I2C.c: 214: I2CMasterWrite(low_address);
+"214
 [e ( _I2CMasterWrite (1 _low_address ]
-[; ;I2C.c: 165: I2CMasterRepeatedStart();
-"165
-[e ( _I2CMasterRepeatedStart ..  ]
-[; ;I2C.c: 167: I2CMasterWrite(ReadAddress);
-"167
-[e ( _I2CMasterWrite (1 _ReadAddress ]
-[; ;I2C.c: 169: ReadData = I2CMasterRead(0);
-"169
-[e = _ReadData ( _I2CMasterRead (1 -> -> 0 `i `uc ]
-[; ;I2C.c: 171: I2CMasterStop();
-"171
-[e ( _I2CMasterStop ..  ]
-[; ;I2C.c: 172: return ReadData;
-"172
-[e ) _ReadData ]
-[e $UE 119  ]
-[; ;I2C.c: 173: _delay((unsigned long)((200)*(10000000/4000.0)));
-"173
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;I2C.c: 174: }
-"174
-[e :UE 119 ]
+[; ;I2C.c: 215: I2CMasterRepeatedStart(EEPROM_address,1);
+"215
+[e ( _I2CMasterRepeatedStart (2 , _EEPROM_address -> -> 1 `i `uc ]
+[; ;I2C.c: 216: dat = (UBYTE)I2CMasterRead(1);
+"216
+[e = _dat -> ( _I2CMasterRead (1 -> -> 1 `i `uc `uc ]
+"217
 }
-"176
+[e :U 145 ]
+[; ;I2C.c: 217: }
+[; ;I2C.c: 218: I2CMasterStop();
+"218
+[e ( _I2CMasterStop ..  ]
+[; ;I2C.c: 219: _delay((unsigned long)((5)*(10000000/4000.0)));
+"219
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;I2C.c: 220: if(ans == -1) return 0xFF;
+"220
+[e $ ! == _ans -U -> 1 `i 146  ]
+[e ) -> -> 255 `i `uc ]
+[e $UE 144  ]
+[e :U 146 ]
+[; ;I2C.c: 221: return dat;
+"221
+[e ) _dat ]
+[e $UE 144  ]
+[; ;I2C.c: 222: }
+"222
+[e :UE 144 ]
+}
+"224
 [v _ReadEEPROMmainAndSub `(uc ~T0 @X0 1 ef3`uc`uc`uc ]
 {
-[; ;I2C.c: 176: UBYTE ReadEEPROMmainAndSub(UBYTE B0select,UBYTE high_address,UBYTE low_address){
+[; ;I2C.c: 224: UBYTE ReadEEPROMmainAndSub(UBYTE B0select,UBYTE high_address,UBYTE low_address){
 [e :U _ReadEEPROMmainAndSub ]
 [v _B0select `uc ~T0 @X0 1 r1 ]
 [v _high_address `uc ~T0 @X0 1 r2 ]
 [v _low_address `uc ~T0 @X0 1 r3 ]
 [f ]
-"177
+"225
 [v _mainaddress `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 177: UBYTE mainaddress = 0x50 | B0select;
+[; ;I2C.c: 225: UBYTE mainaddress = 0x50 | B0select;
 [e = _mainaddress -> | -> 80 `i -> _B0select `i `uc ]
-"178
+"226
 [v _subaddress `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 178: UBYTE subaddress = 0x52 | B0select;
+[; ;I2C.c: 226: UBYTE subaddress = 0x52 | B0select;
 [e = _subaddress -> | -> 82 `i -> _B0select `i `uc ]
-"179
+"227
 [v _ReadData `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 179: UBYTE ReadData;
-[; ;I2C.c: 180: ReadData = ReadEEPROM(mainaddress ,high_address,low_address);
-"180
+[; ;I2C.c: 227: UBYTE ReadData;
+[; ;I2C.c: 228: ReadData = ReadEEPROM(mainaddress ,high_address,low_address);
+"228
 [e = _ReadData ( _ReadEEPROM (3 , , _mainaddress _high_address _low_address ]
-[; ;I2C.c: 181: if (ReadData==0xFF){
-"181
-[e $ ! == -> _ReadData `i -> 255 `i 121  ]
+[; ;I2C.c: 229: if (ReadData==0xFF){
+"229
+[e $ ! == -> _ReadData `i -> 255 `i 148  ]
 {
-[; ;I2C.c: 182: ReadData = ReadEEPROM(subaddress, high_address,low_address);
-"182
+[; ;I2C.c: 230: ReadData = ReadEEPROM(subaddress, high_address,low_address);
+"230
 [e = _ReadData ( _ReadEEPROM (3 , , _subaddress _high_address _low_address ]
-"183
+"231
 }
-[e :U 121 ]
-[; ;I2C.c: 183: }
-[; ;I2C.c: 184: return ReadData;
-"184
+[e :U 148 ]
+[; ;I2C.c: 231: }
+[; ;I2C.c: 232: return ReadData;
+"232
 [e ) _ReadData ]
-[e $UE 120  ]
-[; ;I2C.c: 185: }
-"185
-[e :UE 120 ]
+[e $UE 147  ]
+[; ;I2C.c: 233: }
+"233
+[e :UE 147 ]
 }
-"197
+"245
 [v _ReadDataFromEEPROMWithDataSize `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`ui ]
 {
-[; ;I2C.c: 197: void ReadDataFromEEPROMWithDataSize(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
+[; ;I2C.c: 245: void ReadDataFromEEPROMWithDataSize(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
 [e :U _ReadDataFromEEPROMWithDataSize ]
 [v _EEPROM_address `uc ~T0 @X0 1 r1 ]
 [v _high_address `uc ~T0 @X0 1 r2 ]
@@ -1587,192 +1823,190 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _ReadData `*uc ~T0 @X0 1 r4 ]
 [v _EEPROMDataLength `ui ~T0 @X0 1 r5 ]
 [f ]
-"198
-[v _Address `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 198: UBYTE Address = EEPROM_address << 1;
-[e = _Address -> << -> _EEPROM_address `i -> 1 `i `uc ]
-"199
-[v _ReadAddress `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 199: UBYTE ReadAddress = Address | 0x01;
-[e = _ReadAddress -> | -> _Address `i -> 1 `i `uc ]
-[; ;I2C.c: 200: I2CMasterStart();
-"200
-[e ( _I2CMasterStart ..  ]
-[; ;I2C.c: 201: I2CMasterWrite(Address);
-"201
-[e ( _I2CMasterWrite (1 _Address ]
-[; ;I2C.c: 202: I2CMasterWrite(high_address);
-"202
+"246
+[v _ans `i ~T0 @X0 1 a ]
+[; ;I2C.c: 246: int ans = -1;
+[e = _ans -U -> 1 `i ]
+[; ;I2C.c: 247: ans = I2CMasterStart(EEPROM_address, 0);
+"247
+[e = _ans ( _I2CMasterStart (2 , _EEPROM_address -> -> 0 `i `uc ]
+[; ;I2C.c: 248: if ( ans == 0 ){
+"248
+[e $ ! == _ans -> 0 `i 150  ]
+{
+[; ;I2C.c: 249: I2CMasterWrite(high_address);
+"249
 [e ( _I2CMasterWrite (1 _high_address ]
-[; ;I2C.c: 203: I2CMasterWrite(low_address);
-"203
+[; ;I2C.c: 250: I2CMasterWrite(low_address);
+"250
 [e ( _I2CMasterWrite (1 _low_address ]
-[; ;I2C.c: 204: I2CMasterRepeatedStart();
-"204
-[e ( _I2CMasterRepeatedStart ..  ]
-[; ;I2C.c: 206: I2CMasterWrite(ReadAddress);
-"206
-[e ( _I2CMasterWrite (1 _ReadAddress ]
-[; ;I2C.c: 207: for(UBYTE i = 0; i < EEPROMDataLength - 1; i++){
-"207
+[; ;I2C.c: 251: I2CMasterRepeatedStart(EEPROM_address,1);
+"251
+[e ( _I2CMasterRepeatedStart (2 , _EEPROM_address -> -> 1 `i `uc ]
+[; ;I2C.c: 252: for(UBYTE i = 0; i < EEPROMDataLength - 1; i++){
+"252
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $U 126  ]
-[e :U 123 ]
+[e $U 154  ]
+[e :U 151 ]
 {
-[; ;I2C.c: 208: ReadData[i] = I2CMasterRead(1);
-"208
-[e = *U + _ReadData * -> _i `ux -> -> # *U _ReadData `ui `ux ( _I2CMasterRead (1 -> -> 1 `i `uc ]
-"209
+[; ;I2C.c: 253: ReadData[i] = I2CMasterRead(0);
+"253
+[e = *U + _ReadData * -> _i `ux -> -> # *U _ReadData `ui `ux -> ( _I2CMasterRead (1 -> -> 0 `i `uc `uc ]
+"254
 }
-"207
+"252
 [e ++ _i -> -> 1 `i `uc ]
-[e :U 126 ]
-[e $ < -> _i `ui - _EEPROMDataLength -> -> 1 `i `ui 123  ]
-[e :U 124 ]
-"209
+[e :U 154 ]
+[e $ < -> _i `ui - _EEPROMDataLength -> -> 1 `i `ui 151  ]
+[e :U 152 ]
+"254
 }
-[; ;I2C.c: 209: }
-[; ;I2C.c: 210: ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
-"210
-[e = *U + _ReadData * -> - _EEPROMDataLength -> -> 1 `i `ui `ux -> -> # *U _ReadData `ui `ux ( _I2CMasterRead (1 -> -> 0 `i `uc ]
-[; ;I2C.c: 211: I2CMasterStop();
-"211
+[; ;I2C.c: 254: }
+[; ;I2C.c: 255: ReadData[EEPROMDataLength - 1] = I2CMasterRead(1);
+"255
+[e = *U + _ReadData * -> - _EEPROMDataLength -> -> 1 `i `ui `ux -> -> # *U _ReadData `ui `ux -> ( _I2CMasterRead (1 -> -> 1 `i `uc `uc ]
+"256
+}
+[e :U 150 ]
+[; ;I2C.c: 256: }
+[; ;I2C.c: 257: I2CMasterStop();
+"257
 [e ( _I2CMasterStop ..  ]
-[; ;I2C.c: 213: _delay((unsigned long)((200)*(10000000/4000.0)));
-"213
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;I2C.c: 214: }
-"214
-[e :UE 122 ]
+[; ;I2C.c: 258: _delay((unsigned long)((5)*(10000000/4000.0)));
+"258
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;I2C.c: 259: }
+"259
+[e :UE 149 ]
 }
-"221
+"266
 [v _I2CBufferClear `(v ~T0 @X0 1 ef ]
 {
-[; ;I2C.c: 221: void I2CBufferClear(void){
+[; ;I2C.c: 266: void I2CBufferClear(void){
 [e :U _I2CBufferClear ]
 [f ]
-[; ;I2C.c: 222: SSPBUF = 0;
-"222
+[; ;I2C.c: 267: SSPBUF = 0;
+"267
 [e = _SSPBUF -> -> 0 `i `uc ]
-[; ;I2C.c: 223: }
-"223
-[e :UE 127 ]
+[; ;I2C.c: 268: }
+"268
+[e :UE 155 ]
 }
-"234
+"279
 [v _ChangeI2CBaudRate `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;I2C.c: 234: void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
+[; ;I2C.c: 279: void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
 [e :U _ChangeI2CBaudRate ]
 [v _I2C_baud_rate_type `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;I2C.c: 235: switch (I2C_baud_rate_type){
-"235
-[e $U 130  ]
+[; ;I2C.c: 280: switch (I2C_baud_rate_type){
+"280
+[e $U 158  ]
 {
-[; ;I2C.c: 236: case 0x00:
-"236
-[e :U 131 ]
-[; ;I2C.c: 237: SMP = 0;
-"237
+[; ;I2C.c: 281: case 0x00:
+"281
+[e :U 159 ]
+[; ;I2C.c: 282: SMP = 0;
+"282
 [e = _SMP -> -> 0 `i `b ]
-[; ;I2C.c: 238: SSPADD = (10000000/(4*400000))-1;
-"238
+[; ;I2C.c: 283: SSPADD = (10000000/(4*400000))-1;
+"283
 [e = _SSPADD -> - / -> 10000000 `l * -> -> 4 `i `l -> 400000 `l -> -> 1 `i `l `uc ]
-[; ;I2C.c: 239: break;
-"239
-[e $U 129  ]
-[; ;I2C.c: 240: case 0x01:
-"240
-[e :U 132 ]
-[; ;I2C.c: 241: SMP = 1;
-"241
+[; ;I2C.c: 284: break;
+"284
+[e $U 157  ]
+[; ;I2C.c: 285: case 0x01:
+"285
+[e :U 160 ]
+[; ;I2C.c: 286: SMP = 1;
+"286
 [e = _SMP -> -> 1 `i `b ]
-[; ;I2C.c: 242: SSPADD = (10000000/(4*100000))-1;
-"242
+[; ;I2C.c: 287: SSPADD = (10000000/(4*100000))-1;
+"287
 [e = _SSPADD -> - / -> 10000000 `l * -> -> 4 `i `l -> 100000 `l -> -> 1 `i `l `uc ]
-[; ;I2C.c: 243: break;
-"243
-[e $U 129  ]
-"244
+[; ;I2C.c: 288: break;
+"288
+[e $U 157  ]
+"289
 }
-[; ;I2C.c: 244: }
-[e $U 129  ]
-"235
-[e :U 130 ]
-[e [\ _I2C_baud_rate_type , $ -> -> 0 `i `uc 131
- , $ -> -> 1 `i `uc 132
- 129 ]
-"244
-[e :U 129 ]
-[; ;I2C.c: 245: }
-"245
-[e :UE 128 ]
+[; ;I2C.c: 289: }
+[e $U 157  ]
+"280
+[e :U 158 ]
+[e [\ _I2C_baud_rate_type , $ -> -> 0 `i `uc 159
+ , $ -> -> 1 `i `uc 160
+ 157 ]
+"289
+[e :U 157 ]
+[; ;I2C.c: 290: }
+"290
+[e :UE 156 ]
 }
-"252
+"297
 [v _TestEEPROM `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;I2C.c: 252: void TestEEPROM(UBYTE slaveaddress){
+[; ;I2C.c: 297: void TestEEPROM(UBYTE slaveaddress){
 [e :U _TestEEPROM ]
 [v _slaveaddress `uc ~T0 @X0 1 r1 ]
 [f ]
-"253
+"298
 [v _commandData `uc ~T0 @X0 -> 4 `i a ]
-"254
+"299
 [v _ControlByte `uc ~T0 @X0 1 a ]
-"255
+"300
 [v _ReadData `uc ~T0 @X0 -> 4 `i a ]
-[; ;I2C.c: 253: UBYTE commandData[4];
-[; ;I2C.c: 254: UBYTE ControlByte;
-[; ;I2C.c: 255: UBYTE ReadData[4];
-[; ;I2C.c: 257: commandData[0] = 0x01;
-"257
+[; ;I2C.c: 298: UBYTE commandData[4];
+[; ;I2C.c: 299: UBYTE ControlByte;
+[; ;I2C.c: 300: UBYTE ReadData[4];
+[; ;I2C.c: 302: commandData[0] = 0x01;
+"302
 [e = *U + &U _commandData * -> -> -> 0 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 1 `i `uc ]
-[; ;I2C.c: 258: commandData[1] = 0x02;
-"258
+[; ;I2C.c: 303: commandData[1] = 0x02;
+"303
 [e = *U + &U _commandData * -> -> -> 1 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 2 `i `uc ]
-[; ;I2C.c: 259: commandData[2] = 0x03;
-"259
+[; ;I2C.c: 304: commandData[2] = 0x03;
+"304
 [e = *U + &U _commandData * -> -> -> 2 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 3 `i `uc ]
-[; ;I2C.c: 260: commandData[3] = 0x04;
-"260
+[; ;I2C.c: 305: commandData[3] = 0x04;
+"305
 [e = *U + &U _commandData * -> -> -> 3 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 4 `i `uc ]
-[; ;I2C.c: 262: ControlByte = slaveaddress | 0x00;
-"262
+[; ;I2C.c: 307: ControlByte = slaveaddress | 0x00;
+"307
 [e = _ControlByte -> | -> _slaveaddress `i -> 0 `i `uc ]
-[; ;I2C.c: 264: for (UBYTE i=0; i<4; i++){
-"264
+[; ;I2C.c: 309: for (UBYTE i=0; i<4; i++){
+"309
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 4 `i 134  ]
-[e $U 135  ]
-[e :U 134 ]
+[e $ < -> _i `i -> 4 `i 162  ]
+[e $U 163  ]
+[e :U 162 ]
 {
-[; ;I2C.c: 265: WriteToEEPROM(ControlByte, 0xE0, 0x00, commandData[i]);
-"265
+[; ;I2C.c: 310: WriteToEEPROM(ControlByte, 0xE0, 0x00, commandData[i]);
+"310
 [e ( _WriteToEEPROM (4 , , , _ControlByte -> -> 224 `i `uc -> -> 0 `i `uc -> *U + &U _commandData * -> _i `ux -> -> # *U &U _commandData `ui `ux `*uc ]
-"266
+"311
 }
-"264
+"309
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 4 `i 134  ]
-[e :U 135 ]
-"266
+[e $ < -> _i `i -> 4 `i 162  ]
+[e :U 163 ]
+"311
 }
-[; ;I2C.c: 266: }
-[; ;I2C.c: 268: ReadDataFromEEPROMWithDataSize(ControlByte, 0xE0, 0x00, ReadData, 4);
-"268
+[; ;I2C.c: 311: }
+[; ;I2C.c: 313: ReadDataFromEEPROMWithDataSize(ControlByte, 0xE0, 0x00, ReadData, 4);
+"313
 [e ( _ReadDataFromEEPROMWithDataSize (4 , , , , _ControlByte -> -> 224 `i `uc -> -> 0 `i `uc &U _ReadData -> -> 4 `i `ui ]
-[; ;I2C.c: 271: }
-"271
-[e :UE 133 ]
+[; ;I2C.c: 316: }
+"316
+[e :UE 161 ]
 }
-"276
+"321
 [v _commandSwitchI2C `(v ~T0 @X0 1 ef5`uc`uc`uc`uc`uc ]
 {
-[; ;I2C.c: 276: void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data){
+[; ;I2C.c: 321: void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data){
 [e :U _commandSwitchI2C ]
 [v _command `uc ~T0 @X0 1 r1 ]
 [v _slaveAdress `uc ~T0 @X0 1 r2 ]
@@ -1780,92 +2014,92 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _dataLow `uc ~T0 @X0 1 r4 ]
 [v _data `uc ~T0 @X0 1 r5 ]
 [f ]
-[; ;I2C.c: 277: switch(command){
-"277
-[e $U 139  ]
+[; ;I2C.c: 322: switch(command){
+"322
+[e $U 167  ]
 {
-[; ;I2C.c: 278: case 'w':
-"278
-[e :U 140 ]
-[; ;I2C.c: 279: I2CMasterWrite(slaveAdress);
-"279
+[; ;I2C.c: 323: case 'w':
+"323
+[e :U 168 ]
+[; ;I2C.c: 324: I2CMasterWrite(slaveAdress);
+"324
 [e ( _I2CMasterWrite (1 _slaveAdress ]
-[; ;I2C.c: 280: I2CMasterWrite(dataHigh);
-"280
+[; ;I2C.c: 325: I2CMasterWrite(dataHigh);
+"325
 [e ( _I2CMasterWrite (1 _dataHigh ]
-[; ;I2C.c: 281: I2CMasterWrite(dataLow);
-"281
+[; ;I2C.c: 326: I2CMasterWrite(dataLow);
+"326
 [e ( _I2CMasterWrite (1 _dataLow ]
-[; ;I2C.c: 282: break;
-"282
-[e $U 138  ]
-[; ;I2C.c: 283: case 'r':
-"283
-[e :U 141 ]
-[; ;I2C.c: 284: dataHigh = I2CMasterRead(slaveAdress);
-"284
-[e = _dataHigh ( _I2CMasterRead (1 _slaveAdress ]
-[; ;I2C.c: 285: dataLow = I2CMasterRead(slaveAdress);
-"285
-[e = _dataLow ( _I2CMasterRead (1 _slaveAdress ]
-[; ;I2C.c: 288: break;
-"288
-[e $U 138  ]
-[; ;I2C.c: 289: case 't':
-"289
-[e :U 142 ]
-[; ;I2C.c: 294: break;
-"294
-[e $U 138  ]
-[; ;I2C.c: 295: case 'c':
-"295
-[e :U 143 ]
-[; ;I2C.c: 298: I2CBufferClear();
-"298
+[; ;I2C.c: 327: break;
+"327
+[e $U 166  ]
+[; ;I2C.c: 328: case 'r':
+"328
+[e :U 169 ]
+[; ;I2C.c: 329: dataHigh = I2CMasterRead(slaveAdress);
+"329
+[e = _dataHigh -> ( _I2CMasterRead (1 _slaveAdress `uc ]
+[; ;I2C.c: 330: dataLow = I2CMasterRead(slaveAdress);
+"330
+[e = _dataLow -> ( _I2CMasterRead (1 _slaveAdress `uc ]
+[; ;I2C.c: 333: break;
+"333
+[e $U 166  ]
+[; ;I2C.c: 334: case 't':
+"334
+[e :U 170 ]
+[; ;I2C.c: 339: break;
+"339
+[e $U 166  ]
+[; ;I2C.c: 340: case 'c':
+"340
+[e :U 171 ]
+[; ;I2C.c: 343: I2CBufferClear();
+"343
 [e ( _I2CBufferClear ..  ]
-[; ;I2C.c: 299: break;
-"299
-[e $U 138  ]
-[; ;I2C.c: 300: case 'b':
-"300
-[e :U 144 ]
-[; ;I2C.c: 302: ChangeI2CBaudRate( slaveAdress );
-"302
+[; ;I2C.c: 344: break;
+"344
+[e $U 166  ]
+[; ;I2C.c: 345: case 'b':
+"345
+[e :U 172 ]
+[; ;I2C.c: 347: ChangeI2CBaudRate( slaveAdress );
+"347
 [e ( _ChangeI2CBaudRate (1 _slaveAdress ]
-[; ;I2C.c: 303: break;
-"303
-[e $U 138  ]
-[; ;I2C.c: 304: default:
-"304
-[e :U 145 ]
-[; ;I2C.c: 305: switchError(0x20);
-"305
+[; ;I2C.c: 348: break;
+"348
+[e $U 166  ]
+[; ;I2C.c: 349: default:
+"349
+[e :U 173 ]
+[; ;I2C.c: 350: switchError(0x20);
+"350
 [e ( _switchError (1 -> -> 32 `i `uc ]
-[; ;I2C.c: 306: break;
-"306
-[e $U 138  ]
-"307
+[; ;I2C.c: 351: break;
+"351
+[e $U 166  ]
+"352
 }
-[; ;I2C.c: 307: }
-[e $U 138  ]
-"277
-[e :U 139 ]
-[e [\ _command , $ -> -> 119 `ui `uc 140
- , $ -> -> 114 `ui `uc 141
- , $ -> -> 116 `ui `uc 142
- , $ -> -> 99 `ui `uc 143
- , $ -> -> 98 `ui `uc 144
- 145 ]
-"307
-[e :U 138 ]
-[; ;I2C.c: 308: }
-"308
-[e :UE 137 ]
+[; ;I2C.c: 352: }
+[e $U 166  ]
+"322
+[e :U 167 ]
+[e [\ _command , $ -> -> 119 `ui `uc 168
+ , $ -> -> 114 `ui `uc 169
+ , $ -> -> 116 `ui `uc 170
+ , $ -> -> 99 `ui `uc 171
+ , $ -> -> 98 `ui `uc 172
+ 173 ]
+"352
+[e :U 166 ]
+[; ;I2C.c: 353: }
+"353
+[e :UE 165 ]
 }
-"313
+"358
 [v _commandSwitchEEPROM `(v ~T0 @X0 1 ef6`uc`uc`uc`uc`uc`uc ]
 {
-[; ;I2C.c: 313: void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE data2){
+[; ;I2C.c: 358: void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE data2){
 [e :U _commandSwitchEEPROM ]
 [v _command `uc ~T0 @X0 1 r1 ]
 [v _slaveAdress `uc ~T0 @X0 1 r2 ]
@@ -1874,88 +2108,88 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _data1 `uc ~T0 @X0 1 r5 ]
 [v _data2 `uc ~T0 @X0 1 r6 ]
 [f ]
-"314
+"359
 [v _data_length `uc ~T0 @X0 1 a ]
-"315
+"360
 [v _read_data `*uc ~T0 @X0 1 a ]
-[; ;I2C.c: 314: UBYTE data_length;
-[; ;I2C.c: 315: UBYTE *read_data;
-[; ;I2C.c: 316: switch(command){
-"316
-[e $U 148  ]
+[; ;I2C.c: 359: UBYTE data_length;
+[; ;I2C.c: 360: UBYTE *read_data;
+[; ;I2C.c: 361: switch(command){
+"361
+[e $U 176  ]
 {
-[; ;I2C.c: 317: case 'w':
-"317
-[e :U 149 ]
-[; ;I2C.c: 319: WriteToEEPROM(slaveAdress, dataHigh, dataLow, data1);
-"319
+[; ;I2C.c: 362: case 'w':
+"362
+[e :U 177 ]
+[; ;I2C.c: 364: WriteToEEPROM(slaveAdress, dataHigh, dataLow, data1);
+"364
 [e ( _WriteToEEPROM (4 , , , _slaveAdress _dataHigh _dataLow -> _data1 `*uc ]
-[; ;I2C.c: 320: break;
-"320
-[e $U 147  ]
-[; ;I2C.c: 321: case 'r':
-"321
-[e :U 150 ]
-[; ;I2C.c: 322: data_length = data1;
-"322
+[; ;I2C.c: 365: break;
+"365
+[e $U 175  ]
+[; ;I2C.c: 366: case 'r':
+"366
+[e :U 178 ]
+[; ;I2C.c: 367: data_length = data1;
+"367
 [e = _data_length _data1 ]
-[; ;I2C.c: 323: ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data1);
-"323
+[; ;I2C.c: 368: ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data1);
+"368
 [e ( _ReadDataFromEEPROMWithDataSize (4 , , , , _slaveAdress _dataHigh _dataLow _read_data -> _data1 `ui ]
-[; ;I2C.c: 325: break;
-"325
-[e $U 147  ]
-[; ;I2C.c: 326: case 'e':
-"326
-[e :U 151 ]
-[; ;I2C.c: 333: data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
-"333
+[; ;I2C.c: 370: break;
+"370
+[e $U 175  ]
+[; ;I2C.c: 371: case 'e':
+"371
+[e :U 179 ]
+[; ;I2C.c: 378: data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
+"378
 [e = _data_length ( _ReadEEPROM (3 , , _slaveAdress _dataHigh _dataLow ]
-[; ;I2C.c: 334: ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data_length);
-"334
+[; ;I2C.c: 379: ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data_length);
+"379
 [e ( _ReadDataFromEEPROMWithDataSize (4 , , , , _slaveAdress _dataHigh _dataLow _read_data -> _data_length `ui ]
-[; ;I2C.c: 337: case 't':
-"337
-[e :U 152 ]
-[; ;I2C.c: 338: TestEEPROM(slaveAdress);
-"338
+[; ;I2C.c: 382: case 't':
+"382
+[e :U 180 ]
+[; ;I2C.c: 383: TestEEPROM(slaveAdress);
+"383
 [e ( _TestEEPROM (1 _slaveAdress ]
-[; ;I2C.c: 339: break;
-"339
-[e $U 147  ]
-[; ;I2C.c: 340: case 'm':
-"340
-[e :U 153 ]
-[; ;I2C.c: 342: WriteOneByteToMainAndSubB0EEPROM(0x97, 0x07, 0b01111110);
-"342
+[; ;I2C.c: 384: break;
+"384
+[e $U 175  ]
+[; ;I2C.c: 385: case 'm':
+"385
+[e :U 181 ]
+[; ;I2C.c: 387: WriteOneByteToMainAndSubB0EEPROM(0x97, 0x07, 0b01111110);
+"387
 [e ( _WriteOneByteToMainAndSubB0EEPROM (3 , , -> -> 151 `i `uc -> -> 7 `i `uc -> -> 126 `i `uc ]
-[; ;I2C.c: 343: break;
-"343
-[e $U 147  ]
-[; ;I2C.c: 344: default:
-"344
-[e :U 154 ]
-[; ;I2C.c: 345: switchError(0x21);
-"345
+[; ;I2C.c: 388: break;
+"388
+[e $U 175  ]
+[; ;I2C.c: 389: default:
+"389
+[e :U 182 ]
+[; ;I2C.c: 390: switchError(0x21);
+"390
 [e ( _switchError (1 -> -> 33 `i `uc ]
-[; ;I2C.c: 346: break;
-"346
-[e $U 147  ]
-"347
+[; ;I2C.c: 391: break;
+"391
+[e $U 175  ]
+"392
 }
-[; ;I2C.c: 347: }
-[e $U 147  ]
-"316
-[e :U 148 ]
-[e [\ _command , $ -> -> 119 `ui `uc 149
- , $ -> -> 114 `ui `uc 150
- , $ -> -> 101 `ui `uc 151
- , $ -> -> 116 `ui `uc 152
- , $ -> -> 109 `ui `uc 153
- 154 ]
-"347
-[e :U 147 ]
-[; ;I2C.c: 348: }
-"348
-[e :UE 146 ]
+[; ;I2C.c: 392: }
+[e $U 175  ]
+"361
+[e :U 176 ]
+[e [\ _command , $ -> -> 119 `ui `uc 177
+ , $ -> -> 114 `ui `uc 178
+ , $ -> -> 101 `ui `uc 179
+ , $ -> -> 116 `ui `uc 180
+ , $ -> -> 109 `ui `uc 181
+ 182 ]
+"392
+[e :U 175 ]
+[; ;I2C.c: 393: }
+"393
+[e :UE 174 ]
 }
