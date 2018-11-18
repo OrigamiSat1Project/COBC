@@ -22,8 +22,7 @@
 //    /*Ok_data[0]->coomandID*/
 //    Ok_data[0] = ReadEEPROM(mainAddress, HighAddress_for_commandID, LowAddress_for_commandID);
 //    Ok_data[1] = action_select;
-//    WriteToEEPROM(MAIN_EEPROM_ADDRESS, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data);
-//    WriteToEEPROM(SUB_EEPROM_ADDRESS, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data);
+//    WriteOneByteToMainAndSubB0EEPROM(MAIN_EEPROM_ADDRESS, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data);
 //    //for debug
 //    put_ok();
 //    putChar(Ok_data[0]);

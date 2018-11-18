@@ -88,8 +88,12 @@
 #define InitialOpe_error_status_addressLow      0x0c
 
 
-#define SatMode_error_status_addresshigh 0x81
-#define SatMode_error_status_addresslow 0x09
+#define SatMode_error_status1_addresshigh 0x81
+#define SatMode_error_status1_addresslow 0x14
+#define SatMode_error_status2_addresshigh 0x81
+#define SatMode_error_status2_addresslow 0x15
+#define SW_Change_SavingMode_ADC_addresshigh 0x81
+#define SW_Change_SavingMode_ADC_addresslow 0x13
 
 /*******************************************************************************
 *Last Command ID
@@ -106,8 +110,8 @@
 *DATA
 ******************************************************************************/
 /*---initial operation---*/
-#define MeltingStatus_addressHigh      0x97
-#define MeltingStatus_addressLow       0x07
+#define MeltingStatus_addressHigh      0x85
+#define MeltingStatus_addressLow       0x00
 #define BatteryVoltage_addressHigh     0x81
 #define BatteryVoltage_addressLow      0x87
 #define MeltingCounter_addressHigh     0x81
@@ -115,10 +119,26 @@
 #define SatelliteMode_addressHigh       0x81//include SEP(3,2bit) and RBF(1,0bit)
 #define SatelliteMode_addressLow        0x80//include SEP(3,2bit) and RBF(1,0bit)
 
-#define BatVol_nominal_saving_datahigh_addresshigh  0x81
+#define BatVol_nominal_saving_datahigh_addressHigh  0x81
 #define BatVol_nominal_saving_datahigh_addressLow 0x01
-#define BatVol_nominal_saving_datalow_addresshigh  0x81
+#define BatVol_nominal_saving_datalow_addressHigh  0x81
 #define BatVol_nominal_saving_datalow_addressLow 0x02
+#define BatVol_saving_survival_datahigh_addressHigh  0x81
+#define BatVol_saving_survival_datahigh_addressLow 0x0D
+#define BatVol_saving_survival_datalow_addressHigh  0x81
+#define BatVol_saving_survival_datalow_addressLow 0x0E
+
+#define BatVol_nominal_revival_datahigh_addressHigh 0x81
+#define BatVol_nominal_revival_datahigh_addressLow 0x0F
+#define BatVol_nominal_revival_datalow_addressHigh 0x81
+#define BatVol_nominal_revival_datalow_addressLow 0x10
+#define BatVol_saving_revival_datahigh_addressHigh 0x81
+#define BatVol_saving_revival_datahigh_addressLow 0x11
+#define BatVol_saving_revival_datalow_addressHigh 0x81
+#define BatVol_saving_revival_datalow_addressLow 0x12
+
+#define NTRX_subpower_status_addressHigh 0x80
+#define NTRX_subpower_status_addressLow 0x80
 
 #endif	/* EEPROM_H */
 

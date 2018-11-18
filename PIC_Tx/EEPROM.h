@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   EEPROM.h
  * Author: Kosuke
  *
@@ -26,8 +26,8 @@
 /*******************************************************************************
 *OK and ERROR
 ******************************************************************************/
-#define HighAddress_for_commandID  0xE0
-#define LowAddress_for_commandID   0x00
+#define HighAddress_for_commandID  HighAddress_for_TXCOBCLastCommandID
+#define LowAddress_for_commandID   LowAddress_for_TXCOBCLastCommandID
 
 #define B0select_for_Ok       0x00
 #define HighAddress_for_Ok    0xE0
@@ -40,11 +40,15 @@
 /*******************************************************************************
 *Last Command ID
 ******************************************************************************/
-#define B0select_for_TXCOBCLastCommandID     0x00
-#define HighAddress_for_TXCOBCLastCommandID  0x81
-#define LowAddress_for_TXCOBCLastCommandID   0x85
-#define HighAddress_for_RXCOBCLastCommandID  0x81
-#define LowAddress_for_RXCOBCLastCommandID   0x83
+#define B0select_for_TXCOBCLastCommandID     EEPROM_address
+#define HighAddress_for_TXCOBCLastCommandID         0x81
+#define LowAddress_for_TXCOBCLastCommandID          0x85
+#define HighAddress_for_TXCOBCLastCommandStatus     0x81
+#define LowAddress_for_TXCOBCLastCommandStatus      0x86
+#define HighAddress_for_RXCOBCLastCommandID         0x81
+#define LowAddress_for_RXCOBCLastCommandID          0x83
+
+#define OffSet_for_CommandID 1
 
 /*******************************************************************************
 *CRC check
@@ -65,21 +69,21 @@
 #define adcValue_CH1_addressHigh 0x81
 #define adcValue_CH1_addressLow  0x81
 //ch2 (5VBUS voltage(EPS 5V))
-#define adcValue_CH2_addressHigh 0x50
-#define adcValue_CH2_addressLow  0x00
+#define adcValue_CH2_addressHigh 0x81
+#define adcValue_CH2_addressLow  0x8b
 //ch3 (3V3BUS voltage(EPS 3.3V))
 #define adcValue_CH3_addressHigh 0x81
 #define adcValue_CH3_addressLow  0x89
 //ch4
-#define adcValue_CH4_addressHigh 0x00
-#define adcValue_CH4_addressLow  0x00
+#define adcValue_CH4_addressHigh 0x80
+#define adcValue_CH4_addressLow  0x80
 
 /*******************************************************************************
 *address for satellite mode
 ******************************************************************************/
 //TODO:change address
 #define satelliteMode_addressHigh       0x81//include SEP(3,2bit) and RBF(1,0bit)
-#define satelliteMode_addressLow        0x00//include SEP(3,2bit) and RBF(1,0bit)
+#define satelliteMode_addressLow        0x80//include SEP(3,2bit) and RBF(1,0bit)
 #define satelliteMode_DataSize          1
 
 /*******************************************************************************
@@ -115,8 +119,8 @@
 #define EpsSwitchStatus_addressLow   0x93
 #define TxTemperature_addressHigh 0x81
 #define TxTemperature_addressLow 0x95
-#define RxTemperature_addressHigh 0x81 
-#define RxTemperature_addressLow 0x96 
+#define RxTemperature_addressHigh 0x81
+#define RxTemperature_addressLow 0x96
 
 #define FreeData1_slaveaddress_addressHigh 0x84
 #define FreeData1_slaveaddress_addressLow 0x00
@@ -138,5 +142,8 @@
 #define HighAddress_for_meltingCompelationFlag      0xE0
 #define LowAddress_for_meltingCompelationFlag       0x00
 
-#endif	/* EEPROM_H */
+#define NTRX_subpower_status_addressHigh 0x80
+#define NTRX_subpower_status_addressLow 0x80
 
+
+#endif	/* EEPROM_H */

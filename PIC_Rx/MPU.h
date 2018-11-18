@@ -34,6 +34,7 @@ void InitMPU(void);
 /*---for debug---*/
 void LEDOnOff(void);
 void debugLEDyellow(void);
+void testEPSonoff(void);
 
 UBYTE invertState(UBYTE);
 
@@ -44,6 +45,7 @@ void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
 
 void killEPS(void);
 void onEPS(void);
+void resetEPS(void);
 void switchPowerEPS(UBYTE, UBYTE, UBYTE);
 void reviveEPS(UBYTE, UBYTE);
 
@@ -51,12 +53,13 @@ void changeInOut(UINT, UBYTE);
 void changeHighLow(UINT, UBYTE);
 void changeXtalFrequency(UBYTE);
 
-void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 
 void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
 void offNtrxPowerSupplyCIB(void);
+
+UBYTE ReadNtrxSubPowerStatus(void);
 
 #endif /*INITMPU_H*/
 

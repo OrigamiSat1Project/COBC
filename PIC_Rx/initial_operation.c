@@ -14,21 +14,22 @@
 
 ////for debug
 void testInitialOpe(void){
+    sendPulseWDT();
     UBYTE temp;
-    /*--melting status---*/
+//    /*--melting status---*/
     temp = 0b00000011;
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
     temp = 0b00000011;
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
-    /*---sat mode---*/
-    temp = SATMODE_NOMINAL; //SATMODE_NOMINAL / SATMODE_SAVING / SATMODE_SURVIVAL
-    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh, SatelliteMode_addressLow, temp);
-    temp = SATMODE_NOMINAL; //SATMODE_NOMINAL / SATMODE_SAVING / SATMODE_SURVIVAL
-    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,SatelliteMode_addressHigh, SatelliteMode_addressLow, temp);    
+//    /*---sat mode---*/
+//    temp = SATMODE_NOMINAL; //SATMODE_NOMINAL / SATMODE_SAVING / SATMODE_SURVIVAL
+//    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh, SatelliteMode_addressLow, temp);
+//    temp = SATMODE_NOMINAL; //SATMODE_NOMINAL / SATMODE_SAVING / SATMODE_SURVIVAL
+//    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,SatelliteMode_addressHigh, SatelliteMode_addressLow, temp);    
     /*---melting counter---*/
-    temp = 3;  //0-MELTING_COUNTER_LIMIT
+    temp = 0;  //0-MELTING_COUNTER_LIMIT
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
-    temp = 3;  //0-MELTING_COUNTER_LIMIT
+    temp = 0;  //0-MELTING_COUNTER_LIMIT
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
 //    put_ok();
 }
@@ -104,7 +105,7 @@ UBYTE InitialOperation(void){
                 switch(sat_mode){
                     case SATMODE_SAVING:
                     case SATMODE_SURVIVAL:
-//                        putChar(0x77);
+                        putChar(0x77);
 //                        putChar(sat_mode);
 //                        put_lf(); 
                         return error_initialOpe_powerShortage; 
@@ -141,22 +142,22 @@ UBYTE InitialOperation(void){
                         //2.7 < melting_counter <MELTING_COUNTER_LIMIT  -> ciunter++
                         //3.0 <= melting_counter <=7                    -> melting + counter++
                         if(melting_counter == MELTING_COUNTER_LIMIT){
-//                            putChar(0xa6);
+                            putChar(0xa6);
 //                            putChar('6');
                             melting_counter = 0;
                         } else if ((7 < melting_counter)&&(melting_counter<MELTING_COUNTER_LIMIT)){
-//                            putChar(0xa7);
+                            putChar(0xa7);
 //                            putChar('7');
                             melting_counter++;
                         } else {
 //                            putChar(0xa8);
                             
-                            /*---wait for 200s---*/
-                            for(UBYTE i=0; i<50; i++){
-                                sendPulseWDT();
-                                delay_s(WAIT_TIME_FOR_SETTING);
-                            }
-                            sendPulseWDT();
+//                            //*---wait for 200s---*/    ***FIXME need to delete comment out!!
+//                            for(UBYTE i=0; i<50; i++){
+//                                sendPulseWDT();
+//                                delay_s(WAIT_TIME_FOR_SETTING);
+//                            }
+//                            sendPulseWDT();
                             
                             if(melting_counter<4){
 //                                putChar(0xa9);
