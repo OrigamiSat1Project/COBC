@@ -66,19 +66,22 @@ void main(void) {
        putChar(0x53);
     } 
     put_lf();  
+    sendPulseWDT();
 
     /*----------------------------------------------------------------------*/
     //for debug BatVoltage measure
+    putChar(0x11);
     testInitSatMode();
+    putChar(0x22);
     // for debug initial ope
     testInitialOpe(); 
+    putChar(0x33);
     /*----------------------------------------------------------------------*/
        
     
     UBYTE error_status = 0x00;
     
     while(1){
-              
 //        /*---timer interrupt---*/
 //        /*----------------------------------------------------------------------------*/
 //        /*----------------------------------------------------------------------------*/
@@ -211,7 +214,7 @@ void main(void) {
             commandData[i] = 0;
         }
         
-        receiveDataPacket(commandData);
+//        receiveDataPacket(commandData);
         
         // putChar('F');
         // putChar('4');

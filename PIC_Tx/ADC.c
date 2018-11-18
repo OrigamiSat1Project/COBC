@@ -266,6 +266,10 @@ void measureChannel2(){
     putChar(0x99);
     putChar((UBYTE)(adcValue[1] >> 8));
     putChar((UBYTE)(adcValue[1] & 0xff));
+    putChar(ReadEEPROM(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow));
+    putChar(ReadEEPROM(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow+0x01));
+    putChar(ReadEEPROM(EEPROM_subaddress,adcValue_CH2_addressHigh,adcValue_CH2_addressLow));
+    putChar(ReadEEPROM(EEPROM_subaddress,adcValue_CH2_addressHigh,adcValue_CH2_addressLow+0x01));
     put_lf();
 }
 void measureChannel3(){

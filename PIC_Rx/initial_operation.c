@@ -14,6 +14,7 @@
 
 ////for debug
 void testInitialOpe(void){
+    sendPulseWDT();
     UBYTE temp;
 //    /*--melting status---*/
     temp = 0b00000011;

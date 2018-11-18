@@ -69,8 +69,8 @@
 #define adcValue_CH1_addressHigh 0x81
 #define adcValue_CH1_addressLow  0x81
 //ch2 (5VBUS voltage(EPS 5V))
-#define adcValue_CH2_addressHigh 0x50
-#define adcValue_CH2_addressLow  0x00
+#define adcValue_CH2_addressHigh 0x81
+#define adcValue_CH2_addressLow  0x8b
 //ch3 (3V3BUS voltage(EPS 3.3V))
 #define adcValue_CH3_addressHigh 0x81
 #define adcValue_CH3_addressLow  0x89

@@ -222,10 +222,6 @@ void main(void) {
             putChar(0xc7);
             putChar(0xc7);
             putChar(0xc7);
-            putChar(0xc7);
-            putChar(0xc7);
-            putChar(0xc7);
-            putChar(0xc7);
             putChar(RXDATA[1]);
             
             /*---Define if command target is 't' or 'g' and read in task target ---*/

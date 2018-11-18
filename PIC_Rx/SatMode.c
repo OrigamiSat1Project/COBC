@@ -5,6 +5,7 @@
 #include "EEPROM.h"
 #include "I2C.h"
 #include "MPU.h"
+#include "WDT.h"
 #include "UART.h"
 #include "FMCW.h"
 #include "ADC.h"
@@ -478,14 +479,18 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
 }
 
 void testInitSatMode(){
+    sendPulseWDT();
     WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh,SatelliteMode_addressLow,SATMODE_NOMINAL_SEPON_RBFON);
     WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow,Init_TheresholdBatVol_nominal_saving_high);
     WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow,Init_TheresholdBatVol_nominal_saving_low);
+   sendPulseWDT();
     WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_survival_datahigh_addressHigh, BatVol_saving_survival_datahigh_addressLow,Init_TheresholdBatVol_saving_survival_high);
     WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_survival_datalow_addressHigh,BatVol_saving_survival_datalow_addressLow ,Init_TheresholdBatVol_saving_survival_low);
     WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_revival_datahigh_addressHigh,BatVol_nominal_revival_datahigh_addressLow,Init_TheresholdBatVol_nominal_revival_high);
+   sendPulseWDT();
     WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_revival_datalow_addressHigh,BatVol_nominal_revival_datalow_addressLow,Init_TheresholdBatVol_nominal_revival_low );
     WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_revival_datahigh_addressHigh,BatVol_saving_revival_datahigh_addressLow,Init_TheresholdBatVol_saving_revival_high);
     WriteOneByteToMainAndSubB0EEPROM(BatVol_saving_revival_datalow_addressHigh,BatVol_saving_revival_datalow_addressLow,Init_TheresholdBatVol_saving_revival_low);    
     WriteOneByteToMainAndSubB0EEPROM(SW_Change_SavingMode_ADC_addresshigh,SW_Change_SavingMode_ADC_addresslow,0b11100000);
+    sendPulseWDT();
 }
