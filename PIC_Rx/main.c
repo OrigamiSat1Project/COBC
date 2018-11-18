@@ -61,7 +61,6 @@ void main(void) {
     __delay_ms(500);           //wait for circuit of PLL
     
     put_lf(); 
-    putChar('S'); 
     for(UBYTE i=0; i<6; i++){
        putChar(0x53);
     } 
@@ -70,12 +69,9 @@ void main(void) {
 
     /*----------------------------------------------------------------------*/
     //for debug BatVoltage measure
-    putChar(0x11);
     testInitSatMode();
-    putChar(0x22);
     // for debug initial ope
     testInitialOpe(); 
-    putChar(0x33);
     /*----------------------------------------------------------------------*/
        
     
@@ -153,14 +149,10 @@ void main(void) {
             put_lf();          
             //TODO:debug function to measure EPS Battery
            UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-//            putChar(0xAA);
-//            putChar(0xAA);
+           put_lf();   
             putChar(0xAB);
             putChar((UBYTE)(SatMode_error_status>>8));
             putChar((UBYTE)SatMode_error_status);
-//            putChar(0xAA);
-//            putChar(0xAA);
-//            putChar(0xAA);
             put_lf();      
            if (SatMode_error_status != 0){
                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
@@ -170,9 +162,6 @@ void main(void) {
 //               putChar(0xBB);
 //               putChar((UBYTE)(SatMode_error_status>>8));
 //               putChar((UBYTE)SatMode_error_status);
-//               putChar(0xBB);
-//               putChar(0xBB);
-//               putChar(0xBB);
 //               put_lf();
            }            
            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, (UBYTE)(SatMode_error_status>>8));
@@ -182,16 +171,10 @@ void main(void) {
 //           for(UBYTE i=0; i<3; i++){
                 putChar(0xF8);
 //           } 
+                put_lf(); 
         }
         /*----------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------*/
-//        putChar('m');
-//        putChar('m');
-//        putChar('m');
-//        putChar('m');
-//        putChar('m');
-//        putChar('m');
-//        putChar('m');
         sendPulseWDT();
         delay_s(1);
         
@@ -216,8 +199,6 @@ void main(void) {
         
 //        receiveDataPacket(commandData);
         
-        // putChar('F');
-        // putChar('4');
         
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[0]==0) {
@@ -309,18 +290,18 @@ void main(void) {
                 case 'e': /*EEPROM*/
                     commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
                     break;
-//                case 'u':/*UART*/
-//                    commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-//                    break;
-//                case 'w':/*WDT (watch dog timer)*/
-//                    commandWDT(commandData[4]);
-//                    break;
-//                case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
-//                    //TODO: write function directly here or in MPU.c                   
-//                    break;
-//                case 'r':/*internal processing*/
-//                    commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);                   
-//                    break;
+                case 'u':/*UART*/
+                    commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    break;
+                case 'w':/*WDT (watch dog timer)*/
+                    commandWDT(commandData[4]);
+                    break;
+                case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
+                    //TODO: write function directly here or in MPU.c                   
+                    break;
+                case 'r':/*internal processing*/
+                    commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);                   
+                    break;
                 default:
 //                    switchError(error_main_reveiveCommand);
                     break;

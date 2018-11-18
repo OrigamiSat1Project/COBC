@@ -698,7 +698,6 @@ void HK_test_setting(void){
 //    //5VBus Voltage 
     DATA[0] = 0x77;  DATA[1] = 0x88;  
     WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA,2); 
-    sendPulseWDT();
     
 //    //3V3Bus Voltage 
     DATA[0] = 0x99; DATA[1] = 0xAA;

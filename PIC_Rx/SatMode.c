@@ -88,11 +88,6 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
 //            putChar(0xC0);
 //            putChar(0xC0);
 //            putChar(0xC0);
-//            putChar(0xC0);
-//            putChar(0xC0);
-//            putChar(0xC0);
-//            putChar(0xC0);
-//            putChar(0xC0);
 //            put_lf();
             //if BatVol_nominal_saving_high is very large,read one more time. Then it is still very large,thereshold BatVol is Initial Value.
             UWORD BatVol_nominal_saving_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow);
@@ -108,15 +103,6 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
 //                putChar(0xC1);
 //                putChar(0xC1);
 //                putChar(0xC1);
-//                putChar(0xC1);
-//                putChar(0xC1);
-//                putChar(0xC1);
-//                putChar(0xC1);
-//                putChar(0xC1);
-//                putChar(0xC1);
-//                putChar(0xC1);
-//                putChar(0xC1);
-//                putChar(0xC1);
 //                put_lf();
                 BatVol_nominal_saving_high = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow);
                 BatVol_nominal_saving_low = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow);
@@ -125,11 +111,6 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
 //                putChar((UBYTE)BatVol_nominal_saving_low);
 //                put_lf();
                 if(((BatVol_nominal_saving_high & 0b11111100) != 0) || (BatVol_nominal_saving <= TheresholdBatVol_lower_limit)){
-//                    putChar(0xC2);
-//                    putChar(0xC2);
-//                    putChar(0xC2);
-//                    putChar(0xC2);
-//                    putChar(0xC2);
 //                    putChar(0xC2);
 //                    putChar(0xC2);
 //                    putChar(0xC2);
@@ -188,11 +169,6 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
 //            putChar((UBYTE)BatVol_saving_survival_low);
 //            put_lf();
             
-//            putChar(0xE0);
-//            putChar(0xE0);
-//            putChar(0xE0);
-//            putChar(0xE0);
-//            putChar(0xE0);
 //            putChar(0xE0);
 //            putChar(0xE0);
 //            putChar(0xE0);

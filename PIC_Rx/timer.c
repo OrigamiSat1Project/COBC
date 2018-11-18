@@ -38,7 +38,7 @@ static UINT receive_command_counter_min = 0;
 static UINT bat_meas_counter_sec        = 0;
 static UINT bat_meas_counter_min        = 0;
 //static UINT eps_rest_counter_sec        = 0;
-static UINT init_ope_counter_sec        = 25;
+static UINT init_ope_counter_sec        = 0;
 static UINT init_ope_counter_min        = 0;
 UBYTE WDT_flag = 0x00;
 
@@ -48,14 +48,7 @@ static UINT eps_reset_counter_min = 0;
 
 //for debug function
 void interrupt TimerCheck(void){
-    
-    if(RCIF == 1){
-        
-        //get data only
-        
-        RCIF = 0;
-    }
-    
+       
     if(INTCONbits.TMR0IF){
         INTCONbits.TMR0IF = 0;
         TMR0 = 0x00;
