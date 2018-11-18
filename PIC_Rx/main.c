@@ -77,66 +77,25 @@ void main(void) {
        
     
     UBYTE error_status = 0x00;
+    UBYTE flag = 0; //for debug
     
     while(1){
-//        UBYTE DataLengthHigh = 0x01;
-//        UBYTE DataLengthLow = 0x00;
-//        UBYTE addressHigh = 0x00;
-//        UBYTE addressLow = 0x80;
-//        UBYTE downlinkTimes = 0x01;
-//            UBYTE *readData;
-//            UINT DataLength = (UINT)((DataLengthHigh << 8) + DataLengthLow);
-//            UINT address = (UINT)((addressHigh << 8) + addressLow);
-//            UBYTE flag = 0;
-//
-//            for(UBYTE sendCounter = 0; sendCounter < downlinkTimes; sendCounter++){
-//                while(!flag){
-//                    __delay_ms(300);
-////                    SendPacket(readData,32);
-//                    putChar(addressHigh);
-//                    putChar(addressLow);
-//                    putChar(DataLengthHigh);
-//                    putChar(DataLengthLow);
-//                    
-//                    __delay_ms(300);
-//                    address += 0x0020;
-//                    addressHigh = (UBYTE)(address >> 8);
-//                    addressLow = (UBYTE)address;
-//                    if(DataLength < 32){
-//                        flag = 1;
-//                    }else{
-//                    DataLength -= 32;
-//                    DataLengthHigh = (UBYTE)(DataLength >> 8);
-//                    DataLengthLow = (UBYTE)DataLength;
-//                    }
-//                    __delay_ms(500);
-//                }
-//            }
-//        
-//            while(1){
-//                putChar(0xFF);
-//            }
-//              
         /*---timer interrupt---*/
         /*----------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------*/
-//        /*---timer process for EPS reset (1week)---*/       
+        /*---timer process for EPS reset (1week)---*/       
 //        if(get_timer_counter('w') >= 1){  //for FM
-//        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
-////            putChar('E');
-////            putChar('E');
-////            putChar('E');
-////            Reset_EPS();
-//            sendPulseWDT();
-//            Reset_EPS();
-//            sendPulseWDT();
-//            delay_ms(5000);
-//            sendPulseWDT();
-//            setPLL();
-////            // Execute 1week reset
-//            reset_timer();
-//            set_eps_reset_counter(0,0);  //for debug
-//        }
+        if(get_eps_reset_counter_min() >= EPS_RSET_INTERVAL_LONG){   //for debug
+            sendPulseWDT();
+            Reset_EPS();
+            sendPulseWDT();
+            delay_ms(5000);
+            sendPulseWDT();
+            setPLL();
+//            // Execute 1week reset
+            reset_timer();
+            set_eps_reset_counter(0,0);  //for debug
+        }
 //
 //        /*---timer process for NTRX PLL setting(every day) & EPS reset (if initial Ope / everyday)---*/
 ////        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   //FM
@@ -211,6 +170,78 @@ void main(void) {
         receiveDataPacket(commandData);
         delay_ms(5000);
         
+        /*-----------for debug of TXPIC------------*/
+        
+        if(flag == 0){
+            commandData[0] = 'T';
+            commandData[1] = 1;
+            commandData[2] = 't';
+            commandData[3] = 'f';
+            commandData[4] = 0xDD;
+            commandData[5] = 0x50;
+            commandData[6] = 0x7C;
+            commandData[7] = 0x20;
+            commandData[8] = 0x05;
+            commandData[9] = 0x00;
+            commandData[10] = 0x00;
+            commandData[11] = 0x00;
+            commandData[12] = 0x00;
+            commandData[13] = 0x00;
+            commandData[14] = 0x00;
+            commandData[15] = 0x00;
+            commandData[16] = 0x00;
+            commandData[17] = 0x00;
+            commandData[18] = 0x00;
+            commandData[19] = 0x00;
+            commandData[20] = 0x7C;
+            commandData[21] = 0x00;
+            commandData[22] = 0x05;
+            commandData[23] = 0x00;
+            commandData[24] = 0x00;
+            commandData[25] = 0x00;
+            commandData[26] = 0x00;
+            commandData[27] = 0x00;
+            commandData[28] = 0x00;
+            commandData[29] = 0x2F;
+            commandData[30] = 0xA3;
+            commandData[31] = 0xB0;
+            flag = 1;
+        }else {
+            commandData[0] = 'O';
+            commandData[1] = 0x02;
+            commandData[2] = 'm';
+            commandData[3] = 0x00;
+            commandData[4] = 0x01;
+            commandData[5] = 0x00;
+            commandData[6] = 0x00;
+            commandData[7] = 0x00;
+            commandData[8] = 0x00;
+            commandData[9] = 0x00;
+            commandData[10] = 0x00;
+            commandData[11] = 0x00;
+            commandData[12] = 0x00;
+            commandData[13] = 0x00;
+            commandData[14] = 0x00;
+            commandData[15] = 0x00;
+            commandData[16] = 0x00;
+            commandData[17] = 0x00;
+            commandData[18] = 0x00;
+            commandData[19] = 0x00;
+            commandData[20] = 0x00;
+            commandData[21] = 0x20;
+            commandData[22] = 0x05;
+            commandData[23] = 0x00;
+            commandData[24] = 0x00;
+            commandData[25] = 0x00;
+            commandData[26] = 0x00;
+            commandData[27] = 0x00;
+            commandData[28] = 0x00;
+            commandData[29] = 0xE5;
+            commandData[30] = 0xAC;
+            commandData[31] = 0xB0;
+            flag = 0;
+        }
+        
         
         //XXX if () continue, IF COMMAND IS STILL RESET
 //        if(commandData[0]==0) {
@@ -228,22 +259,18 @@ void main(void) {
         
         
         /*-------------Substitute EEPROM ADDRESS DATA-------------------*/
-//        B0select = commandData[19];
-//        wHighAddress = commandData[20];
-//        wLowAddress = commandData[21];
-//        downlinkTimes = commandData[22];
-        B0select = 0x00;
-        wHighAddress = 0x7C;
-        wLowAddress = 0x00;
-        downlinkTimes = 0x0A;
+        B0select = commandData[19];
+        wHighAddress = commandData[20];
+        wLowAddress = commandData[21];
+        downlinkTimes = commandData[22];
         mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
         subControlByte = SUB_EEPROM_ADDRESS | B0select;
         
         /*---CRC check for command from Grand Station---*/ 
         /*------------------------------------------------------------------*/
-        UWORD crcResult, crcValue;
-        crcResult = crc16(0,commandData,29);
-        crcValue =  checkCRC(commandData,29);
+//        UWORD crcResult, crcValue;
+//        crcResult = crc16(0,commandData,29);
+//        crcValue =  checkCRC(commandData,29);
         
         /*------------------------------------*/
         //for debug (check CRC)
@@ -255,41 +282,14 @@ void main(void) {
         /*------------------------------------*/
         
         /*---update CRC---*/
-        if(crcResult != crcValue){
-            commandData[31] = commandData[31] & 0b01111111; 
-//            switchError(error_main_crcCheck);
-        }else{
-            commandData[31] = commandData[31] | 0b10000000;
-//            switchOk(ok_main_crcCheck);           
-        }  
-        
-        /*-----------for debug of TXPIC------------*/
-        commandData[0] = 'T';
-        commandData[1] = 1;
-        commandData[2] = 't';
-        commandData[3] = 'f';
-        commandData[4] = 0xDD;
-        commandData[5] = 0x50;
-        commandData[6] = 0x7C;
-        commandData[7] = 0x20;
-        commandData[8] = 0x05;
-        UBYTE high = commandData[6];
-        UBYTE low = commandData[7];
-        UBYTE write = 0x41;
-        UBYTE read = 0x00;
-//        UBYTE reads[32];
-        for(int i = 0 ; i < 32 ; i++){
-            WriteOneByteToEEPROM(commandData[5],high,low, write);
-//            read = ReadEEPROM(commandData[5],high,low);
-//            putChar(read);
-            write += 0x01;
-            low += 0x01;
-            sendPulseWDT();
-        }
-//        ReadDataFromEEPROMWithDataSize(commandData[5],commandData[6],commandData[7],reads,32);
-//        for(int i = 0 ; i < 32 ; i++){
-//            putChar(reads[i]);
-//        }
+//        if(crcResult != crcValue){
+//            commandData[31] = commandData[31] & 0b01111111; 
+////            switchError(error_main_crcCheck);
+//        }else{
+//            commandData[31] = commandData[31] | 0b10000000;
+////            switchOk(ok_main_crcCheck);           
+//        }  
+//        
         
         
         /*---Write uplink command in EEPROM---*/

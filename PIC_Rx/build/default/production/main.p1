@@ -18,18 +18,20 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _putChar `(v ~T0 @X0 0 ef1`uc ]
 "2601 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
 [v _RC5 `Vb ~T0 @X0 0 e@61 ]
-"31 I2C.h
-[v _WriteOneByteToEEPROM `(i ~T0 @X0 0 ef4`uc`uc`uc`uc ]
+"42 timer.h
+[v _get_eps_reset_counter_min `(ui ~T0 @X0 0 ef ]
 "20 WDT.h
 [v _sendPulseWDT `(v ~T0 @X0 0 ef ]
+"14 EPS.h
+[v _Reset_EPS `(v ~T0 @X0 0 ef ]
 "30 time.h
 [v _delay_ms `(v ~T0 @X0 0 ef1`us ]
+"58 timer.h
+[v _reset_timer `(v ~T0 @X0 0 ef ]
+"40
+[v _set_eps_reset_counter `(v ~T0 @X0 0 ef2`ui`ui ]
 "25 decodeAX25.h
 [v _receiveDataPacket `(v ~T0 @X0 0 ef1`*uc ]
-"13 CRC16.h
-[v _crc16 `(us ~T0 @X0 0 ef3`us`*uc`ui ]
-"15
-[v _checkCRC `(us ~T0 @X0 0 ef2`*uc`ui ]
 "29 I2C.h
 [v _WriteToEEPROMWithDataSize `(i ~T0 @X0 0 ef5`uc`uc`uc`*uc`uc ]
 "34
@@ -1384,381 +1386,512 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 63: RC5 = 1;
 "63
 [e = _RC5 -> -> 1 `i `b ]
-[; ;main.c: 75: while(1){
-"75
+"79
+[v _error_status `uc ~T0 @X0 1 a ]
+[; ;main.c: 79: UBYTE error_status = 0x00;
+[e = _error_status -> -> 0 `i `uc ]
+"80
+[v _flag `uc ~T0 @X0 1 a ]
+[; ;main.c: 80: UBYTE flag = 0;
+[e = _flag -> -> 0 `i `uc ]
+[; ;main.c: 82: while(1){
+"82
 [e :U 102 ]
 {
-[; ;main.c: 76: WriteOneByteToEEPROM(0x52,0x11,0x11,0xBB);
-"76
-[e ( _WriteOneByteToEEPROM (4 , , , -> -> 82 `i `uc -> -> 17 `i `uc -> -> 17 `i `uc -> -> 187 `i `uc ]
-"77
-}
-[e :U 101 ]
-"75
-[e $U 102  ]
-[e :U 103 ]
-"82
-[v _error_status `uc ~T0 @X0 1 a ]
-[; ;main.c: 77: }
-[; ;main.c: 82: UBYTE error_status = 0x00;
-[e = _error_status -> -> 0 `i `uc ]
-[; ;main.c: 84: while(1){
-"84
-[e :U 105 ]
+[; ;main.c: 88: if(get_eps_reset_counter_min() >= 5){
+"88
+[e $ ! >= ( _get_eps_reset_counter_min ..  -> -> 5 `i `ui 104  ]
 {
-[; ;main.c: 192: sendPulseWDT();
-"192
+[; ;main.c: 89: sendPulseWDT();
+"89
 [e ( _sendPulseWDT ..  ]
-[; ;main.c: 193: delay_ms(2000);
-"193
+[; ;main.c: 90: Reset_EPS();
+"90
+[e ( _Reset_EPS ..  ]
+[; ;main.c: 91: sendPulseWDT();
+"91
+[e ( _sendPulseWDT ..  ]
+[; ;main.c: 92: delay_ms(5000);
+"92
+[e ( _delay_ms (1 -> -> 5000 `i `us ]
+[; ;main.c: 93: sendPulseWDT();
+"93
+[e ( _sendPulseWDT ..  ]
+[; ;main.c: 94: setPLL();
+"94
+[e ( _setPLL ..  ]
+[; ;main.c: 96: reset_timer();
+"96
+[e ( _reset_timer ..  ]
+[; ;main.c: 97: set_eps_reset_counter(0,0);
+"97
+[e ( _set_eps_reset_counter (2 , -> -> 0 `i `ui -> -> 0 `i `ui ]
+"98
+}
+[e :U 104 ]
+[; ;main.c: 98: }
+[; ;main.c: 148: sendPulseWDT();
+"148
+[e ( _sendPulseWDT ..  ]
+[; ;main.c: 149: delay_ms(2000);
+"149
 [e ( _delay_ms (1 -> -> 2000 `i `us ]
-"197
+"153
 [v _commandData `uc ~T0 @X0 -> 32 `i a ]
-"198
+"154
 [v _commandID `uc ~T0 @X0 1 a ]
-"201
+"157
 [v _B0select `uc ~T0 @X0 1 a ]
-"202
+"158
 [v _wHighAddress `uc ~T0 @X0 1 a ]
-"203
+"159
 [v _wLowAddress `uc ~T0 @X0 1 a ]
-"204
+"160
 [v _mainControlByte `uc ~T0 @X0 1 a ]
-"205
+"161
 [v _subControlByte `uc ~T0 @X0 1 a ]
-"206
+"162
 [v _downlinkTimes `uc ~T0 @X0 1 a ]
-[; ;main.c: 197: UBYTE commandData[32];
-[; ;main.c: 198: UBYTE commandID;
-[; ;main.c: 201: UBYTE B0select;
-[; ;main.c: 202: UBYTE wHighAddress;
-[; ;main.c: 203: UBYTE wLowAddress;
-[; ;main.c: 204: UBYTE mainControlByte;
-[; ;main.c: 205: UBYTE subControlByte;
-[; ;main.c: 206: UBYTE downlinkTimes;
-[; ;main.c: 209: for(UBYTE i=0; i<32; i++){
-"209
+[; ;main.c: 153: UBYTE commandData[32];
+[; ;main.c: 154: UBYTE commandID;
+[; ;main.c: 157: UBYTE B0select;
+[; ;main.c: 158: UBYTE wHighAddress;
+[; ;main.c: 159: UBYTE wLowAddress;
+[; ;main.c: 160: UBYTE mainControlByte;
+[; ;main.c: 161: UBYTE subControlByte;
+[; ;main.c: 162: UBYTE downlinkTimes;
+[; ;main.c: 165: for(UBYTE i=0; i<32; i++){
+"165
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 32 `i 107  ]
-[e $U 108  ]
-[e :U 107 ]
+[e $ < -> _i `i -> 32 `i 105  ]
+[e $U 106  ]
+[e :U 105 ]
 {
-[; ;main.c: 210: commandData[i] = 0;
-"210
+[; ;main.c: 166: commandData[i] = 0;
+"166
 [e = *U + &U _commandData * -> _i `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
-"211
+"167
 }
-"209
+"165
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 32 `i 107  ]
-[e :U 108 ]
-"211
+[e $ < -> _i `i -> 32 `i 105  ]
+[e :U 106 ]
+"167
 }
-[; ;main.c: 211: }
-[; ;main.c: 214: receiveDataPacket(commandData);
-"214
+[; ;main.c: 167: }
+[; ;main.c: 170: receiveDataPacket(commandData);
+"170
 [e ( _receiveDataPacket (1 &U _commandData ]
-[; ;main.c: 215: delay_ms(5000);
-"215
+[; ;main.c: 171: delay_ms(5000);
+"171
 [e ( _delay_ms (1 -> -> 5000 `i `us ]
-[; ;main.c: 238: B0select = 0x00;
-"238
-[e = _B0select -> -> 0 `i `uc ]
-[; ;main.c: 239: wHighAddress = 0x7C;
-"239
-[e = _wHighAddress -> -> 124 `i `uc ]
-[; ;main.c: 240: wLowAddress = 0x00;
-"240
-[e = _wLowAddress -> -> 0 `i `uc ]
-[; ;main.c: 241: downlinkTimes = 0x0A;
-"241
-[e = _downlinkTimes -> -> 10 `i `uc ]
-[; ;main.c: 242: mainControlByte = 0x50 | B0select;
-"242
-[e = _mainControlByte -> | -> 80 `i -> _B0select `i `uc ]
-[; ;main.c: 243: subControlByte = 0x52 | B0select;
-"243
-[e = _subControlByte -> | -> 82 `i -> _B0select `i `uc ]
-"247
-[v _crcResult `us ~T0 @X0 1 a ]
-[v _crcValue `us ~T0 @X0 1 a ]
-[; ;main.c: 247: UWORD crcResult, crcValue;
-[; ;main.c: 248: crcResult = crc16(0,commandData,29);
-"248
-[e = _crcResult ( _crc16 (3 , , -> -> 0 `i `us &U _commandData -> -> 29 `i `ui ]
-[; ;main.c: 249: crcValue = checkCRC(commandData,29);
-"249
-[e = _crcValue ( _checkCRC (2 , &U _commandData -> -> 29 `i `ui ]
-[; ;main.c: 261: if(crcResult != crcValue){
-"261
-[e $ ! != -> _crcResult `ui -> _crcValue `ui 110  ]
+[; ;main.c: 175: if(flag == 0){
+"175
+[e $ ! == -> _flag `i -> 0 `i 108  ]
 {
-[; ;main.c: 262: commandData[31] = commandData[31] & 0b01111111;
-"262
-[e = *U + &U _commandData * -> -> -> 31 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> & -> *U + &U _commandData * -> -> -> 31 `i `ui `ux -> -> # *U &U _commandData `ui `ux `i -> 127 `i `uc ]
-"264
+[; ;main.c: 176: commandData[0] = 'T';
+"176
+[e = *U + &U _commandData * -> -> -> 0 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 84 `ui `uc ]
+[; ;main.c: 177: commandData[1] = 1;
+"177
+[e = *U + &U _commandData * -> -> -> 1 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 1 `i `uc ]
+[; ;main.c: 178: commandData[2] = 't';
+"178
+[e = *U + &U _commandData * -> -> -> 2 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 116 `ui `uc ]
+[; ;main.c: 179: commandData[3] = 'f';
+"179
+[e = *U + &U _commandData * -> -> -> 3 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 102 `ui `uc ]
+[; ;main.c: 180: commandData[4] = 0xDD;
+"180
+[e = *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 221 `i `uc ]
+[; ;main.c: 181: commandData[5] = 0x50;
+"181
+[e = *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 80 `i `uc ]
+[; ;main.c: 182: commandData[6] = 0x7C;
+"182
+[e = *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 124 `i `uc ]
+[; ;main.c: 183: commandData[7] = 0x20;
+"183
+[e = *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 32 `i `uc ]
+[; ;main.c: 184: commandData[8] = 0x05;
+"184
+[e = *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 5 `i `uc ]
+[; ;main.c: 185: commandData[9] = 0x00;
+"185
+[e = *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 186: commandData[10] = 0x00;
+"186
+[e = *U + &U _commandData * -> -> -> 10 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 187: commandData[11] = 0x00;
+"187
+[e = *U + &U _commandData * -> -> -> 11 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 188: commandData[12] = 0x00;
+"188
+[e = *U + &U _commandData * -> -> -> 12 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 189: commandData[13] = 0x00;
+"189
+[e = *U + &U _commandData * -> -> -> 13 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 190: commandData[14] = 0x00;
+"190
+[e = *U + &U _commandData * -> -> -> 14 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 191: commandData[15] = 0x00;
+"191
+[e = *U + &U _commandData * -> -> -> 15 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 192: commandData[16] = 0x00;
+"192
+[e = *U + &U _commandData * -> -> -> 16 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 193: commandData[17] = 0x00;
+"193
+[e = *U + &U _commandData * -> -> -> 17 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 194: commandData[18] = 0x00;
+"194
+[e = *U + &U _commandData * -> -> -> 18 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 195: commandData[19] = 0x00;
+"195
+[e = *U + &U _commandData * -> -> -> 19 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 196: commandData[20] = 0x7C;
+"196
+[e = *U + &U _commandData * -> -> -> 20 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 124 `i `uc ]
+[; ;main.c: 197: commandData[21] = 0x00;
+"197
+[e = *U + &U _commandData * -> -> -> 21 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 198: commandData[22] = 0x05;
+"198
+[e = *U + &U _commandData * -> -> -> 22 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 5 `i `uc ]
+[; ;main.c: 199: commandData[23] = 0x00;
+"199
+[e = *U + &U _commandData * -> -> -> 23 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 200: commandData[24] = 0x00;
+"200
+[e = *U + &U _commandData * -> -> -> 24 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 201: commandData[25] = 0x00;
+"201
+[e = *U + &U _commandData * -> -> -> 25 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 202: commandData[26] = 0x00;
+"202
+[e = *U + &U _commandData * -> -> -> 26 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 203: commandData[27] = 0x00;
+"203
+[e = *U + &U _commandData * -> -> -> 27 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 204: commandData[28] = 0x00;
+"204
+[e = *U + &U _commandData * -> -> -> 28 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 205: commandData[29] = 0x2F;
+"205
+[e = *U + &U _commandData * -> -> -> 29 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 47 `i `uc ]
+[; ;main.c: 206: commandData[30] = 0xA3;
+"206
+[e = *U + &U _commandData * -> -> -> 30 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 163 `i `uc ]
+[; ;main.c: 207: commandData[31] = 0xB0;
+"207
+[e = *U + &U _commandData * -> -> -> 31 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 176 `i `uc ]
+[; ;main.c: 208: flag = 1;
+"208
+[e = _flag -> -> 1 `i `uc ]
+"209
 }
-[; ;main.c: 264: }else{
+[; ;main.c: 209: }else {
+[e $U 109  ]
+[e :U 108 ]
+{
+[; ;main.c: 210: commandData[0] = 'O';
+"210
+[e = *U + &U _commandData * -> -> -> 0 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 79 `ui `uc ]
+[; ;main.c: 211: commandData[1] = 0x02;
+"211
+[e = *U + &U _commandData * -> -> -> 1 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 2 `i `uc ]
+[; ;main.c: 212: commandData[2] = 'm';
+"212
+[e = *U + &U _commandData * -> -> -> 2 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 109 `ui `uc ]
+[; ;main.c: 213: commandData[3] = 0x00;
+"213
+[e = *U + &U _commandData * -> -> -> 3 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 214: commandData[4] = 0x01;
+"214
+[e = *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 1 `i `uc ]
+[; ;main.c: 215: commandData[5] = 0x00;
+"215
+[e = *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 216: commandData[6] = 0x00;
+"216
+[e = *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 217: commandData[7] = 0x00;
+"217
+[e = *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 218: commandData[8] = 0x00;
+"218
+[e = *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 219: commandData[9] = 0x00;
+"219
+[e = *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 220: commandData[10] = 0x00;
+"220
+[e = *U + &U _commandData * -> -> -> 10 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 221: commandData[11] = 0x00;
+"221
+[e = *U + &U _commandData * -> -> -> 11 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 222: commandData[12] = 0x00;
+"222
+[e = *U + &U _commandData * -> -> -> 12 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 223: commandData[13] = 0x00;
+"223
+[e = *U + &U _commandData * -> -> -> 13 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 224: commandData[14] = 0x00;
+"224
+[e = *U + &U _commandData * -> -> -> 14 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 225: commandData[15] = 0x00;
+"225
+[e = *U + &U _commandData * -> -> -> 15 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 226: commandData[16] = 0x00;
+"226
+[e = *U + &U _commandData * -> -> -> 16 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 227: commandData[17] = 0x00;
+"227
+[e = *U + &U _commandData * -> -> -> 17 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 228: commandData[18] = 0x00;
+"228
+[e = *U + &U _commandData * -> -> -> 18 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 229: commandData[19] = 0x00;
+"229
+[e = *U + &U _commandData * -> -> -> 19 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 230: commandData[20] = 0x00;
+"230
+[e = *U + &U _commandData * -> -> -> 20 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 231: commandData[21] = 0x20;
+"231
+[e = *U + &U _commandData * -> -> -> 21 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 32 `i `uc ]
+[; ;main.c: 232: commandData[22] = 0x05;
+"232
+[e = *U + &U _commandData * -> -> -> 22 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 5 `i `uc ]
+[; ;main.c: 233: commandData[23] = 0x00;
+"233
+[e = *U + &U _commandData * -> -> -> 23 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 234: commandData[24] = 0x00;
+"234
+[e = *U + &U _commandData * -> -> -> 24 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 235: commandData[25] = 0x00;
+"235
+[e = *U + &U _commandData * -> -> -> 25 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 236: commandData[26] = 0x00;
+"236
+[e = *U + &U _commandData * -> -> -> 26 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 237: commandData[27] = 0x00;
+"237
+[e = *U + &U _commandData * -> -> -> 27 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 238: commandData[28] = 0x00;
+"238
+[e = *U + &U _commandData * -> -> -> 28 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 0 `i `uc ]
+[; ;main.c: 239: commandData[29] = 0xE5;
+"239
+[e = *U + &U _commandData * -> -> -> 29 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 229 `i `uc ]
+[; ;main.c: 240: commandData[30] = 0xAC;
+"240
+[e = *U + &U _commandData * -> -> -> 30 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 172 `i `uc ]
+[; ;main.c: 241: commandData[31] = 0xB0;
+"241
+[e = *U + &U _commandData * -> -> -> 31 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 176 `i `uc ]
+[; ;main.c: 242: flag = 0;
+"242
+[e = _flag -> -> 0 `i `uc ]
+"243
+}
+[e :U 109 ]
+[; ;main.c: 243: }
+[; ;main.c: 262: B0select = commandData[19];
+"262
+[e = _B0select *U + &U _commandData * -> -> -> 19 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[; ;main.c: 263: wHighAddress = commandData[20];
+"263
+[e = _wHighAddress *U + &U _commandData * -> -> -> 20 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[; ;main.c: 264: wLowAddress = commandData[21];
+"264
+[e = _wLowAddress *U + &U _commandData * -> -> -> 21 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[; ;main.c: 265: downlinkTimes = commandData[22];
+"265
+[e = _downlinkTimes *U + &U _commandData * -> -> -> 22 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[; ;main.c: 266: mainControlByte = 0x50 | B0select;
+"266
+[e = _mainControlByte -> | -> 80 `i -> _B0select `i `uc ]
+[; ;main.c: 267: subControlByte = 0x52 | B0select;
+"267
+[e = _subControlByte -> | -> 82 `i -> _B0select `i `uc ]
+[; ;main.c: 297: WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,32);
+"297
+[e ( _WriteToEEPROMWithDataSize (4 , , , , _mainControlByte _wHighAddress _wLowAddress &U _commandData -> -> 32 `i `uc ]
+[; ;main.c: 298: WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,32);
+"298
+[e ( _WriteToEEPROMWithDataSize (4 , , , , _subControlByte _wHighAddress _wLowAddress &U _commandData -> -> 32 `i `uc ]
+[; ;main.c: 299: WriteLastCommandIdToEEPROM(commandData[1]);
+"299
+[e ( _WriteLastCommandIdToEEPROM (1 *U + &U _commandData * -> -> -> 1 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[; ;main.c: 313: sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
+"313
+[e ( _sendCommand (4 , , , , , , , -> -> 103 `ui `uc -> -> 117 `ui `uc _B0select _wHighAddress _wLowAddress _downlinkTimes -> -> 0 `i `uc -> -> 0 `i `uc ]
+[; ;main.c: 316: for(int i=0; i<32; i++){
+"316
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 32 `i 110  ]
 [e $U 111  ]
 [e :U 110 ]
 {
-[; ;main.c: 265: commandData[31] = commandData[31] | 0b10000000;
-"265
-[e = *U + &U _commandData * -> -> -> 31 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> | -> *U + &U _commandData * -> -> -> 31 `i `ui `ux -> -> # *U &U _commandData `ui `ux `i -> 128 `i `uc ]
-"267
+"318
 }
-[e :U 111 ]
-[; ;main.c: 267: }
-[; ;main.c: 270: commandData[0] = 'T';
-"270
-[e = *U + &U _commandData * -> -> -> 0 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 84 `ui `uc ]
-[; ;main.c: 271: commandData[1] = 1;
-"271
-[e = *U + &U _commandData * -> -> -> 1 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 1 `i `uc ]
-[; ;main.c: 272: commandData[2] = 't';
-"272
-[e = *U + &U _commandData * -> -> -> 2 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 116 `ui `uc ]
-[; ;main.c: 273: commandData[3] = 'f';
-"273
-[e = *U + &U _commandData * -> -> -> 3 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 102 `ui `uc ]
-[; ;main.c: 274: commandData[4] = 0xDD;
-"274
-[e = *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 221 `i `uc ]
-[; ;main.c: 275: commandData[5] = 0x50;
-"275
-[e = *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 80 `i `uc ]
-[; ;main.c: 276: commandData[6] = 0x7C;
-"276
-[e = *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 124 `i `uc ]
-[; ;main.c: 277: commandData[7] = 0x20;
-"277
-[e = *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 32 `i `uc ]
-[; ;main.c: 278: commandData[8] = 0x05;
-"278
-[e = *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux -> -> 5 `i `uc ]
-"279
-[v _high `uc ~T0 @X0 1 a ]
-[; ;main.c: 279: UBYTE high = commandData[6];
-[e = _high *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-"280
-[v _low `uc ~T0 @X0 1 a ]
-[; ;main.c: 280: UBYTE low = commandData[7];
-[e = _low *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-"281
-[v _write `uc ~T0 @X0 1 a ]
-[; ;main.c: 281: UBYTE write = 0x41;
-[e = _write -> -> 65 `i `uc ]
-"282
-[v _read `uc ~T0 @X0 1 a ]
-[; ;main.c: 282: UBYTE read = 0x00;
-[e = _read -> -> 0 `i `uc ]
-[; ;main.c: 284: for(int i = 0 ; i < 32 ; i++){
-"284
-{
-[v _i `i ~T0 @X0 1 a ]
-[e = _i -> 0 `i ]
-[e $ < _i -> 32 `i 112  ]
-[e $U 113  ]
-[e :U 112 ]
-{
-[; ;main.c: 285: WriteOneByteToEEPROM(commandData[5],high,low, write);
-"285
-[e ( _WriteOneByteToEEPROM (4 , , , *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux _high _low _write ]
-[; ;main.c: 288: write += 0x01;
-"288
-[e =+ _write -> -> 1 `i `uc ]
-[; ;main.c: 289: low += 0x01;
-"289
-[e =+ _low -> -> 1 `i `uc ]
-[; ;main.c: 290: sendPulseWDT();
-"290
-[e ( _sendPulseWDT ..  ]
-"291
-}
-"284
-[e ++ _i -> 1 `i ]
-[e $ < _i -> 32 `i 112  ]
-[e :U 113 ]
-"291
-}
-[; ;main.c: 291: }
-[; ;main.c: 300: WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,32);
-"300
-[e ( _WriteToEEPROMWithDataSize (4 , , , , _mainControlByte _wHighAddress _wLowAddress &U _commandData -> -> 32 `i `uc ]
-[; ;main.c: 301: WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,32);
-"301
-[e ( _WriteToEEPROMWithDataSize (4 , , , , _subControlByte _wHighAddress _wLowAddress &U _commandData -> -> 32 `i `uc ]
-[; ;main.c: 302: WriteLastCommandIdToEEPROM(commandData[1]);
-"302
-[e ( _WriteLastCommandIdToEEPROM (1 *U + &U _commandData * -> -> -> 1 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
-[; ;main.c: 316: sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
 "316
-[e ( _sendCommand (4 , , , , , , , -> -> 103 `ui `uc -> -> 117 `ui `uc _B0select _wHighAddress _wLowAddress _downlinkTimes -> -> 0 `i `uc -> -> 0 `i `uc ]
-[; ;main.c: 319: for(int i=0; i<32; i++){
-"319
-{
-[v _i `i ~T0 @X0 1 a ]
-[e = _i -> 0 `i ]
-[e $ < _i -> 32 `i 115  ]
-[e $U 116  ]
-[e :U 115 ]
-{
-"321
-}
-"319
 [e ++ _i -> 1 `i ]
-[e $ < _i -> 32 `i 115  ]
-[e :U 116 ]
-"321
+[e $ < _i -> 32 `i 110  ]
+[e :U 111 ]
+"318
 }
-[; ;main.c: 321: }
-[; ;main.c: 326: if(commandData[0]=='R'){
-"326
-[e $ ! == -> *U + &U _commandData * -> -> -> 0 `i `ui `ux -> -> # *U &U _commandData `ui `ux `ui -> 82 `ui 118  ]
+[; ;main.c: 318: }
+[; ;main.c: 323: if(commandData[0]=='R'){
+"323
+[e $ ! == -> *U + &U _commandData * -> -> -> 0 `i `ui `ux -> -> # *U &U _commandData `ui `ux `ui -> 82 `ui 113  ]
 {
-[; ;main.c: 328: if(commandData[2] == 'r'){
+[; ;main.c: 325: if(commandData[2] == 'r'){
+"325
+[e $ ! == -> *U + &U _commandData * -> -> -> 2 `i `ui `ux -> -> # *U &U _commandData `ui `ux `ui -> 114 `ui 114  ]
+{
+[; ;main.c: 327: switch(commandData[3]){
+"327
+[e $U 116  ]
+{
+[; ;main.c: 328: case 'm':
 "328
-[e $ ! == -> *U + &U _commandData * -> -> -> 2 `i `ui `ux -> -> # *U &U _commandData `ui `ux `ui -> 114 `ui 119  ]
-{
-[; ;main.c: 330: switch(commandData[3]){
-"330
-[e $U 121  ]
-{
-[; ;main.c: 331: case 'm':
-"331
-[e :U 122 ]
-[; ;main.c: 332: commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
-"332
+[e :U 117 ]
+[; ;main.c: 329: commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+"329
 [e ( _commandSwitchSatMode (3 , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[; ;main.c: 330: break;
+"330
+[e $U 115  ]
+[; ;main.c: 331: case 'p':
+"331
+[e :U 118 ]
+[; ;main.c: 332: commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+"332
+[e ( _commandSwitchPowerSupply (4 , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
 [; ;main.c: 333: break;
 "333
-[e $U 120  ]
-[; ;main.c: 334: case 'p':
+[e $U 115  ]
+[; ;main.c: 334: case 'n':
 "334
-[e :U 123 ]
-[; ;main.c: 335: commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+[e :U 119 ]
+[; ;main.c: 335: commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
 "335
-[e ( _commandSwitchPowerSupply (4 , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[e ( _commandSwitchFMCW (4 , , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
 [; ;main.c: 336: break;
 "336
-[e $U 120  ]
-[; ;main.c: 337: case 'n':
+[e $U 115  ]
+[; ;main.c: 337: case 'i':
 "337
-[e :U 124 ]
-[; ;main.c: 338: commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+[e :U 120 ]
+[; ;main.c: 338: commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
 "338
-[e ( _commandSwitchFMCW (4 , , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[e ( _commandSwitchI2C (4 , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
 [; ;main.c: 339: break;
 "339
-[e $U 120  ]
-[; ;main.c: 340: case 'i':
+[e $U 115  ]
+[; ;main.c: 340: case 'e':
 "340
-[e :U 125 ]
-[; ;main.c: 341: commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
+[e :U 121 ]
+[; ;main.c: 341: commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
 "341
-[e ( _commandSwitchI2C (4 , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[e ( _commandSwitchEEPROM (4 , , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
 [; ;main.c: 342: break;
 "342
-[e $U 120  ]
-[; ;main.c: 343: case 'e':
+[e $U 115  ]
+[; ;main.c: 343: case 'u':
 "343
-[e :U 126 ]
-[; ;main.c: 344: commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+[e :U 122 ]
+[; ;main.c: 344: commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
 "344
-[e ( _commandSwitchEEPROM (4 , , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[e ( _commandSwitchUART (4 , , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
 [; ;main.c: 345: break;
 "345
-[e $U 120  ]
-[; ;main.c: 346: case 'u':
+[e $U 115  ]
+[; ;main.c: 346: case 'w':
 "346
-[e :U 127 ]
-[; ;main.c: 347: commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+[e :U 123 ]
+[; ;main.c: 347: commandWDT(commandData[4]);
 "347
-[e ( _commandSwitchUART (4 , , , , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 7 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 9 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[e ( _commandWDT (1 *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
 [; ;main.c: 348: break;
 "348
-[e $U 120  ]
-[; ;main.c: 349: case 'w':
+[e $U 115  ]
+[; ;main.c: 349: case 'h':
 "349
-[e :U 128 ]
-[; ;main.c: 350: commandWDT(commandData[4]);
-"350
-[e ( _commandWDT (1 *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[e :U 124 ]
 [; ;main.c: 351: break;
 "351
-[e $U 120  ]
-[; ;main.c: 352: case 'h':
+[e $U 115  ]
+[; ;main.c: 352: case 'r':
 "352
-[e :U 129 ]
+[e :U 125 ]
+[; ;main.c: 353: commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+"353
+[e ( _commandSwitchIntProcess (3 , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
 [; ;main.c: 354: break;
 "354
-[e $U 120  ]
-[; ;main.c: 355: case 'r':
+[e $U 115  ]
+[; ;main.c: 355: default:
 "355
-[e :U 130 ]
-[; ;main.c: 356: commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-"356
-[e ( _commandSwitchIntProcess (3 , , *U + &U _commandData * -> -> -> 4 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 5 `i `ui `ux -> -> # *U &U _commandData `ui `ux *U + &U _commandData * -> -> -> 6 `i `ui `ux -> -> # *U &U _commandData `ui `ux ]
+[e :U 126 ]
 [; ;main.c: 357: break;
 "357
-[e $U 120  ]
-[; ;main.c: 358: default:
+[e $U 115  ]
 "358
-[e :U 131 ]
-[; ;main.c: 360: break;
-"360
-[e $U 120  ]
-"361
 }
-[; ;main.c: 361: }
-[e $U 120  ]
-"330
-[e :U 121 ]
-[e [\ *U + &U _commandData * -> -> -> 3 `i `ui `ux -> -> # *U &U _commandData `ui `ux , $ -> -> 109 `ui `uc 122
- , $ -> -> 112 `ui `uc 123
- , $ -> -> 110 `ui `uc 124
- , $ -> -> 105 `ui `uc 125
- , $ -> -> 101 `ui `uc 126
- , $ -> -> 117 `ui `uc 127
- , $ -> -> 119 `ui `uc 128
- , $ -> -> 104 `ui `uc 129
- , $ -> -> 114 `ui `uc 130
- 131 ]
-"361
-[e :U 120 ]
-"369
+[; ;main.c: 358: }
+[e $U 115  ]
+"327
+[e :U 116 ]
+[e [\ *U + &U _commandData * -> -> -> 3 `i `ui `ux -> -> # *U &U _commandData `ui `ux , $ -> -> 109 `ui `uc 117
+ , $ -> -> 112 `ui `uc 118
+ , $ -> -> 110 `ui `uc 119
+ , $ -> -> 105 `ui `uc 120
+ , $ -> -> 101 `ui `uc 121
+ , $ -> -> 117 `ui `uc 122
+ , $ -> -> 119 `ui `uc 123
+ , $ -> -> 104 `ui `uc 124
+ , $ -> -> 114 `ui `uc 125
+ 126 ]
+"358
+[e :U 115 ]
+"366
 }
-[e :U 119 ]
-"370
+[e :U 114 ]
+"367
 }
-[; ;main.c: 369: }
-[; ;main.c: 370: }else{
-[e $U 132  ]
-[e :U 118 ]
+[; ;main.c: 366: }
+[; ;main.c: 367: }else{
+[e $U 127  ]
+[e :U 113 ]
 {
-[; ;main.c: 372: PORTBbits.RB2 = 1;
-"372
+[; ;main.c: 369: PORTBbits.RB2 = 1;
+"369
 [e = . . _PORTBbits 0 2 -> -> 1 `i `uc ]
-[; ;main.c: 373: _delay((unsigned long)((1000)*(10000000/4000.0)));
-"373
+[; ;main.c: 370: _delay((unsigned long)((1000)*(10000000/4000.0)));
+"370
 [e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 374: PORTBbits.RB2 = 0;
-"374
+[; ;main.c: 371: PORTBbits.RB2 = 0;
+"371
 [e = . . _PORTBbits 0 2 -> -> 0 `i `uc ]
-"375
+"372
 }
-[e :U 132 ]
-"376
+[e :U 127 ]
+"373
 }
-[e :U 104 ]
-"84
-[e $U 105  ]
-[e :U 106 ]
+[e :U 101 ]
+"82
+[e $U 102  ]
+[e :U 103 ]
+[; ;main.c: 372: }
+[; ;main.c: 373: }
 [; ;main.c: 375: }
-[; ;main.c: 376: }
-[; ;main.c: 378: }
-"378
+"375
 [e :UE 100 ]
 }

@@ -89,8 +89,8 @@ void main(void) {
     Init_MPU();
     InitI2CMaster(I2Cbps);
     Init_SERIAL();     
-//    Init_WDT();    
-//    sendPulseWDT();
+    Init_WDT();    
+    sendPulseWDT();
     delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
     putChar('S');
 //  

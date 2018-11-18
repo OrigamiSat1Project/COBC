@@ -27,14 +27,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _InitI2CMaster `(v ~T0 @X0 0 ef1`Cul ]
 "22 UART.h
 [v _Init_SERIAL `(v ~T0 @X0 0 ef ]
+"20 WDT.h
+[v _Init_WDT `(v ~T0 @X0 0 ef ]
+"22
+[v _sendPulseWDT `(v ~T0 @X0 0 ef ]
 "32 time.h
 [v _delay_s `(v ~T0 @X0 0 ef1`us ]
-"43 I2C.h
-[v _ReadEEPROM `(uc ~T0 @X0 0 ef3`uc`uc`uc ]
-"30 time.h
+"30
 [v _delay_ms `(v ~T0 @X0 0 ef1`us ]
-"22 WDT.h
-[v _sendPulseWDT `(v ~T0 @X0 0 ef ]
 "49 FMCW.h
 [v _HKDownlink `(v ~T0 @X0 0 ef ]
 "36
@@ -3308,207 +3308,196 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 91: Init_SERIAL();
 "91
 [e ( _Init_SERIAL ..  ]
+[; ;main.c: 92: Init_WDT();
+"92
+[e ( _Init_WDT ..  ]
+[; ;main.c: 93: sendPulseWDT();
+"93
+[e ( _sendPulseWDT ..  ]
 [; ;main.c: 94: delay_s(2);
 "94
 [e ( _delay_s (1 -> -> 2 `i `us ]
 [; ;main.c: 95: putChar('S');
 "95
 [e ( _putChar (1 -> -> 83 `ui `uc ]
-[; ;main.c: 98: while(1){
-"98
+[; ;main.c: 102: while(1){
+"102
 [e :U 291 ]
 {
-[; ;main.c: 100: putChar(ReadEEPROM(0x50,0x00,0x00));
-"100
-[e ( _putChar (1 ( _ReadEEPROM (3 , , -> -> 80 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc ]
-[; ;main.c: 101: _delay((unsigned long)((5)*(10000000/4000.0)));
-"101
-[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-"102
-}
-[e :U 290 ]
-"98
-[e $U 291  ]
-[e :U 292 ]
-[; ;main.c: 102: }
-[; ;main.c: 108: while(1){
-"108
-[e :U 294 ]
-{
-[; ;main.c: 110: putChar('m');
-"110
+[; ;main.c: 104: putChar('m');
+"104
 [e ( _putChar (1 -> -> 109 `ui `uc ]
-[; ;main.c: 111: delay_ms(3000);
-"111
+[; ;main.c: 105: delay_ms(3000);
+"105
 [e ( _delay_ms (1 -> -> 3000 `i `us ]
-[; ;main.c: 113: sendPulseWDT();
-"113
+[; ;main.c: 107: sendPulseWDT();
+"107
 [e ( _sendPulseWDT ..  ]
-[; ;main.c: 123: HKDownlink();
-"123
+[; ;main.c: 117: HKDownlink();
+"117
 [e ( _HKDownlink ..  ]
-[; ;main.c: 128: if(ReceiveFlag == 0x02){
-"128
-[e $ ! == -> _ReceiveFlag `i -> 2 `i 296  ]
+[; ;main.c: 122: if(ReceiveFlag == 0x02){
+"122
+[e $ ! == -> _ReceiveFlag `i -> 2 `i 293  ]
 {
-"140
+"134
 [v _commandID `uc ~T0 @X0 1 a ]
-"146
+"140
 [v _FMdata `uc ~T0 @X0 -> 8 `i a ]
-[; ;main.c: 140: UBYTE commandID;
-[; ;main.c: 146: UBYTE FMdata[8];
-[; ;main.c: 147: switch(RXDATA[1]){
-"147
-[e $U 298  ]
+[; ;main.c: 134: UBYTE commandID;
+[; ;main.c: 140: UBYTE FMdata[8];
+[; ;main.c: 141: switch(RXDATA[1]){
+"141
+[e $U 295  ]
 {
-[; ;main.c: 150: case 0x75:
-"150
-[e :U 299 ]
-[; ;main.c: 151: putChar('R');
-"151
+[; ;main.c: 144: case 0x75:
+"144
+[e :U 296 ]
+[; ;main.c: 145: putChar('R');
+"145
 [e ( _putChar (1 -> -> 82 `ui `uc ]
-[; ;main.c: 152: putChar(0xa4);
-"152
+[; ;main.c: 146: putChar(0xa4);
+"146
 [e ( _putChar (1 -> -> 164 `i `uc ]
-[; ;main.c: 153: downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-"153
+[; ;main.c: 147: downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+"147
 [e ( _downlinkReceivedCommand (4 , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
+[; ;main.c: 148: break;
+"148
+[e $U 294  ]
+[; ;main.c: 151: case 0x63:
+"151
+[e :U 297 ]
+[; ;main.c: 152: putChar(0xa5);
+"152
+[e ( _putChar (1 -> -> 165 `i `uc ]
+[; ;main.c: 153: commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
+"153
+[e ( _commandSwitchCWDownlink (4 , , , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 7 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 8 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
 [; ;main.c: 154: break;
 "154
-[e $U 297  ]
-[; ;main.c: 157: case 0x63:
-"157
-[e :U 300 ]
-[; ;main.c: 158: putChar(0xa5);
-"158
-[e ( _putChar (1 -> -> 165 `i `uc ]
-[; ;main.c: 159: commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
-"159
-[e ( _commandSwitchCWDownlink (4 , , , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 7 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 8 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-[; ;main.c: 160: break;
-"160
-[e $U 297  ]
-[; ;main.c: 161: case 0x66:
-"161
-[e :U 301 ]
-[; ;main.c: 162: putChar(0xa6);
-"162
+[e $U 294  ]
+[; ;main.c: 155: case 0x66:
+"155
+[e :U 298 ]
+[; ;main.c: 156: putChar(0xa6);
+"156
 [e ( _putChar (1 -> -> 166 `i `uc ]
-[; ;main.c: 163: for(UBYTE i=0; i<7; i++){
-"163
+[; ;main.c: 157: for(UBYTE i=0; i<7; i++){
+"157
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 7 `i 302  ]
-[e $U 303  ]
-[e :U 302 ]
+[e $ < -> _i `i -> 7 `i 299  ]
+[e $U 300  ]
+[e :U 299 ]
 {
-[; ;main.c: 164: FMdata[i] = RXDATA[i+3];
-"164
+[; ;main.c: 158: FMdata[i] = RXDATA[i+3];
+"158
 [e = *U + &U _FMdata * -> _i `ux -> -> # *U &U _FMdata `ui `ux *U + &U _RXDATA * -> -> + -> _i `i -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-"165
+"159
 }
-"163
+"157
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 7 `i 302  ]
-[e :U 303 ]
-"165
+[e $ < -> _i `i -> 7 `i 299  ]
+[e :U 300 ]
+"159
 }
-[; ;main.c: 165: }
-[; ;main.c: 166: commandSwitchFMDownlink(RXDATA[2], FMdata);
-"166
+[; ;main.c: 159: }
+[; ;main.c: 160: commandSwitchFMDownlink(RXDATA[2], FMdata);
+"160
 [e ( _commandSwitchFMDownlink (2 , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux &U _FMdata ]
-[; ;main.c: 167: break;
-"167
-[e $U 297  ]
-[; ;main.c: 168: case 'p':
-"168
-[e :U 305 ]
-[; ;main.c: 169: putChar(0xa7);
-"169
+[; ;main.c: 161: break;
+"161
+[e $U 294  ]
+[; ;main.c: 162: case 'p':
+"162
+[e :U 302 ]
+[; ;main.c: 163: putChar(0xa7);
+"163
 [e ( _putChar (1 -> -> 167 `i `uc ]
-[; ;main.c: 170: commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-"170
+[; ;main.c: 164: commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+"164
 [e ( _commandSwitchPowerSupply (4 , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
+[; ;main.c: 165: break;
+"165
+[e $U 294  ]
+[; ;main.c: 166: case 0x68:
+"166
+[e :U 303 ]
+[; ;main.c: 167: measureDcDcTemperature();
+"167
+[e ( _measureDcDcTemperature ..  ]
+[; ;main.c: 168: break;
+"168
+[e $U 294  ]
+[; ;main.c: 169: case 0x72:
+"169
+[e :U 304 ]
+[; ;main.c: 170: sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
+"170
+[e ( _sendCommand (4 , , , , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 7 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux -> -> 0 `i `uc -> -> 0 `i `uc ]
 [; ;main.c: 171: break;
 "171
-[e $U 297  ]
-[; ;main.c: 172: case 0x68:
-"172
-[e :U 306 ]
-[; ;main.c: 173: measureDcDcTemperature();
-"173
-[e ( _measureDcDcTemperature ..  ]
-[; ;main.c: 174: break;
+[e $U 294  ]
+[; ;main.c: 174: case 0x80:
 "174
-[e $U 297  ]
-[; ;main.c: 175: case 0x72:
+[e :U 305 ]
+[; ;main.c: 175: putChar(0x80);
 "175
-[e :U 307 ]
-[; ;main.c: 176: sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
+[e ( _putChar (1 -> -> 128 `i `uc ]
+[; ;main.c: 176: put_ok();
 "176
-[e ( _sendCommand (4 , , , , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 7 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux -> -> 0 `i `uc -> -> 0 `i `uc ]
+[e ( _put_ok ..  ]
 [; ;main.c: 177: break;
 "177
-[e $U 297  ]
-[; ;main.c: 180: case 0x80:
+[e $U 294  ]
+[; ;main.c: 178: default:
+"178
+[e :U 306 ]
+[; ;main.c: 180: put_error();
 "180
-[e :U 308 ]
-[; ;main.c: 181: putChar(0x80);
-"181
-[e ( _putChar (1 -> -> 128 `i `uc ]
-[; ;main.c: 182: put_ok();
-"182
-[e ( _put_ok ..  ]
-[; ;main.c: 183: break;
-"183
-[e $U 297  ]
-[; ;main.c: 184: default:
-"184
-[e :U 309 ]
-[; ;main.c: 186: put_error();
-"186
 [e ( _put_error ..  ]
-[; ;main.c: 187: break;
-"187
-[e $U 297  ]
-"188
+[; ;main.c: 181: break;
+"181
+[e $U 294  ]
+"182
 }
-[; ;main.c: 188: }
-[e $U 297  ]
-"147
-[e :U 298 ]
-[e [\ *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux , $ -> -> 117 `i `uc 299
- , $ -> -> 99 `i `uc 300
- , $ -> -> 102 `i `uc 301
- , $ -> -> 112 `ui `uc 305
- , $ -> -> 104 `i `uc 306
- , $ -> -> 114 `i `uc 307
- , $ -> -> 128 `i `uc 308
- 309 ]
-"188
-[e :U 297 ]
-[; ;main.c: 189: WriteLastCommandIdToEEPROM(commandID);
-"189
+[; ;main.c: 182: }
+[e $U 294  ]
+"141
+[e :U 295 ]
+[e [\ *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux , $ -> -> 117 `i `uc 296
+ , $ -> -> 99 `i `uc 297
+ , $ -> -> 102 `i `uc 298
+ , $ -> -> 112 `ui `uc 302
+ , $ -> -> 104 `i `uc 303
+ , $ -> -> 114 `i `uc 304
+ , $ -> -> 128 `i `uc 305
+ 306 ]
+"182
+[e :U 294 ]
+[; ;main.c: 183: WriteLastCommandIdToEEPROM(commandID);
+"183
 [e ( _WriteLastCommandIdToEEPROM (1 _commandID ]
-[; ;main.c: 190: ReceiveFlag = 0x00;
-"190
+[; ;main.c: 184: ReceiveFlag = 0x00;
+"184
 [e = _ReceiveFlag -> -> 0 `i `uc ]
-[; ;main.c: 191: putChar(0x39);
-"191
+[; ;main.c: 185: putChar(0x39);
+"185
 [e ( _putChar (1 -> -> 57 `i `uc ]
-"192
-}
-[e :U 296 ]
-"197
+"186
 }
 [e :U 293 ]
-"108
-[e $U 294  ]
-[e :U 295 ]
+"191
+}
+[e :U 290 ]
+"102
+[e $U 291  ]
+[e :U 292 ]
+[; ;main.c: 186: }
+[; ;main.c: 191: }
 [; ;main.c: 192: }
-[; ;main.c: 197: }
-[; ;main.c: 198: }
-"198
+"192
 [e :UE 289 ]
 }

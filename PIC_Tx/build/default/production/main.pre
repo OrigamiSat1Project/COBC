@@ -4443,19 +4443,12 @@ _delay((unsigned long)((1000)*(10000000/4000.0)));
 Init_MPU();
 InitI2CMaster(100000);
 Init_SERIAL();
-
-
+Init_WDT();
+sendPulseWDT();
 delay_s(2);
 putChar('S');
 
-
-while(1){
-
-putChar(ReadEEPROM(0x50,0x00,0x00));
-_delay((unsigned long)((5)*(10000000/4000.0)));
-}
-
-# 108
+# 102
 while(1){
 
 putChar('m');
@@ -4463,7 +4456,7 @@ delay_ms(3000);
 
 sendPulseWDT();
 
-# 123
+# 117
 HKDownlink();
 
 
@@ -4471,10 +4464,10 @@ HKDownlink();
 
 if(ReceiveFlag == 0x02){
 
-# 140
+# 134
 UBYTE commandID;
 
-# 146
+# 140
 UBYTE FMdata[8];
 switch(RXDATA[1]){
 

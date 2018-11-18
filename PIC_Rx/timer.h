@@ -17,10 +17,10 @@
 
 #define NTRX_PLL_INTERVAL        1
 //#define WDT_INTERVAL             5
-#define EPS_RSET_INTERVAL_LONG   10
+#define EPS_RSET_INTERVAL_LONG   5
 #define EPS_RSET_INTERVAL_SHORT  3
 #define INITIAL_OPE_INTERVAL     7
-#define COMMAND_COUNTER_INTERVAL 10       //for debug 1min
+#define COMMAND_COUNTER_INTERVAL 50       //for debug 1min
 #define EPS_MEASURE_INTERVAL     3          //for debug 1min
 //#define WDT_PULSE_INTERVAL       8
 
