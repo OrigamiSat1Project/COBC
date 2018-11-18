@@ -20,23 +20,36 @@ void InitSerial(void){
     RCIF   = 0;                     // RX frag Reset
 	TXIE   = 0;						// Disble tx interrupts
 	RCIE   = 0;						// Disble rx interrupts
-//    RCIE   = 1;						// Enable rx interrupts
+    RCIE   = 1;						// Enable rx interrupts
 	TX9    = 0;						// 8-bit transmission
 	RX9    = 0;						// 8-bit reception
 	TXEN   = 0;						// Reset transmitter
 	TXEN   = 1;						// Enable the transmitter
 }
 
-//UBYTE getChar(void){        //TODO: add time out feature
-//	if(FERR || OERR) // If over run error, then reset the receiver //FERR = Framin Error bit// OERR = Overrun Error bit
-//	{
-//        CREN = 0;                   //Continuous Receive Enable bit
-//        NOP();
-//        CREN = 1;
-//    }
-//	while(!RCIF);                   //USART Receive Interrupt Flag bit
-//	return RCREG;                   //USART Receive Data Register
-//}
+UBYTE getChar(void){        //TODO: add time out feature
+	if(FERR || OERR) // If over run error, then reset the receiver //FERR = Framin Error bit// OERR = Overrun Error bit
+	{
+        CREN = 0;                   //Continuous Receive Enable bit
+        NOP();
+        CREN = 1;
+    }
+	UINT break_counter = 0;
+    
+//    while(RCIF != 1);
+    
+	while(!RCIF){
+        break_counter ++;
+        if(break_counter >= 100){
+//            putChar(0xbb);
+            NOP();
+            break_counter = 0;
+            break;
+        }
+    }
+    RCIF = 0;
+	return RCREG;                   //USART Receive Data Register
+}
 
 void putChar(UBYTE byte){
     while(!TXIF);                   //USART Transmit Interrupt Flag bit

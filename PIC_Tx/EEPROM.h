@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   EEPROM.h
  * Author: Kosuke
  *
@@ -120,8 +120,8 @@
 #define EpsSwitchStatus_addressLow   0x93
 #define TxTemperature_addressHigh 0x81
 #define TxTemperature_addressLow 0x95
-#define RxTemperature_addressHigh 0x81 
-#define RxTemperature_addressLow 0x96 
+#define RxTemperature_addressHigh 0x81
+#define RxTemperature_addressLow 0x96
 
 #define FreeData1_slaveaddress_addressHigh 0x84
 #define FreeData1_slaveaddress_addressLow 0x00
@@ -148,4 +148,3 @@
 
 
 #endif	/* EEPROM_H */
-
