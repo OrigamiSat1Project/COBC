@@ -1848,12 +1848,12 @@ _delay((unsigned long)((500)*(10000000/4000.0)));
 
 putChar('S');
 
-# 74
+# 76
 UBYTE error_status = 0x00;
 
 while(1){
 
-# 184
+# 186
 sendPulseWDT();
 delay_ms(2000);
 
@@ -1879,11 +1879,11 @@ commandData[i] = 0;
 receiveDataPacket(commandData);
 delay_ms(5000);
 
-# 230
+# 232
 B0select = 0x00;
-wHighAddress = 0x00;
-wLowAddress = 0x20;
-downlinkTimes = 0x05;
+wHighAddress = 0x7C;
+wLowAddress = 0x00;
+downlinkTimes = 0x0A;
 mainControlByte = 0x50 | B0select;
 subControlByte = 0x52 | B0select;
 
@@ -1893,7 +1893,7 @@ UWORD crcResult, crcValue;
 crcResult = crc16(0,commandData,29);
 crcValue = checkCRC(commandData,29);
 
-# 253
+# 255
 if(crcResult != crcValue){
 commandData[31] = commandData[31] & 0b01111111;
 
@@ -1909,35 +1909,29 @@ commandData[2] = 't';
 commandData[3] = 'f';
 commandData[4] = 0xDD;
 commandData[5] = 0x50;
-commandData[6] = 0x00;
-commandData[7] = 0x60;
+commandData[6] = 0x7C;
+commandData[7] = 0x20;
 commandData[8] = 0x05;
 UBYTE high = commandData[6];
 UBYTE low = commandData[7];
-UBYTE write = 0x30;
+UBYTE write = 0x41;
 UBYTE read = 0x00;
-UBYTE reads[32];
+
 for(int i = 0 ; i < 32 ; i++){
 WriteOneByteToEEPROM(commandData[5],high,low, write);
-read = ReadEEPROM(commandData[5],high,low);
-putChar(read);
+
+
 write += 0x01;
 low += 0x01;
 sendPulseWDT();
 }
-ReadDataFromEEPROMWithDataSize(commandData[5],commandData[6],commandData[7],reads,32);
-for(int i = 0 ; i < 32 ; i++){
-putChar(reads[i]);
-}
 
-
-
-
+# 294
 WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,32);
 WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,32);
 WriteLastCommandIdToEEPROM(commandData[1]);
 
-# 308
+# 310
 sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
 
 
@@ -1985,7 +1979,7 @@ default:
 break;
 }
 
-# 361
+# 363
 }
 }else{
 

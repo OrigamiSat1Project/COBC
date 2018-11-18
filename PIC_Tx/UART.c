@@ -20,7 +20,7 @@ void Init_SERIAL(void){
 	SREN   = 0;						// No effect
     INTCON  = 0b11000000;
     PIR1    = 0b00100000;                     // RX frag Reset
-    PIE1    = 0b00100000;
+    PIE1    = 0b00101000;
     PIE2    = 0b00000000;
     
 //	PIE1bits.TXIE   = 0;						// Disble tx interrupts

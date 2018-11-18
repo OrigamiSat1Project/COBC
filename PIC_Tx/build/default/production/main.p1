@@ -1,4 +1,6 @@
 Version 3.2 HI-TECH Software Intermediate Code
+"22 I2C.h
+[v _interruptI2C `(v ~T0 @X0 0 ef ]
 "3784 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f886.h
 [v _RCIF `Vb ~T0 @X0 0 e@101 ]
 "24 UART.h
@@ -49,7 +51,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _put_ok `(v ~T0 @X0 0 ef ]
 "30
 [v _put_error `(v ~T0 @X0 0 ef ]
-"37 I2C.h
+"36 I2C.h
 [v _WriteLastCommandIdToEEPROM `(v ~T0 @X0 0 ef1`uc ]
 [; ;__size_t.h: 4: typedef unsigned size_t;
 [; ;stdarg.h: 7: typedef void * va_list[1];
@@ -3074,22 +3076,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;encode_AX25.h: 19: void SendPacketWithDataSize(UBYTE *,UINT);
 [; ;encode_AX25.h: 20: void SendPacket(UBYTE *,UINT);
 [; ;I2C.h: 21: void InitI2CMaster(const UDWORD c);
-[; ;I2C.h: 22: void I2CMasterWait(void);
-[; ;I2C.h: 23: void I2CMasterStart(void);
-[; ;I2C.h: 24: void I2CMasterRepeatedStart(void);
-[; ;I2C.h: 25: void I2CMasterStop(void);
-[; ;I2C.h: 31: void I2CMasterWrite(UBYTE);
-[; ;I2C.h: 32: UBYTE I2CMasterRead(UBYTE);
-[; ;I2C.h: 33: void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
-[; ;I2C.h: 34: void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-[; ;I2C.h: 35: void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;I2C.h: 36: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
-[; ;I2C.h: 37: void WriteLastCommandIdToEEPROM(UBYTE);
-[; ;I2C.h: 38: void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;I2C.h: 43: void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
-[; ;I2C.h: 44: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-[; ;I2C.h: 45: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
-[; ;I2C.h: 46: void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
+[; ;I2C.h: 22: void interruptI2C(void);
+[; ;I2C.h: 23: void I2CMasterWait(char);
+[; ;I2C.h: 24: int I2CMasterStart(unsigned char, unsigned char);
+[; ;I2C.h: 25: int I2CMasterRepeatedStart(unsigned char, unsigned char);
+[; ;I2C.h: 26: int I2CMasterStop(void);
+[; ;I2C.h: 32: int WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+[; ;I2C.h: 33: int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+[; ;I2C.h: 34: int WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+[; ;I2C.h: 35: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+[; ;I2C.h: 36: void WriteLastCommandIdToEEPROM(UBYTE);
+[; ;I2C.h: 37: void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
+[; ;I2C.h: 42: int ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
+[; ;I2C.h: 43: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
+[; ;I2C.h: 44: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
+[; ;I2C.h: 45: void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 [; ;FMCW.h: 36: void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
 [; ;FMCW.h: 39: void _NOP(void);
 [; ;FMCW.h: 42: void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
@@ -3169,6 +3170,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 46: void interrupt InterReceiver(void){
 [e :U _InterReceiver ]
 [f ]
+[; ;main.c: 47: interruptI2C();
+"47
+[e ( _interruptI2C ..  ]
 [; ;main.c: 49: if (RCIF == 1) {
 "49
 [e $ ! == -> _RCIF `i -> 1 `i 277  ]

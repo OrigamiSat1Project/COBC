@@ -1407,9 +1407,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 123: I2CMasterStop();
 "123
 [e ( _I2CMasterStop ..  ]
-[; ;I2C.c: 124: _delay((unsigned long)((200)*(10000000/4000.0)));
+[; ;I2C.c: 124: _delay((unsigned long)((10)*(10000000/4000.0)));
 "124
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 [; ;I2C.c: 125: }
 "125
 [e :UE 115 ]

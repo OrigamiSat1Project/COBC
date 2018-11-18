@@ -231,10 +231,11 @@ void getDataAnddownlinkFMSignal(UBYTE downlinlTimes, UBYTE data_size, UBYTE *FM_
 }
 
 void FMdownlink32byte(UBYTE EEPROMAddress, UBYTE high_address, UBYTE low_address, UBYTE downlinkTimes){
-//    ReadDataFromEEPROM(EEPROMAddress, high_address, low_address, downlink_data, MAX_DOWNLINK_DATA_SIZE);
-    for(UBYTE i = 0 ; i < 32 ; i ++ ){
-        downlink_data[i] = 0x30  + i;
-    }
+    ReadDataFromEEPROM(EEPROMAddress, high_address, low_address, downlink_data, MAX_DOWNLINK_DATA_SIZE);
+//    for(UBYTE i = 0 ; i < 32 ; i ++ ){
+//        downlink_data[i] = 0x30  + i;
+//    }
+//    ReadDataFromEEPROM(EEPROMAddress,high_address, low_address, downlink_data, EEPROM_COMMAND_DATA_SIZE);
     CWKEY = 0;
     for(UBYTE sendCounter = 0 ; sendCounter < downlinkTimes ; sendCounter ++){
         FMPTT = high;
@@ -715,9 +716,9 @@ void HKDownlink(void){
     FMPTT=0;
     HKDownlinkFR0();
     __delay_s(1);
-    HKDownlinkFR1();
+//    HKDownlinkFR1();
     __delay_s(1);
-    HKDownlinkFR2();   
+//    HKDownlinkFR2();   
     __delay_s(1);
 }
 

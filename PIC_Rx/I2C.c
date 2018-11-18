@@ -121,7 +121,7 @@ void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow
     I2CMasterWrite(addressLow);     //Adress Low Byte
     I2CMasterWrite(data);      //Data
     I2CMasterStop();                //Stop condition
-    __delay_ms(200);
+    __delay_ms(10);
 }
 
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){

@@ -44,7 +44,7 @@ UBYTE RXDATA[commandSize];
 
 
 void interrupt InterReceiver(void){
-//    putChar(0xee);
+    interruptI2C();
     
     if (RCIF == 1) {
         putChar('U');

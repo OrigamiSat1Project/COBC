@@ -1623,7 +1623,7 @@ I2CMasterWrite(addressHigh);
 I2CMasterWrite(addressLow);
 I2CMasterWrite(data);
 I2CMasterStop();
-_delay((unsigned long)((200)*(10000000/4000.0)));
+_delay((unsigned long)((10)*(10000000/4000.0)));
 }
 
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){

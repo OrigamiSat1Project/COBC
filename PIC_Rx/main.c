@@ -69,6 +69,8 @@ void main(void) {
     // for debug initial ope
     // testInitialOpe(); 
     /*----------------------------------------------------------------------*/
+   
+   
        
     
     UBYTE error_status = 0x00;
@@ -228,9 +230,9 @@ void main(void) {
 //        wLowAddress = commandData[21];
 //        downlinkTimes = commandData[22];
         B0select = 0x00;
-        wHighAddress = 0x00;
-        wLowAddress = 0x20;
-        downlinkTimes = 0x05;
+        wHighAddress = 0x7C;
+        wLowAddress = 0x00;
+        downlinkTimes = 0x0A;
         mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
         subControlByte = SUB_EEPROM_ADDRESS | B0select;
         
@@ -265,26 +267,26 @@ void main(void) {
         commandData[3] = 'f';
         commandData[4] = 0xDD;
         commandData[5] = 0x50;
-        commandData[6] = 0x00;
-        commandData[7] = 0x60;
+        commandData[6] = 0x7C;
+        commandData[7] = 0x20;
         commandData[8] = 0x05;
         UBYTE high = commandData[6];
         UBYTE low = commandData[7];
-        UBYTE write = 0x30;
+        UBYTE write = 0x41;
         UBYTE read = 0x00;
-        UBYTE reads[32];
+//        UBYTE reads[32];
         for(int i = 0 ; i < 32 ; i++){
             WriteOneByteToEEPROM(commandData[5],high,low, write);
-            read = ReadEEPROM(commandData[5],high,low);
-            putChar(read);
+//            read = ReadEEPROM(commandData[5],high,low);
+//            putChar(read);
             write += 0x01;
             low += 0x01;
             sendPulseWDT();
         }
-        ReadDataFromEEPROMWithDataSize(commandData[5],commandData[6],commandData[7],reads,32);
-        for(int i = 0 ; i < 32 ; i++){
-            putChar(reads[i]);
-        }
+//        ReadDataFromEEPROMWithDataSize(commandData[5],commandData[6],commandData[7],reads,32);
+//        for(int i = 0 ; i < 32 ; i++){
+//            putChar(reads[i]);
+//        }
         
         
         /*---Write uplink command in EEPROM---*/

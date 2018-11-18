@@ -4294,23 +4294,22 @@ void SendPacket(UBYTE *,UINT);
 
 # 21 "I2C.h"
 void InitI2CMaster(const UDWORD c);
-void I2CMasterWait(void);
-void I2CMasterStart(void);
-void I2CMasterRepeatedStart(void);
-void I2CMasterStop(void);
+void interruptI2C(void);
+void I2CMasterWait(char);
+int I2CMasterStart(unsigned char, unsigned char);
+int I2CMasterRepeatedStart(unsigned char, unsigned char);
+int I2CMasterStop(void);
 
-# 31
-void I2CMasterWrite(UBYTE);
-UBYTE I2CMasterRead(UBYTE);
-void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
-void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+# 32
+int WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+int WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
 void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 
-# 43
-void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
+# 42
+int ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
 void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
 void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
@@ -4405,7 +4404,7 @@ UBYTE RXDATA[10];
 
 
 void interrupt InterReceiver(void){
-
+interruptI2C();
 
 if (RCIF == 1) {
 putChar('U');
