@@ -181,14 +181,14 @@ void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE m
   
     //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
     if((main_melting_status_cal_result < MELTING_FINISH)&&(sub_melting_status_cal_result < MELTING_FINISH)){ 
-        putChar(0xb1);
+//        putChar(0xb1);
         for(UBYTE i=0; i<meltingTimes; i++){    
-            putChar(0xb2);
+//            putChar(0xb2);
             cutWire(onOff, timeHigh, timeLow);
             delay_s(WIRE_CUT_INTERVAL);
         }
     } else {
-        putChar(0xb3);
+//        putChar(0xb3);
         //already melting finishs
     }
 }
@@ -261,11 +261,11 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             onOff5R8GSubPower(onOff, timeHigh, timeLow);
             break;
         case 'a': //WIRE_CUTTER
-            putChar(0xb1);
+//            putChar(0xb1);
 ////            cutWire(onOff, timeHigh, timeLow);
             break;
         case 't': //WIRE_CUTTER with times
-            putChar(0xb2);
+//            putChar(0xb2);
 ////            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
             break;
         case 'w': //WDT

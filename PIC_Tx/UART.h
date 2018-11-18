@@ -16,8 +16,7 @@
 #define UNCORRECT_RECEIVE 0x01
 #define CORRECT_RECEIVE 0x02
 
-
-UBYTE UPLINK_COMMAND_SIZE = 32;
+UBYTE ReceiveFlag = NOT_RECEIVE;
 
 void Init_SERIAL(void);
 UBYTE getChar(void);

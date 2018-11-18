@@ -20,7 +20,7 @@ void Init_SERIAL(void){
 	SREN   = 0;						// No effect
     INTCON  = 0b11000000;
     PIR1    = 0b00100000;                     // RX frag Reset
-    PIE1    = 0b00100000;
+    PIE1    = 0b00101000;
     PIE2    = 0b00000000;
     
 //	PIE1bits.TXIE   = 0;						// Disble tx interrupts
@@ -158,14 +158,14 @@ void UARTbufferClear(void){
 void readEEPROMandUARTwrite(UBYTE slaveAddress, UBYTE highAddress, UBYTE lowAddress, UBYTE *ReadData, UBYTE dataLength){
     UWORD CRC;
     ReadDataFromEEPROM(slaveAddress, highAddress, lowAddress, ReadData, dataLength);
-    for(UBYTE i=0;i<dataLength;i++){
-        putChar(ReadData[i]);
-        NOP();
-    }
+//    for(UBYTE i=0;i<dataLength;i++){
+//        putChar(ReadData[i]);
+//        NOP();
+//    }
     CRC = crc16(0, ReadData, dataLength);
-    putChar(CRC >> 8);
+//    putChar(CRC >> 8);
     NOP();
-    putChar(CRC & 0x00FF);
+//    putChar(CRC & 0x00FF);
 }
 
 void UARTwrite5byte(UBYTE data1,UBYTE data2,UBYTE data3,UBYTE data4,UBYTE data5){
@@ -179,9 +179,9 @@ void UARTwrite5byte(UBYTE data1,UBYTE data2,UBYTE data3,UBYTE data4,UBYTE data5)
     CRC = crc16(0, data, 5);
     data[5] = CRC >> 8;
     data[6] = CRC & 0x00FF;
-    for(UBYTE i=0; i<7; i++){
-        putChar(data[i]);
-    }
+//    for(UBYTE i=0; i<7; i++){
+//        putChar(data[i]);
+//    }
 }
 
 // UBYTE get3byte(void){                //TODO: add time out feature

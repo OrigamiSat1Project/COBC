@@ -45,10 +45,6 @@ void switchError(UBYTE action_select){
     //for debug
     put_error();
     //TODO:need debug
-    //only FM downlink? need CW?
-    UBYTE downlinlTimes = 36;
-    UBYTE DataSize = 2; 
-    downlinkFMSignal(B0select_for_Error, HighAddress_for_commandID, LowAddress_for_Error, downlinlTimes, DataSize);
 }
 
 void putErrorNoDownlink(UBYTE action_select){
@@ -69,7 +65,7 @@ void putErrorNoDownlink(UBYTE action_select){
 //TODO:need debug
 //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
 UBYTE bitCalResult(UBYTE bit_input){
-    UBYTE bit_cal_result = 0; 
+    UBYTE bit_cal_result = 0;
     for(UBYTE cal_counter=0; cal_counter<8; cal_counter++){
         if((bit_input & 1)==1){
             bit_cal_result += 1;

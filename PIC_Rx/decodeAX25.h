@@ -17,7 +17,6 @@
 #define FLAG_AX25 0x7e
 #define PACKET_SIZE 52
 #define DATA_SIZE 32
-//#define DATA_SIZE 30
 
 //UBYTE commandData[DATA_SIZE];             //only information byte of uplink command
 

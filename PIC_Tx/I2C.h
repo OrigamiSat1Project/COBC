@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   I2C.h
  * Author: Kosuke
  *
@@ -17,21 +17,21 @@
 
 /*******************************************************************************
 *setting
-******************************************************************************/ 
+******************************************************************************/
 void InitI2CMaster(const UDWORD c);
-void I2CMasterWait(void);
-void I2CMasterStart(void);
-void I2CMasterRepeatedStart(void);
-void I2CMasterStop(void);
+void interruptI2C(void);
+void I2CMasterWait(char);
+int I2CMasterStart(unsigned char, unsigned char);
+int I2CMasterRepeatedStart(unsigned char, unsigned char);
+int I2CMasterStop(void);
 
 
 /*******************************************************************************
-*Method for EEPROM Write 
+*Method for EEPROM Write
 ******************************************************************************/
-void I2CMasterWrite(UBYTE);
-UBYTE I2CMasterRead(UBYTE);
-void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+int WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+int WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
 void WriteLastCommandStatusToEEPROM(UBYTE);
@@ -40,11 +40,10 @@ void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 /*******************************************************************************
 *Method for EEPROM Read
 ******************************************************************************/
-void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+int ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
 void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 
 
 #endif	/* I2C_H */
-
