@@ -40,83 +40,36 @@ void interrupt InterReceiver(void);
 
 #define commandSize 10
 UBYTE RXDATA[commandSize];
-UBYTE STOCKDATA[commandSize];
-UBYTE ReceiveFlag = NOT_RECEIVE;
+UBYTE STOCKDATA[3][commandSize];
 
+UBYTE ReceiveFlag = NOT_RECEIVE;
 
 void interrupt InterReceiver(void){
     if(RCIF==1){
+        UBYTE tmp;
         putChar('U');
-        STOCKDATA[0] = 0x21;
-        STOCKDATA[0] = getChar();
-        if(STOCKDATA[0] != 'g' && STOCKDATA[0] != 't'){
-//            ReceiveFlag = UNCORRECT_RECEIVE;
-        } else {
-            RXDATA[0] = STOCKDATA[0];
-            for(UBYTE i=1 ;i< commandSize; i++) RXDATA[i] = getChar();
-            put_lf();
-            for(UBYTE i=0 ;i< commandSize; i++) putChar(RXDATA[i]);
-            put_lf();
-            ReceiveFlag = CORRECT_RECEIVE;
+        tmp = getChar();
+        if(tmp != 'g' && tmp != 't') return;
+        
+        for(UINT j=0; j<3; j++){
+            if(STOCKDATA[j][0] != 'g' && STOCKDATA[j][0] != 't'){
+                STOCKDATA[j][0] = tmp;
+                for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[j][i] = getChar();
+                put_lf();
+                for(UBYTE i=0 ;i< commandSize; i++) putChar(STOCKDATA[j][i]);
+                put_lf();
+                return;
+            }
         }
-        RCIF = 0;
+        
+        STOCKDATA[0][0] = tmp;
+        for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[0][i] = getChar();
+        put_lf();
+        for(UBYTE i=0 ;i< commandSize; i++) putChar(RXDATA[i]);
+        put_lf();
+        return;
     }
-    putChar('V');
-    putChar('V');
-    putChar('V');
-    putChar('V');
-    putChar('V');
-    putChar('V');
-    put_lf();
 }
-//    if (RCIF == 1) {
-////        put_lf();
-//        putChar('U');
-////        putChar('U');
-////        putChar('U');
-////        putChar('U');
-////        putChar('U');
-////        putChar('U');
-////        put_lf();
-//        STOCKDATA[0] = 0x21;
-//        RXDATA[0] = 0x21;
-//        for(UINT i=0;i<commandSize;i++){
-//            STOCKDATA[i] = getChar();
-//        }
-////            /*for debug
-//        for(UINT i=0;i<commandSize;i++){
-//            putChar(STOCKDATA[i]);
-//        }
-//
-//        putChar(0xcc);
-//        putChar((UBYTE)(crc16(0,STOCKDATA,8) >> 8));
-//        putChar((UBYTE)(crc16(0,STOCKDATA,8) & 0xff));
-////             end*/
-//        if(STOCKDATA[0] == 'g'){
-//            ReceiveFlag = CORRECT_RECEIVE;
-//            for(UBYTE i=0; i<commandSize; i++){
-//                RXDATA[i] = STOCKDATA[i];
-//            }
-//            RCIF = 0;
-//            putChar(0xb9);
-//            return;
-//        }
-//        if(crc16(0,STOCKDATA,8) == CRC_check(STOCKDATA, 8)){
-//            ReceiveFlag = CORRECT_RECEIVE;
-//        }
-//        if(STOCKDATA[0] == 't'){
-//            ReceiveFlag = CORRECT_RECEIVE;
-//            for(UBYTE i=0; i<commandSize; i++){
-//                RXDATA[i] = STOCKDATA[i];
-//            }            
-//        }else{
-//            ReceiveFlag = UNCORRECT_RECEIVE;
-//        }
-//        RCIF = 0;
-//        putChar(0xff);
-//        put_lf();
-//    }
-//}
 
 void main(void) {
     
@@ -134,8 +87,6 @@ void main(void) {
         put_lf();
     
     HK_test_setting();
-
-
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
 //    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
 //    
@@ -146,7 +97,6 @@ void main(void) {
         }
         put_lf();
         sendPulseWDT();      
-//        delay_ms(1000);
       
 //        continue;
         
@@ -158,7 +108,7 @@ void main(void) {
             if(read5VBusAndSwitchNtrxPower() != 0){
                 onOffNTRX(0x01,0,0);//subPower ON
             }
-        }  
+        }
         
         CheckNTRXsubpower();
         
@@ -174,12 +124,27 @@ void main(void) {
             putChar(0xE3);
         }
         put_lf();
+        
+        putChar(0xaa);
 
         //======================================================================
         //UART receive process
-
+        
+        for(UINT j=0; j<3; j++){
+            if(STOCKDATA[j][0] == 'g' || STOCKDATA[j][0] == 't'){
+                for(UINT i=0; i<commandSize; i++) RXDATA[i] = STOCKDATA[j][i];
+                for(UINT i=0; i<commandSize; i++) STOCKDATA[j][i] = 0;;
+                if(j == 0) putChar(0xe0);
+                if(j == 1) putChar(0xe1);
+                if(j == 2) putChar(0xe2);
+                ReceiveFlag = CORRECT_RECEIVE;
+                break;
+            }
+        }
+        
         if(ReceiveFlag == CORRECT_RECEIVE){
             put_lf();
+            putChar(0xbb);
             for(UBYTE i=0; i<10 ; i++){
                 putChar(RXDATA[i]);
             }
@@ -192,9 +157,9 @@ void main(void) {
             //Calculate Address for CRCcheck byte
             ID_add_high   = RXDATA[3];
             ID_add_low    = RXDATA[4] + OffSet_for_CommandID;
-            putChar(0xc4);
-            putChar(ID_add_high);
-            putChar(ID_add_low);
+//            putChar(0xc4);
+//            putChar(ID_add_high);
+//            putChar(ID_add_low);
                     
             //Read Command ID byte from EEPROM
             if(RXDATA[0] == 'g'){
@@ -218,15 +183,6 @@ void main(void) {
                     continue;
                 }
             }
-            putChar(0xc7);
-            putChar(0xc7);
-            putChar(0xc7);
-            putChar(0xc7);
-            putChar(0xc7);
-            putChar(0xc7);
-            putChar(0xc7);
-            putChar(0xc7);
-            putChar(RXDATA[1]);
             
             /*---Define if command target is 't' or 'g' and read in task target ---*/
             /*------------------------------------------------------------------*/
@@ -260,7 +216,10 @@ void main(void) {
                     break;
                     //for debug putChar only
                 case 0x80:
+                    put_lf();
                     putChar(0x80);
+                    putChar(0x81);
+                    putChar(0x82);
                     put_ok();
                     break;
                 default:
