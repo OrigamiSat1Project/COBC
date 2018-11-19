@@ -1673,6 +1673,8 @@ void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
 void offNtrxPowerSupplyCIB(void);
 
+UBYTE ReadNtrxSubPowerStatus(void);
+
 # 29 "time.h"
 void delay_s(UWORD);
 void delay_ms(UWORD);
@@ -1698,31 +1700,30 @@ void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
 void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
-# 25 "decodeAX25.h"
+# 24 "decodeAX25.h"
 UINT getBit(void);
 void receiveDataPacket(UBYTE*);
 
 # 20 "I2C.h"
 void InitI2CMaster(const UDWORD c);
-void I2CMasterWait(void);
-void I2CMasterStart(void);
-void I2CMasterRepeatedStart(void);
-void I2CMasterStop(void);
-void I2CMasterWrite(UBYTE);
-UBYTE I2CMasterRead(UBYTE a);
+void interruptI2C(void);
+void I2CMasterWait(char);
+int I2CMasterStart(unsigned char, unsigned char);
+int I2CMasterRepeatedStart(unsigned char, unsigned char);
+int I2CMasterStop(void);
 
 
-void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
-void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
-void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+int WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE);
+int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE last_command_ID);
 
 
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE);
+UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE,UBYTE);
 void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
 
 void I2CBufferClear(void);
@@ -1731,7 +1732,7 @@ void ChangeI2CBaudRate(UBYTE);
 void TestEEPROM(UBYTE);
 
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE*);
 
 # 19 "initial_operation.h"
 void testInitialOpe(void);
@@ -1780,6 +1781,9 @@ void switchError(UBYTE);
 # 28 "timer.h"
 void initTimer(void);
 void interrupt TimerCheck(void);
+
+int CollisionCheck;
+int AckCheck;
 
 void set_NTRX_pll_setting_counter(UINT, UINT, UINT, UINT);
 UINT get_NTRX_pll_setting_counter_sec(void);
@@ -1852,12 +1856,8 @@ setPLL();
 
 _delay((unsigned long)((500)*(10000000/4000.0)));
 
-
-
-for(UBYTE i=0; i<12; i++){
-
-}
-
+# 68
+sendPulseWDT();
 
 
 
@@ -1871,31 +1871,32 @@ UBYTE error_status = 0x00;
 
 while(1){
 
-# 88
+# 87
 if(get_eps_reset_counter_min() >= 2){
+put_lf();
 
-for(UBYTE i=0; i<3; i++){
+putChar(0xF1);
 
-}
 
 
 setPLL();
 
 reset_timer();
 set_eps_reset_counter(0,0);
-for(UBYTE i=0; i<3; i++){
 
-}
+putChar(0xF2);
+
+put_lf();
 }
 
 
 
 if(get_NTRX_pll_setting_counter_min() >= 1){
 
+put_lf();
 
-for(UBYTE i=0; i<3; i++){
+putChar(0xF3);
 
-}
 
 UBYTE melting_status[2] = {0x00};
 melting_status[0] = checkMeltingStatus(0x50);
@@ -1905,60 +1906,178 @@ if((melting_status[0] < 4)&&(melting_status[1] < 4)) {
 }
 setPLL();
 set_NTRX_pll_setting_counter(0,0,0,0);
-for(UBYTE i=0; i<3; i++){
 
+putChar(0xF4);
+
+put_lf();
 }
-}
 
 
+if(get_init_ope_counter_min() >= 20){
 
-if(get_init_ope_counter_sec() >= 20){
+put_lf();
 
-for(UBYTE i=0; i<3; i++){
+putChar(0xF5);
 
-}
 
 error_status = InitialOperation();
 WriteOneByteToMainAndSubB0EEPROM(0x81,0x0c,error_status);
 errorCheckInitialOpe();
 set_init_ope_counter(0,0);
-for(UBYTE i=0; i<3; i++){
 
-}
+putChar(0xF6);
+
+put_lf();
 }
 
 
 
 if(get_bat_meas_counter_sec() >= 10){
+put_lf();
 
-for(UBYTE i=0; i<3; i++){
+putChar(0xF7);
 
-}
 
 
 UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-
-# 165
+put_lf();
+putChar(0xAB);
+putChar((UBYTE)(SatMode_error_status>>8));
+putChar((UBYTE)SatMode_error_status);
+put_lf();
 if (SatMode_error_status != 0){
 SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
 
-# 177
+# 169
 }
 WriteOneByteToMainAndSubB0EEPROM(0x81, 0x14, (UBYTE)(SatMode_error_status>>8));
 WriteOneByteToMainAndSubB0EEPROM(0x81, 0x15, (UBYTE)SatMode_error_status);
 set_bat_meas_counter(0,0);
 
-for(UBYTE i=0; i<3; i++){
 
+putChar(0xF8);
+
+put_lf();
 }
 
-}
 
-# 196
 sendPulseWDT();
 delay_s(1);
 
-# 343
+
+
+
+UBYTE commandData[32];
+UBYTE commandID;
+
+
+UBYTE B0select;
+UBYTE wHighAddress;
+UBYTE wLowAddress;
+UBYTE mainControlByte;
+UBYTE subControlByte;
+UBYTE downlinkTimes;
+
+
+for(UBYTE i=0; i<32; i++){
+commandData[i] = 0;
+}
+
+# 207
+if(commandData[0]==0) {
+continue;
+}
+
+
+commandID = commandData[1];
+if (commandID == lastCommandID) {
+continue;
+}
+lastCommandID = commandID;
+
+B0select = commandData[19];
+wHighAddress = commandData[20];
+wLowAddress = commandData[21];
+downlinkTimes = commandData[22];
+mainControlByte = 0x50 | B0select;
+subControlByte = 0x52 | B0select;
+
+
+
+UWORD crcResult, crcValue;
+crcResult = crc16(0,commandData,29);
+crcValue = checkCRC(commandData,29);
+
+# 241
+if(crcResult != crcValue){
+commandData[31] = commandData[31] & 0b01111111;
+
+}else{
+commandData[31] = commandData[31] | 0b10000000;
+
+}
+
+
+
+WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,32);
+WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,32);
+WriteLastCommandIdToEEPROM(commandData[1]);
+
+# 267
+sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
+putChar('G');
+
+for(int i=0; i<32; i++){
+
+}
+putChar('H');
+
+
+if(commandData[0]=='R'){
+
+if(commandData[2] == 'r'){
+
+switch(commandData[3]){
+case 'm':
+commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+break;
+case 'p':
+commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+break;
+case 'n':
+commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+break;
+
+
+
+case 'e':
+commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
+break;
+case 'u':
+commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+break;
+case 'w':
+commandWDT(commandData[4]);
+break;
+case 'h':
+
+break;
+case 'r':
+commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+break;
+default:
+
+break;
+}
+
+# 319
+}
+}else{
+
+PORTBbits.RB2 = 1;
+_delay((unsigned long)((1000)*(10000000/4000.0)));
+PORTBbits.RB2 = 0;
+}
 }
 
 }

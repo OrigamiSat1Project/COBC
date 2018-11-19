@@ -2029,8 +2029,8 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 20 "UART.h"
-UBYTE UPLINK_COMMAND_SIZE = 32;
+# 19 "UART.h"
+UBYTE ReceiveFlag = 0x00;
 
 void Init_SERIAL(void);
 UBYTE getChar(void);
@@ -4273,7 +4273,7 @@ UINT get_timer_counter_only_getChar(void);
 
 # 19 "encode_AX25.h"
 void SendPacketWithDataSize(UBYTE *,UINT);
-void SendPacket(UBYTE *);
+void SendPacket(UBYTE *,UINT);
 
 # 16 "CRC16.h"
 UWORD crc16(UWORD, UBYTE *, UINT);
@@ -4282,25 +4282,25 @@ UWORD CRC_check(UBYTE *, UINT);
 
 # 21 "I2C.h"
 void InitI2CMaster(const UDWORD c);
-void I2CMasterWait(void);
-void I2CMasterStart(void);
-void I2CMasterRepeatedStart(void);
-void I2CMasterStop(void);
+void interruptI2C(void);
+void I2CMasterWait(char);
+int I2CMasterStart(unsigned char, unsigned char);
+int I2CMasterRepeatedStart(unsigned char, unsigned char);
+int I2CMasterStop(void);
 
-# 31
-void I2CMasterWrite(UBYTE);
-UBYTE I2CMasterRead(UBYTE);
-void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
-void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+# 32
+int WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+int WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
 void WriteLastCommandStatusToEEPROM(UBYTE);
 void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 
 # 43
-void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+int ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
 void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 
 # 9 "UART.c"
@@ -4318,7 +4318,7 @@ CREN = 1;
 SREN = 0;
 INTCON = 0b11000000;
 PIR1 = 0b00100000;
-PIE1 = 0b00100000;
+PIE1 = 0b00101000;
 PIE2 = 0b00000000;
 
 
@@ -4447,14 +4447,14 @@ RCREG = 0;
 void readEEPROMandUARTwrite(UBYTE slaveAddress, UBYTE highAddress, UBYTE lowAddress, UBYTE *ReadData, UBYTE dataLength){
 UWORD CRC;
 ReadDataFromEEPROM(slaveAddress, highAddress, lowAddress, ReadData, dataLength);
-for(UBYTE i=0;i<dataLength;i++){
-putChar(ReadData[i]);
-__nop();
-}
+
+
+
+
 CRC = crc16(0, ReadData, dataLength);
-putChar(CRC >> 8);
+
 __nop();
-putChar(CRC & 0x00FF);
+
 }
 
 void UARTwrite5byte(UBYTE data1,UBYTE data2,UBYTE data3,UBYTE data4,UBYTE data5){
@@ -4468,9 +4468,9 @@ data[4] = data5;
 CRC = crc16(0, data, 5);
 data[5] = CRC >> 8;
 data[6] = CRC & 0x00FF;
-for(UBYTE i=0; i<7; i++){
-putChar(data[i]);
-}
+
+
+
 }
 
 # 220

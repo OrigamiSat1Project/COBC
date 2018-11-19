@@ -1588,13 +1588,36 @@ TXEN = 0;
 TXEN = 1;
 }
 
-# 41
+UBYTE getChar(void){
+if(FERR || OERR)
+{
+CREN = 0;
+__nop();
+CREN = 1;
+}
+UINT break_counter = 0;
+
+
+
+while(!RCIF){
+break_counter ++;
+if(break_counter >= 100){
+
+__nop();
+break_counter = 0;
+break;
+}
+}
+RCIF = 0;
+return RCREG;
+}
+
 void putChar(UBYTE byte){
 while(!TXIF);
 TXREG = byte;
 }
 
-# 60
+# 73
 void put_error(void){
 putChar('\r');
 putChar('\n');
@@ -1623,7 +1646,7 @@ putChar('\r');
 putChar('\n');
 }
 
-# 104
+# 117
 void sendCommandByPointer(UBYTE* Parameter){
 UBYTE Command[10];
 UWORD CRC;
@@ -1694,7 +1717,7 @@ BRGH = BRGH_number;
 }
 }
 
-# 184
+# 197
 void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 if (GIE_status == 0x01){
 INTCONbits.GIE = 1;

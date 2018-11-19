@@ -28,6 +28,10 @@
 //#define ADD_BLANK_FOR_MORSE            LONG_DELAYTIMES_FOR_MORSE-MIDDLE_DELAYTIMES_FOR_MORSE
 #define ADD_BLANK_FOR_MORSE            LONG_DELAYTIMES_FOR_MORSE
 
+
+#define FM_DATA_SIZE    36
+#define FM_FREE_DATA_MAX_SIZE  12
+
 /*Downlink Command*/
 void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
 
@@ -35,7 +39,11 @@ void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
 void _NOP(void);
 
 /*FM*/
-void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
+void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void readDataSizeAndDownlinkFMSignal(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void FMdownlink32byte(UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchFMDownlink(UBYTE, UBYTE*);
+void testForFMFunctions(void); //for debug
 
 /*Function : HK downlink*/
 void HKDownlink(void);

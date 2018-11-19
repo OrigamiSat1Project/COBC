@@ -16,7 +16,21 @@
 void initTimer(void){
     INTCON = 0b11100000;    //GIE = 1, PEIE = 1, TMR0IE = 1
     OPTION_REG = 0b01000111;    //prescaler is assigned, TMR0 rate 1:256
-    TMR0 = 0x00;    //Initializing Timer0 Module Register 
+    TMR0 = 0x00;    //Initializing Timer0 Module Register
+}
+
+void interruptI2C(void)
+{
+     if (PIR1bits.SSPIF == 1) {
+          if (AckCheck == 1) {
+              AckCheck = 0;
+          }
+          PIR1bits.SSPIF = 0;
+     }
+     if (PIR2bits.BCLIF == 1) {
+          CollisionCheck = 1;
+          PIR2bits.BCLIF = 0;
+     }
 }
 
 UBYTE EPS_reset_time = EPS_RSET_INTERVAL_SHORT;
@@ -38,7 +52,7 @@ static UINT receive_command_counter_min = 0;
 static UINT bat_meas_counter_sec        = 0;
 static UINT bat_meas_counter_min        = 0;
 //static UINT eps_rest_counter_sec        = 0;
-static UINT init_ope_counter_sec        = 25;
+static UINT init_ope_counter_sec        = 0;
 static UINT init_ope_counter_min        = 0;
 UBYTE WDT_flag = 0x00;
 
@@ -48,18 +62,20 @@ static UINT eps_reset_counter_min = 0;
 
 //for debug function
 void interrupt TimerCheck(void){
+    interruptI2C();
+
     if(INTCONbits.TMR0IF){
         INTCONbits.TMR0IF = 0;
         TMR0 = 0x00;
         timer_counter ++;
     }
-           
+
     if(timer_counter >= one_second){
         timer_counter = 0;
         second_counter += 1;
-        
+
         NTRX_pll_setting_counter_sec ++;
-        eps_reset_counter_sec ++; //for debug        
+        eps_reset_counter_sec ++; //for debug
         init_ope_counter_sec ++;
         bat_meas_counter_sec ++;
         receive_command_counter_sec ++;
@@ -67,12 +83,12 @@ void interrupt TimerCheck(void){
     }
     if(second_counter >= one_minute){
         second_counter = 0;
-        minute_counter ++;        
+        minute_counter ++;
     }
     if(NTRX_pll_setting_counter_sec >= one_minute){
         NTRX_pll_setting_counter_sec = 0;
         NTRX_pll_setting_counter_min ++;
-    }    
+    }
     //for debug
     if(eps_reset_counter_sec >= one_minute){
         eps_reset_counter_sec = 0;
@@ -97,8 +113,8 @@ void interrupt TimerCheck(void){
     if(NTRX_pll_setting_counter_min >= one_hour){
         NTRX_pll_setting_counter_min = 0;
         NTRX_pll_setting_counter_hour ++;
-    }     
-    
+    }
+
     if(hour_counter >= one_day){
         hour_counter = 0;
         day_counter ++;
@@ -106,8 +122,8 @@ void interrupt TimerCheck(void){
     if(NTRX_pll_setting_counter_hour >= one_day){
         NTRX_pll_setting_counter_hour = 0;
         NTRX_pll_setting_counter_day ++;
-    } 
-    
+    }
+
     if(day_counter >= one_week){
         day_counter = 0;
         week_counter ++;
@@ -222,9 +238,9 @@ void reset_timer(void){
     week_counter    = 0;
 }
 
-        
+
 // -----------------------------------------------------------------------------
-        //XXX No.3 func 
+        //XXX No.3 func
         //battery voltage measure
         //treadhold is not determined
         //sampling rate is not determined
@@ -238,16 +254,16 @@ void reset_timer(void){
 //            if(bat_voltage[1] <= 0xD0) putChar(0xaa);
 //            else putChar(0xbb);
 //        }
-// -----------------------------------------------------------------------------        
-        
-          
-        
-// -----------------------------------------------------------------------------        
+// -----------------------------------------------------------------------------
+
+
+
+// -----------------------------------------------------------------------------
         /*---EPS reset for debug (for debug 5/10s)---*/
 //        time = second_counter % EPS_reset_time;
 //        if(time == 0){
 //            Reset_EPS();
-//            
+//
 //            putChar(0xd1);
 //            UBYTE array_2byte[2];
 //            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
@@ -256,7 +272,7 @@ void reset_timer(void){
 ////            putChar(array_2byte[1]);
 ////            array_2byte[0] = 2;
 ////            array_2byte[1] = 2;
-//            
+//
 //            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
 //                putChar(0xd2);
 //            } else {
@@ -265,13 +281,13 @@ void reset_timer(void){
 //                putChar(0xd3);
 //            }
 //        }
-// -----------------------------------------------------------------------------        
-//        
+// -----------------------------------------------------------------------------
+//
 //       if(second_counter >= one_minute){
 //           second_counter = 0;
 //           minute_counter += 1;
 //           putChar(0xd4);
-//           
+//
 //           //for debug
 //           //EPS reset every 3 minitues
 //           if(minute_counter >= 3){
@@ -308,12 +324,12 @@ void reset_timer(void){
 //                        EPS_reset_time = EPS_RSET_INTERVAL_LONG;
 //                    }
 //
-//                    if(second_counter >= EPS_reset_time){ 
+//                    if(second_counter >= EPS_reset_time){
 ////                        ResetEPSandSetPLL();
 //                    }
 //
 //                }
-//            }    
+//            }
 //       }
 
 //EPS reset every week
@@ -356,4 +372,3 @@ void reset_timer(void){
 //        }
 //    }
 //}
-

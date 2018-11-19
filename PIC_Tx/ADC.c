@@ -256,17 +256,22 @@ void measureChannel2(){
     //data low
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow+0x01, (UBYTE)(adcValue[1] & 0xff));   
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH2_addressHigh, adcValue_CH2_addressLow+0x01, (UBYTE)(adcValue[1] & 0xff));
-    //putChar(0x99);
-    //putChar(0x99);
-    //putChar(0x99);
-    //putChar(0x99);
-    //putChar(0x99);
-    //putChar(0x99);
-    //putChar(0x99);
-    //putChar(0x99);
-    //putChar((UBYTE)(adcValue[1] >> 8));
-    //putChar((UBYTE)(adcValue[1] & 0xff));
-    put_lf();
+//    put_lf();
+//    putChar(0x99);
+//    putChar(0x99);
+//    putChar(0x99);
+//    putChar(0x99);
+//    putChar(0x99);
+//    putChar(0x99);
+//    putChar(0x99);
+//    putChar(0x99);
+//    putChar((UBYTE)(adcValue[1] >> 8));
+//    putChar((UBYTE)(adcValue[1] & 0xff));
+//    putChar(ReadEEPROM(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow));
+//    putChar(ReadEEPROM(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow+0x01));
+//    putChar(ReadEEPROM(EEPROM_subaddress,adcValue_CH2_addressHigh,adcValue_CH2_addressLow));
+//    putChar(ReadEEPROM(EEPROM_subaddress,adcValue_CH2_addressHigh,adcValue_CH2_addressLow+0x01));
+//    put_lf();
 }
 void measureChannel3(){
     initADC();
@@ -318,16 +323,16 @@ void commandSwitchHKdata(UBYTE type_sellect, UBYTE data1, UBYTE data2, UBYTE dat
 }
 
 UBYTE read5VBusAndSwitchNtrxPower(void){
-//    //putChar('A');
-//    //putChar('A');
-    //putChar(0x0A);
-    //putChar(0x0A);
-    //putChar(0x0A);
-    //putChar(0x0A);
-    //putChar(0x0A);
-    //putChar(0x0A);
-//    //putChar('\r');
-//    //putChar('\n');
+//    putChar('A');
+//    putChar('A');
+//    putChar(0x0A);
+//    putChar(0x0A);
+//    putChar(0x0A);
+//    putChar(0x0A);
+//    putChar(0x0A);
+//    putChar(0x0A);
+//    putChar('\r');
+//    putChar('\n');
     UBYTE SatMode;
     UBYTE error_status = 0;   
     measureChannel2();//read 5V Bus
@@ -349,68 +354,68 @@ UBYTE read5VBusAndSwitchNtrxPower(void){
 //    //putChar('\n');
 
         if(adcValue <= ADC_Value_4V){
-//            //putChar('B');
-            //putChar(0x0B);
-            //putChar(0x0B);
-            //putChar(0x0B);
-            //putChar(0x0B);
-            //putChar(0x0B);
-//            //putChar('\r');
-//            //putChar('\n');
+//            putChar('B');
+//            putChar(0x0B);
+//            putChar(0x0B);
+//            putChar(0x0B);
+//            putChar(0x0B);
+//            putChar(0x0B);
+//            putChar('\r');
+//            putChar('\n');
             SatMode = ReadEEPROM(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow);
             SatMode = SatMode & 0xF0;
-            //putChar(SatMode);
+//            putChar(SatMode);
             switch(SatMode){
                 case SatMode_Nominal:
-//                    //putChar('C');
-                    //putChar(0x0C);
-                    //putChar('\r');
-                    //putChar('\n');
+//                    putChar('C');
+//                    putChar(0x0C);
+//                    putChar('\r');
+//                    putChar('\n');
                     error_status = 1;
                     break;
                 case SatMode_Saving:
                 case SatMode_Survival:
-//                    //putChar('D');
-                    //putChar(0x0D);
-                    //putChar('\r');
-                    //putChar('\n');
+//                    putChar('D');
+//                    putChar(0x0D);
+//                    putChar('\r');
+//                    putChar('\n');
                     break;
                 default:
-                    //putChar(0x0E);
-                    //putChar('\r');
-                    //putChar('\n');
+//                    putChar(0x0E);
+//                    putChar('\r');
+//                    putChar('\n');
                     SatMode = ReadEEPROM(EEPROM_subaddress,satelliteMode_addressHigh,satelliteMode_addressLow);
                     SatMode = SatMode & 0xF0;
                     switch(SatMode){
                         case SatMode_Nominal:
-                            //putChar('F');
-                            //putChar('\r');
-                            //putChar('\n');
+//                            putChar('F');
+//                            putChar('\r');
+//                            putChar('\n');
                             error_status = 1;
                             break;
                         case SatMode_Saving:
                         case SatMode_Survival:
-                            //putChar('G');
-                            //putChar('\r');
-                            //putChar('\n');
+//                            putChar('G');
+//                            putChar('\r');
+//                            putChar('\n');
                             break;
                         default:
-                            //putChar('H');
-                            //putChar('\r');
-                            //putChar('\n');
+//                            putChar('H');
+//                            putChar('\r');
+//                            putChar('\n');
                             onOffNTRX(1,0,0);//subPower ON
                             break;
                     }
                     break;
             }          
         }else{
-            //putChar('I');
-            //putChar('\r');
-            //putChar('\n');
+//            putChar('I');
+//            putChar('\r');
+//            putChar('\n');
             onOffNTRX(0,0,0);//subPower off
         }
-    //putChar(error_status);
-    //putChar('\r');
-    //putChar('\n');
+//    putChar(error_status);
+//    putChar('\r');
+//    putChar('\n');
     return error_status;
 }

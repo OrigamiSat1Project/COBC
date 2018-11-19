@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   EEPROM.h
  * Author: Kosuke
  *
@@ -70,7 +70,7 @@
 #define adcValue_CH1_addressLow  0x81
 //ch2 (5VBUS voltage(EPS 5V))
 #define adcValue_CH2_addressHigh 0x81
-#define adcValue_CH2_addressLow  0x8B
+#define adcValue_CH2_addressLow  0x8b
 //ch3 (3V3BUS voltage(EPS 3.3V))
 #define adcValue_CH3_addressHigh 0x81
 #define adcValue_CH3_addressLow  0x89
@@ -82,7 +82,6 @@
 *address for satellite mode
 ******************************************************************************/
 //TODO:change address
-#define satelliteMode_EEPROMAndB0Select 0x00
 #define satelliteMode_addressHigh       0x81//include SEP(3,2bit) and RBF(1,0bit)
 #define satelliteMode_addressLow        0x80//include SEP(3,2bit) and RBF(1,0bit)
 #define satelliteMode_DataSize          1
@@ -120,8 +119,8 @@
 #define EpsSwitchStatus_addressLow   0x93
 #define TxTemperature_addressHigh 0x81
 #define TxTemperature_addressLow 0x95
-#define RxTemperature_addressHigh 0x81 
-#define RxTemperature_addressLow 0x96 
+#define RxTemperature_addressHigh 0x81
+#define RxTemperature_addressLow 0x96
 
 #define FreeData1_slaveaddress_addressHigh 0x84
 #define FreeData1_slaveaddress_addressLow 0x00
@@ -148,4 +147,3 @@
 
 
 #endif	/* EEPROM_H */
-

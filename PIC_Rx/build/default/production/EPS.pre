@@ -1528,6 +1528,8 @@ void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
 void offNtrxPowerSupplyCIB(void);
 
+UBYTE ReadNtrxSubPowerStatus(void);
+
 # 17 "WDT.h"
 void InitWDT(void);
 void commandWDT(UBYTE);
@@ -1535,9 +1537,8 @@ void resetWDT();
 void sendPulseWDT(void);
 void WDTwait(void);
 
-# 12 "EPS.c"
+# 11 "EPS.c"
 void Reset_EPS(void){
-if( PORTBbits.RB4 == 0 ){
 sendPulseWDT();
 PORTBbits.RB4 = 1;
 PORTAbits.RA1 = 0;
@@ -1546,6 +1547,5 @@ PORTBbits.RB4 = 0;
 PORTAbits.RA1 = 0;
 _delay((unsigned long)((2000)*(10000000/4000.0)));
 sendPulseWDT();
-}
 }
 

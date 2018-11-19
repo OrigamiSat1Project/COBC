@@ -37,7 +37,7 @@
 #define Init_TheresholdBatVol_saving_revival_high 0x02
 #define Init_TheresholdBatVol_saving_revival_low 0x08
 
-#define TheresholdBatVol_lower_limit 620//0x26C  4V
+#define TheresholdBatVol_lower_limit 0x0120// 4V
     
 UWORD MeasureBatVoltageAndChangeSatMode(void);
 UBYTE BitCount(UBYTE);

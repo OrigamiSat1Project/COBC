@@ -99,9 +99,12 @@
 *Last Command ID
 ******************************************************************************/
 #define B0select_for_RXCOBCLastCommand     0x00
-#define HighAddress_for_RXCOBCLastCommand  0x97
-#define LowAddress_for_RXCOBCLastCommand   0x08
-
+#define HighAddress_for_RXCOBCLastCommandID  0x81
+#define LowAddress_for_RXCOBCLastCommandID   0x83
+#define HighAddress_for_TXCOBCLastCommandID  0x81
+#define LowAddress_for_TXCOBCLastCommandID   0x85
+#define HighAddress_for_LastCommandID  0x82
+#define LowAddress_for_LastCommandID   0x00
 
 /*******************************************************************************
 *DATA
@@ -133,6 +136,9 @@
 #define BatVol_saving_revival_datahigh_addressLow 0x11
 #define BatVol_saving_revival_datalow_addressHigh 0x81
 #define BatVol_saving_revival_datalow_addressLow 0x12
+
+#define NTRX_subpower_status_addressHigh 0x80
+#define NTRX_subpower_status_addressLow 0x80
 
 #endif	/* EEPROM_H */
 

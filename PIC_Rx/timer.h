@@ -28,11 +28,14 @@
 void initTimer(void);
 void interrupt TimerCheck(void);
 
+int CollisionCheck;
+int AckCheck;
+
 void set_NTRX_pll_setting_counter(UINT, UINT, UINT, UINT);
-UINT get_NTRX_pll_setting_counter_sec(void);  
+UINT get_NTRX_pll_setting_counter_sec(void);
 UINT get_NTRX_pll_setting_counter_min(void);
-UINT get_NTRX_pll_setting_counter_hour(void);  
-UINT get_NTRX_pll_setting_counter_day(void); 
+UINT get_NTRX_pll_setting_counter_hour(void);
+UINT get_NTRX_pll_setting_counter_day(void);
 
 void set_eps_reset_counter(UINT, UINT);  //FIXME:for debug
 UINT get_eps_reset_counter_sec(void);   //FIXME:for debug
@@ -48,7 +51,7 @@ UINT get_init_ope_counter_min(void);
 
 void set_bat_meas_counter(UINT, UINT);
 UINT get_bat_meas_counter_sec(void);   //FIXME:for debug
-UINT get_bat_meas_counter_min(void);  
+UINT get_bat_meas_counter_min(void);
 
 UINT get_timer_counter(UBYTE unit);
 
