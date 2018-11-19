@@ -408,14 +408,6 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             break;
         case 'e': //EPS
             switchPowerEPS(onOff, timeHigh, timeLow);
-//            UBYTE deviceOnOff_status[2];
-//            deviceOnOff_status[0] = ReadEEPROM(MAIN_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow);
-//            deviceOnOff_status[1] = ReadEEPROM(SUB_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow);            
-//            for (UBYTE i=1; i<2; i++){
-//                if(onOff = 0x01){
-//                    deviceOnOff_status[i] = deviceOnOff_status[i] | 0b01000000;
-//                }
-//            }
             break;
         case 'o': //OBC
             switchPowerSpply1pin('O', onOff, timeHigh, timeLow);

@@ -41,8 +41,6 @@ void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
 void I2CBufferClear(void);
 void ChangeI2CBaudRate(UBYTE);
 
-void TestEEPROM(UBYTE);
-
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE*);
 
