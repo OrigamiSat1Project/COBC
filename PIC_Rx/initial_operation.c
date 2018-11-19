@@ -192,7 +192,7 @@ UBYTE InitialOperation(void){
                 if(melting_counter>MELTING_COUNTER_LIMIT){
                     /*---reset counter---*/
                     melting_counter = 0;
-                } 
+                }
             }
 
             // melting counter
@@ -243,7 +243,7 @@ UBYTE InitialOperation(void){
 //}
 
 UBYTE bitCalResult(UBYTE bit_input){
-    UBYTE bit_cal_result; 
+    UBYTE bit_cal_result = 0; 
     for(UBYTE cal_counter=0; cal_counter<8; cal_counter++){
         if((bit_input & 1)==1) bit_cal_result +=1;
         bit_input >>= 1;

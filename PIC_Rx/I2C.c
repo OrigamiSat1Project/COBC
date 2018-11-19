@@ -252,9 +252,9 @@ void ReadDataFromEEPROMWithDataSize(UBYTE EEPROM_address,UBYTE high_address,UBYT
     I2CMasterWrite(low_address);            //Adress Low Byte
     I2CMasterRepeatedStart(EEPROM_address,1);               //Restart condition
     for(UBYTE i = 0; i < EEPROMDataLength - 1; i++){
-        ReadData[i] = I2CMasterRead(0);     //Read + Acknowledge
+        ReadData[i] = (UBYTE)I2CMasterRead(0);     //Read + Acknowledge
     }
-    ReadData[EEPROMDataLength - 1] = I2CMasterRead(1);
+    ReadData[EEPROMDataLength - 1] = (UBYTE)I2CMasterRead(1);
     I2CMasterStop();                        //Stop condition
     __delay_ms(5);
 }

@@ -124,8 +124,8 @@ void sendSTB(UBYTE unitID){
  * 4. Send STB signal
  */
 void setNprg(UBYTE unitID, USLONG Nprg){
-    UBYTE count = 0;
-    UBYTE Nprg_b[17] = {0};
+    UBYTE count;
+    UBYTE Nprg_b[17];
     
 //    for(UBYTE i=0; i<17; i++){
 //        Nprg_b[i] = 0;
@@ -167,7 +167,7 @@ void setNprg(UBYTE unitID, USLONG Nprg){
  * 4. Send STB signal
  */
 void setNref(UBYTE unitID, int Nref){
-    UBYTE Nref_b[12] = {0};
+    UBYTE Nref_b[12];
     
 //    for(UBYTE i=0; i<12; i++){
 //        Nref_b[i] = 0;

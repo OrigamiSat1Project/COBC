@@ -10,7 +10,7 @@
 #include "I2C.h"
 #include "MPU.h"
 #include "EEPROM.h"
-#include "okError.h"
+#include "OkError.h"
 #include "WDT.h"
 
 void initTimer(void){

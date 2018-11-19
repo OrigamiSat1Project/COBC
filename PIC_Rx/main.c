@@ -37,6 +37,10 @@
 
 #define MELTING_FINISH_FLAG 0b01111110
 UBYTE lastCommandID=0xff;        //ID of uplink command
+UBYTE commandData[DATA_SIZE];
+UBYTE commandID;            //ID of uplink command
+UBYTE mainControlByte;      //control byte of main EEPROM
+UBYTE subControlByte;       //control byte of sub EEPROM
 
 //TODO:add interrupt finction?
 void main(void) {
@@ -74,6 +78,7 @@ void main(void) {
             MRLTING_FLAG_FOR_OBC = HIGH;
         }
     } else {                                                                            //before melting
+        UWORD SatMode_error_status;
         /*---200s ( 50s * 4times)---*/
         for(UBYTE i=0; i<4; i++){
             /*---wait 50s---*/
@@ -83,7 +88,7 @@ void main(void) {
                 sendPulseWDT();
             }
             /*---measure voltage & change Sat Mode---*/
-            UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
             if (SatMode_error_status != 0){
                 SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
             }
@@ -112,7 +117,6 @@ void main(void) {
 //        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   //FM
         if(get_NTRX_pll_setting_counter_min() >= NTRX_PLL_INTERVAL){  //for debug
 //        if(get_NTRX_pll_setting_counter_sec() >= 8){   //for debug
-            UBYTE melting_status[2];
             melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
             if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
@@ -150,17 +154,13 @@ void main(void) {
 //
 //        /*---Receive command data---*/
 //        /*------------------------------------------------------------------*/
-        UBYTE commandData[DATA_SIZE];         //data of uplink command
-        UBYTE commandID;            //ID of uplink command
 
         //for information on EEPROM see data sheet: 24LC1025
-        UBYTE mainControlByte;      //control byte of main EEPROM
-        UBYTE subControlByte;       //control byte of sub EEPROM
 
         /*---COMMAND RESET----*/
         commandData[0] = 0;
 
-//        receiveDataPacket(commandData);
+        receiveDataPacket(commandData);
 
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[0] == 0) continue;      //not receive command-->continue

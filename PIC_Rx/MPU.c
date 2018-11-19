@@ -337,7 +337,7 @@ void onNtrxPowerSupplyCIB(UBYTE timeHigh,UBYTE timeLow){
     send_command[5] = timeLow;
     send_command[6] = 0x00;
     send_command[7] = 0x00;
-    put_lf();  
+//    put_lf();  
     sendCommandByPointer(send_command);
     __delay_ms(2000);//wait EPS ON
     setPLL();
@@ -355,7 +355,7 @@ void offNtrxPowerSupplyCIB(void){
     send_command[5] = 0x00;
     send_command[6] = 0x00;
     send_command[7] = 0x00;
-    put_lf();  
+//    put_lf();  
     sendCommandByPointer(send_command);
     __delay_ms(500);
 }
