@@ -177,7 +177,7 @@ void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,U
 }
 
 void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
-    WriteCheckByteToEEPROMs(B0select_for_RXCOBCLastCommand, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID, last_command_ID);
+    WriteCheckByteToEEPROMs(B0select_for_RXCOBCLastCommand, HighAddress_for_RXCOBCLastCommandID, LowAddress_for_RXCOBCLastCommandID, last_command_ID);
 }
 
 /*******************************************************************************
@@ -275,32 +275,6 @@ void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
     }
 }
 
-/* metthod for test EEPROM to read and write
- * 1. write test data to EEPROM
- * 2. read EEPROM
- * 3. send EEPROM address to TXCOBC
- */
-void TestEEPROM(UBYTE slaveaddress){
-        UBYTE commandData[datalength_for_test];
-        UBYTE ControlByte;                       //control byte of EEPROM
-        UBYTE ReadData[datalength_for_test];
-
-        commandData[0] = 0x01;
-        commandData[1] = 0x02;
-        commandData[2] = 0x03;
-        commandData[3] = 0x04;
-
-        ControlByte = slaveaddress | B0select_for_testEEPROM;
-
-//        for (UBYTE i=0; i<datalength_for_test; i++){
-//            WriteToEEPROM(ControlByte, HighAddress_for_testEEPROM, LowAddress_for_testEEPROM, commandData[i]);
-//        }
-//
-        ReadDataFromEEPROMWithDataSize(ControlByte, HighAddress_for_testEEPROM, LowAddress_for_testEEPROM, ReadData, datalength_for_test);
-
-        //TODO:where send to read data
-}
-
 /*******************************************************************************
 *process command data if the command type is 'I2C'
 ******************************************************************************/
@@ -352,9 +326,6 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
             data_length = data1;
             ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data1);
             //TODO: send data to TXCOBC or/and OBC by I2C or UART
-            break;
-        case 't': //EEPROM test
-            TestEEPROM(slaveAdress);
             break;
         case 'm': //write melting status to EEPROM --> stop melting
             /*---write melting status to EEPROM---*/
