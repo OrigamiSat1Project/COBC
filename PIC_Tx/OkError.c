@@ -21,7 +21,7 @@ void switchOk(UBYTE action_select){
     mainAddress = EEPROM_address | B0select_for_Ok;
     subAddress = EEPROM_subaddress | B0select_for_Ok;
     /*Ok_data[0]->coomandID*/
-    Ok_data[0] = ReadEEPROM(mainAddress, HighAddress_for_commandID, LowAddress_for_commandID);
+    Ok_data[0] = ReadEEPROM(mainAddress, HighAddress_for_TXCOBCLastCommandID, LowAddress_for_TXCOBCLastCommandID);
     Ok_data[1] = action_select;
     WriteToEEPROMWithDataSize(EEPROM_address, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data,2);
     WriteToEEPROMWithDataSize(EEPROM_subaddress, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data,2);
@@ -38,7 +38,7 @@ void switchError(UBYTE action_select){
     mainAddress = EEPROM_address | B0select_for_Error;
     subAddress = EEPROM_subaddress | B0select_for_Error;
     /*error_data[0]->coomandID*/
-    error_data[0] = ReadEEPROM(mainAddress, HighAddress_for_commandID, LowAddress_for_commandID);
+    error_data[0] = ReadEEPROM(mainAddress, HighAddress_for_TXCOBCLastCommandID, LowAddress_for_TXCOBCLastCommandID);
     error_data[1] = action_select;
     WriteToEEPROMWithDataSize(EEPROM_address, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
     WriteToEEPROMWithDataSize(EEPROM_subaddress, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
@@ -54,7 +54,7 @@ void putErrorNoDownlink(UBYTE action_select){
     mainAddress = EEPROM_address | B0select_for_Error;
     subAddress = EEPROM_subaddress | B0select_for_Error;
     /*error_data[0]->coomandID*/
-    error_data[0] = ReadEEPROM(mainAddress, HighAddress_for_commandID, LowAddress_for_commandID);
+    error_data[0] = ReadEEPROM(mainAddress, HighAddress_for_TXCOBCLastCommandID, LowAddress_for_TXCOBCLastCommandID);
     error_data[1] = action_select;
     WriteToEEPROMWithDataSize(EEPROM_address, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
     WriteToEEPROMWithDataSize(EEPROM_subaddress, HighAddress_for_Error, LowAddress_for_Error, error_data,2);

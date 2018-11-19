@@ -184,38 +184,6 @@ void UARTwrite5byte(UBYTE data1,UBYTE data2,UBYTE data3,UBYTE data4,UBYTE data5)
 //    }
 }
 
-// UBYTE get3byte(void){                //TODO: add time out feature
-//     /**/
-// 	if(FERR || OERR) // If over run error, then reset the receiver
-// 	{
-//         CREN = 0;
-//         NOP();
-//         CREN = 1;
-//     }
-// 	while(RCIF != 0);
-//     return RCREG;
-// }
-
-//void putstr(UBYTE *x)
-//{
-//    while(*x != '\0'){
-//        putch(*x);
-//        x++;
-//    }
-//}
-
-//void putcrlf(void){
-//    putch('\r');
-//    putch('\n');
-//}
-//
-
-//void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
-//    putch(NM_wad_header);
-//    putch(whigh_address);
-//    putch(wlow_address);
-//}
-
 //process command data if the command type is UART
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){
     UBYTE ReadData[];

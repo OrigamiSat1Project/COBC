@@ -126,73 +126,9 @@ UWORD adc_read(){
 ******************************************************************************/
 void measureAllChanelADC(){
     initADC();          
-    PORTBbits.RB1 = 0;        //Set LED off
-    putChar(0xE2);
     measureDcDcTemperature();
-    putChar(0xE3);
     measureChannel2();
     measureChannel4();
-    
-    /*----------------------------------------------*/
-    //FIXME:[start]debug for check the adcValue--->success 
-//    for (UBYTE i=0; i<Channel_Size; i++){
-//        putChar(i);
-//        putChar(i);
-//        putChar(i);
-//        putChar((UBYTE)(adcValue[i] >> 8));
-//        putChar((UBYTE)(adcValue[i] & 0xff));
-//    }
-    //FIXME:[finish]debug for check the adcValue 
-    /*------------------------------------------------*
-
-    //FIXME:[start]debug for write/read adc value--->success
-//    for (UBYTE i=0; i<4; i++){    
-//        WriteOneByteToEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow, (UBYTE)(adcValue[i] >> 8));
-//        putChar(ReadEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow));
-//        WriteOneByteToEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow, (UBYTE)(adcValue[i] & 0xff));
-//        putChar(ReadEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow));
-//    }
-    //FIXME:[finish]debug for write/read adc value
-    /*--------------------------------------------------*/
-    
-    /*--------------------------------------------------*/
-    //FIXME:[start]debug for change address--->success
-//    putChar(adcValue_addressLow);
-//    UBYTE address;
-//    address = adcValue_addressLow+0x08;
-//    putChar(address);
-    //FIXME:[finish]debug for change address
-    /*--------------------------------------------------*/
-    
-    /*--------------------------------------------------*/
-    //FIXME:[start]debug for write adc value--->successs
-    //write data to main and sub EEPROM
-//    for (UBYTE i=0; i<Channel_Size; i++){
-//        putChar(adcValue_dataHigh_addressHigh[i]);
-//        putChar(adcValue_dataHigh_addressLow[i]);
-//        putChar(adcValue_dataLow_addressHigh[i]);
-//        putChar(adcValue_dataLow_addressLow[i]);
-//        //data High
-//        WriteOneByteToEEPROM(EEPROM_address, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i], (UBYTE)(adcValue[i] >> 8));
-//        WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i], (UBYTE)(adcValue[i] >> 8));
-//        //data Low
-//        WriteOneByteToEEPROM(EEPROM_address, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i], (UBYTE)(adcValue[i] & 0xff));
-//        WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i], (UBYTE)(adcValue[i] & 0xff));
-//        //data High
-//        putChar(ReadEEPROM(EEPROM_address, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i]));
-//        putChar(ReadEEPROM(EEPROM_subaddress, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i]));
-//        //data Low
-//        putChar(ReadEEPROM(EEPROM_address, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i]));
-//        putChar(ReadEEPROM(EEPROM_subaddress, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i]));
-//    }
-    //FIXME:[finish]debug for write adc value
-    /*--------------------------------------------------*/
-    
-    //Update every second
-    // __delay_ms(1000);
-    //Set clears if necessary
-
-return;
 }
 
 /**

@@ -43,7 +43,6 @@ void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void readDataSizeAndDownlinkFMSignal(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void FMdownlink32byte(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchFMDownlink(UBYTE, UBYTE*);
-void testForFMFunctions(void); //for debug
 
 /*Function : HK downlink*/
 void HKDownlink(void);
@@ -64,7 +63,6 @@ void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, 
 void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE, UBYTE);
 
 /*for debug*/
-void testForCwFunctions(void);
 void Morse_V(void);
 void Morse_Y(void);
 void Morse_J(void);
