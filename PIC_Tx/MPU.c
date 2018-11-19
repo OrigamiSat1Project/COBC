@@ -9,8 +9,8 @@
 #include "pinDefine.h"
 #include "OkError.h"
 
-#define MELTING_TIME_MAX     4000  //0x0FA0 -> 4000[ms] TBD[ms]
-#define MELTING_TIME_DEFAULT 2500 //[ms] 
+#define MELTING_TIME_MAX     3000  
+#define MELTING_TIME_DEFAULT 3000 //[ms] 
 #define MELTING_FINISH 0x08  //TBD
 
 UINT invertState(UINT);

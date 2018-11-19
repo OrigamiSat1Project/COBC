@@ -256,7 +256,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
             }
             switch(ChoicedSatMode){
                 case SATMODE_NOMINAL:
-//                    //putChar(0xAA);
+                    putChar(0xAA);
                     if(Voltage >= BatVol_nominal_saving) {
                         putChar(0x11);                                       
                         melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
@@ -284,7 +284,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
                         ReserveBeforeSatMode = SATMODE_SURVIVAL_SEPOFF_RBFON;
                     }else{
-//                        //putChar(0x33);
+                        putChar(0x33);
                         //Write SatMode saving(SEP -> OFF, RBF -> ON)                        
                         killEPS();                   
                         onNtrxPowerSupplyCIB(0,0);
@@ -293,9 +293,9 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     }
                     break;
                 case SATMODE_SAVING:
-//                    //putChar(0xBB);
+                    putChar(0xBB);
                     if(Voltage >= BatVol_nominal_revival){
-                        //putChar(0x11);
+                        putChar(0x11);
                         //write SatMode nominal(SEP -> ON, RBF -> ON)                                               
                         offNtrxPowerSupplyCIB();
                         onEPS();
@@ -303,14 +303,14 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
                         ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
                     }else if (Voltage <= BatVol_saving_survival){
-                        //putChar(0x22);
+                        putChar(0x22);
                         //write SatMode survival(SEP -> OFF, RBF -> ON)  
                         killEPS(); 
                         offNtrxPowerSupplyCIB();
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
                         ReserveBeforeSatMode = SATMODE_SURVIVAL_SEPOFF_RBFON;
                     }else{
-                        //putChar(0x33);
+                        putChar(0x33);
                         //Write SatMode saving(SEP -> OFF, RBF -> ON)
                         if(SEP_SW == LOW){
                             killEPS(); 
@@ -321,9 +321,9 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     }
                     break;
                 case SATMODE_SURVIVAL:
-                    //putChar(0xCC);
+                    putChar(0xCC);
                     if(Voltage >= BatVol_nominal_revival){
-                        //putChar(0x11);
+                        putChar(0x11);
                         //write SatMode nominal(SEP -> ON, RBF -> ON)                       
                         onEPS();
                         setPLL();
@@ -339,7 +339,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                         WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
                         ReserveBeforeSatMode = SATMODE_SURVIVAL_SEPOFF_RBFON;
                     }else{
-                        //putChar(0x33);
+                        putChar(0x33);
                         //Write SatMode saving(SEP -> OFF, RBF -> ON) 
                         killEPS(); 
                         onNtrxPowerSupplyCIB(0,0);
@@ -348,7 +348,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     }                  
                     break;
                 default:
-                    //putChar(0xDD);       
+                    putChar(0xDD);       
                     error_status = error_status | 0x3000;// 0b 00110000 00000000;
                     break;
         }           
