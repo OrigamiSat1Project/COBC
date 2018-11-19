@@ -36,6 +36,7 @@ void onOffTXWDT(UBYTE,UBYTE, UBYTE);
 void onOffFMPTT(UBYTE,UBYTE, UBYTE);
 void onOffCWKEY(UBYTE,UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE , UBYTE , UBYTE , UBYTE, UBYTE);
+//void commandSwitchPowerSupply(UBYTE*);
 void CheckNTRXsubpower(void);
 
 

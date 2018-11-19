@@ -81,48 +81,44 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
 
             switch(commandData[3]){         //Process command type
                 case 'm':/*get satellite mode*/
-//                    downlinkFMSignal(EEPROM_address, satelliteMode_addressHigh, satelliteMode_addressLow, commandData[4], satelliteMode_DataSize);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+//                    downlinkFMSignal(EEPROM_address, satelliteMode_addressHigh, satelliteMode_addressLow, commandData[4], satelliteMode_DataSize,0x00);
+                    commandData[7] = commandData[4];
+                    commandData[4] = EEPROM_address;
+                    commandData[5] = satelliteMode_addressHigh;
+                    commandData[6] = satelliteMode_addressLow;
+                    commandData[8] = satelliteMode_DataSize;
+                    downlinkFMSignal(&commandData[4]);
                 case 'C':/*downlink CW Signal*/
-                    commandSwitchCWDownlink(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9], commandData[10]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    commandSwitchCWDownlink(&commandData[4]);
                     break;
                 case 'f':/*downlink FM Signal*/
                     for(UBYTE i=5;i<19; i++){
                         commandData5_19[i-5] = commandData[i];
                     }
-                    commandSwitchFMDownlink(commandData[4],commandData5_19);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+//                    commandSwitchFMDownlink(commandData[4],commandData5_19);
                     break;
                 case 'p': /*power supply*/
-                    commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
-                    break;
-                case 'n': /*radio unit*/
-    //                commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+//                    commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
+//                    commandSwitchPowerSupply(&commandData[4]);
                     break;
                 case 'i':/*I2C*/
-                    //commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+//                    commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
                     break;
                 case 'w':/*WDT (watch dog timer)*/
-    //                commandWDT(commandData[4], commandData[5], commandData[6]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+//                    commandWDT(commandData[4], commandData[5], commandData[6]);
                     break;
                 case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
                     //TODO: write function directly here or in MPU.c
 //                   commandSwitchHKdata(commandData[4], commandData[5], commandData[6], commandData[7]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 't':/*internal processing*/
-    //                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+//                    commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
                     break;
                 default:
                     switchError(error_FMCW_downlinkReceivedCommand);
                     break;
             }
+            WriteLastCommandIdToEEPROM(commandData[1]);
         }
 
     }
@@ -144,9 +140,47 @@ void _NOP(void) {
 /*******************************************************************************
 *FM
 ******************************************************************************/
-void downlinkFMSignal(UBYTE Address7bit, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinkTimes, UBYTE DataLengthHigh, UBYTE DataLengthLow){
-    UINT DataLength = (UINT)((DataLengthHigh << 8) + DataLengthLow);
-    UINT address = (UINT)((addressHigh << 8) + addressLow);
+//void downlinkFMSignal(UBYTE Address7bit, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinkTimes, UBYTE DataLengthHigh, UBYTE DataLengthLow){
+//    UINT DataLength = (UINT)((DataLengthHigh << 8) + DataLengthLow);
+//    UINT address = (UINT)((addressHigh << 8) + addressLow);
+//    UBYTE flag = 0;
+//    UBYTE packet_counter = 0;
+//
+//    CWKEY = low;
+//    while(!flag){
+//        for(UBYTE i = 0 ; i < 3 ; i++){
+//            downlink_data[i] = packet_counter;
+//        }
+//        for(UBYTE sendCounter = 0; sendCounter < downlinkTimes; sendCounter++){
+//            sendPulseWDT();
+//            if(DataLength < MAX_DOWNLINK_DATA_SIZE){
+//                ReadDataFromEEPROM(Address7bit,addressHigh,addressLow, downlink_data[3],DataLength);
+//                FMPTT = high;
+//                SendPacket(downlink_data,DataLength + PACKET_COUNTER_SIZE);
+//                FMPTT = low;
+//                flag = 1;
+//            }else{
+//                ReadDataFromEEPROM(Address7bit,addressHigh,addressLow, downlink_data[3],MAX_DOWNLINK_DATA_SIZE);
+//                FMPTT = high;
+//                SendPacket(downlink_data,MAX_DOWNLINK_DATA_SIZE + PACKET_COUNTER_SIZE);
+//                FMPTT = low;
+//                address += 0x0020;
+//                addressHigh = (UBYTE)(address >> 8);
+//                addressLow = (UBYTE)address;
+//                DataLength -= MAX_DOWNLINK_DATA_SIZE;
+//                DataLengthHigh = (UBYTE)(DataLength >> 8);
+//                DataLengthLow = (UBYTE)DataLength;
+//            }
+//            __delay_ms(500);
+//        }
+//        packet_counter += 1;
+//    }
+//    return;
+//}
+
+void downlinkFMSignal(UBYTE *command){
+    UINT DataLength = (UINT)((command[4] << 8) + command[5]);
+    UINT address = (UINT)((command[1] << 8) + command[2]);
     UBYTE flag = 0;
     UBYTE packet_counter = 0;
 
@@ -155,25 +189,25 @@ void downlinkFMSignal(UBYTE Address7bit, UBYTE addressHigh, UBYTE addressLow, UB
         for(UBYTE i = 0 ; i < 3 ; i++){
             downlink_data[i] = packet_counter;
         }
-        for(UBYTE sendCounter = 0; sendCounter < downlinkTimes; sendCounter++){
+        for(UBYTE sendCounter = 0; sendCounter < command[3]; sendCounter++){
             sendPulseWDT();
             if(DataLength < MAX_DOWNLINK_DATA_SIZE){
-                ReadDataFromEEPROM(Address7bit,addressHigh,addressLow, downlink_data[3],DataLength);
+                ReadDataFromEEPROM(command[0],command[1],command[2], downlink_data[3],DataLength);
                 FMPTT = high;
                 SendPacket(downlink_data,DataLength + PACKET_COUNTER_SIZE);
                 FMPTT = low;
                 flag = 1;
             }else{
-                ReadDataFromEEPROM(Address7bit,addressHigh,addressLow, downlink_data[3],MAX_DOWNLINK_DATA_SIZE);
+                ReadDataFromEEPROM(command[0],command[1],command[3], downlink_data[3],MAX_DOWNLINK_DATA_SIZE);
                 FMPTT = high;
                 SendPacket(downlink_data,MAX_DOWNLINK_DATA_SIZE + PACKET_COUNTER_SIZE);
                 FMPTT = low;
                 address += 0x0020;
-                addressHigh = (UBYTE)(address >> 8);
-                addressLow = (UBYTE)address;
+                command[1] = (UBYTE)(address >> 8);
+                command[2] = (UBYTE)address;
                 DataLength -= MAX_DOWNLINK_DATA_SIZE;
-                DataLengthHigh = (UBYTE)(DataLength >> 8);
-                DataLengthLow = (UBYTE)DataLength;
+                command[4] = (UBYTE)(DataLength >> 8);
+                command[5] = (UBYTE)DataLength;
             }
             __delay_ms(500);
         }
@@ -248,12 +282,14 @@ void commandSwitchFMDownlink(UBYTE type_select, UBYTE *data5_19){
     switch(type_select){
         case 0xaa:  //the size of data is specified by the command
             // 0: e_address / 1: high_address / 2: low_address / 3: dowmlink times / 4: data size_High/ 5: data_size_Low
-            downlinkFMSignal(data5_19[0], data5_19[1], data5_19[2], data5_19[3], data5_19[4], data5_19[5]);
+//            downlinkFMSignal(data5_19[0], data5_19[1], data5_19[2], data5_19[3], data5_19[4], data5_19[5]);
+            downlinkFMSignal(data5_19);
 //            downlinkFMSignal(0x50,0x00,0x80,0x01,0x01,0x00);
             break;
         case 0xbb:  //the size of data is written in EEPROM
             // 0: e_address / 1: high_address(for data) / 2: low_address(for data) / 3: dowmlink times / 4: high_address(for data size) / 5: low_address(for data size)
             readDataSizeAndDownlinkFMSignal(data5_19[0], data5_19[1], data5_19[2], data5_19[3], data5_19[4], data5_19[5]);
+//            readDataSizeAndDownlinkFMSignal(data5_19);
             break;
         case 0xcc:  //data from OBC or RXPIC
             //0: e_address / 1: data size / 2-13: data(max 12byte)
@@ -367,15 +403,16 @@ void testForFMFunctions(void){
 *CW swtich
 ******************************************************************************/
 //TODO:debug not yet
-void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_address_forData, UBYTE low_address_forData, UBYTE downlink_times, UBYTE EEPROMDataLength_or_high_address_forDataSize, UBYTE low_address_forDataSize){
+
+void commandSwitchCWDownlink(UBYTE *command){
     UBYTE read_data_forCW[];
-    switch(type_select){
+    switch(command[0]){
         case 0xaa:  //the size of data is specified by the command
-            ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, downlink_times);
+            ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(command[1], command[2], command[3], read_data_forCW, command[5], command[4]);
             switchOk(ok_FMCW_commandSwitchCWDownlink_aa);
             break;
         case 0xbb:  //the size of data is written in EEPROM
-            GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, low_address_forDataSize, downlink_times);
+            GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(command[1], command[2], command[3], read_data_forCW, command[5], command[6], command[4]);
             switchOk(ok_FMCW_commandSwitchCWDownlink_bb);
             break;
         default:
@@ -484,72 +521,119 @@ void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_ad
  *            ton -> 1 / tu ->111 / delay -> 0
  *  TODO    : need debug
  */
-long changeCharMorse (char _c){
-    switch(_c){
-        case '0': return 0b1110111011101110111;
-        case '1': return 0b11101110111011101;
-        case '2': return 0b111011101110101;
-        case '3': return 0b1110111010101;
-        case '4': return 0b11101010101;
-        case '5': return 0b101010101;
-        case '6': return 0b10101010111;
-        case '7': return 0b1010101110111;
-        case '8': return 0b101011101110111;
-        case '9': return 0b10111011101110111;
-        case 'a':
-        case 'A': return 0b11101;
-        case 'b':
-        case 'B': return 0b101010111;
-        case 'c':
-        case 'C': return 0b10111010111;
-        case 'd':
-        case 'D': return 0b1010111;
-        case 'e':
-        case 'E': return 0b1;
-        case 'f':
-        case 'F': return 0b101110101;
-        case 'g':
-        case 'G': return 0b101110111;
-        case 'h':
-        case 'H': return 0b1010101;
-        case 'i':
-        case 'I': return 0b101;
-        case 'j':
-        case 'J': return 0b1110111011101;
-        case 'k':
-        case 'K': return 0b111010111;
-        case 'l':
-        case 'L': return 0b101011101;
-        case 'm':
-        case 'M': return 0b1110111;
-        case 'n':
-        case 'N': return 0b10111;
-        case 'o':
-        case 'O': return 0b11101110111;
-        case 'p':
-        case 'P': return 0b10111011101;
-        case 'q':
-        case 'Q': return 0b1110101110111;
-        case 'r':
-        case 'R': return 0b1011101;
-        case 's':
-        case 'S': return 0b10101;
-        case 't':
-        case 'T': return 0b111;
-        case 'u':
-        case 'U': return 0b1110101;
-        case 'v':
-        case 'V': return 0b111010101;
-        case 'w':
-        case 'W': return 0b111011101;
-        case 'x':
-        case 'X': return 0b11101010111;
-        case 'y':
-        case 'Y': return 0b1110111010111;
-        case 'z':
-        case 'Z': return 0b10101110111;
-        default : return 0;
-    }
+//long changeCharMorse (char _c){
+//    switch(_c){
+//        case '0': return 0b1110111011101110111;
+//        case '1': return 0b11101110111011101;
+//        case '2': return 0b111011101110101;
+//        case '3': return 0b1110111010101;
+//        case '4': return 0b11101010101;
+//        case '5': return 0b101010101;
+//        case '6': return 0b10101010111;
+//        case '7': return 0b1010101110111;
+//        case '8': return 0b101011101110111;
+//        case '9': return 0b10111011101110111;
+//        case 'a':
+//        case 'A': return 0b11101;
+//        case 'b':
+//        case 'B': return 0b101010111;
+//        case 'c':
+//        case 'C': return 0b10111010111;
+//        case 'd':
+//        case 'D': return 0b1010111;
+//        case 'e':
+//        case 'E': return 0b1;
+//        case 'f':
+//        case 'F': return 0b101110101;
+//        case 'g':
+//        case 'G': return 0b101110111;
+//        case 'h':
+//        case 'H': return 0b1010101;
+//        case 'i':
+//        case 'I': return 0b101;
+//        case 'j':
+//        case 'J': return 0b1110111011101;
+//        case 'k':
+//        case 'K': return 0b111010111;
+//        case 'l':
+//        case 'L': return 0b101011101;
+//        case 'm':
+//        case 'M': return 0b1110111;
+//        case 'n':
+//        case 'N': return 0b10111;
+//        case 'o':
+//        case 'O': return 0b11101110111;
+//        case 'p':
+//        case 'P': return 0b10111011101;
+//        case 'q':
+//        case 'Q': return 0b1110101110111;
+//        case 'r':
+//        case 'R': return 0b1011101;
+//        case 's':
+//        case 'S': return 0b10101;
+//        case 't':
+//        case 'T': return 0b111;
+//        case 'u':
+//        case 'U': return 0b1110101;
+//        case 'v':
+//        case 'V': return 0b111010101;
+//        case 'w':
+//        case 'W': return 0b111011101;
+//        case 'x':
+//        case 'X': return 0b11101010111;
+//        case 'y':
+//        case 'Y': return 0b1110111010111;
+//        case 'z':
+//        case 'Z': return 0b10101110111;
+//        default : return 0;
+//    }
+//}
+
+const static long char2hex[] = {
+    0b1110111011101110111,
+    0b11101110111011101,
+    0b111011101110101,
+    0b1110111010101,
+    0b11101010101,
+    0b101010101,
+    0b10101010111,
+    0b1010101110111,
+    0b101011101110111,
+    0b10111011101110111,
+    0b11101,
+    0b101010111,
+    0b10111010111,
+    0b1010111,
+    0b1,
+    0b101110101,
+    0b101110111,
+    0b1010101,
+    0b101,
+    0b1110111011101,
+    0b111010111,
+    0b101011101,
+    0b1110111,
+    0b10111,
+    0b11101110111,
+    0b10111011101,
+    0b1110101110111,
+    0b1011101,
+    0b10101,
+    0b111,
+    0b1110101,
+    0b111010101,
+    0b111011101,
+    0b11101010111,
+    0b1110111010111,
+    0b10101110111
+};
+
+long changeCharMorse (char value){
+    if(value >= 0x41 && value <= 0x5a) value -= 55;
+    else if(value >= 0x61 && value <= 0x7a) value -= 87;
+    else if(value >= 0x30 && value <= 0x39) value -= 48;
+    else return 0;
+    return char2hex[value];
 }
 
 /*
@@ -558,26 +642,50 @@ long changeCharMorse (char _c){
  *  return  : char
  *  TODO    : need debug
  */
+//char changeBinaryToChar(UBYTE _binary){
+//    switch(_binary){
+//        case 0x00 : return '0';
+//        case 0x01 : return '1';
+//        case 0x02 : return '2';
+//        case 0x03 : return '3';
+//        case 0x04 : return '4';
+//        case 0x05 : return '5';
+//        case 0x06 : return '6';
+//        case 0x07 : return '7';
+//        case 0x08 : return '8';
+//        case 0x09 : return '9';
+//        case 0x0A : return 'A';
+//        case 0x0B : return 'B';
+//        case 0x0C : return 'C';
+//        case 0x0D : return 'D';
+//        case 0x0E : return 'E';
+//        case 0x0F : return 'F';
+//        default   : return 'X'; //TODO:change 'X' to error messege
+//    }
+//}
+
+const static UBYTE ascii[] = {
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F'
+};
+
 char changeBinaryToChar(UBYTE _binary){
-    switch(_binary){
-        case 0x00 : return '0';
-        case 0x01 : return '1';
-        case 0x02 : return '2';
-        case 0x03 : return '3';
-        case 0x04 : return '4';
-        case 0x05 : return '5';
-        case 0x06 : return '6';
-        case 0x07 : return '7';
-        case 0x08 : return '8';
-        case 0x09 : return '9';
-        case 0x0A : return 'A';
-        case 0x0B : return 'B';
-        case 0x0C : return 'C';
-        case 0x0D : return 'D';
-        case 0x0E : return 'E';
-        case 0x0F : return 'F';
-        default   : return 'X'; //TODO:change 'X' to error messege
-    }
+    if(_binary > 0x0f) return 'X';
+    return ascii[_binary];
 }
 
 /*

@@ -34,13 +34,16 @@
 
 /*Downlink Command*/
 void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
+//void downlinkReceivedCommand(UBYTE*);
 
 /*Function : FM and CW downkink */
 void _NOP(void);
 
 /*FM*/
-void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+//void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void downlinkFMSignal(UBYTE*);
 void readDataSizeAndDownlinkFMSignal(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+//void readDataSizeAndDownlinkFMSignal(UBYTE*);
 void FMdownlink32byte(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchFMDownlink(UBYTE, UBYTE*);
 void testForFMFunctions(void); //for debug
@@ -53,7 +56,8 @@ void HKDownlinkFR2(void);
 
 /*Function : CW downlink*/
 
-void commandSwitchCWDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+//void commandSwitchCWDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchCWDownlink(UBYTE *command);
 long changeCharMorse (char);
 char changeBinaryToChar(UBYTE);
 void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);

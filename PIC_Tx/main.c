@@ -56,18 +56,18 @@ void interrupt InterReceiver(void){
             if(STOCKDATA[j][0] != 'g' && STOCKDATA[j][0] != 't'){
                 STOCKDATA[j][0] = tmp;
                 for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[j][i] = getChar();
-                put_lf();
+//                put_lf();
 //                for(UBYTE i=0 ;i< commandSize; i++) putChar(STOCKDATA[j][i]);
-                put_lf();
+//                put_lf();
                 return;
             }
         }
 
         STOCKDATA[0][0] = tmp;
         for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[0][i] = getChar();
-        put_lf();
+//        put_lf();
 //        for(UBYTE i=0 ;i< commandSize; i++) putChar(RXDATA[i]);
-        put_lf();
+//        put_lf();
         return;
     }
 }
@@ -83,16 +83,16 @@ void main(void) {
     delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
 //    putChar('S');
 //    putChar(0xF0);
-    put_lf();
+//    put_lf();
 
     HK_test_setting();
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
 //    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
 //
     while(1){
-        put_lf();
+//        put_lf();
 //        putChar(0xE1);
-        put_lf();
+//        put_lf();
         sendPulseWDT();
 
         measureAllChanelADC();
@@ -107,7 +107,7 @@ void main(void) {
 //        putChar(0xE2);
         HKDownlink();
 //        putChar(0xE3);
-        put_lf();
+//        put_lf();
 
 
         //======================================================================
@@ -126,16 +126,16 @@ void main(void) {
         }
 
         if(ReceiveFlag == CORRECT_RECEIVE){
-            put_lf();
+//            put_lf();
 //            putChar(0xbb);
 //            for(UBYTE i=0; i<10 ; i++){
 //                putChar(RXDATA[i]);
 //            }
-            put_lf();
-            UBYTE command_ID = 0x00;
-            UBYTE command_status = 0x00;
-            UBYTE ID_add_high = 0x00;
-            UBYTE ID_add_low = 0x00;
+//            put_lf();
+            UBYTE command_ID;
+            UBYTE command_status;
+            UBYTE ID_add_high;
+            UBYTE ID_add_low;
 
             //Calculate Address for CRCcheck byte
             ID_add_high   = RXDATA[3];
@@ -173,47 +173,33 @@ void main(void) {
             switch(RXDATA[1]){
                 /*---Command from RXCOBC---*/
                 /*------------------------------------------------------------------*/
-//                case 0x75:  //'u'
-//                    putChar(0xa4);
-//                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-//                    break;
+                case 0x75:  //'u'
+                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+                    break;
 //                /*---Command from OBC---*/
 //                /*------------------------------------------------------------------*/
                 case 0x63: /*'c':CW Downlink*/
-//                    putChar(0xa5);
-//                    commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
+//                    commandSwitchCWDownlink(&RXDATA[2]);
                     break;
                 case 0x66:  /*'f':FM Downlink*/
-//                    putChar(0xa6);
                     for(UBYTE i=0; i<7; i++){
                         FMdata[i] = RXDATA[i+3];
-                    }    
+                    }
                     commandSwitchFMDownlink(RXDATA[2], FMdata);
                     break;
                 case 'p':/*'p':power*/
-//                    putChar(0xa7);
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
-//                    measureDcDcTemperature();
-                    break;
-                case 0x72: /*'r':send command to RXCOBC*/
-//                    sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
-                    break;
-                    //for debug putChar only
-                case 0x80:
-                    put_ok();
+                    measureDcDcTemperature();
                     break;
                 default:
-//                    putChar(0xc8);
-//                    switchError(error_main_commandfromOBCorRXCOBC);
+                    switchError(error_main_commandfromOBCorRXCOBC);
                     put_error();
                     break;
             }
-//            putChar(0xc9);
             WriteLastCommandStatusToEEPROM(command_status);
             ReceiveFlag = NOT_RECEIVE;
-            put_lf();
         }
         /*---write CRC result 6bit 1 ---*/
 //        switchOk(error_main_crcCheck);
