@@ -37,6 +37,9 @@ void onOffFMPTT(UBYTE,UBYTE, UBYTE);
 void onOffCWKEY(UBYTE,UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE , UBYTE , UBYTE , UBYTE, UBYTE);
 void CheckNTRXsubpower(void);
+void changeInOut(UINT, UBYTE);
+void changeHighLow(UINT, UBYTE);
+void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 
 
 

@@ -143,39 +143,14 @@ void measureAllChanelADC(){
 */
 void measureDcDcTemperature() {    
     initADC();          
-    //Set LED off
-    PORTBbits.RB1 = 0;
     ADCON0bits.CHS = 0b0010;
     adcValue[0] = adc_read();  
-    putChar(0xBB);
-    putChar((UBYTE)(adcValue[0] >> 8));
-    putChar((UBYTE)(adcValue[0] & 0xff));
     //data high
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH1_addressHigh, adcValue_CH1_addressLow, (UBYTE)(adcValue[0] >> 8));     
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH1_addressHigh, adcValue_CH1_addressLow, (UBYTE)(adcValue[0] >> 8));     
     //data low
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH1_addressHigh, adcValue_CH1_addressLow + 0x01, (UBYTE)(adcValue[0] & 0xff));   
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH1_addressHigh , adcValue_CH1_addressLow + 0x01, (UBYTE)(adcValue[0] & 0xff));  
-    
-    /*--------------------------------------------------*/
-    //FIXME:[start]debug for write adc value--->successs
-    //write data to EEPROM
-//    putChar((UBYTE)(adcValue[0] >> 8));
-//    putChar((UBYTE)(adcValue[0] & 0xff));
-//    
-//    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] >> 8));  //data high
-//    putChar(ReadEEPROM(slaveaddress, high_address, low_address));
-//    
-//    high_address = high_address + 0x08;
-//    low_address = low_address + 0x08;
-//    
-//    putChar(high_address);
-//    putChar(low_address);
-//
-//    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] & 0xff)); //data low
-//    putChar(ReadEEPROM(slaveaddress, high_address, low_address));
-    //FIXME:[finish]debug for write adc value
-    /*--------------------------------------------------*/
 }
 
 /**
@@ -197,22 +172,6 @@ void measureChannel2(){
     //data low
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow+0x01, (UBYTE)(adcValue[1] & 0xff));   
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH2_addressHigh, adcValue_CH2_addressLow+0x01, (UBYTE)(adcValue[1] & 0xff));
-    put_lf();
-//    putChar(0x99);
-//    putChar(0x99);
-//    putChar(0x99);
-//    putChar(0x99);
-//    putChar(0x99);
-//    putChar(0x99);
-//    putChar(0x99);
-//    putChar(0x99);
-//    putChar((UBYTE)(adcValue[1] >> 8));
-//    putChar((UBYTE)(adcValue[1] & 0xff));
-//    putChar(ReadEEPROM(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow));
-//    putChar(ReadEEPROM(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow+0x01));
-//    putChar(ReadEEPROM(EEPROM_subaddress,adcValue_CH2_addressHigh,adcValue_CH2_addressLow));
-//    putChar(ReadEEPROM(EEPROM_subaddress,adcValue_CH2_addressHigh,adcValue_CH2_addressLow+0x01));
-    put_lf();
 }
 void measureChannel3(){
     initADC();
@@ -238,19 +197,18 @@ void measureChannel4(){
 }
 
 //process command data if the command type is 'HKdata'
-void commandSwitchHKdata(UBYTE type_sellect, UBYTE data1, UBYTE data2, UBYTE data3){ 
+void commandSwitchHKdata(UBYTE type_sellect){ 
    switch(type_sellect){    
         case 'd': //measure DC-DC temperature
             measureDcDcTemperature();
             switchOk(ok_ADC_downlinkReceivedCommand_DcDc);
             break;
         case '5': //5VBUS 
+            measureChannel2();
             switchOk(ok_ADC_downlinkReceivedCommand_5VBus);
             break;
-        case '3': //3VBUS
-            switchOk(ok_ADC_downlinkReceivedCommand_3VBus);
-            break;
         case 'C': //5V CIB
+            measureChannel4();
             switchOk(ok_ADC_downlinkReceivedCommand_5VCIB);
             break;
         case 'u': //update all HK data
@@ -264,99 +222,40 @@ void commandSwitchHKdata(UBYTE type_sellect, UBYTE data1, UBYTE data2, UBYTE dat
 }
 
 UBYTE read5VBusAndSwitchNtrxPower(void){
-//    putChar('A');
-//    putChar('A');
-//    putChar(0x0A);
-//    putChar(0x0A);
-//    putChar(0x0A);
-//    putChar(0x0A);
-//    putChar(0x0A);
-//    putChar(0x0A);
-//    putChar('\r');
-//    putChar('\n');
     UBYTE SatMode;
     UBYTE error_status = 0;   
     measureChannel2();//read 5V Bus
     UBYTE adcValue_high = ReadEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow);
     UBYTE adcValue_low = ReadEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow +1);
     UWORD adcValue = (UWORD)adcValue_high << 8 | (UWORD)adcValue_low;
-    
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar(0x11);
-//    putChar('\r');
-//    putChar('\n');
-//    putChar(adcValue_high);
-//    putChar(adcValue_low);
-//    putChar('\r');
-//    putChar('\n');
-
         if(adcValue <= ADC_Value_4V){
-//            putChar('B');
-//            putChar(0x0B);
-//            putChar(0x0B);
-//            putChar(0x0B);
-//            putChar(0x0B);
-//            putChar(0x0B);
-//            putChar('\r');
-//            putChar('\n');
             SatMode = ReadEEPROM(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow);
             SatMode = SatMode & 0xF0;
-//            putChar(SatMode);
             switch(SatMode){
                 case SatMode_Nominal:
-//                    putChar('C');
-//                    putChar(0x0C);
-//                    putChar('\r');
-//                    putChar('\n');
                     error_status = 1;
                     break;
                 case SatMode_Saving:
                 case SatMode_Survival:
-//                    putChar('D');
-//                    putChar(0x0D);
-//                    putChar('\r');
-//                    putChar('\n');
                     break;
                 default:
-//                    putChar(0x0E);
-//                    putChar('\r');
-//                    putChar('\n');
                     SatMode = ReadEEPROM(EEPROM_subaddress,satelliteMode_addressHigh,satelliteMode_addressLow);
                     SatMode = SatMode & 0xF0;
                     switch(SatMode){
                         case SatMode_Nominal:
-//                            putChar('F');
-//                            putChar('\r');
-//                            putChar('\n');
                             error_status = 1;
                             break;
                         case SatMode_Saving:
                         case SatMode_Survival:
-//                            putChar('G');
-//                            putChar('\r');
-//                            putChar('\n');
                             break;
                         default:
-//                            putChar('H');
-//                            putChar('\r');
-//                            putChar('\n');
                             onOffNTRX(1,0,0);//subPower ON
                             break;
                     }
                     break;
             }          
         }else{
-//            putChar('I');
-//            putChar('\r');
-//            putChar('\n');
             onOffNTRX(0,0,0);//subPower off
         }
-//    putChar(error_status);
-//    putChar('\r');
-//    putChar('\n');
     return error_status;
 }

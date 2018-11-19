@@ -43,11 +43,4 @@ UWORD calTime2Byte(UBYTE timeHigh, UBYTE timeLow){
     return timeBin;
 }
 
-//timer counter only getChar
-void set_timer_counter_only_getChar(UINT time){
-    timer_counter_only_getChar = time;
-}
 
-UINT get_timer_counter_only_getChar(void){
-    return timer_counter_only_getChar;
-}

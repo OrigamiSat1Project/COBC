@@ -23,7 +23,6 @@ static UBYTE rcvState = 0;           //TODO: improve readability, recieve state 
 UBYTE dPacket[PACKET_SIZE];         //whole uplink command
 UBYTE dData[DATA_SIZE];             //only information byte of uplink command
 UBYTE  dPacketCounter = 0;
-//UINT  dPacketCounter = 0;
 UBYTE dfcsHighByte, dfcsLowByte;
 
 
@@ -32,7 +31,6 @@ void waitFlag(void);
 void getData(void);
 void putAX25(void);
 UINT fcsCheck(void);
-//UBYTE readByte(void);
 
 
 // reads bit using NRZ (Non-return-to-zero space)
@@ -44,7 +42,6 @@ UINT getBit(void){
     for(UINT i=0;i<GET_BIT_WAIT_LOOP;i++){     //Loop iteration number defines waiting interval for signal to change
         if(FX614_RXD != oldBit){
             __delay_us(HALF_INTERVAL);
-//            LED_YELLOW= 1- LED_YELLOW;       //for debugging
             return 0;
         }
     }
@@ -224,55 +221,17 @@ UINT fcsCheck(void){
 //UBYTE *receiveDataPacket(void){
 void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
-
     waitFlag();
-    //XXX break by timer
-//    if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
-//    if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
-//        // putChar('F');
-//        // putChar('3');
-//        set_receive_command_counter(0,0);
-//        return;
-//    }
-
-//    putChar('w');
     getData();
-//    putChar('d');
     fcschecker = fcsCheck();
-//    putChar('f');
-
     if(fcschecker == 1){    //valid data is stored in dData
         for(UBYTE i=0; i<DATA_SIZE; i++){
             cdData[i] = dPacket[i+20];     //[dPacket]0-5:UCALL / 6:SSID / 7-12:MYCALL / 13:SSID / 14:control / 15:PID / 16-19:'ori1' / 20-52:command data(=cdData) / 53,54:FCS
         }
         dPacketCounter = 0;
         rcvState = 0;
-
-//        return cdData;
     }else{                  //the data is invalid everything gets reset and data ignored //TODO check this function by test
         dPacketCounter = 0;
         rcvState = 0;
-//        return 0x00;
     }
 }
-
-/*---for debug---*/
-// function for debugging, it prints out the receive signal
-// void putAX25(void){
-//     for(UINT i=0;i<6;i++){
-//         dPacket[i] = dPacket[i] >> 1;
-//         dPacket[i+7] = dPacket[i+7] >> 1;
-//     }
-//     for(UINT i=0;i<6;i++){
-//         putChar(dPacket[i]);
-//     }
-//     putChar('>');
-//     for(UINT i=0;i<6;i++){
-//         putChar(dPacket[i+7]);
-//     }
-//     putChar(':');
-//     for(UINT i=0;i<dPacketCounter-18;i++){
-//         putChar(dPacket[i+16]);
-//     }
-//     return;
-// }

@@ -20,7 +20,7 @@ void measureDcDcTemperature(void);
 void measureChannel2(void);
 void measureChannel3(void);
 void measureChannel4(void);
-void commandSwitchHKdata(UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchHKdata(UBYTE);
 UBYTE read5VBusAndSwitchNtrxPower(void);
 
 #endif	/* ADC_H */

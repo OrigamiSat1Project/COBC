@@ -14,6 +14,7 @@
 #include "OkError.h"
 #include "WDT.h"
 #include "UART.h"
+#include "ADC.h"
 
 /*******************************************************************************
 *Marco, Enum / Global data / Method
@@ -78,46 +79,32 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
             switch(commandData[3]){         //Process command type
                 case 'm':/*get satellite mode*/
 //                    downlinkFMSignal(EEPROM_address, satelliteMode_addressHigh, satelliteMode_addressLow, commandData[4], satelliteMode_DataSize);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                 case 'C':/*downlink CW Signal*/
                     commandSwitchCWDownlink(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9], commandData[10]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'f':/*downlink FM Signal*/
                     for(UBYTE i=5;i<19; i++){
                         commandData5_19[i-5] = commandData[i];
                     }
                     commandSwitchFMDownlink(commandData[4],commandData5_19);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'p': /*power supply*/
                     commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
-                    break;
-                case 'n': /*radio unit*/
-    //                commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'i':/*I2C*/
-                    //commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
                     break;
                 case 'u':/*UART*/
                     commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'w':/*WDT (watch dog timer)*/
-    //                commandWDT(commandData[4], commandData[5], commandData[6]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    WDTwait();
                     break;
                 case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
-                    //TODO: write function directly here or in MPU.c
-//                   commandSwitchHKdata(commandData[4], commandData[5], commandData[6], commandData[7]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+                   commandSwitchHKdata(commandData[4]);
                     break;
                 case 't':/*internal processing*/
-    //                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
                     break;
                 default:
                     switchError(error_FMCW_downlinkReceivedCommand);
@@ -301,87 +288,6 @@ void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_ad
  * [Interval between moji]                     MIDDLE_DELAYTIMES_FOR_MORSE (=3ton)
  * [Interval between tango]                    LONG_DELAYTIMES_FOR_MORSE (=7ton)
 ******************************************************************************/
-/*
- *  send morse 'V' for test
- *  arg     : void
- *  return  : send morse singnal 'V' (ton-ton-ton-tu)
- */
-// void Morse_V(void){
-//     CWKEY = CWHIGH;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-//     CWKEY = CWHIGH;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-//     CWKEY = CWHIGH;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-//     CWKEY = CWHIGH;
-//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-// }
-
-/*
- *  send morse 'Y' for test
- *  arg     : void
- *  return  : send morse singnal 'Y' (tu-ton-tu-tu)
- */
-// void Morse_Y(void){
-//     CWKEY = CWHIGH;
-//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-//     CWKEY = CWHIGH;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-//     CWKEY = CWHIGH;
-//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-//     CWKEY = CWHIGH;
-//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-// }
-
-/*
- *  send morse 'J' for test
- *  arg     : void
- *  return  : send morse singnal 'J' (ton-tu-tu-tu)
- */
-// void Morse_J(void){
-//     CWKEY = CWHIGH;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-//     CWKEY = CWHIGH;
-//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-//     CWKEY = CWHIGH;
-//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-//     CWKEY = CWHIGH;
-//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-//     CWKEY = CWLOW;
-//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-// }
-
 
 /*
  *  translate char to morse signal
@@ -743,55 +649,55 @@ void HKDownlinkFR2(void){
 }
 
 
-void HK_test_setting(void){
+void Init_HK(void){
     sendPulseWDT();
         UBYTE DATA[2];
-    //Sattellite Mode
-    WriteOneByteToEEPROM(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow,0x00);
-    //battery Temperature
-    DATA[0] = 0x00; DATA[1] = 0x00;
-    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow,DATA,0x00);
-    //latest execution command ID(RX)
-    WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID,0x00);
-    //command error status(RX)
-    WriteOneByteToEEPROM(EEPROM_address,RXCOBC_CommandErrorStatus_addressHigh,RXCOBC_CommandErrorStatus_addressLow,0x00);
-//    //latest execution command ID(TX)
-    WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID,0x00);
-//    //command error status(TX)
-    WriteOneByteToEEPROM(EEPROM_address,TXCOBC_CommandErrorStatus_addressHigh,TXCOBC_CommandErrorStatus_addressLow,0x00);
-//    //battery Voltage (CIB)
-    WriteOneByteToEEPROM(EEPROM_address,BatteryVoltageCIB_addressHigh,BatteryVoltageCIB_addressLow,0x00);
-//    //5VBus Voltage
-    DATA[0] = 0x00;  DATA[1] = 0x00;
-    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA,2);
-
-//    //3V3Bus Voltage
-    DATA[0] = 0x00; DATA[1] = 0x00;
-    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH3_addressHigh,adcValue_CH3_addressLow,DATA,2);
-//    //battery Voltage (OBC)
-    WriteOneByteToEEPROM(EEPROM_address,BatteryVoltageOBC_addressHigh,BatteryVoltageOBC_addressLow,0x00);
-//    //latest execution command ID (OBC)
-    WriteOneByteToEEPROM(EEPROM_address,LatestExcutionCommandID_addressHigh,LatestExcutionCommandID_addressLow,0x00);
-//    //command error status(OBC)
-    WriteOneByteToEEPROM(EEPROM_address,OBC_CommandErrorStatus_addressHigh,OBC_CommandErrorStatus_addressLow,0x00);
-//    //Battery Current
-    DATA[0] = 0x00; DATA[1] = 0x00;
-    WriteToEEPROMWithDataSize(EEPROM_address,BatteryCurrent_addressHigh,BatteryCurrent_addressLow,DATA,2);
-//    //EPS switch status
-    DATA[0] = 0x00; DATA[1] = 0x00;
-    WriteToEEPROMWithDataSize(EEPROM_address,EpsSwitchStatus_addressHigh,EpsSwitchStatus_addressLow,DATA,2);
-//    //TX temperature
-    WriteOneByteToEEPROM(EEPROM_address,TxTemperature_addressHigh,TxTemperature_addressLow,0x00);
-//    //RX temperature
-    WriteOneByteToEEPROM(EEPROM_address,RxTemperature_addressHigh,RxTemperature_addressLow,0x00);
-    sendPulseWDT();
+//    //Sattellite Mode
+//    WriteOneByteToEEPROM(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow,0x00);
+//    //battery Temperature
+//    DATA[0] = 0x00; DATA[1] = 0x00;
+//    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow,DATA,0x00);
+//    //latest execution command ID(RX)
+//    WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID,0x00);
+//    //command error status(RX)
+//    WriteOneByteToEEPROM(EEPROM_address,RXCOBC_CommandErrorStatus_addressHigh,RXCOBC_CommandErrorStatus_addressLow,0x00);
+////    //latest execution command ID(TX)
+//    WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID,0x00);
+////    //command error status(TX)
+//    WriteOneByteToEEPROM(EEPROM_address,TXCOBC_CommandErrorStatus_addressHigh,TXCOBC_CommandErrorStatus_addressLow,0x00);
+////    //battery Voltage (CIB)
+//    WriteOneByteToEEPROM(EEPROM_address,BatteryVoltageCIB_addressHigh,BatteryVoltageCIB_addressLow,0x00);
+////    //5VBus Voltage
+//    DATA[0] = 0x00;  DATA[1] = 0x00;
+//    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA,2);
+//
+////    //3V3Bus Voltage
+//    DATA[0] = 0x00; DATA[1] = 0x00;
+//    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH3_addressHigh,adcValue_CH3_addressLow,DATA,2);
+////    //battery Voltage (OBC)
+//    WriteOneByteToEEPROM(EEPROM_address,BatteryVoltageOBC_addressHigh,BatteryVoltageOBC_addressLow,0x00);
+////    //latest execution command ID (OBC)
+//    WriteOneByteToEEPROM(EEPROM_address,LatestExcutionCommandID_addressHigh,LatestExcutionCommandID_addressLow,0x00);
+////    //command error status(OBC)
+//    WriteOneByteToEEPROM(EEPROM_address,OBC_CommandErrorStatus_addressHigh,OBC_CommandErrorStatus_addressLow,0x00);
+////    //Battery Current
+//    DATA[0] = 0x00; DATA[1] = 0x00;
+//    WriteToEEPROMWithDataSize(EEPROM_address,BatteryCurrent_addressHigh,BatteryCurrent_addressLow,DATA,2);
+////    //EPS switch status
+//    DATA[0] = 0x00; DATA[1] = 0x00;
+//    WriteToEEPROMWithDataSize(EEPROM_address,EpsSwitchStatus_addressHigh,EpsSwitchStatus_addressLow,DATA,2);
+////    //TX temperature
+//    WriteOneByteToEEPROM(EEPROM_address,TxTemperature_addressHigh,TxTemperature_addressLow,0x00);
+////    //RX temperature
+//    WriteOneByteToEEPROM(EEPROM_address,RxTemperature_addressHigh,RxTemperature_addressLow,0x00);
+//    sendPulseWDT();
     
     //FR2
     WriteOneByteToEEPROM(EEPROM_address,FreeData1_slaveaddress_addressHigh,FreeData1_slaveaddress_addressLow,EEPROM_address);
-    WriteOneByteToEEPROM(EEPROM_address,FreeData1Highaddress_addressHigh,FreeData1Highaddress_addressLow,0x80);
-    WriteOneByteToEEPROM(EEPROM_address,FreeData1Lowaddress_addressHigh,FreeData1Lowaddress_addressLow,0x80);
+    WriteOneByteToEEPROM(EEPROM_address,FreeData1Highaddress_addressHigh,FreeData1Highaddress_addressLow,MeltingStatus_addressHigh);
+    WriteOneByteToEEPROM(EEPROM_address,FreeData1Lowaddress_addressHigh,FreeData1Lowaddress_addressLow,MeltingStatus_addressLow);
     
     WriteOneByteToEEPROM(EEPROM_address,FreeData2_slaveaddress_addressHigh,FreeData2_slaveaddress_addressLow,EEPROM_address);
-    WriteOneByteToEEPROM(EEPROM_address,FreeData2Highaddress_addressHigh,FreeData2Highaddress_addressLow,BatteryVoltageCIB_addressHigh);
-    WriteOneByteToEEPROM(EEPROM_address,FreeData2Lowaddress_addressHigh,FreeData2Lowaddress_addressLow,BatteryVoltageCIB_addressLow+0x01);
+    WriteOneByteToEEPROM(EEPROM_address,FreeData2Highaddress_addressHigh,FreeData2Highaddress_addressLow,NTRX_subpower_status_addressHigh);
+    WriteOneByteToEEPROM(EEPROM_address,FreeData2Lowaddress_addressHigh,FreeData2Lowaddress_addressLow,NTRX_subpower_status_addressLow);
 }

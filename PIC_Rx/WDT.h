@@ -15,8 +15,6 @@
 #define LOW  0
 
 void InitWDT(void);
-void commandWDT(UBYTE);
-void resetWDT();
 void sendPulseWDT(void);
 void WDTwait(void);
 

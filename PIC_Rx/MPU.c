@@ -24,47 +24,21 @@ void InitMPU(void)
     PORTD  = 0x00;
     PORTE  = 0x00;
 	
-	//AnalogorDigital Setting(All Digital)
-//	ANSEL  = 0x00;	
-//	ANSELH = 0x00;	
-
 	//Port I/O Setting 
     //       0b76543210
 	TRISA  = 0b10000000;
 	TRISB  = 0b00100000;
     TRISC  = 0b10011000;
-//    TRISD  = 0b00000000;
     TRISD  = 0b10000000;
     TRISE  = 0b00000000;	
 
 	//Port Initial Value Setting	
 	PORTA  = 0x00;
 	PORTB  = 0x00; //WDT on
-//    PORTB  = 0b00001000;  //WDT off
 	PORTC  = 0x00;
     PORTD  = 0x00;
     PORTE  = 0x00;
 }
-
-/*******************************************************************************
-*LED ON/OFF
-******************************************************************************/
-/*---for debug---*/
-// void LEDOnOff(void){
-//     LED_Y_ON();
-//     __delay_us(HALF_INTERVAL);
-//     LED_Y_OFF();
-//     __delay_us(HALF_INTERVAL);
-// }
-
-// void debugLEDyellow(void){
-//     if(LED_YELLOW == HIGH){
-//         LED_Y_OFF();
-//     }else{
-//         LED_Y_ON();
-//     }
-// }
-
 
 //Used to switch PIN to the opposite status(high/low)
 //bit invertState(bit pinState){
@@ -154,32 +128,12 @@ void switchPowerSpply1pin(UBYTE target_select, UBYTE onOff, UBYTE timeHigh, UBYT
             switchError(error_MPU_switchPowerSpply1pin);
             break;
     }  
-    //TODO:add function to change OnOff time
 }
 
 /*******************************************************************************
 *Swticch Power EPS 
 ******************************************************************************/
-//void testEPSonoff(void){
-//    sendPulseWDT();    
-//    putChar('A');
-//    killEPS();
-//    putChar('B');
-//    resetEPS();
-//    delay_s(2);
-//    putChar('C');
-//    onEPS();
-//    putChar('D');
-//    resetEPS();
-//    delay_s(2);
-//    sendPulseWDT();    
-//}
-
 void killEPS(void){
-//    putChar('K');
-//    putChar('I');
-//    putChar('L');
-//    putChar('L');
     sendPulseWDT();
     SEP_SW = HIGH;     //EPS off -> 5VBUS off
     RBF_SW = LOW;
@@ -218,51 +172,6 @@ void resetEPS(void){
  *	XXX      :   add function to change OnOff time
  */
 void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){  
-    /*-------------------------------------------------------*/
-    //FIXME:for debug to test switch start
-//     if ( onOff == 0x00 ){        
-//             putChar(0xA0);
-//             SEP_SW = HIGH;
-//             RBF_SW = HIGH;
-//             putChar(0xA0);
-//     } else {                     
-//             putChar(0xA1);
-//             SEP_SW = LOW;
-//             RBF_SW = LOW;
-//             putChar(0xA1);
-//     }
-    
-//     if(timeHigh == 0x00 && timeLow == 0x00){     
-//         putChar(0xB0);
-//         putChar(0xB0);
-// //    }else if(timeLow == 0x00){                    
-// //        __delay_s(timeHigh);                     
-// //        SEP_SW =invertState(onOff);
-// //        RBF_SW =invertState(onOff);
-// //        putChar(0xFF);
-// //        putChar(timeHigh);
-// //        putChar(0x0c);
-//     }else {        
-//         putChar(0xB1);
-//         putChar(0xB1);
-//         UWORD wait_time;
-//         wait_time = (timeHigh << 8 | timeLow);
-//         delay_s(wait_time);
-//         putChar(0xB2);
-//         putChar(0xB2);
-//         delay_ms(1500);
-//         SEP_SW =invertState(onOff);
-//         RBF_SW =invertState(onOff);
-//         putChar(0xB3);
-//         putChar(0xB3);
-//         delay_ms(100);
-//         putChar(0xB4);
-//         putChar(0xB4);
-//         delay_ms(100);
-//     }
-    //FIXME:for debug to test switch finish
-    /*-------------------------------------------------------*/
-
     if ( onOff == 0x00 ){        //EPS off
             SEP_SW = HIGH;
             RBF_SW = LOW;
@@ -274,7 +183,7 @@ void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){
     }
     
     if(timeHigh == 0x00 && timeLow == 0x00){   
-        //////////////////
+
     }else {        
         UWORD wait_time;
         wait_time = (timeHigh << 8 | timeLow);
@@ -382,24 +291,6 @@ void changeHighLow(UINT pin_select_command, UBYTE highLow){
     WriteOneByteToMainAndSubB0EEPROM(highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
 }
 
-void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
-    switch (XTAL_FREQUENCY_TYPE){                // Clock frequency
-        case 'h':
-            //_XTAL_FREQ = _XTAL_FREQ_HIGH;
-            break;
-        case 'm':
-            //_XTAL_FREQ = _XTAL_FREQ_MIDDLE;  //10M[Hz]
-            break;
-        case 'l':
-            //_XTAL_FREQ = _XTAL_FREQ_LOW;
-            break;
-        default:
-            //TODO:add error
-            break;
-    }
-}
-
-
 //process command data if the command type is 'power supply'
 void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //times are given in ms
     switch(command){    
@@ -426,16 +317,10 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
 void commandSwitchIntProcess(UBYTE command, UBYTE data1, UBYTE data2){ 
     switch(command){    
         case 'i': //change in/out
-            //TODO: write method for change in/out---finish
             changeInOut(data1, data2);
             break;
         case 'h': //change high/low
-            //TODO: write method for change high/low---finish
             changeHighLow(data1, data2);     
-            break;
-        case 'o': //change frequency
-            //TODO: write method for change frequency---not finish
-            changeXtalFrequency(data1);
             break;
         default:
             switchError(error_MPU_commandSwitchIntProcess);

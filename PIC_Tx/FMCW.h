@@ -62,13 +62,7 @@ void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UI
 void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
 void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE, UBYTE);
 
-/*for debug*/
-void Morse_V(void);
-void Morse_Y(void);
-void Morse_J(void);
-
-
-void HK_test_setting(void);//for debug
+void Init_HK(void);//for debug
 
 #endif	/* FMCW_H */
 

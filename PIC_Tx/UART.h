@@ -22,7 +22,6 @@ void Init_SERIAL(void);
 UBYTE getChar(void);
 void putChar(UBYTE);                  // Writes a character to the serial port
 void putString(UBYTE *);
-void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
 /*Method*/
 void changeInterruptPermission(UBYTE, UBYTE);
@@ -31,16 +30,9 @@ void put_ok(void);
 void put_lf(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void UARTbufferClear(void);
-void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
-void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
 
 /*Switch*/
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
-
-//UBYTE get3byte(void);
-//void putstr(UBYTE *);
-//void putcrlf(void);
-//void NM_waddress(UBYTE, UBYTE, UBYTE);
 
 #ifdef	__cplusplus
 }

@@ -38,10 +38,7 @@ void switchError(UBYTE action_select){
     WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_Error, LowAddress_for_Error, error_data);
     
     //for debug
-    put_error();
-//    putChar(error_data[0]);
-//    putChar(action_select);
-    
+//    put_error(); 
     //TODO:need debug
     //only FM downlink? need CW?
 //    UBYTE downlinlTimes = 36;

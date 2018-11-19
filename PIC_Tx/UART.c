@@ -9,11 +9,7 @@
 void Init_SERIAL(void){
 
     SPBRG  = 10;                   // boudrate is  14400 bps at BRGH = 0
-//    SPBRG  = 4;                    // boudrate is 115200 bps at BRGH = 1
-//    INTCONbits.GIE    = 1;
-//    INTCONbits.PEIE   = 1;
     BRGH   = 0;                   	// Fast baudrate
-//    BRGH   = 1;                   	// slow baudrate
 	SYNC   = 0;						// Asynchronous
 	SPEN   = 1;						// Enable serial port pins
 	CREN   = 1;						// Enable reception
@@ -22,9 +18,6 @@ void Init_SERIAL(void){
     PIR1    = 0b00100000;                     // RX frag Reset
     PIE1    = 0b00101000;
     PIE2    = 0b00000000;
-    
-//	PIE1bits.TXIE   = 0;						// Disble tx interrupts
-//	PIE1bits.RCIE   = 1;						// Enable rx interrupts
 	TX9    = 0;						// 8-bit transmission
 	RX9    = 0;						// 8-bit reception
 	TXEN   = 0;						// Reset transmitter
@@ -32,7 +25,7 @@ void Init_SERIAL(void){
 
 }
 
-UBYTE getChar(void){                //TODO: add time out feature
+UBYTE getChar(void){              
     /**/
 	if(FERR || OERR) // If over run error, then reset the receiver
 	{
@@ -42,13 +35,11 @@ UBYTE getChar(void){                //TODO: add time out feature
     }
     
     UINT break_counter = 0;
-    
-//    while(RCIF != 1);
+
     
 	while(!RCIF){
         break_counter ++;
         if(break_counter >= 2000){
-//            putChar(0xbb);
             NOP();
             break_counter = 0;
             break;
@@ -70,24 +61,6 @@ void putString(UBYTE *x)
         x++;
     }
 }
-
-void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4, UBYTE Parameter5, UBYTE Parameter6){
-    UBYTE Command[10];
-    UWORD CRC;
-    Command[0] = TaskTarget;
-    Command[1] = CommandType;
-    Command[2] = Parameter1;
-    Command[3] = Parameter2;
-    Command[4] = Parameter3;
-    Command[5] = Parameter4;
-    Command[6] = Parameter5;
-    Command[7] = Parameter6;
-    CRC = crc16(0, Command, 8);
-    Command[8] = CRC >> 8;
-    Command[9] = CRC & 0x00FF;
-    putString(Command);
-}
-
 /*
  *	change Interrupt Permission
  *	arg      :   GIE_status, PEIE_status
@@ -155,46 +128,10 @@ void UARTbufferClear(void){
     RCREG = 0;   //USART Receive Register
 }
 
-void readEEPROMandUARTwrite(UBYTE slaveAddress, UBYTE highAddress, UBYTE lowAddress, UBYTE *ReadData, UBYTE dataLength){
-    UWORD CRC;
-    ReadDataFromEEPROM(slaveAddress, highAddress, lowAddress, ReadData, dataLength);
-//    for(UBYTE i=0;i<dataLength;i++){
-//        putChar(ReadData[i]);
-//        NOP();
-//    }
-    CRC = crc16(0, ReadData, dataLength);
-//    putChar(CRC >> 8);
-    NOP();
-//    putChar(CRC & 0x00FF);
-}
-
-void UARTwrite5byte(UBYTE data1,UBYTE data2,UBYTE data3,UBYTE data4,UBYTE data5){
-    UBYTE data[7];
-    UWORD CRC;
-    data[0] = data1;
-    data[1] = data2;
-    data[2] = data3;
-    data[3] = data4;
-    data[4] = data5;
-    CRC = crc16(0, data, 5);
-    data[5] = CRC >> 8;
-    data[6] = CRC & 0x00FF;
-//    for(UBYTE i=0; i<7; i++){
-//        putChar(data[i]);
-//    }
-}
-
 //process command data if the command type is UART
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){
     UBYTE ReadData[];
     switch(command){    
-        case 'w': //UART write
-            UARTwrite5byte(data1,data2,data3,data4,data5);      
-            break;
-        case 'e': //read EEPROM and send datas to RXCOBC
-            //data1:slave address / data2:high address / data3:low address / data4:data size
-            readEEPROMandUARTwrite(data1, data2, data3, ReadData, data4);
-            break;
         case 'c': //UART buffer clear
             UARTbufferClear();
             break;

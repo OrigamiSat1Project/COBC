@@ -29,7 +29,7 @@ USLONG FMRX_Nprg = 24916;
 void FMTX(int Nref, USLONG Nprg);
 void CWTX(int Nref, USLONG Nprg);
 void FMRX(int Nref, USLONG Nprg);
-void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchFMCW(UBYTE);
 void setNref(UBYTE unitID, int Nref);
 
 /*unused function declaration*/

@@ -281,21 +281,10 @@ void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data){
     switch(command){
         case 'w': //I2C write
-            I2CMasterWrite(slaveAdress);//TODO: check if method 'I2C write' is correct
-            I2CMasterWrite(dataHigh);
-            I2CMasterWrite(dataLow);
+            
             break;
         case 'r': //I2C read
-            dataHigh = I2CMasterRead(slaveAdress);//TODO: check if method 'I2C read' is correct, especially do the pointers work as intended
-            dataLow = I2CMasterRead(slaveAdress); //TODO: what should happen with read in data?
-            //TODO: write data to EEPROM
-            //TODO: send Address where it is written to TXCOBC
-            break;
-        case 't': //I2C test
-            //TODO: write method for I2C test (OBC and TXCOBC)
-            //TODO: write test data to EEPROM
-            //TODO: read EEPROM
-            //TODO: send EEPROM address to TXCOBC
+            
             break;
         case 'c': //I2C buffer clear
             //TODO: write method for I2C buffer clear---finish?

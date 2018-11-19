@@ -38,6 +38,8 @@ void interrupt InterReceiver(void);
 #pragma config BOR4V    = BOR40V        // Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
 #pragma config WRT      = OFF           // Flash Program Memory Self Write Enable bits (Write protection off)
 
+#define MELTING_FINISH        4
+#define MELTING_FINISH_FLAG 0b01111110
 #define commandSize 10
 UBYTE RXDATA[commandSize];
 UBYTE STOCKDATA[3][commandSize];
@@ -48,7 +50,6 @@ void interrupt InterReceiver(void){
     interruptI2C();
     if(RCIF==1){
         UBYTE tmp;
-//        putChar('U');
         tmp = getChar();
         if(tmp != 'g' && tmp != 't') return;
         
@@ -58,18 +59,12 @@ void interrupt InterReceiver(void){
             if(STOCKDATA[j][0] != 'g' && STOCKDATA[j][0] != 't'){
                 STOCKDATA[j][0] = tmp;
                 for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[j][i] = getChar();
-//                put_lf();
-//                for(UBYTE i=0 ;i< commandSize; i++) putChar(STOCKDATA[j][i]);
-//                put_lf();
                 return;
             }
         }
 
         STOCKDATA[0][0] = tmp;
         for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[0][i] = getChar();
-//        put_lf();
-//        for(UBYTE i=0 ;i< commandSize; i++) putChar(RXDATA[i]);
-//        put_lf();
         return;
     }
 }
@@ -81,20 +76,26 @@ void main(void) {
     InitI2CMaster(I2Cbps);
     Init_SERIAL();
     Init_WDT();
+    Init_HK();
     sendPulseWDT();
-    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
-//    putChar('S');
-//    putChar(0xF0);
-//    put_lf();
+    delay_s(TURN_ON_WAIT_TIME);   
 
-    HK_test_setting();
-//    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
-//    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
-//
+    UBYTE melting_status[2] = {0x00};
+    melting_status[0] = checkMeltingStatus(EEPROM_address);
+    melting_status[1] = checkMeltingStatus(EEPROM_subaddress);
+    if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {  //before melting                                                                           //before melting
+        /*---200s ( 50s * 4times)---*/
+        for(UBYTE i=0; i<4; i++){
+            /*---wait 50s---*/
+            sendPulseWDT();
+            for(UBYTE i=0; i<10; i++){
+                delay_s(5);
+                sendPulseWDT();
+            }
+        }
+    }                  
+     
     while(1){
-//        put_lf();
-        putChar(0xE1);
-        put_lf();
         sendPulseWDT();
 
         measureAllChanelADC();
@@ -106,10 +107,7 @@ void main(void) {
 
         CheckNTRXsubpower();
         
-        putChar(0xE2);
         HKDownlink();
-        putChar(0xE3);
-        put_lf();
 
 
         //======================================================================
@@ -119,9 +117,6 @@ void main(void) {
             if(STOCKDATA[j][0] == 'g' || STOCKDATA[j][0] == 't'){
                 for(UINT i=0; i<commandSize; i++) RXDATA[i] = STOCKDATA[j][i];
                 for(UINT i=0; i<commandSize; i++) STOCKDATA[j][i] = 0;;
-//                if(j == 0) putChar(0xe0);
-//                if(j == 1) putChar(0xe1);
-//                if(j == 2) putChar(0xe2);
                 ReceiveFlag = CORRECT_RECEIVE;
                 break;
             }
@@ -129,11 +124,9 @@ void main(void) {
 
         if(ReceiveFlag == CORRECT_RECEIVE){
             put_lf();
-//            putChar(0xbb);
-            for(UBYTE i=0; i<10 ; i++){
-                putChar(RXDATA[i]);
-            }
-            put_lf();
+//            for(UBYTE i=0; i<10 ; i++){
+//                putChar(RXDATA[i]);
+//            }
             UBYTE command_ID = 0x00;
             UBYTE command_status = 0x00;
             UBYTE ID_add_high = 0x00;
@@ -142,23 +135,16 @@ void main(void) {
             //Calculate Address for CRCcheck byte
             ID_add_high   = RXDATA[3];
             ID_add_low    = RXDATA[4] + OffSet_for_CommandID;
-//            putChar(0xc4);
-//            putChar(ID_add_high);
-//            putChar(ID_add_low);
 
             //Read Command ID byte from EEPROM
             if(RXDATA[0] == 'g'){
                 command_ID = ReadEEPROM(RXDATA[2], ID_add_high, ID_add_low);
-//                putChar(0xc5);
-//                putChar(command_ID);
                 WriteLastCommandIdToEEPROM(command_ID);
                 WriteLastCommandStatusToEEPROM(UNEXECUTED);
                 if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
                     //Write status to EEPROM
                     WriteLastCommandStatusToEEPROM(error_main_crcCheck);
                     ReceiveFlag = UNCORRECT_RECEIVE;
-//                    putChar(0xc6);
-//                    put_lf();
                     continue;
                 }
             }
@@ -176,43 +162,33 @@ void main(void) {
                 /*---Command from RXCOBC---*/
                 /*------------------------------------------------------------------*/
                 case 0x75:  //'u'
-//                    putChar(0xa4);
 //                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
                     break;
 //                /*---Command from OBC---*/
 //                /*------------------------------------------------------------------*/
                 case 0x63: /*'c':CW Downlink*/
-//                    putChar(0xa5);
-//                    commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
+                    commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
                     break;
                 case 0x66:  /*'f':FM Downlink*/
-//                    putChar(0xa6);
                     for(UBYTE i=0; i<7; i++){
                         FMdata[i] = RXDATA[i+3];
                     }    
                     commandSwitchFMDownlink(RXDATA[2], FMdata);
                     break;
                 case 'p':/*'p':power*/
-                    putChar(0xa7);
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
-//                    measureDcDcTemperature();
+                    measureDcDcTemperature();
                     break;
-                case 0x72: /*'r':send command to RXCOBC*/
-//                    sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
-                    break;
-                    //for debug putChar only
                 case 0x80:
                     put_ok();
                     break;
                 default:
-//                    putChar(0xc8);
-//                    switchError(error_main_commandfromOBCorRXCOBC);
+                    switchError(error_main_commandfromOBCorRXCOBC);
                     put_error();
                     break;
             }
-//            putChar(0xc9);
             WriteLastCommandStatusToEEPROM(command_status);
             ReceiveFlag = NOT_RECEIVE;
             put_lf();

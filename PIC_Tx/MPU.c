@@ -22,43 +22,25 @@ void Init_MPU(void)
 	PORTA  = 0x00;
 	PORTB  = 0x00;
 	PORTC  = 0x00;
-    //PORTD  = 0x00;
     PORTE  = 0x00;
 	
 	//AnalogorDigital Setting(All Digital)
-	ANSEL  = 0x00;	//AD??¿½?¿½Ý’ï¿½
-	ANSELH = 0x00;	//AD??¿½?¿½Ý’ï¿½
+	ANSEL  = 0x00;
+	ANSELH = 0x00;
 	
 	//Port I/O Setting 
     //       0b76543210
 	TRISA  = 0b10000000;
 	TRISB  = 0b00010000;
     TRISC  = 0b01011100;
-    //TRISD  = 0b00000000;
     TRISE  = 0b00000000;	
 
 	//Port Initial Value Setting	
-	PORTA  = 0x00;          //WDT on
-//    PORTA  = 0b00000010;    //WDT off   //FIXME: for debug !!!!
+	PORTA  = 0x00;
 	PORTB  = 0x00;
 	PORTC  = 0x00;
-    //PORTD  = 0x00;
     PORTE  = 0x00;
 }
-
-//void led_onoff(void){
-//    ledy_on();
-//    __delay_us(espan);
-//    ledy_off();
-//    __delay_us(espan);
-//}
-//void debug_ledy(void){
-//    if(led_yellow == high){
-//        ledy_off();
-//    }else{
-//        ledy_on();
-//    }
-//}
 
 //Used to switch PIN to the opposite status(high/low)
 //bit invertState(bit pinState){
@@ -81,7 +63,6 @@ void onOffHEATER(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if(timeHigh == 0x00 && timeLow == 0x00){ 
     }else {        
         UWORD wait_time;
-        // wait_time = (UWORD)((timeHigh << 8) | timeLow);
         wait_time = calTime2Byte(timeHigh, timeLow);
         delay_ms(wait_time);
         HEATER =invertState(onOff);
@@ -100,7 +81,6 @@ void onOffNTRX(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     }else {        
         UWORD wait_time;
         wait_time = calTime2Byte(timeHigh, timeLow);
-        // wait_time = (timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         NTRX =invertState(onOff);
     }
@@ -118,7 +98,6 @@ void onOff5R8GSubPower(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     }else {        
         UWORD wait_time;
         wait_time = calTime2Byte(timeHigh, timeLow);
-        // wait_time = (timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         SW_5R8G =invertState(onOff);
     }
@@ -130,33 +109,23 @@ void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
 /********************************************************/    
 //melting program!! Be careful to write program to FM!!!!!
 /********************************************************/
-    
+//    
 //    if ( onOff == 0x00 ){        
 ////            WIRE_CUTTER = low;
-//            putChar(0xd1);
 //    } else {                     
 ////            WIRE_CUTTER = high;
-//            putChar(0xd2);
 //    }
 //
 //    if(timeHigh == 0x00 && timeLow == 0x00){
-//        putChar(0xd3);
 //    }else {        
 //        UWORD wait_time = 0;
 //        wait_time = calTime2Byte(timeHigh, timeLow);
-//        putChar(0xd4);
 //
 //        if(wait_time>MELTING_TIME_MAX){
 //            wait_time = MELTING_TIME_DEFAULT;
-//            putChar(0xd5);
-//        } else {
-//            putChar(0xd6);
-//        }
-//        
-//        putChar(0xd7);
+//        } else {}
 //        delay_ms(wait_time);
-//        WIRE_CUTTER =invertState(onOff);
-//        putChar(0xd8);
+////        WIRE_CUTTER =invertState(onOff);
 //    }
 }
 
@@ -179,14 +148,11 @@ void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE m
   
     //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
     if((main_melting_status_cal_result < MELTING_FINISH)&&(sub_melting_status_cal_result < MELTING_FINISH)){ 
-//        putChar(0xb1);
         for(UBYTE i=0; i<meltingTimes; i++){    
-//            putChar(0xb2);
             cutWire(onOff, timeHigh, timeLow);
             delay_s(WIRE_CUT_INTERVAL);
         }
     } else {
-//        putChar(0xb3);
         //already melting finishs
     }
 }
@@ -203,7 +169,6 @@ void onOffTXWDT(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     }else {        
         UWORD wait_time;
         wait_time = calTime2Byte(timeHigh, timeLow);
-        // wait_time = (timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         WDT_POWER =invertState(onOff);
     }
@@ -221,7 +186,6 @@ void onOffFMPTT(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     }else {        
         UWORD wait_time;
         wait_time = calTime2Byte(timeHigh, timeLow);
-        // wait_time = (timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         FMPTT =invertState(onOff);
     }
@@ -239,7 +203,6 @@ void onOffCWKEY(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     }else {        
         UWORD wait_time;
         wait_time = calTime2Byte(timeHigh, timeLow);
-        // wait_time = (timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         CWKEY =invertState(onOff);
     }
@@ -253,18 +216,15 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             onOffHEATER(onOff, timeHigh, timeLow);
             break;
         case 'n':   //NTRX
-            putChar(0xb0);
             onOffNTRX(onOff, timeHigh, timeLow);
             break;
         case '5': //5R8G 5V Sub Power
             onOff5R8GSubPower(onOff, timeHigh, timeLow);
             break;
         case 'a': //WIRE_CUTTER
-            putChar(0xb1);
 ////            cutWire(onOff, timeHigh, timeLow);
             break;
         case 't': //WIRE_CUTTER with times
-            putChar(0xb2);
 ////            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
             break;
         case 'w': //WDT
@@ -288,5 +248,82 @@ void CheckNTRXsubpower(void){
     }else{
         WriteOneByteToMainAndSubB0EEPROM(NTRX_subpower_status_addressHigh,NTRX_subpower_status_addressLow,NTRXsub_OFF);
     }
+}
+
+//process command data if the command type is 'internal processing'
+void commandSwitchIntProcess(UBYTE command, UBYTE data1, UBYTE data2){ 
+    switch(command){    
+        case 'i': //change in/out
+            changeInOut(data1, data2);
+            break;
+        case 'h': //change high/low
+            changeHighLow(data1, data2);     
+            break;
+        default:
+            switchError(error_MPU_commandSwitchIntProcess);
+            break;
+    }
+}
+
+void changeInOut(UINT pin_select_command, UBYTE inOut){
+    UBYTE inOutStatus_addressHigh;
+    UBYTE inOutStatus_addressLow;
+    switch (pin_select_command){
+        case 0x0a:
+            TRISA = inOut;
+            inOutStatus_addressHigh = TRISA_addressHigh;
+            inOutStatus_addressLow  = TRISA_addressLow;
+            break;
+        case 0x0b:
+            TRISB = inOut;
+            inOutStatus_addressHigh = TRISB_addressHigh;
+            inOutStatus_addressLow  = TRISB_addressLow;
+            break;
+        case 0x0c:
+            TRISC = inOut;
+            inOutStatus_addressHigh = TRISC_addressHigh;
+            inOutStatus_addressLow  = TRISC_addressLow;
+            break;
+        case 0x0e:
+            TRISE = inOut;
+            inOutStatus_addressHigh = TRISE_addressHigh;
+            inOutStatus_addressLow  = TRISE_addressLow;
+            break;
+        default:
+            switchError(error_MPU_changeInOut);
+            break;
+    }
+    WriteOneByteToMainAndSubB0EEPROM(inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
+}
+
+void changeHighLow(UINT pin_select_command, UBYTE highLow){
+    UBYTE highLowStatus_addressHigh;
+    UBYTE highLowStatus_addressLow;
+    switch (pin_select_command){
+        case 0x0a:
+            PORTA = highLow;
+            highLowStatus_addressHigh = PORTA_addressHigh;
+            highLowStatus_addressLow  = PORTA_addressLow;
+            break;
+        case 0x0b:
+            PORTB = highLow;
+            highLowStatus_addressHigh = PORTB_addressHigh;
+            highLowStatus_addressLow  = PORTB_addressLow;
+            break;
+        case 0x0c:
+            PORTC = highLow;
+            highLowStatus_addressHigh = PORTC_addressHigh;
+            highLowStatus_addressLow  = PORTC_addressLow;
+            break;
+        case 0x0e:
+            PORTE = highLow;
+            highLowStatus_addressHigh = PORTE_addressHigh;
+            highLowStatus_addressLow  = PORTE_addressLow;
+            break;
+        default:
+            switchError(error_MPU_changeHighLow);
+            break;
+    }
+    WriteOneByteToMainAndSubB0EEPROM(highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
 }
 

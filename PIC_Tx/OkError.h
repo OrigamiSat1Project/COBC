@@ -39,6 +39,9 @@
 #define error_FMCW_commandSwitchFMDownlink    0xf2
 #define error_I2C_commandSwitchI2C            0x20
 #define error_MPU_commandSwitchPowerSupply    0x90
+#define error_MPU_commandSwitchIntProcess     0x91
+#define error_MPU_changeInOut                 0x92
+#define error_MPU_changeHighLow               0x93
 #define error_main_crcCheck                   0x10
 #define error_main_commandfromOBCorRXCOBC     0x11
 
@@ -47,6 +50,7 @@ void switchOk(UBYTE);
 void switchError(UBYTE);
 void putErrorNoDownlink(UBYTE);
 UBYTE bitCalResult(UBYTE bit_input);
+UBYTE checkMeltingStatus(UBYTE e_address);
 
 #endif	/* OKERROR_H */
 

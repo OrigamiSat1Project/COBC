@@ -136,34 +136,7 @@ void setNprg(UBYTE unitID, USLONG Nprg){
         Nprg_b[i] = Nprg % 2;
         Nprg = Nprg / 2;
     }
-    
-//    //Nprg transforms decimal to binary
-//    for(UBYTE i = 0; i < 17; i++){
-//        for(UBYTE j = 0; j<5; j++){
-//            if(Nprg[j] % 2 == 0) {
-//                if(j == 4){
-//                    Nprg[j] = Nprg[j] / 2;
-//                    Nprg_b[count] = 0;
-//                    count++;
-//                }
-//                else{
-//                    Nprg[j] = Nprg[j] / 2;
-//                }
-//            }
-//            else if(Nprg[j] % 2 == 1) {
-//                if(j == 4){
-//                    Nprg[j] = Nprg[j] / 2;
-//                    Nprg_b[count] = 1;
-//                    count++;
-//                }
-//                else{
-//                    Nprg[j] = Nprg[j] / 2;
-//                    Nprg[j+1] = Nprg[j+1] + 10;
-//                }
-//            }
-//        }
-//    }
-    
+
     //Send Nprg data(binary) to communication module
     for (UBYTE i=0; i<17; i++)
     {
@@ -251,24 +224,6 @@ void setOptionRegister(UBYTE unitID){
     }
     //STB Signal
     sendSTB(unitID);
-    
-//    sendLow(unitID);//T1
-//    sendLow(unitID);//T2
-//    sendLow(unitID);//T3
-//    sendHigh(unitID);//CpT1
-//    sendHigh(unitID);//CpT2
-//    sendLow(unitID);//Cpr1
-//    sendLow(unitID);//Cpr2
-//    sendLow(unitID);//LD1
-//    sendLow(unitID);//LD2
-//    sendLow(unitID);//Tx
-//    sendHigh(unitID);//Rx
-//    
-//    //GroupCode'00' is option reg.
-//    sendLow(unitID);
-//    sendLow(unitID);   
-//    //STB Signal
-//    sendSTB(unitID);
 }
 
 /*
@@ -323,16 +278,16 @@ void setPLL(void){
 
 
 //process command data if the command type is 'radio unit'
-void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBYTE Nprg2, UBYTE Nprg3){ //TODO: specify which Nref and Nprg are which
+void commandSwitchFMCW(UBYTE command){ 
     switch(command){    
         case 't': //FM TX
-            //TODO: write method for FM TX
+            FMTX(FMTX_Nref, FMTX_Nprg);
             break;
         case 'c': //CW TX
-            //TODO: write method for CW TX
+            CWTX(CWTX_Nref, CWTX_Nprg);
             break;
         case 'f': //FM RX
-            //TODO: write method for FM RX
+            FMRX(FMRX_Nref, FMRX_Nprg);
             break;
         default:
             switchError(error_FMCW_commandSwitchFMCW);

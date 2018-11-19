@@ -56,52 +56,12 @@ void initADC(){
 
     // Set PIN A0 as analog input
     TRISAbits.TRISA0 = 1;
-
-    //Set interrupt control 
-    // PIE1bits.ADIE = 0;  //disable ADC interrupt
-    // PIR1bits.ADIF = 0;  //ADC has not completed or has not been started
     
     // Zero ADRESL and ADRESH
     ADRESL = 0;
     ADRESH = 0;
 
 }
-
-//void ReadBatVoltage() {
-//    initADC();
-//
-//    ADCON0bits.CHS0 = 0; ADCON0bits.CHS1 = 0; ADCON0bits.CHS2 = 0;
-//
-//    //Turn ADC on
-//    ADCON0bits.ADON = 1;
-//    __delay_us(100);
-//    ADCON0bits.GO = 1;
-//    while (ADCON0bits.GO_nDONE);
-//    UBYTE adcH = 0x00;
-//    UBYTE adcL = 0x00;
-//    adcH = ADRESH; adcL = ADRESL;
-//    return;
-//}
-
-// void SendBatVoltage() {
-//     initADC();
-   
-//     ADCON0bits.CHS0 = 0; ADCON0bits.CHS1 = 0; ADCON0bits.CHS2 = 0;
-    
-//     //Turn ADC on
-//     ADCON0bits.ADON = 1;
-//     __delay_us(100);
-//     ADCON0bits.GO = 1;
-//     while (ADCON0bits.GO_nDONE);
-//     UBYTE adcH = 0x00;
-//     UBYTE adcL = 0x00;
-//     adcH = ADRESH; adcL = ADRESL;
-        
-//     putChar('A');
-//     putChar('N');
-//     putChar(adcH); putChar(adcL);
-//     return;
-// }
 
 void ReadBatVoltageWithPointer(UBYTE *bat_voltage){
     initADC();

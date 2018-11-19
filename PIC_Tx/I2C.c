@@ -7,9 +7,6 @@
 #include "OkError.h"
 
 #define _XTAL_FREQ 10000000
-//UBYTE EEPROMData[16];
-//UINT EEPROMDataLength;
-
 
 int AckCheck;
 int CollisionCheck;
@@ -239,35 +236,6 @@ UBYTE ReadEEPROM(UBYTE address,UBYTE high_address,UBYTE low_address){
     return dat;
 }
 
-//TODO:need debug
-//void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UBYTE *EEPROMDataLength){
-//    UBYTE Address = (UBYTE)(Address7Bytes << 1);
-//    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
-//    I2CMasterStart();                       //Start condition
-//    I2CMasterWrite(Address);                //7 bit address + Write
-//    I2CMasterWrite(high_address);           //Adress High Byte
-//    I2CMasterWrite(low_address);            //Adress Low Byte
-//    I2CMasterRepeatedStart();               //Restart condition
-//
-//    I2CMasterWrite(ReadAddress);            //7 bit address + Read
-//    for (*EEPROMDataLength = 0; ReadData[*EEPROMDataLength]!= I2Cnull; *EEPROMDataLength++);
-//    for(UINT i = 0; i < *EEPROMDataLength; i++){
-//        ReadData[i] = I2CMasterRead(1);     //Read + Acknowledge
-//    }
-//    ReadData[*EEPROMDataLength] = I2CMasterRead(0);
-//    I2CMasterStop();          //Stop condition
-//
-//    //for denbugging
-//    /*
-//    for(UINT j = 0; j < *EEPROMDataLength; j++){
-//    //putch(ReadData[0]);
-//    //for(UINT j = 0; j < 5; j++){
-//        putch(ReadData[j]);
-//    }
-//    putcrlf();*/
-//    __delay_ms(200);
-//}
-
 //process command data if the command type is 'I2C'
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *dataLow){
     switch(command){
@@ -281,12 +249,6 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
 //            dataLow = I2CMasterRead(slaveAdress); //TODO: what should happen with read in data?
             //TODO: write data to EEPROM
             //TODO: send Address where it is written to TXCOBC
-            break;
-        case 't': //I2C test
-            //TODO: write method for I2C test
-            //TODO: write test data to EEPROM
-            //TODO: read EEPRON
-            //TODO: send EEPROM address to TXCOBC
             break;
         case 'c': //I2C buffer clear
             //TODO: write method for I2C buffer clear

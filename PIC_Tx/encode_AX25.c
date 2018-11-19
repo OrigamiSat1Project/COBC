@@ -25,25 +25,7 @@ UINT efcsflag = 0;
 UINT estuff = 0;
 UBYTE efcslo, efcshi;
 UBYTE ePacket[52];
-//UBYTE ePacket_50[52];
 BIT ebitstatus = low;
-
-/*--for debug--*/
-// void test_Packetmaker(UBYTE *eDataField){
-//     UBYTE num_ = Packetmaker(eDataField);
-//     for(UBYTE i=0;i<num_;i++){
-//         putch(ePacket[i]);
-//     }
-//     putcrlf();
-// }
-
-//void test_Packetmaker(UBYTE *eDataField){
-//    UINT num_ = Packetmaker(eDataField);
-//    for(UINT i=0;i<num_;i++){
-//        putch(ePacket[i]);
-//    }
-//    putcrlf();
-//}
 
 UINT Packetmaker(UBYTE *eDataField,UINT num){
     for(UINT i=0;i<6;i++){
@@ -60,16 +42,10 @@ UINT Packetmaker(UBYTE *eDataField,UINT num){
     for(UINT i=0;i<Datanum;i++){
         ePacket[16+i] = eDataField[i];
     }
-
-    //  XXX : for debug
-//    for(UBYTE i=0;i<16+Datanum;i++){
-//        putch(ePacket[i]);
-//    }
     return 16+Datanum;
 }
 
 void SendPacket(UBYTE *eDataField,UINT num){
-//void SendPacket(void)
     UINT Packetnum;
     Packetnum = 0;
     Packetnum = Packetmaker(eDataField,num);
@@ -150,9 +126,6 @@ void fcsbit(UBYTE tbyte){
         RRF _efcshi,F
         RRF _efcslo,F
     #endasm
-//    STATUS &= ~0x01;
-//    efcshi = efcshi >> 1;
-//    efcslo = efcslo >> 1;
 
     if(((STATUS & bit_H)^(tbyte)) == bit_H){
         efcshi ^= 0x84;

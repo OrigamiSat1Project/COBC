@@ -9,8 +9,6 @@
 #include "OkError.h"
 
 void InitSerial(void){
-    // SPBRG  = 4;                   // boudrate is 115200 bps
-    // BRGH   = 1;                   	// slow baudrate
     SPBRG  = 10;                   // boudrate is 14400 bps
     BRGH   = 0;                   	// Fast baudrate
 	SYNC   = 0;						// Asynchronous
@@ -20,7 +18,6 @@ void InitSerial(void){
     RCIF   = 0;                     // RX frag Reset
 	TXIE   = 0;						// Disble tx interrupts
 	RCIE   = 0;						// Disble rx interrupts
-//    RCIE   = 1;						// Enable rx interrupts
 	TX9    = 0;						// 8-bit transmission
 	RX9    = 0;						// 8-bit reception
 	TXEN   = 0;						// Reset transmitter
@@ -56,20 +53,6 @@ void putChar(UBYTE byte){
 	TXREG = byte;                   //USART Transmit Data Register
 }
 
-//void putString(UBYTE *x)
-//{
-//    while(*x != '\0'){
-//        putChar(*x);
-//        x++;
-//    }
-//}
-
-//starts new line for debugging
-// void putCrLf(void){
-//     putChar('\r');//Carriage return
-//     putChar('\n');//Line feed
-// }
-
 void put_error(void){
     putChar('\r');
     putChar('\n');
@@ -98,21 +81,6 @@ void put_lf(void){
     putChar('\n');
 }
 
-//void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){ //TODO change name from NM to OBC
-//    putChar(NM_wad_header);
-//    putChar(whigh_address);
-//    putChar(wlow_address);
-//}
-//
-//void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_address){
-//    __delay_ms(50);
-//    putChar(TXOBC_wad_header);
-//    __delay_ms(50);
-//    putChar(whigh_address);
-//    __delay_ms(50);
-//    putChar(wlow_address);
-//    __delay_ms(50);
-//}
 
 void sendCommandByPointer(UBYTE* Parameter){
     UBYTE Command[10];
@@ -154,7 +122,6 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1,UBYTE Par
     }
 }
 
-//TODO:check
 //Write UART
 void WriteUART( UBYTE *TXDATA ){
     UBYTE command_size;
@@ -214,7 +181,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
     switch(command){    
         case 'w': //UART write
             //TODO: write method for UART writ
-            WriteUART( data1 );  //TODO:change "data1" ??øΩ?øΩC??øΩ?øΩ”ÇÃêÔøΩ??øΩ?øΩ…ëŒâÔøΩ??øΩ?øΩ≈ÇÔøΩ??øΩ?øΩ??øΩ?øΩÊÇ§??øΩ?øΩ??øΩ?øΩ
+            WriteUART( data1 ); 
             break;
         case 'c': //UART buffer clear
             //TODO: write method for UART buffer clear---finish?

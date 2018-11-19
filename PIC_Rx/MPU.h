@@ -51,7 +51,6 @@ void reviveEPS(UBYTE, UBYTE);
 
 void changeInOut(UINT, UBYTE);
 void changeHighLow(UINT, UBYTE);
-void changeXtalFrequency(UBYTE);
 
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);

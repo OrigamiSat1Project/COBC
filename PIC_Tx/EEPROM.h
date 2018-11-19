@@ -114,5 +114,28 @@
 #define NTRX_subpower_status_addressHigh 0x80//
 #define NTRX_subpower_status_addressLow 0x82//
 
+/*******************************************************************************
+*MPU.c
+******************************************************************************/
+/*-----------in/out status-----------------*/
+#define TRISA_addressHigh 0x80
+#define TRISA_addressLow  0x89
+#define TRISB_addressHigh 0x80
+#define TRISB_addressLow  0x8A
+#define TRISC_addressHigh 0x80
+#define TRISC_addressLow  0x8B
+#define TRISE_addressHigh 0x80
+#define TRISE_addressLow  0x8C
+
+/*-----------high/low status-----------------*/
+#define PORTA_addressHigh 0x80
+#define PORTA_addressLow  0x8D
+#define PORTB_addressHigh 0x80
+#define PORTB_addressLow  0x8E
+#define PORTC_addressHigh 0x80
+#define PORTC_addressLow  0x8F
+#define PORTE_addressHigh 0x80
+#define PORTE_addressLow  0x90
+
 
 #endif	/* EEPROM_H */
