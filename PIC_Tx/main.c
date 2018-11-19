@@ -85,7 +85,7 @@ void main(void) {
 //    putChar(0xF0);
 //    put_lf();
 
-    HK_test_setting();
+//    HK_test_setting();
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
 //    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
 //
@@ -179,13 +179,13 @@ void main(void) {
 //                /*---Command from OBC---*/
 //                /*------------------------------------------------------------------*/
                 case 0x63: /*'c':CW Downlink*/
-//                    commandSwitchCWDownlink(&RXDATA[2]);
+                    commandSwitchCWDownlink(&RXDATA[2]);
                     break;
                 case 0x66:  /*'f':FM Downlink*/
                     for(UBYTE i=0; i<7; i++){
                         FMdata[i] = RXDATA[i+3];
                     }
-                    commandSwitchFMDownlink(RXDATA[2], FMdata);
+                    downlinkFMSignal(&RXDATA[2]);
                     break;
                 case 'p':/*'p':power*/
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
