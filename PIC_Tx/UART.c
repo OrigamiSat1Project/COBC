@@ -216,28 +216,4 @@ void UARTwrite5byte(UBYTE data1,UBYTE data2,UBYTE data3,UBYTE data4,UBYTE data5)
 //    putch(wlow_address);
 //}
 
-//process command data if the command type is UART
-void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){
-    UBYTE ReadData[];
-    switch(command){    
-        case 'w': //UART write
-            UARTwrite5byte(data1,data2,data3,data4,data5);      
-            break;
-        case 'e': //read EEPROM and send datas to RXCOBC
-            //data1:slave address / data2:high address / data3:low address / data4:data size
-            readEEPROMandUARTwrite(data1, data2, data3, ReadData, data4);
-            break;
-        case 'c': //UART buffer clear
-            UARTbufferClear();
-            break;
-        case 'b': //change UART baud rate
-            changeBaudRate(data1,data2,data3);
-            break;
-        case 'i': //interrupt permission
-            changeInterruptPermission(data1,data2);
-            break;
-        default:
-//            switchError(error_UART_commandSwitchUART);
-            break;
-    }
-}
+

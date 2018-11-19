@@ -106,10 +106,6 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
                     //commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
-                case 'u':/*UART*/
-                    commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
-                    break;
                 case 'w':/*WDT (watch dog timer)*/
     //                commandWDT(commandData[4], commandData[5], commandData[6]);
                     WriteLastCommandIdToEEPROM(commandData[1]);
