@@ -1,6 +1,8 @@
 #include <xc.h>
 #include "typeDefine.h"
+#include "pinDefine.h"
 #include "time.h"
+#include "MPU.h"
 #include "EEPROM.h"
 #include "I2C.h"
 #include "OkError.h"
@@ -355,8 +357,10 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
             TestEEPROM(slaveAdress);
             break;
         case 'm': //write melting status to EEPROM --> stop melting
-            /*---write melting status---*/
+            /*---write melting status to EEPROM---*/
             WriteOneByteToMainAndSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, MELTING_FINISH_FLAG);
+            /*---change melting status PIN : low -> high ---*/
+            MRLTING_FLAG_FOR_OBC = HIGH;
             break;
         default:
             switchError(error_I2C_commandSwitchEEPROM);
