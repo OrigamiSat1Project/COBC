@@ -51,23 +51,25 @@ void interrupt InterReceiver(void){
 //        putChar('U');
         tmp = getChar();
         if(tmp != 'g' && tmp != 't') return;
-
+        
+        ReceiveFlag = CORRECT_RECEIVE;
+                
         for(UINT j=0; j<3; j++){
             if(STOCKDATA[j][0] != 'g' && STOCKDATA[j][0] != 't'){
                 STOCKDATA[j][0] = tmp;
                 for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[j][i] = getChar();
-                put_lf();
+//                put_lf();
 //                for(UBYTE i=0 ;i< commandSize; i++) putChar(STOCKDATA[j][i]);
-                put_lf();
+//                put_lf();
                 return;
             }
         }
 
         STOCKDATA[0][0] = tmp;
         for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[0][i] = getChar();
-        put_lf();
+//        put_lf();
 //        for(UBYTE i=0 ;i< commandSize; i++) putChar(RXDATA[i]);
-        put_lf();
+//        put_lf();
         return;
     }
 }
@@ -83,15 +85,15 @@ void main(void) {
     delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
 //    putChar('S');
 //    putChar(0xF0);
-    put_lf();
+//    put_lf();
 
     HK_test_setting();
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
 //    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
 //
     while(1){
-        put_lf();
-//        putChar(0xE1);
+//        put_lf();
+        putChar(0xE1);
         put_lf();
         sendPulseWDT();
 
@@ -103,10 +105,10 @@ void main(void) {
         }
 
         CheckNTRXsubpower();
-
-//        putChar(0xE2);
+        
+        putChar(0xE2);
         HKDownlink();
-//        putChar(0xE3);
+        putChar(0xE3);
         put_lf();
 
 
@@ -128,9 +130,9 @@ void main(void) {
         if(ReceiveFlag == CORRECT_RECEIVE){
             put_lf();
 //            putChar(0xbb);
-//            for(UBYTE i=0; i<10 ; i++){
-//                putChar(RXDATA[i]);
-//            }
+            for(UBYTE i=0; i<10 ; i++){
+                putChar(RXDATA[i]);
+            }
             put_lf();
             UBYTE command_ID = 0x00;
             UBYTE command_status = 0x00;
@@ -173,10 +175,10 @@ void main(void) {
             switch(RXDATA[1]){
                 /*---Command from RXCOBC---*/
                 /*------------------------------------------------------------------*/
-//                case 0x75:  //'u'
+                case 0x75:  //'u'
 //                    putChar(0xa4);
 //                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-//                    break;
+                    break;
 //                /*---Command from OBC---*/
 //                /*------------------------------------------------------------------*/
                 case 0x63: /*'c':CW Downlink*/
@@ -191,7 +193,7 @@ void main(void) {
                     commandSwitchFMDownlink(RXDATA[2], FMdata);
                     break;
                 case 'p':/*'p':power*/
-//                    putChar(0xa7);
+                    putChar(0xa7);
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
