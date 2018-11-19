@@ -47,8 +47,8 @@
 #define RBF_SW          PORTAbits.RA1 //Short Remove before flight switch 1&2  //High--->EPS OFF
 
     /* PIN assignment for OBC*/
-#define OBC_STATUS      PORTDbits.RD7  //check whether OBC are alive or died  //High--->OBC are alive 
-
+#define OBC_STATUS      PORTDbits.RD7  //OBC H1-49 (50) //check whether OBC are alive or died  //High--->OBC are alive 
+#define MRLTING_FLAG_FOR_OBC PORTDbits.RD5 //OBC H2-50 (49) //low -> melting not finish yet   //high -> melting finish 
 
 // PINs NOT used in code
 //--------------------------
@@ -64,9 +64,7 @@
 //PORTCbits.RC6 //UART TX
 //PORTCbits.RC7 //UART RX (to debug connector)
 //PORTDbits.RD4 //12V status (Low -> over current 12V shut down)
-//PORTDbits.RD5 //OBC H2-50 (49)
 //PORTDbits.RD6 //Pull down to GND
-//PORTDbits.RD7 //OBC H1-49 (55)
 //------------------------------------------------------------------------------
 #endif	/* PIN_DEFINE_H */
 

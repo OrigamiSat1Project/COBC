@@ -74,11 +74,20 @@ void main(void) {
     testInitialOpe();
     /*----------------------------------------------------------------------*/
 
-
     UBYTE error_status = 0x00;
 
+    UBYTE melting_status[2] = {0x00};
+    melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+    melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {
+        if(MRLTING_FLAG_FOR_OBC == LOW){
+            MRLTING_FLAG_FOR_OBC = HIGH;
+        }
+    }                   
+    
     while(1){
-//        /*---timer interrupt---*/
+
+        /*---timer interrupt---*/
 //        /*----------------------------------------------------------------------------*/
 //        /*----------------------------------------------------------------------------*/
 //        /*---timer process for EPS reset (1week)---*/
