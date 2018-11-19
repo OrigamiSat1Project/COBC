@@ -36,7 +36,7 @@ void WriteUART( UBYTE* );
 void UART_buffer_clear(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
-void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE);
 
 #endif	/* UART_H */
 

@@ -40,9 +40,6 @@ void _NOP(void);
 
 /*FM*/
 void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-void readDataSizeAndDownlinkFMSignal(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-void FMdownlink32byte(UBYTE, UBYTE, UBYTE, UBYTE);
-void commandSwitchFMDownlink(UBYTE, UBYTE*);
 
 /*Function : HK downlink*/
 void HKDownlink(void);

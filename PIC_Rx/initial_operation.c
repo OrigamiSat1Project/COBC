@@ -146,7 +146,7 @@ UBYTE InitialOperation(void){
 
 //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
 UBYTE bitCalResult(UBYTE bit_input){
-    UBYTE bit_cal_result = 0; 
+    UBYTE bit_cal_result; 
     for(UBYTE cal_counter=0; cal_counter<8; cal_counter++){
         if((bit_input & 1)==1){
             bit_cal_result = bit_cal_result + 1;

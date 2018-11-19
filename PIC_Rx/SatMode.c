@@ -230,7 +230,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     }                  
                     break;
                 default:    
-                    error_status = error_status | 0x3000;// 0b 00110000 00000000;
+                    error_status |= 0x3000;// 0b 00110000 00000000;
                     break;
         }           
             return error_status;

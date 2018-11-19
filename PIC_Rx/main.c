@@ -126,9 +126,9 @@ void main(void) {
         if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
 //         if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
             error_status = InitialOperation();
-             WriteOneByteToMainAndSubB0EEPROM(InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow,error_status);
-             errorCheckInitialOpe();  //*******for debug (initial ope) ************
-             set_init_ope_counter(0,0);
+            WriteOneByteToMainAndSubB0EEPROM(InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow,error_status);
+            errorCheckInitialOpe();  //*******for debug (initial ope) ************
+            set_init_ope_counter(0,0);
          }
 
 //        /*---timer process for measure EPS BATTERY---*/
@@ -174,6 +174,7 @@ void main(void) {
         }
 
         /*---check command ID---*/
+        lastCommandID = ReadEEPROMmainAndSub(B0select_for_RXCOBCLastCommand,HighAddress_for_LastCommandID,LowAddress_for_LastCommandID);
         commandID = commandData[1];
         if (commandID == lastCommandID) {
             continue;       //same uplink command-->continue
@@ -230,10 +231,11 @@ void main(void) {
                     commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
                     break;
                 case 'e': /*EEPROM*/
-                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
+//                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
+                    commandSwitchEEPROM(&commandData[4]);
                     break;
                 case 'u':/*UART*/
-                    commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7]);
                     break;
                 case 'w':/*WDT (watch dog timer)*/
                     WDTwait();

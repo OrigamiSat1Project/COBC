@@ -304,16 +304,40 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE da
 /*******************************************************************************
 *process command data if the command type is 'EEPROM'
 ******************************************************************************/
-void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE *data2){
+//void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE *data2){
+//    UBYTE data_length;
+//    UBYTE *read_data;
+//    switch(command){
+//        case 'w': //write data to EEPROM
+//            WriteToEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, data2, data1);  //data1 is the data to send
+//            break;
+//        case 'r': //read data from EEPROM
+//            data_length = data1;
+//            ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data1);
+//            //TODO: send data to TXCOBC or/and OBC by I2C or UART
+//            break;
+//        case 'm': //write melting status to EEPROM --> stop melting
+//            /*---write melting status to EEPROM---*/
+//            WriteOneByteToMainAndSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, MELTING_FINISH_FLAG);
+//            /*---change melting status PIN : low -> high ---*/
+//            MRLTING_FLAG_FOR_OBC = HIGH;
+//            break;
+//        default:
+//            switchError(error_I2C_commandSwitchEEPROM);
+//            break;
+//    }
+//}
+
+void commandSwitchEEPROM(UBYTE *command){
     UBYTE data_length;
     UBYTE *read_data;
-    switch(command){
+    switch(command[0]){
         case 'w': //write data to EEPROM
-            WriteToEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, data2, data1);  //data1 is the data to send
+            WriteToEEPROMWithDataSize(command[1], command[2], command[3], &command[5], command[4]);  //data1 is the data to send
             break;
         case 'r': //read data from EEPROM
-            data_length = data1;
-            ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data1);
+            data_length = command[4];
+            ReadDataFromEEPROMWithDataSize(command[1], command[2], command[3], read_data, command[4]);
             //TODO: send data to TXCOBC or/and OBC by I2C or UART
             break;
         case 'm': //write melting status to EEPROM --> stop melting

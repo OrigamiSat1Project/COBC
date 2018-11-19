@@ -162,7 +162,7 @@ void main(void) {
                 /*---Command from RXCOBC---*/
                 /*------------------------------------------------------------------*/
                 case 0x75:  //'u'
-//                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
                     break;
 //                /*---Command from OBC---*/
 //                /*------------------------------------------------------------------*/
@@ -173,7 +173,8 @@ void main(void) {
                     for(UBYTE i=0; i<7; i++){
                         FMdata[i] = RXDATA[i+3];
                     }    
-                    commandSwitchFMDownlink(RXDATA[2], FMdata);
+//                    commandSwitchFMDownlink(RXDATA[2], FMdata);
+                    downlinkFMSignal(RXDATA[3],RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
                     break;
                 case 'p':/*'p':power*/
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);

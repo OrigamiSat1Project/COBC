@@ -81,26 +81,35 @@ void put_lf(void){
     putChar('\n');
 }
 
-
 void sendCommandByPointer(UBYTE* Parameter){
-    UBYTE Command[10];
     UWORD CRC;
-    Command[0] = Parameter[0];
-    Command[1] = Parameter[1];
-    Command[2] = Parameter[2];
-    Command[3] = Parameter[3];
-    Command[4] = Parameter[4];
-    Command[5] = Parameter[5];
-    Command[6] = Parameter[6];
-    Command[7] = Parameter[7];
-    CRC = crc16(0, Command, 8);
-    Command[8] = (UBYTE)(CRC >> 8);
-    Command[9] = (UBYTE)(CRC & 0x00FF);
-    
-    for(UBYTE i=0; i<10; i++){
-        putChar(Command[i]);
-    }        
+    CRC = crc16(0, Parameter, 8);
+    for(UBYTE i=0; i<8; i++){
+        putChar(Parameter[i]);
+    }
+    putChar((UBYTE)(CRC >> 8));
+    putChar((UBYTE)(CRC & 0x00FF));
 }
+
+//void sendCommandByPointer(UBYTE* Parameter){
+//    UBYTE Command[10];
+//    UWORD CRC;
+//    Command[0] = Parameter[0];
+//    Command[1] = Parameter[1];
+//    Command[2] = Parameter[2];
+//    Command[3] = Parameter[3];
+//    Command[4] = Parameter[4];
+//    Command[5] = Parameter[5];
+//    Command[6] = Parameter[6];
+//    Command[7] = Parameter[7];
+//    CRC = crc16(0, Command, 8);
+//    Command[8] = (UBYTE)(CRC >> 8);
+//    Command[9] = (UBYTE)(CRC & 0x00FF);
+//    
+//    for(UBYTE i=0; i<10; i++){
+//        putChar(Command[i]);
+//    }        
+//}
 
 void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1,UBYTE Parameter2,UBYTE Parameter3,UBYTE Parameter4,UBYTE Parameter5,UBYTE Parameter6){
     UBYTE Command[10];
@@ -176,7 +185,7 @@ void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 }
 
 //process command data if the command type is UART
-void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){ //TODO: different format for writedataUART
+void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3){ //TODO: different format for writedataUART
     
     switch(command){    
         case 'w': //UART write

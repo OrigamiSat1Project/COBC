@@ -84,6 +84,10 @@
 #define HighAddress_for_RXCOBCLastCommandStatus  0x81//
 #define LowAddress_for_RXCOBCLastCommandStatus   0x84
 
+#define HighAddress_for_LastCommandID  0x81
+#define LowAddress_for_LastCommandID   0x1F
+
+
 /*******************************************************************************
 *DATA
 ******************************************************************************/
