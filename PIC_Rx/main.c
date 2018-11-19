@@ -79,11 +79,28 @@ void main(void) {
     UBYTE melting_status[2] = {0x00};
     melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
     melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {
+    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {  //after melting
         if(MRLTING_FLAG_FOR_OBC == LOW){
             MRLTING_FLAG_FOR_OBC = HIGH;
         }
-    }                   
+    } else {                                                                            //before melting
+        /*---200s ( 50s * 4times)---*/
+        for(UBYTE i=0; i<4; i++){
+            /*---wait 50s---*/
+            sendPulseWDT();
+            for(UBYTE i=0; i<10; i++){
+                delay_s(5);
+                sendPulseWDT();
+            }
+            /*---measure voltage & change Sat Mode---*/
+            UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+            if (SatMode_error_status != 0){
+                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+            }
+            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, (UBYTE)(SatMode_error_status>>8));
+            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status2_addresshigh, SatMode_error_status2_addresslow, (UBYTE)SatMode_error_status);
+        }
+    }                  
     
     while(1){
 
