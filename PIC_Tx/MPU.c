@@ -247,41 +247,66 @@ void onOffCWKEY(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     }
 }
 
+void (*func_OnOff[])(UBYTE, UBYTE, UBYTE) = {
+    onOffHEATER,
+    onOffNTRX,
+    onOff5R8GSubPower,
+    cutWire,
+    onOffTXWDT,
+    onOffFMPTT,
+    onOffCWKEY
+};
+
+static const UBYTE funcKeyOnOff[] = {'h', 'n', '5', 'a', 'w', 'p', 'k'};
+
+void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE melting_times){ //times are given in ms
+    if(command == 't') {
+        cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
+        return;
+    }
+    for(UBYTE i=0; i<7; i++){
+        if(command == funcKeyOnOff[i]){
+            func_OnOff[i](onOff, timeHigh, timeLow);
+            return;
+        }
+    }
+    switchError(error_MPU_commandSwitchPowerSupply);
+}
 
 //process command data if the command type is 'power supply'
-void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE melting_times){ //times are given in ms
-    switch(command){
-        case 'h':   //Heater
-            onOffHEATER(onOff, timeHigh, timeLow);
-            break;
-        case 'n':   //NTRX
-            onOffNTRX(onOff, timeHigh, timeLow);
-            break;
-        case '5': //5R8G 5V Sub Power
-            onOff5R8GSubPower(onOff, timeHigh, timeLow);
-            break;
-        case 'a': //WIRE_CUTTER
-//            putChar(0xb1);
-            cutWire(onOff, timeHigh, timeLow);
-            break;
-        case 't': //WIRE_CUTTER with times
-//            putChar(0xb2);
-            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
-            break;
-        case 'w': //WDT
-            onOffTXWDT(onOff, timeHigh, timeLow);
-            break;
-        case 'p': //FMPTT
-            onOffFMPTT(onOff, timeHigh, timeLow);
-            break;
-        case 'k': //CWKEY
-            onOffCWKEY(onOff, timeHigh, timeLow);
-            break;
-        default:
-            switchError(error_MPU_commandSwitchPowerSupply);
-            break;
-    }
-}
+//void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE melting_times){ //times are given in ms
+//    switch(command){
+//        case 'h':   //Heater
+//            onOffHEATER(onOff, timeHigh, timeLow);
+//            break;
+//        case 'n':   //NTRX
+//            onOffNTRX(onOff, timeHigh, timeLow);
+//            break;
+//        case '5': //5R8G 5V Sub Power
+//            onOff5R8GSubPower(onOff, timeHigh, timeLow);
+//            break;
+//        case 'a': //WIRE_CUTTER
+////            putChar(0xb1);
+//            cutWire(onOff, timeHigh, timeLow);
+//            break;
+//        case 't': //WIRE_CUTTER with times
+////            putChar(0xb2);
+//            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
+//            break;
+//        case 'w': //WDT
+//            onOffTXWDT(onOff, timeHigh, timeLow);
+//            break;
+//        case 'p': //FMPTT
+//            onOffFMPTT(onOff, timeHigh, timeLow);
+//            break;
+//        case 'k': //CWKEY
+//            onOffCWKEY(onOff, timeHigh, timeLow);
+//            break;
+//        default:
+//            switchError(error_MPU_commandSwitchPowerSupply);
+//            break;
+//    }
+//}
 
 void CheckNTRXsubpower(void){
     if(NTRX == 1){
