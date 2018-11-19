@@ -31,7 +31,7 @@ UBYTE getChar(void){        //TODO: add time out feature
         NOP();
         CREN = 1;
     }
-	UINT break_counter = 0;
+	UBYTE break_counter = 0;
     
 //    while(RCIF != 1);
     
@@ -54,24 +54,15 @@ void putChar(UBYTE byte){
 }
 
 void put_error(void){
-    putChar('\r');
-    putChar('\n');
     putChar('E');
     putChar('R');
-    putChar('R');
-    putChar('O');
-    putChar('R');
-    putChar('!');
     putChar('\r');
     putChar('\n');
 }
 
 void put_ok(void){
-    putChar('\r');
-    putChar('\n');
     putChar('O');
     putChar('K');
-    putChar('!');
     putChar('\r');
     putChar('\n');
 }
@@ -90,26 +81,6 @@ void sendCommandByPointer(UBYTE* Parameter){
     putChar((UBYTE)(CRC >> 8));
     putChar((UBYTE)(CRC & 0x00FF));
 }
-
-//void sendCommandByPointer(UBYTE* Parameter){
-//    UBYTE Command[10];
-//    UWORD CRC;
-//    Command[0] = Parameter[0];
-//    Command[1] = Parameter[1];
-//    Command[2] = Parameter[2];
-//    Command[3] = Parameter[3];
-//    Command[4] = Parameter[4];
-//    Command[5] = Parameter[5];
-//    Command[6] = Parameter[6];
-//    Command[7] = Parameter[7];
-//    CRC = crc16(0, Command, 8);
-//    Command[8] = (UBYTE)(CRC >> 8);
-//    Command[9] = (UBYTE)(CRC & 0x00FF);
-//    
-//    for(UBYTE i=0; i<10; i++){
-//        putChar(Command[i]);
-//    }        
-//}
 
 void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1,UBYTE Parameter2,UBYTE Parameter3,UBYTE Parameter4,UBYTE Parameter5,UBYTE Parameter6){
     UBYTE Command[10];

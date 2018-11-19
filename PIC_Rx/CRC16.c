@@ -6,9 +6,9 @@
  * CRC-16-CCITT with the polynom: x^16+x^12+x^5+1
  * initial value 0, left shift, no out put inversion
  */
-UWORD crc16(UWORD crc, UBYTE *ptr, UINT len){
+UWORD crc16(UWORD crc, UBYTE *ptr, UBYTE len){
     const UWORD CRC16POLY = 0xa001;
-	UINT i, j;
+	UBYTE i, j;
 	crc = ~crc;
 	for (i = 0; i < len; i++) {
 		crc ^= ptr[i];
@@ -25,7 +25,7 @@ UWORD crc16(UWORD crc, UBYTE *ptr, UINT len){
 }
 
 
-UWORD checkCRC(UBYTE *command, UINT sizeBeforeCRC){
+UWORD checkCRC(UBYTE *command, UBYTE sizeBeforeCRC){
     UWORD checkReceive;
     checkReceive |= command[sizeBeforeCRC];
     checkReceive = checkReceive << 8;

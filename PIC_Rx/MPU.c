@@ -75,7 +75,7 @@ void onOff5R8G(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if(timeHigh == 0x00 && timeLow == 0x00){ 
     }else {        
         UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        wait_time = (UWORD)(timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         POWER_5R8G =invertState(onOff);
     }
@@ -88,13 +88,11 @@ void onOffOBC(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
             POWER_OBC = HIGH;
     }
 
-    if(timeHigh == 0x00 && timeLow == 0x00){ 
-    }else {        
-        UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
-        delay_ms(wait_time);
-        POWER_OBC =invertState(onOff);
-    }
+    if(timeHigh == 0x00 && timeLow == 0x00) return;    
+    UWORD wait_time;
+    wait_time = (UWORD)(timeHigh << 8 | timeLow);
+    delay_ms(wait_time);
+    POWER_OBC =invertState(onOff);
 }
 
 void onOffWDT(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->off
@@ -107,7 +105,7 @@ void onOffWDT(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->off
     if(timeHigh == 0x00 && timeLow == 0x00){ 
     }else {        
         UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        wait_time = (UWORD)(timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         POWER_WDT =invertState(onOff);
     }
@@ -186,7 +184,7 @@ void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){
 
     }else {        
         UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        wait_time = (UWORD)(timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         SEP_SW =invertState(onOff);
     }
@@ -210,7 +208,7 @@ void reviveEPS(UBYTE timeHigh, UBYTE timeLow){
         onEPS();
     }else {                                      
         UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        wait_time = (UWORD)(timeHigh << 8 | timeLow);
         __delay_ms(wait_time);
         onEPS();
     }

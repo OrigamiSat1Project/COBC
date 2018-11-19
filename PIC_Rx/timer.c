@@ -237,4 +237,3 @@ void reset_timer(void){
     day_counter     = 0;
     week_counter    = 0;
 }
-

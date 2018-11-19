@@ -20,9 +20,9 @@
 void InitI2CMaster(const UDWORD c);
 void interruptI2C(void);
 void I2CMasterWait(char);
-int I2CMasterStart(unsigned char, unsigned char);
-int I2CMasterRepeatedStart(unsigned char, unsigned char);
-int I2CMasterStop(void);
+SBYTE I2CMasterStart(unsigned char, unsigned char);
+SBYTE I2CMasterRepeatedStart(unsigned char, unsigned char);
+SBYTE I2CMasterStop(void);
 
 /*write*/
 int WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);

@@ -64,9 +64,9 @@ void main(void) {
 //    testInitialOpe();
     /*----------------------------------------------------------------------*/
 
-    UBYTE error_status = 0x00;
+    UBYTE error_status;
 
-    UBYTE melting_status[2] = {0x00};
+    UBYTE melting_status[2];
     melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
     melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
     if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {  //after melting
@@ -78,7 +78,7 @@ void main(void) {
         for(UBYTE i=0; i<4; i++){
             /*---wait 50s---*/
             sendPulseWDT();
-            for(UBYTE i=0; i<10; i++){
+            for(UBYTE j=0; j<10; j++){
                 delay_s(5);
                 sendPulseWDT();
             }
@@ -90,7 +90,7 @@ void main(void) {
             WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, (UBYTE)(SatMode_error_status>>8));
             WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status2_addresshigh, SatMode_error_status2_addresslow, (UBYTE)SatMode_error_status);
         }
-    }                  
+    }
     
     while(1){
 
@@ -112,7 +112,7 @@ void main(void) {
 //        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   //FM
         if(get_NTRX_pll_setting_counter_min() >= NTRX_PLL_INTERVAL){  //for debug
 //        if(get_NTRX_pll_setting_counter_sec() >= 8){   //for debug
-            UBYTE melting_status[2] = {0x00};
+            UBYTE melting_status[2];
             melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
             if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
@@ -154,24 +154,16 @@ void main(void) {
         UBYTE commandID;            //ID of uplink command
 
         //for information on EEPROM see data sheet: 24LC1025
-        UBYTE B0select;             //control byte B0 of EEPROM
-        UBYTE wHighAddress;         //address high byte of EEPROM
-        UBYTE wLowAddress;          //address low byte of EEPROM
         UBYTE mainControlByte;      //control byte of main EEPROM
         UBYTE subControlByte;       //control byte of sub EEPROM
-        UBYTE downlinkTimes;       //downlink times of received command
 
         /*---COMMAND RESET----*/
-        for(UBYTE i=0; i<DATA_SIZE; i++){
-            commandData[i] = 0;
-        }
+        commandData[0] = 0;
 
-        receiveDataPacket(commandData);
+//        receiveDataPacket(commandData);
 
         //XXX if () continue, IF COMMAND IS STILL RESET
-        if(commandData[0]==0) {
-            continue;      //not receive command-->continue
-        }
+        if(commandData[0] == 0) continue;      //not receive command-->continue
 
         /*---check command ID---*/
         lastCommandID = ReadEEPROMmainAndSub(B0select_for_RXCOBCLastCommand,HighAddress_for_LastCommandID,LowAddress_for_LastCommandID);
@@ -180,78 +172,69 @@ void main(void) {
             continue;       //same uplink command-->continue
         }
         lastCommandID = commandID;                      //update command ID
-
-        B0select = commandData[19];
-        wHighAddress = commandData[20];
-        wLowAddress = commandData[21];
-        downlinkTimes = commandData[22];
-        mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
-        subControlByte = SUB_EEPROM_ADDRESS | B0select;
+        
+        mainControlByte = (UBYTE)(MAIN_EEPROM_ADDRESS | commandData[19]);
+        subControlByte = (UBYTE)(SUB_EEPROM_ADDRESS | commandData[19]);
 
         /*---CRC check for command from Grand Station---*/
         /*------------------------------------------------------------------*/
-        UWORD crcResult, crcValue;
-        crcResult = crc16(0,commandData,29);
-        crcValue =  checkCRC(commandData,29);
 
         /*---update CRC---*/
-        if(crcResult != crcValue){
-            commandData[31] = commandData[31] & 0b01111111;
+        if(crc16(0,commandData,29) != checkCRC(commandData,29)){
+            commandData[31] &= 0b01111111;
 //            switchError(error_main_crcCheck);
         }else{
-            commandData[31] = commandData[31] | 0b10000000;
+            commandData[31] |= 0b10000000;
 //            switchOk(ok_main_crcCheck);
         }
 
         /*---Write uplink command in EEPROM---*/
         /*------------------------------------------------------------------*/
-        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,DATA_SIZE);
-        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,DATA_SIZE);
+        WriteToEEPROMWithDataSize(mainControlByte,commandData[20],commandData[21],commandData,DATA_SIZE);
+        WriteToEEPROMWithDataSize(subControlByte,commandData[20],commandData[21],commandData,DATA_SIZE);
         WriteLastCommandIdToEEPROM(commandData[1]);
 
         /*---Send address using UART to OBC and TXCOBC---*/
-        sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
+        sendCommand('g','u',commandData[19], commandData[20], commandData[21], commandData[22], 0x00, 0x00);
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/
-        if(commandData[0]=='R'){                //command target = PIC_RX
+        if(commandData[0] != 'R') continue;              //command target = PIC_RX
             //Task target
-            if(commandData[2] == 'r'){          //task target =  PIC_RX
+        if(commandData[2] != 'r') continue;          //task target =  PIC_RX
                 // Command type
-                switch(commandData[3]){         //Process command type
-                case 'm': /*change sattelite mode*/
-                    commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
-                    break;
-                case 'p': /*power supply*/
-                    commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
-                    break;
-                case 'n': /*radio unit*/
-                    commandSwitchFMCW(commandData[4]);
-                    break;
-                case 'i':/*I2C*/
-                    commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
-                    break;
-                case 'e': /*EEPROM*/
-//                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
-                    commandSwitchEEPROM(&commandData[4]);
-                    break;
-                case 'u':/*UART*/
-                    commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7]);
-                    break;
-                case 'w':/*WDT (watch dog timer)*/
-                    WDTwait();
-                    break;
-                case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
-                    //TODO: write function directly here or in MPU.c
-                    break;
-                case 'r':/*internal processing*/
-                    commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-                    break;
-                default:
-                    switchError(error_main_reveiveCommand);
-                    break;
-                }             
-            }
-        }else{
+        switch(commandData[3]){         //Process command type
+            case 'm': /*change sattelite mode*/
+                commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+    //                    commandSwitchSatMode(&commandData[4]);
+                break;
+            case 'p': /*power supply*/
+                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+                break;
+            case 'n': /*radio unit*/
+                commandSwitchFMCW(commandData[4]);
+                break;
+            case 'i':/*I2C*/
+                commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
+                break;
+            case 'e': /*EEPROM*/
+    //                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
+                commandSwitchEEPROM(&commandData[4]);
+                break;
+            case 'u':/*UART*/
+                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7]);
+                break;
+            case 'w':/*WDT (watch dog timer)*/
+                WDTwait();
+                break;
+            case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
+                //TODO: write function directly here or in MPU.c
+                break;
+            case 'r':/*internal processing*/
+                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+                break;
+            default:
+                switchError(error_main_reveiveCommand);
+                break;
         }
     }
 }

@@ -10,9 +10,9 @@
 
 #include "typeDefine.h"
 
-UWORD crc16(UWORD, UBYTE *, UINT);
+UWORD crc16(UWORD, UBYTE *, UBYTE);
 UWORD identifyCRC16(UBYTE *);                                          //???   this method does not exist in cfile
-UWORD checkCRC(UBYTE *, UINT);
+UWORD checkCRC(UBYTE *, UBYTE);
 
 #endif	/* CRC16_H */
 

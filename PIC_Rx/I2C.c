@@ -37,7 +37,7 @@ void I2CMasterWait(char mask){
 }
 
 
-int I2CMasterStart(UBYTE slave_address,UBYTE rw){
+SBYTE I2CMasterStart(UBYTE slave_address,UBYTE rw){
 //  I2CMasterWait();
 //  SEN = 1;                      //SEN Start Condition Enable; bit 0 of SSPCON2
      CollisionCheck = 0 ;
@@ -52,7 +52,7 @@ int I2CMasterStart(UBYTE slave_address,UBYTE rw){
      return SSPCON2bits.ACKSTAT;
 }
 
-int I2CMasterRepeatedStart(UBYTE slave_address,UBYTE rw){
+SBYTE I2CMasterRepeatedStart(UBYTE slave_address,UBYTE rw){
 //  I2CMasterWait();
 //  RSEN = 1;                     //Repeated Start Condition Enabled bit (Master mode only); bit 1 of SSPCON2
      CollisionCheck = 0 ;
@@ -67,7 +67,7 @@ int I2CMasterRepeatedStart(UBYTE slave_address,UBYTE rw){
      return SSPCON2bits.ACKSTAT;
 }
 
-int I2CMasterStop(void){
+SBYTE I2CMasterStop(void){
 //  I2CMasterWait();
 //  PEN = 1;                      //Stop Condition Enable bit (Master mode only); bit 2 of SSPCON2
      CollisionCheck = 0 ;
@@ -77,7 +77,7 @@ int I2CMasterStop(void){
      else                     return  0 ;
 }
 
-int I2CMasterWrite(UBYTE dataByte){
+SBYTE I2CMasterWrite(UBYTE dataByte){
 //  I2CMasterWait();
 //  SSPBUF = dataByte;                   //Serial Receive/Transmit Buffer Register
      CollisionCheck = 0 ;
@@ -133,17 +133,33 @@ void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data,UB
  *	FIXME    :   not yet
  *	XXX      :   not yet
  */
+//int WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE DataSize){
+//    int ans;
+//
+//    ans = I2CMasterStart(addressEEPROM,0);
+//    if (ans == 0){
+//        I2CMasterWrite(addressHigh);
+//        I2CMasterWrite(addressLow);
+//        for(UBYTE i = 0 ; i < DataSize ; i ++){
+//            I2CMasterWrite(data[i]);
+//        }
+//    }else ans = -1;
+//    I2CMasterStop();
+//    __delay_ms(5);
+//    return ans;
+//}
+
 int WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE DataSize){
     int ans;
 
     ans = I2CMasterStart(addressEEPROM,0);
-    if (ans == 0){
-        I2CMasterWrite(addressHigh);
-        I2CMasterWrite(addressLow);
-        for(UBYTE i = 0 ; i < DataSize ; i ++){
-            I2CMasterWrite(data[i]);
-        }
-    }else ans = -1;
+    if(ans != 0) return -1;
+    
+    I2CMasterWrite(addressHigh);
+    I2CMasterWrite(addressLow);
+    for(UBYTE i = 0 ; i < DataSize ; i ++){
+        I2CMasterWrite(data[i]);
+    }
     I2CMasterStop();
     __delay_ms(5);
     return ans;
@@ -170,8 +186,8 @@ void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE d
 void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     UBYTE mainAddress;
     UBYTE subAddress;
-    mainAddress = MAIN_EEPROM_ADDRESS | B0Select;
-    subAddress = SUB_EEPROM_ADDRESS | B0Select;
+    mainAddress = (UBYTE)((MAIN_EEPROM_ADDRESS) | B0Select);
+    subAddress = (UBYTE)(SUB_EEPROM_ADDRESS | B0Select);
     WriteOneByteToEEPROM(mainAddress,addressHigh,addressLow,data);
     WriteOneByteToEEPROM(subAddress,addressHigh,addressLow,data);
 }
@@ -195,6 +211,7 @@ UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
     UBYTE dat;
     int ans = -1;
     ans = I2CMasterStart(EEPROM_address,0);         //Start condition
+    if(ans == -1) return 0xFF;
     if(ans == 0){
         I2CMasterWrite(high_address);    //Adress High Byte
         I2CMasterWrite(low_address);    //Adress Low Byte
@@ -203,13 +220,12 @@ UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
     }
     I2CMasterStop();
     __delay_ms(5);
-    if(ans == -1) return 0xFF;
     return dat;
 }
 
 UBYTE ReadEEPROMmainAndSub(UBYTE B0select,UBYTE high_address,UBYTE low_address){
-    UBYTE mainaddress = MAIN_EEPROM_ADDRESS | B0select;
-    UBYTE subaddress = SUB_EEPROM_ADDRESS | B0select;
+    UBYTE mainaddress = (UBYTE)(MAIN_EEPROM_ADDRESS | B0select);
+    UBYTE subaddress = (UBYTE)(SUB_EEPROM_ADDRESS | B0select);
     UBYTE ReadData;
     ReadData = ReadEEPROM(mainaddress ,high_address,low_address);
     if (ReadData==0xFF){
@@ -231,15 +247,14 @@ UBYTE ReadEEPROMmainAndSub(UBYTE B0select,UBYTE high_address,UBYTE low_address){
 void ReadDataFromEEPROMWithDataSize(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
     int ans = -1;
     ans = I2CMasterStart(EEPROM_address, 0);                       //Start condition
-    if ( ans == 0 ){
-        I2CMasterWrite(high_address);           //Adress High Byte
-        I2CMasterWrite(low_address);            //Adress Low Byte
-        I2CMasterRepeatedStart(EEPROM_address,1);               //Restart condition
-        for(UBYTE i = 0; i < EEPROMDataLength - 1; i++){
-            ReadData[i] = I2CMasterRead(0);     //Read + Acknowledge
-        }
-        ReadData[EEPROMDataLength - 1] = I2CMasterRead(1);
+    if(ans != 0) return;
+    I2CMasterWrite(high_address);           //Adress High Byte
+    I2CMasterWrite(low_address);            //Adress Low Byte
+    I2CMasterRepeatedStart(EEPROM_address,1);               //Restart condition
+    for(UBYTE i = 0; i < EEPROMDataLength - 1; i++){
+        ReadData[i] = I2CMasterRead(0);     //Read + Acknowledge
     }
+    ReadData[EEPROMDataLength - 1] = I2CMasterRead(1);
     I2CMasterStop();                        //Stop condition
     __delay_ms(5);
 }
@@ -263,15 +278,12 @@ void I2CBufferClear(void){
  *  default 100000bps / datasheet p81-p82
  */
 void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
-    switch (I2C_baud_rate_type){
-        case 0x00:     //high-speed mode (400 kHz)
-            SMP = 0;  //Slew Rate Control bit
-            SSPADD = (_XTAL_FREQ/(4*I2C_baud_rate_high))-1; //MSSP Address Register: the lower seven bits of SSPADD act as the baud rate generator reload value
-            break;
-        case 0x01:     //standard speed mode (100 kHz)
-            SMP = 1;  //Slew Rate Control bit
-            SSPADD = (_XTAL_FREQ/(4*I2C_baud_rate_low))-1; //MSSP Address Register: the lower seven bits of SSPADD act as the baud rate generator reload value
-            break;
+    if(I2C_baud_rate_type == 0x00){ //high-speed mode (400 kHz)
+        SMP = 0;  //Slew Rate Control bit
+        SSPADD = (_XTAL_FREQ/(4*I2C_baud_rate_high))-1; //MSSP Address Register: the lower seven bits of SSPADD act as the baud rate generator reload value
+    }else if(I2C_baud_rate_type == 0x01){    //standard speed mode (100 kHz)
+        SMP = 1;  //Slew Rate Control bit
+        SSPADD = (_XTAL_FREQ/(4*I2C_baud_rate_low))-1; //MSSP Address Register: the lower seven bits of SSPADD act as the baud rate generator reload value
     }
 }
 
