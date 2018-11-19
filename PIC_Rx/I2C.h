@@ -44,7 +44,8 @@ void ChangeI2CBaudRate(UBYTE);
 void TestEEPROM(UBYTE);
 
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE*);
+//void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE*);
+void commandSwitchEEPROM(UBYTE*);
 
 
 #endif	/* I2C_H */

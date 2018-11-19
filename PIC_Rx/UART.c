@@ -209,23 +209,47 @@ void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 }
 
 //process command data if the command type is UART
-void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){ //TODO: different format for writedataUART
+//void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3){ //TODO: different format for writedataUART
+//    
+//    switch(command){    
+//        case 'w': //UART write
+//            //TODO: write method for UART writ
+//            WriteUART( data1 );  //TODO:change "data1" ??øΩ?øΩC??øΩ?øΩ”ÇÃêÔøΩ??øΩ?øΩ…ëŒâÔøΩ??øΩ?øΩ≈ÇÔøΩ??øΩ?øΩ??øΩ?øΩÊÇ§??øΩ?øΩ??øΩ?øΩ
+//            break;
+//        case 'c': //UART buffer clear
+//            //TODO: write method for UART buffer clear---finish?
+//            UART_buffer_clear();
+//            break;
+//        case 'b': //change UART baud rate
+//            changeBaudRate(data1,data2,data3);
+//            break;
+//        case 'i': //interrupt permission
+//            //TODO: write method for interrupt permission
+//            changeInterruptPermission(data1,data2);
+//            break;
+//        default:
+//            switchError(error_UART_commandSwitchUART);
+//            break;
+//    }
+//}
+
+void commandSwitchUART(UBYTE *command){ //TODO: different format for writedataUART
     
-    switch(command){    
+    switch(command[0]){    
         case 'w': //UART write
             //TODO: write method for UART writ
-            WriteUART( data1 );  //TODO:change "data1" ??øΩ?øΩC??øΩ?øΩ”ÇÃêÔøΩ??øΩ?øΩ…ëŒâÔøΩ??øΩ?øΩ≈ÇÔøΩ??øΩ?øΩ??øΩ?øΩÊÇ§??øΩ?øΩ??øΩ?øΩ
+            WriteUART( command[1] );  //TODO:change "data1" ??øΩ?øΩC??øΩ?øΩ”ÇÃêÔøΩ??øΩ?øΩ…ëŒâÔøΩ??øΩ?øΩ≈ÇÔøΩ??øΩ?øΩ??øΩ?øΩÊÇ§??øΩ?øΩ??øΩ?øΩ
             break;
         case 'c': //UART buffer clear
             //TODO: write method for UART buffer clear---finish?
             UART_buffer_clear();
             break;
         case 'b': //change UART baud rate
-            changeBaudRate(data1,data2,data3);
+            changeBaudRate(command[1],command[2],command[3]);
             break;
         case 'i': //interrupt permission
             //TODO: write method for interrupt permission
-            changeInterruptPermission(data1,data2);
+            changeInterruptPermission(command[1],command[2]);
             break;
         default:
             switchError(error_UART_commandSwitchUART);
