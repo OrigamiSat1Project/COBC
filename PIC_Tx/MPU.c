@@ -255,17 +255,18 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             onOffHEATER(onOff, timeHigh, timeLow);
             break;
         case 'n':   //NTRX
+            putChar(0xb0);
             onOffNTRX(onOff, timeHigh, timeLow);
             break;
         case '5': //5R8G 5V Sub Power
             onOff5R8GSubPower(onOff, timeHigh, timeLow);
             break;
         case 'a': //WIRE_CUTTER
-//            putChar(0xb1);
+            putChar(0xb1);
 ////            cutWire(onOff, timeHigh, timeLow);
             break;
         case 't': //WIRE_CUTTER with times
-//            putChar(0xb2);
+            putChar(0xb2);
 ////            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
             break;
         case 'w': //WDT

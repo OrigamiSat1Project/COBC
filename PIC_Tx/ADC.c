@@ -127,7 +127,9 @@ UWORD adc_read(){
 void measureAllChanelADC(){
     initADC();          
     PORTBbits.RB1 = 0;        //Set LED off
+    putChar(0xE2);
     measureDcDcTemperature();
+    putChar(0xE3);
     measureChannel2();
     measureChannel4();
     
@@ -209,6 +211,9 @@ void measureDcDcTemperature() {
     PORTBbits.RB1 = 0;
     ADCON0bits.CHS = 0b0010;
     adcValue[0] = adc_read();  
+    putChar(0xBB);
+    putChar((UBYTE)(adcValue[0] >> 8));
+    putChar((UBYTE)(adcValue[0] & 0xff));
     //data high
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH1_addressHigh, adcValue_CH1_addressLow, (UBYTE)(adcValue[0] >> 8));     
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH1_addressHigh, adcValue_CH1_addressLow, (UBYTE)(adcValue[0] >> 8));     

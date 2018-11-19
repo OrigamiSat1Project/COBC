@@ -254,8 +254,6 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     }
                     break;
             }
-//            for(UBYTE i=0; i<4; i++)//putChar(0x33);
-//            put_lf();
             switch(ChoicedSatMode){
                 case SATMODE_NOMINAL:
 //                    //putChar(0xAA);
@@ -263,14 +261,14 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                         putChar(0x11);                                       
                         melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
                         melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-                        if((melting_status[0] > MELTING_FINISH)||(melting_status[1] > MELTING_FINISH)){
+                        if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)){
                             switch(OBC_STATUS){
                                 case OBC_ALIVE:                               
                                     break;
                                 case OBC_DIED:
-    //                                killEPS();
-    //                                onEPS();                                                                          
-    //                                setPLL();
+                                    killEPS();
+                                    onEPS();                                                                          
+                                    setPLL();
                                     break;
                                 default:    
                                     break;
@@ -353,27 +351,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     //putChar(0xDD);       
                     error_status = error_status | 0x3000;// 0b 00110000 00000000;
                     break;
-        }
-//            put_lf();
-//            for(UBYTE i=0; i<4; i++) //putChar(0x44);
-//            //putChar(ChoicedSatMode);
-//            //putChar((UBYTE)(error_status>>8));
-//            //putChar((UBYTE)error_status);
-//            put_lf();
-            
-//            //putChar((UBYTE)BatVol_nominal_saving_high);
-//            //putChar((UBYTE)BatVol_nominal_saving_low);
-//            put_lf();
-//            //putChar((UBYTE)BatVol_saving_survival_high);
-//            //putChar((UBYTE)BatVol_saving_survival_low);
-//            put_lf();
-//            //putChar((UBYTE)BatVol_nominal_revival_high);
-//            //putChar((UBYTE)BatVol_nominal_revival_low);
-//            put_lf();
-//            //putChar((UBYTE)BatVol_saving_revival_high);
-//            //putChar((UBYTE)BatVol_saving_revival_low);
-//            put_lf();
-            
+        }           
             return error_status;
 }
 

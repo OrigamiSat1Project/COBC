@@ -160,9 +160,8 @@ void main(void) {
 //            }
 //            put_lf();
             //TODO:debug function to measure EPS Battery
-           UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-           put_lf();
-            putChar(0xAB);
+            UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+            put_lf();
             putChar((UBYTE)(SatMode_error_status>>8));
             putChar((UBYTE)SatMode_error_status);
             put_lf();
@@ -288,7 +287,7 @@ void main(void) {
                 // Command type
                 switch(commandData[3]){         //Process command type
                 case 'm': /*change sattelite mode*/
-                    commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+//                    commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
                     break;
                 case 'p': /*power supply*/
                     commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
