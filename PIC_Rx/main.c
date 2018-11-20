@@ -41,6 +41,7 @@ UBYTE commandData[DATA_SIZE];
 UBYTE commandID;            //ID of uplink command
 UBYTE mainControlByte;      //control byte of main EEPROM
 UBYTE subControlByte;       //control byte of sub EEPROM
+UWORD SatMode_error_status;
 
 //TODO:add interrupt finction?
 void main(void) {
@@ -71,31 +72,31 @@ void main(void) {
     UBYTE error_status;
 
     UBYTE melting_status[2];
-    melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-    melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {  //after melting
-        if(MRLTING_FLAG_FOR_OBC == LOW){
-            MRLTING_FLAG_FOR_OBC = HIGH;
-        }
-    } else {                                                                            //before melting
-        UWORD SatMode_error_status;
-        /*---200s ( 50s * 4times)---*/
-        for(UBYTE i=0; i<4; i++){
-            /*---wait 50s---*/
-            sendPulseWDT();
-            for(UBYTE j=0; j<10; j++){
-                delay_s(5);
-                sendPulseWDT();
-            }
-            /*---measure voltage & change Sat Mode---*/
-            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-            if (SatMode_error_status != 0){
-                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-            }
-            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, (UBYTE)(SatMode_error_status>>8));
-            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status2_addresshigh, SatMode_error_status2_addresslow, (UBYTE)SatMode_error_status);
-        }
-    }
+//    melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+//    melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+//    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {  //after melting
+//        if(MRLTING_FLAG_FOR_OBC == LOW){
+//            MRLTING_FLAG_FOR_OBC = HIGH;
+//        }
+//    } else {                                                                            //before melting
+//        UWORD SatMode_error_status;
+//        /*---200s ( 50s * 4times)---*/
+//        for(UBYTE i=0; i<4; i++){
+//            /*---wait 50s---*/
+//            sendPulseWDT();
+//            for(UBYTE j=0; j<10; j++){
+//                delay_s(5);
+//                sendPulseWDT();
+//            }
+//            /*---measure voltage & change Sat Mode---*/
+//            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+//            if (SatMode_error_status != 0){
+//                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+//            }
+//            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, (UBYTE)(SatMode_error_status>>8));
+//            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status2_addresshigh, SatMode_error_status2_addresslow, (UBYTE)SatMode_error_status);
+//        }
+//    }
     
     while(1){
 
@@ -138,7 +139,7 @@ void main(void) {
 //        /*---timer process for measure EPS BATTERY---*/
         //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
         if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
-            UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
            if (SatMode_error_status != 0){
                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
            }

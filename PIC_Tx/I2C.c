@@ -146,7 +146,7 @@ int WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addres
         I2CMasterWrite(addressHigh);
         I2CMasterWrite(addressLow);
         for(UBYTE i = 0 ; i < DataSize ; i ++){
-            I2CMasterWrite(*data);
+            I2CMasterWrite(data[i]);
         }
     } else ans = -1;
     I2CMasterStop();

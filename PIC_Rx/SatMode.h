@@ -22,7 +22,7 @@
 #define SEP_ON  0x08
 #define SEP_OFF 0x04
 #define RBF_ON  0x02
-#define SEP_OFF 0x01
+#define RBF_OFF 0x01
 
 //initial nominal_saving thershold BatVol is 7.5V (0x02,0x1D)
 #define Init_TheresholdBatVol_nominal_saving_high 0x02//7.5V

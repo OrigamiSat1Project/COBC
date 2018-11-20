@@ -129,13 +129,11 @@ void _NOP(void) {
 *FM
 ******************************************************************************/
 void downlinkFMSignal(UBYTE Address7bit, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinkTimes, UBYTE DataLengthHigh, UBYTE DataLengthLow){
-
-//    UINT initDataLength = ((UINT)DataLengthHigh << 8) + (UINT)DataLengthLow;
     UINT DataLength = ((UINT)DataLengthHigh << 8) + (UINT)DataLengthLow;
-//    UINT initaddress = (UINT)addressHigh << 8 + (UINT)addressLow;
     UINT address = ((UINT)addressHigh << 8) + (UINT)addressLow;
     UBYTE flag = 0;
     UBYTE packet_counter = 1;
+    
     CWKEY = low;
     while(!flag){
         for(UBYTE i = 0 ; i < 3 ; i++){
@@ -143,7 +141,7 @@ void downlinkFMSignal(UBYTE Address7bit, UBYTE addressHigh, UBYTE addressLow, UB
         }
         for(UBYTE sendCounter = 0; sendCounter < downlinkTimes; sendCounter++){
             sendPulseWDT();
-            if(DataLength < MAX_DOWNLINK_DATA_SIZE){
+            if(DataLength <= MAX_DOWNLINK_DATA_SIZE){
                 ReadDataFromEEPROM(Address7bit,addressHigh,addressLow, &downlink_data[3],DataLength);
                 FMPTT = high;
                 SendPacket(downlink_data,DataLength + PACKET_COUNTER_SIZE);
@@ -155,8 +153,10 @@ void downlinkFMSignal(UBYTE Address7bit, UBYTE addressHigh, UBYTE addressLow, UB
                 SendPacket(downlink_data,MAX_DOWNLINK_DATA_SIZE + PACKET_COUNTER_SIZE);
                 FMPTT = low;
             }
+            
             __delay_ms(500);
         }
+        if(flag) break;
         packet_counter += 1;
         address += 0x0020;
         addressHigh = (UBYTE)(address >> 8);
@@ -634,46 +634,6 @@ void HKDownlinkFR2(void){
 
 void Init_HK(void){
     sendPulseWDT();
-        UBYTE DATA[2];
-//    //Sattellite Mode
-//    WriteOneByteToEEPROM(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow,0x00);
-//    //battery Temperature
-//    DATA[0] = 0x00; DATA[1] = 0x00;
-//    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow,DATA,0x00);
-//    //latest execution command ID(RX)
-//    WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID,0x00);
-//    //command error status(RX)
-//    WriteOneByteToEEPROM(EEPROM_address,RXCOBC_CommandErrorStatus_addressHigh,RXCOBC_CommandErrorStatus_addressLow,0x00);
-////    //latest execution command ID(TX)
-//    WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID,0x00);
-////    //command error status(TX)
-//    WriteOneByteToEEPROM(EEPROM_address,TXCOBC_CommandErrorStatus_addressHigh,TXCOBC_CommandErrorStatus_addressLow,0x00);
-////    //battery Voltage (CIB)
-//    WriteOneByteToEEPROM(EEPROM_address,BatteryVoltageCIB_addressHigh,BatteryVoltageCIB_addressLow,0x00);
-////    //5VBus Voltage
-//    DATA[0] = 0x00;  DATA[1] = 0x00;
-//    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA,2);
-//
-////    //3V3Bus Voltage
-//    DATA[0] = 0x00; DATA[1] = 0x00;
-//    WriteToEEPROMWithDataSize(EEPROM_address,adcValue_CH3_addressHigh,adcValue_CH3_addressLow,DATA,2);
-////    //battery Voltage (OBC)
-//    WriteOneByteToEEPROM(EEPROM_address,BatteryVoltageOBC_addressHigh,BatteryVoltageOBC_addressLow,0x00);
-////    //latest execution command ID (OBC)
-//    WriteOneByteToEEPROM(EEPROM_address,LatestExcutionCommandID_addressHigh,LatestExcutionCommandID_addressLow,0x00);
-////    //command error status(OBC)
-//    WriteOneByteToEEPROM(EEPROM_address,OBC_CommandErrorStatus_addressHigh,OBC_CommandErrorStatus_addressLow,0x00);
-////    //Battery Current
-//    DATA[0] = 0x00; DATA[1] = 0x00;
-//    WriteToEEPROMWithDataSize(EEPROM_address,BatteryCurrent_addressHigh,BatteryCurrent_addressLow,DATA,2);
-////    //EPS switch status
-//    DATA[0] = 0x00; DATA[1] = 0x00;
-//    WriteToEEPROMWithDataSize(EEPROM_address,EpsSwitchStatus_addressHigh,EpsSwitchStatus_addressLow,DATA,2);
-////    //TX temperature
-//    WriteOneByteToEEPROM(EEPROM_address,TxTemperature_addressHigh,TxTemperature_addressLow,0x00);
-////    //RX temperature
-//    WriteOneByteToEEPROM(EEPROM_address,RxTemperature_addressHigh,RxTemperature_addressLow,0x00);
-//    sendPulseWDT();
     
     //FR2
     WriteOneByteToEEPROM(EEPROM_address,FreeData1_slaveaddress_addressHigh,FreeData1_slaveaddress_addressLow,EEPROM_address);
