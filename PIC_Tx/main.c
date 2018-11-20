@@ -123,12 +123,7 @@ void main(void) {
         }
 
         if(ReceiveFlag == CORRECT_RECEIVE){
-            put_lf();
-            for(UBYTE i=0; i<10 ; i++){
-                putChar(RXDATA[i]);
-            }
             UBYTE command_ID = 0x00;
-            UBYTE command_status = 0x00;
             UBYTE ID_add_high = 0x00;
             UBYTE ID_add_low = 0x00;
 
@@ -137,19 +132,11 @@ void main(void) {
             ID_add_low    = RXDATA[4] + OffSet_for_CommandID;
 
             //Read Command ID byte from EEPROM
-            if(RXDATA[0] == 'g'){
+            if(RXDATA[0] == 'g' || RXDATA[0] == 't'){
                 command_ID = ReadEEPROM(RXDATA[2], ID_add_high, ID_add_low);
                 WriteLastCommandIdToEEPROM(command_ID);
-                WriteLastCommandStatusToEEPROM(UNEXECUTED);
                 if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
                     //Write status to EEPROM
-                    WriteLastCommandStatusToEEPROM(error_main_crcCheck);
-                    ReceiveFlag = UNCORRECT_RECEIVE;
-                    continue;
-                }
-            }
-            if(RXDATA[0] == 't'){
-                if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
                     ReceiveFlag = UNCORRECT_RECEIVE;
                     continue;
                 }
@@ -157,7 +144,6 @@ void main(void) {
 
             /*---Define if command target is 't' or 'g' and read in task target ---*/
             /*------------------------------------------------------------------*/
-            UBYTE FMdata[8];
             switch(RXDATA[1]){
                 /*---Command from RXCOBC---*/
                 /*------------------------------------------------------------------*/
@@ -170,25 +156,16 @@ void main(void) {
                     commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
                     break;
                 case 0x66:  /*'f':FM Downlink*/
-                    for(UBYTE i=0; i<7; i++){
-                        FMdata[i] = RXDATA[i+3];
-                    }    
 //                    commandSwitchFMDownlink(RXDATA[2], FMdata);
                     downlinkFMSignal(RXDATA[3],RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
                     break;
                 case 'p':/*'p':power*/
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
-//                case 0x80:
-//                    put_ok();
-//                    break;
                 default:
-                    updateErrorStatus(error_main_commandfromOBCorRXCOBC);
                     break;
             }
-            WriteLastCommandStatusToEEPROM(command_status);
             ReceiveFlag = NOT_RECEIVE;
-            put_lf();
         }
 
     //======================================================================

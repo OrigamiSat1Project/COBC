@@ -222,7 +222,7 @@ UINT fcsCheck(void){
 void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
     waitFlag();
-    putChar('f');
+//    putChar('f');
     getData();
     fcschecker = fcsCheck();
     if(fcschecker == 1){    //valid data is stored in dData

@@ -73,31 +73,31 @@ void main(void) {
     UBYTE error_status;
 
     UBYTE melting_status[2];
-//    melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-//    melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-//    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {  //after melting
-//        if(MRLTING_FLAG_FOR_OBC == LOW){
-//            MRLTING_FLAG_FOR_OBC = HIGH;
-//        }
-//    } else {                                                                            //before melting
-//        UWORD SatMode_error_status;
-//        /*---200s ( 50s * 4times)---*/
-//        for(UBYTE i=0; i<4; i++){
-//            /*---wait 50s---*/
-//            sendPulseWDT();
-//            for(UBYTE j=0; j<10; j++){
-//                delay_s(5);
-//                sendPulseWDT();
-//            }
-//            /*---measure voltage & change Sat Mode---*/
-//            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-//            if (SatMode_error_status != 0){
-//                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-//            }
-//            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, (UBYTE)(SatMode_error_status>>8));
-//            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status2_addresshigh, SatMode_error_status2_addresslow, (UBYTE)SatMode_error_status);
-//        }
-//    }
+    melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+    melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {  //after melting
+        if(MRLTING_FLAG_FOR_OBC == LOW){
+            MRLTING_FLAG_FOR_OBC = HIGH;
+        }
+    } else {                                                                            //before melting
+        UWORD SatMode_error_status;
+        /*---200s ( 50s * 4times)---*/
+        for(UBYTE i=0; i<4; i++){
+            /*---wait 50s---*/
+            sendPulseWDT();
+            for(UBYTE j=0; j<10; j++){
+                delay_s(5);
+                sendPulseWDT();
+            }
+            /*---measure voltage & change Sat Mode---*/
+            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+            if (SatMode_error_status != 0){
+                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+            }
+            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, (UBYTE)(SatMode_error_status>>8));
+            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status2_addresshigh, SatMode_error_status2_addresslow, (UBYTE)SatMode_error_status);
+        }
+    }
     
     while(1){
 
@@ -168,12 +168,12 @@ void main(void) {
         if(commandData[0] == 0) continue;      //not receive command-->continue
 
         /*---check command ID---*/
-        lastCommandID = ReadEEPROMmainAndSub(B0select_for_RXCOBCLastCommand,HighAddress_for_LastCommandID,LowAddress_for_LastCommandID);
+        lastCommandID = ReadEEPROMmainAndSub(B0select_EEPROM, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID);
         commandID = commandData[1];
         if (commandID == lastCommandID) {
             continue;       //same uplink command-->continue
         }
-        lastCommandID = commandID;                      //update command ID
+        WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_LastCommandID, LowAddress_for_LastCommandID, commandID);
         
         mainControlByte = (UBYTE)(MAIN_EEPROM_ADDRESS | commandData[19]);
         subControlByte = (UBYTE)(SUB_EEPROM_ADDRESS | commandData[19]);
@@ -192,14 +192,13 @@ void main(void) {
         /*------------------------------------------------------------------*/
         WriteToEEPROMWithDataSize(mainControlByte,commandData[20],commandData[21],commandData,DATA_SIZE);
         WriteToEEPROMWithDataSize(subControlByte,commandData[20],commandData[21],commandData,DATA_SIZE);
-        WriteLastCommandIdToEEPROM(commandData[1]);
 
         /*---Send address using UART to OBC and TXCOBC---*/
         sendCommand('g','u',commandData[19], commandData[20], commandData[21], commandData[22], 0x00, 0x00);
         
-        for(int i = 0 ; i < 32 ; i ++){
-            putChar(commandData[i]);
-        }
+//        for(int i = 0 ; i < 32 ; i ++){
+//            putChar(commandData[i]);
+//        }
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/
         if(commandData[0] != 'R') continue;              //command target = PIC_RX
@@ -237,9 +236,8 @@ void main(void) {
                 commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
                 break;
             default:
-                updateErrorStatus(error_main_reveiveCommand);
                 break;
         }
-        
+        WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID,lastCommandID);
     }
 }
