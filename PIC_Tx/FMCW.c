@@ -104,7 +104,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
                     commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
                     break;
                 default:
-                    switchError(error_FMCW_downlinkReceivedCommand);
+                    updateErrorStatus(error_FMCW_downlinkReceivedCommand);
                     break;
             }
         }
@@ -177,14 +177,14 @@ void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_ad
     switch(type_select){
         case 0xaa:  //the size of data is specified by the command
             ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, downlink_times);
-            switchOk(ok_FMCW_commandSwitchCWDownlink_aa);
+            updateErrorStatus(ok_FMCW_commandSwitchCWDownlink_aa);
             break;
         case 0xbb:  //the size of data is written in EEPROM
             GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, low_address_forDataSize, downlink_times);
-            switchOk(ok_FMCW_commandSwitchCWDownlink_bb);
+            updateErrorStatus(ok_FMCW_commandSwitchCWDownlink_bb);
             break;
         default:
-            switchError(error_FMCW_commandSwitchCWDownlink);
+            updateErrorStatus(error_FMCW_commandSwitchCWDownlink);
             break;
 
     }

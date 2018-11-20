@@ -5,6 +5,7 @@
 #include "CRC16.h"
 #include "time.h"
 #include "I2C.h"
+#include "OkError.h"
 
 void Init_SERIAL(void){
 
@@ -142,7 +143,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
             changeInterruptPermission(data1,data2);
             break;
         default:
-//            switchError(error_UART_commandSwitchUART);
+            updateErrorStatus(error_UART_commandSwitchUART);
             break;
     }
 }

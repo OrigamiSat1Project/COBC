@@ -201,22 +201,22 @@ void commandSwitchHKdata(UBYTE type_sellect){
    switch(type_sellect){    
         case 'd': //measure DC-DC temperature
             measureDcDcTemperature();
-            switchOk(ok_ADC_downlinkReceivedCommand_DcDc);
+            updateErrorStatus(ok_ADC_downlinkReceivedCommand_DcDc);
             break;
         case '5': //5VBUS 
             measureChannel2();
-            switchOk(ok_ADC_downlinkReceivedCommand_5VBus);
+            updateErrorStatus(ok_ADC_downlinkReceivedCommand_5VBus);
             break;
         case 'C': //5V CIB
             measureChannel4();
-            switchOk(ok_ADC_downlinkReceivedCommand_5VCIB);
+            updateErrorStatus(ok_ADC_downlinkReceivedCommand_5VCIB);
             break;
         case 'u': //update all HK data
             measureAllChanelADC();
-            switchOk(ok_ADC_downlinkReceivedCommand_All);
+            updateErrorStatus(ok_ADC_downlinkReceivedCommand_All);
             break;
         default:
-            switchError(error_ADC_commandSwitchHKdata);
+            updateErrorStatus(error_ADC_commandSwitchHKdata);
             break;
    }
 }

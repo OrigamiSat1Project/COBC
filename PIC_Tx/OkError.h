@@ -44,11 +44,9 @@
 #define error_MPU_changeHighLow               0x93
 #define error_main_crcCheck                   0x10
 #define error_main_commandfromOBCorRXCOBC     0x11
+#define error_UART_commandSwitchUART          0x30
 
-
-void switchOk(UBYTE);
-void switchError(UBYTE);
-void putErrorNoDownlink(UBYTE);
+void updateErrorStatus(UBYTE);
 UBYTE bitCalResult(UBYTE bit_input);
 UBYTE checkMeltingStatus(UBYTE e_address);
 

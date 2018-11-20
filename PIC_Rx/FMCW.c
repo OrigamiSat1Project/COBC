@@ -5,6 +5,8 @@
 #include "time.h"
 #include "typeDefine.h"
 #include "OkError.h"
+#include "EEPROM.h"
+#include "I2C.h"
 
 /*Identifiers for the radio units (called unitID if given to a functions)*/
 /* Do not change!! */
@@ -290,7 +292,7 @@ void commandSwitchFMCW(UBYTE command){
             FMRX(FMRX_Nref, FMRX_Nprg);
             break;
         default:
-            switchError(error_FMCW_commandSwitchFMCW);
+            updateErrorStatus(error_FMCW_commandSwitchFMCW);
             break;
     }
 }

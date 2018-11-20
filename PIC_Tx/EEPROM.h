@@ -35,9 +35,9 @@
 *Last Command ID
 ******************************************************************************/
 #define B0select_for_TXCOBCLastCommandID            0x00
-#define HighAddress_for_TXCOBCLastCommandID         0x81//
-#define LowAddress_for_TXCOBCLastCommandID          0x85//
-#define HighAddress_for_TXCOBCLastCommandStatus     TXCOBC_CommandErrorStatus_addressHigh//
+#define HighAddress_for_TXCOBCLastCommandID         0x81
+#define LowAddress_for_TXCOBCLastCommandID          0x85
+#define HighAddress_for_TXCOBCLastCommandStatus     TXCOBC_CommandErrorStatus_addressHigh
 #define LowAddress_for_TXCOBCLastCommandStatus      TXCOBC_CommandErrorStatus_addressLow
 #define HighAddress_for_RXCOBCLastCommandID         0x81//
 #define LowAddress_for_RXCOBCLastCommandID          0x83//
@@ -48,14 +48,14 @@
 *ADC value
 ******************************************************************************/
 //ch1 (Battery Temperature))
-#define adcValue_CH1_addressHigh 0x81//
-#define adcValue_CH1_addressLow  0x81//
+#define adcValue_CH1_addressHigh 0x81
+#define adcValue_CH1_addressLow  0x81
 //ch2 (5VBUS voltage(EPS 5V))
-#define adcValue_CH2_addressHigh 0x81//
-#define adcValue_CH2_addressLow  0x8B//
+#define adcValue_CH2_addressHigh 0x81
+#define adcValue_CH2_addressLow  0x8B
 //ch3 (3V3BUS voltage(EPS 3.3V))
-#define adcValue_CH3_addressHigh 0x81//
-#define adcValue_CH3_addressLow  0x89//
+#define adcValue_CH3_addressHigh 0x81
+#define adcValue_CH3_addressLow  0x89
 //ch4
 #define adcValue_CH4_addressHigh 0x80//
 #define adcValue_CH4_addressLow  0x80//
@@ -78,12 +78,12 @@
 #define TXCOBC_CommandErrorStatus_addressLow 0x86//
 
 //HK
-#define BatteryVoltageOBC_addressHigh  0x81//
-#define BatteryVoltageOBC_addressLow 0x8D//
-#define BatteryVoltageCIB_addressHigh  0x81//
-#define BatteryVoltageCIB_addressLow 0x87//
-#define MeltingStatus_addressHigh  0x81//
-#define MeltingStatus_addressLow  0x0A//
+#define BatteryVoltageOBC_addressHigh  0x81
+#define BatteryVoltageOBC_addressLow 0x8D
+#define BatteryVoltageCIB_addressHigh  0x81
+#define BatteryVoltageCIB_addressLow 0x87
+#define MeltingStatus_addressHigh  0x85
+#define MeltingStatus_addressLow  0x00
 #define LatestExcutionCommandID_addressHigh   0x81//
 #define LatestExcutionCommandID_addressLow   0x8F//
 #define OBC_CommandErrorStatus_addressHigh 0x81//

@@ -179,23 +179,17 @@ void main(void) {
                 case 'p':/*'p':power*/
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
-                case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
-                    measureDcDcTemperature();
-                    break;
-                case 0x80:
-                    put_ok();
-                    break;
+//                case 0x80:
+//                    put_ok();
+//                    break;
                 default:
-                    switchError(error_main_commandfromOBCorRXCOBC);
-                    put_error();
+                    updateErrorStatus(error_main_commandfromOBCorRXCOBC);
                     break;
             }
             WriteLastCommandStatusToEEPROM(command_status);
             ReceiveFlag = NOT_RECEIVE;
             put_lf();
         }
-        /*---write CRC result 6bit 1 ---*/
-//        switchOk(error_main_crcCheck);
 
     //======================================================================
     }

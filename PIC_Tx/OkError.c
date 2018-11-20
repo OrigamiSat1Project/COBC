@@ -14,43 +14,8 @@
 #include <xc.h>
 #include <stdio.h>
 
-void switchOk(UBYTE action_select){
-    UBYTE mainAddress;
-    UBYTE subAddress;
-    UBYTE Ok_data[2];
-    mainAddress = EEPROM_address | B0select_for_Ok;
-    subAddress = EEPROM_subaddress | B0select_for_Ok;
-    /*Ok_data[0]->coomandID*/
-    Ok_data[0] = ReadEEPROM(mainAddress, HighAddress_for_TXCOBCLastCommandID, LowAddress_for_TXCOBCLastCommandID);
-    Ok_data[1] = action_select;
-    WriteToEEPROMWithDataSize(EEPROM_address, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data,2);
-    WriteToEEPROMWithDataSize(EEPROM_subaddress, HighAddress_for_Ok, LowAddress_for_Ok, Ok_data,2);
-}
-
-void switchError(UBYTE action_select){
-    UBYTE mainAddress;
-    UBYTE subAddress;
-    UBYTE error_data[2];
-    mainAddress = EEPROM_address | B0select_for_Error;
-    subAddress = EEPROM_subaddress | B0select_for_Error;
-    /*error_data[0]->coomandID*/
-    error_data[0] = ReadEEPROM(mainAddress, HighAddress_for_TXCOBCLastCommandID, LowAddress_for_TXCOBCLastCommandID);
-    error_data[1] = action_select;
-    WriteToEEPROMWithDataSize(EEPROM_address, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
-    WriteToEEPROMWithDataSize(EEPROM_subaddress, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
-}
-
-void putErrorNoDownlink(UBYTE action_select){
-    UBYTE mainAddress;
-    UBYTE subAddress;
-    UBYTE error_data[2];
-    mainAddress = EEPROM_address | B0select_for_Error;
-    subAddress = EEPROM_subaddress | B0select_for_Error;
-    /*error_data[0]->coomandID*/
-    error_data[0] = ReadEEPROM(mainAddress, HighAddress_for_TXCOBCLastCommandID, LowAddress_for_TXCOBCLastCommandID);
-    error_data[1] = action_select;
-    WriteToEEPROMWithDataSize(EEPROM_address, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
-    WriteToEEPROMWithDataSize(EEPROM_subaddress, HighAddress_for_Error, LowAddress_for_Error, error_data,2);
+void updateErrorStatus(UBYTE error_srarus){
+    WriteOneByteToMainAndSubB0EEPROM(TXCOBC_CommandErrorStatus_addressHigh, TXCOBC_CommandErrorStatus_addressLow, error_srarus);
 }
 
 //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5

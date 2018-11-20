@@ -301,7 +301,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
             ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;
             break;
         default:
-            switchError(error_MPU_commandSwitchSatMode);
+            updateErrorStatus(error_MPU_commandSwitchSatMode);
             break;
     }
 }

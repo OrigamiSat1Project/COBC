@@ -308,7 +308,7 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE da
             ChangeI2CBaudRate( slaveAdress );
             break;
         default:
-            switchError(error_I2C_commandSwitchI2C);
+            updateErrorStatus(error_I2C_commandSwitchI2C);
             break;
     }
 }
@@ -359,7 +359,7 @@ void commandSwitchEEPROM(UBYTE *command){
             MRLTING_FLAG_FOR_OBC = HIGH;
             break;
         default:
-            switchError(error_I2C_commandSwitchEEPROM);
+            updateErrorStatus(error_I2C_commandSwitchEEPROM);
             break;
     }
 }

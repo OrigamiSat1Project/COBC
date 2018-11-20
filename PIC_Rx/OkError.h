@@ -13,6 +13,7 @@
 #define SUCCESS        1
 #define FAILURE        0
 #define RESET_STATUS   0
+#define UNEXECUTED     0x55
 
 /*******************************************************************************
 *Ok
@@ -62,7 +63,7 @@
 
 
 void switchOk(UBYTE);
-void switchError(UBYTE);
+void updateErrorStatus(UBYTE);
 
 #endif	/* OKERROR_H */
 

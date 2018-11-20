@@ -123,9 +123,9 @@ void switchPowerSpply1pin(UBYTE target_select, UBYTE onOff, UBYTE timeHigh, UBYT
             onOffWDT(onOff, timeHigh, timeLow);
             break;
         default:
-            switchError(error_MPU_switchPowerSpply1pin);
+            updateErrorStatus(error_MPU_switchPowerSpply1pin);
             break;
-    }  
+    }
 }
 
 /*******************************************************************************
@@ -247,7 +247,7 @@ void changeInOut(UINT pin_select_command, UBYTE inOut){
             inOutStatus_addressLow  = TRISE_addressLow;
             break;
         default:
-            switchError(error_MPU_changeInOut);
+            updateErrorStatus(error_MPU_changeInOut);
             break;
     }
     WriteOneByteToMainAndSubB0EEPROM(inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
@@ -283,7 +283,7 @@ void changeHighLow(UINT pin_select_command, UBYTE highLow){
             highLowStatus_addressLow  = PORTE_addressLow;
             break;
         default:
-            switchError(error_MPU_changeHighLow);
+            updateErrorStatus(error_MPU_changeHighLow);
             break;
     }
     WriteOneByteToMainAndSubB0EEPROM(highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
@@ -305,7 +305,7 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             switchPowerSpply1pin('W', onOff, timeHigh, timeLow);
             break;
         default:
-            switchError(error_MPU_commandSwitchSatMode);
+            updateErrorStatus(error_MPU_commandSwitchSatMode);
             break;
     }
 }
@@ -321,7 +321,7 @@ void commandSwitchIntProcess(UBYTE command, UBYTE data1, UBYTE data2){
             changeHighLow(data1, data2);     
             break;
         default:
-            switchError(error_MPU_commandSwitchIntProcess);
+            updateErrorStatus(error_MPU_commandSwitchIntProcess);
             break;
     }
 }

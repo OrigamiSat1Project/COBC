@@ -183,10 +183,8 @@ void main(void) {
         /*---update CRC---*/
         if(crc16(0,commandData,29) != checkCRC(commandData,29)){
             commandData[31] &= 0b01111111;
-//            switchError(error_main_crcCheck);
         }else{
             commandData[31] |= 0b10000000;
-//            switchOk(ok_main_crcCheck);
         }
 
         /*---Write uplink command in EEPROM---*/
@@ -234,8 +232,9 @@ void main(void) {
                 commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
                 break;
             default:
-                switchError(error_main_reveiveCommand);
+                updateErrorStatus(error_main_reveiveCommand);
                 break;
         }
+        
     }
 }
