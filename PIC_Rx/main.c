@@ -80,7 +80,6 @@ void main(void) {
             MRLTING_FLAG_FOR_OBC = HIGH;
         }
     } else {                                                                            //before melting
-        UWORD SatMode_error_status;
         /*---200s ( 50s * 4times)---*/
         for(UBYTE i=0; i<4; i++){
             /*---wait 50s---*/
@@ -131,13 +130,12 @@ void main(void) {
          }
 
         /*---timer process for measure EPS BATTERY---*/
-               if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  
+        if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  
             SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-           if (SatMode_error_status != 0){
+            if (SatMode_error_status != 0){
                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
            }
-           WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, (UBYTE)(SatMode_error_status>>8));
-           WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status2_addresshigh, SatMode_error_status2_addresslow, (UBYTE)SatMode_error_status);
+           WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, SatMode_error_status);
            set_bat_meas_counter(0,0);
         }
         /*----------------------------------------------------------------------------*/
@@ -187,7 +185,6 @@ void main(void) {
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/
         if(commandData[0] != 'R') continue;              //command target = PIC_RX        
-        WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_RXCOBCLastCommandID, LowAddress_for_RXCOBCLastCommandID, commandData[1]);
         
             //Task target
         if(commandData[2] != 'r') continue;          //task target =  PIC_RX
