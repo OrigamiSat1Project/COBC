@@ -16,11 +16,11 @@
 UBYTE ReserveBeforeSatMode = SATMODE_SAVING;//spare BeforeSatMode (when can't read BeforeSatMode from EEPROM)
 UBYTE melting_status[2];
 
-UWORD MeasureBatVoltageAndChangeSatMode(){
+UBYTE MeasureBatVoltageAndChangeSatMode(){
     //------battery voltage measure-------------
     UBYTE bat_voltage[2];
     UWORD Voltage;//Voltage is 10 bit           
-    UBYTE error_status = 0;
+    static UBYTE error_status = 0;
     UWORD High, Low;
 
     //if Voltage is 0x0000 or very large,read one more time. Then it is still 0x0000 or very large,CHange SafeMode.
@@ -34,7 +34,8 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
         if(Voltage == 0x0000 || (bat_voltage[0] & 0xFC) != 0){ //ADC read error
             UBYTE SWchangeSavingMode = ReadEEPROM(MAIN_EEPROM_ADDRESS,SW_Change_SavingMode_ADC_addresshigh,SW_Change_SavingMode_ADC_addresslow);  
             UBYTE bitcount = BitCount(SWchangeSavingMode);  
-            error_status = error_status | 0x0003;//0b 00000000 00000011
+//            error_status = error_status | 0x0003;//0b 00000000 00000011
+            error_status = 0x01;
             if(bitcount >= 2 && bitcount <= 4){
                 SwitchToSavingMode();
             }else if(bitcount >= 5 && bitcount <= 7){
@@ -48,7 +49,8 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     NOP();
                 }else{
                     SwitchToSavingMode();
-                    error_status = 0xAAAA; //0b 10101010 10101010;
+//                    error_status = 0xAAAA; //0b 10101010 10101010;
+                    error_status = 0x02;
                 }
             }
             return error_status;
@@ -67,7 +69,8 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
             High = Init_TheresholdBatVol_nominal_saving_high;
             Low = Init_TheresholdBatVol_nominal_saving_low;
             BatVol_nominal_saving = (High << 8) | Low;
-            error_status = error_status | 0x000C; //0b 00000000 00001100
+//            error_status = error_status | 0x000C; //0b 00000000 00001100
+            error_status = 0x03;
         }
     }
     __delay_ms(100);///DON'T Delete
@@ -83,7 +86,8 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
             High = Init_TheresholdBatVol_saving_survival_high;
             Low = Init_TheresholdBatVol_saving_survival_low;
             BatVol_saving_survival = (High << 8) | Low;
-            error_status = error_status | 0x0030; //0b 00000000 00110000;
+//            error_status = error_status | 0x0030; //0b 00000000 00110000;
+            error_status = 0x04;
         }              
     }
     __delay_ms(100);///DON'T Delete
@@ -98,7 +102,8 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
             High = Init_TheresholdBatVol_nominal_revival_high;
             Low = Init_TheresholdBatVol_nominal_revival_low;
             BatVol_nominal_revival = (High << 8) | Low;
-            error_status = error_status | 0x00C0; // 0b 00000000 11000000;
+//            error_status = error_status | 0x00C0; // 0b 00000000 11000000;
+            error_status = 0x05;
         }
     }
     __delay_ms(100);///DON'T Delete
@@ -114,7 +119,8 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
             High = Init_TheresholdBatVol_saving_revival_high;
             Low = Init_TheresholdBatVol_saving_revival_low;
             BatVol_saving_revival = (High << 8) | Low;
-            error_status = error_status | 0x0300; //0b 00000011 00000000;
+//            error_status = error_status | 0x0300; //0b 00000011 00000000;
+            error_status = 0x06;
         }              
     }
     __delay_ms(100);///DON'T Delete
@@ -141,7 +147,8 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
                     break;
                 default:
                     ChoicedSatMode = ReserveBeforeSatMode;
-                    error_status = error_status | 0x0C00; //0b 00001100 00000000;
+//                    error_status = error_status | 0x0C00; //0b 00001100 00000000;
+                    error_status = 0x07;
                     break;                       
             }
             break;
@@ -223,7 +230,8 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
             }                  
             break;
         default:    
-            error_status |= 0x3000;// 0b 00110000 00000000;
+//            error_status |= 0x3000;// 0b 00110000 00000000;
+            error_status = 0x08;
             break;
     }
     return error_status;

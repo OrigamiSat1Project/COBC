@@ -41,7 +41,8 @@ UBYTE commandData[DATA_SIZE];
 UBYTE commandID;            //ID of uplink command
 UBYTE mainControlByte;      //control byte of main EEPROM
 UBYTE subControlByte;       //control byte of sub EEPROM
-UWORD SatMode_error_status;
+//UWORD SatMode_error_status;
+UBYTE SatMode_error_status;
 
 //TODO:add interrupt finction?
 void main(void) {
@@ -137,8 +138,8 @@ void main(void) {
          }
 
 //        /*---timer process for measure EPS BATTERY---*/
-        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
-        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
+               if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
+//        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
             SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
            if (SatMode_error_status != 0){
                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
@@ -195,6 +196,10 @@ void main(void) {
 
         /*---Send address using UART to OBC and TXCOBC---*/
         sendCommand('g','u',commandData[19], commandData[20], commandData[21], commandData[22], 0x00, 0x00);
+        
+        for(int i = 0 ; i < 32 ; i ++){
+            putChar(commandData[i]);
+        }
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/
         if(commandData[0] != 'R') continue;              //command target = PIC_RX

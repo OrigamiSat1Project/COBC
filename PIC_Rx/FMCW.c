@@ -22,6 +22,8 @@ void setNprg(UBYTE unitID, USLONG Nprg);
 void setNref(UBYTE unitID, int Nref);
 void setOptionRegister(UBYTE unitID);
 void _NOP(void);
+UBYTE Nprg_b[17];
+UBYTE Nref_b[12];
 
 
 /* 
@@ -127,11 +129,11 @@ void sendSTB(UBYTE unitID){
  */
 void setNprg(UBYTE unitID, USLONG Nprg){
     UBYTE count;
-    UBYTE Nprg_b[17];
     
-//    for(UBYTE i=0; i<17; i++){
-//        Nprg_b[i] = 0;
-//    }
+    
+    for(UBYTE i=0; i<17; i++){
+        Nprg_b[i] = 0;
+    }
     
     //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
     for(int i=0; Nprg>0; i++){
@@ -169,11 +171,11 @@ void setNprg(UBYTE unitID, USLONG Nprg){
  * 4. Send STB signal
  */
 void setNref(UBYTE unitID, int Nref){
-    UBYTE Nref_b[12];
     
-//    for(UBYTE i=0; i<12; i++){
-//        Nref_b[i] = 0;
-//    }
+    
+    for(UBYTE i=0; i<12; i++){
+        Nref_b[i] = 0;
+    }
     
     //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
     for(int i=0; Nref>0; i++){

@@ -39,7 +39,7 @@
 
 #define TheresholdBatVol_lower_limit 0x0120// 4V
     
-UWORD MeasureBatVoltageAndChangeSatMode(void);
+UBYTE MeasureBatVoltageAndChangeSatMode(void);
 UBYTE BitCount(UBYTE);
 void SwitchToSavingMode(void);
 void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
