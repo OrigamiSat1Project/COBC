@@ -41,7 +41,8 @@ UBYTE commandData[DATA_SIZE];
 UBYTE commandID;            //ID of uplink command
 UBYTE mainControlByte;      //control byte of main EEPROM
 UBYTE subControlByte;       //control byte of sub EEPROM
-UWORD SatMode_error_status;
+//UWORD SatMode_error_status;
+UBYTE SatMode_error_status;
 
 //TODO:add interrupt finction?
 void main(void) {
@@ -202,40 +203,40 @@ void main(void) {
             //Task target
         if(commandData[2] != 'r') continue;          //task target =  PIC_RX
                 // Command type
-        switch(commandData[3]){         //Process command type
-            case 'm': /*change sattelite mode*/
-                commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
-    //                    commandSwitchSatMode(&commandData[4]);
-                break;
-            case 'p': /*power supply*/
-                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
-                break;
-            case 'n': /*radio unit*/
-                commandSwitchFMCW(commandData[4]);
-                break;
-            case 'i':/*I2C*/
-                commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
-                break;
-            case 'e': /*EEPROM*/
-    //                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
-                commandSwitchEEPROM(&commandData[4]);
-                break;
-            case 'u':/*UART*/
-                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7]);
-                break;
-            case 'w':/*WDT (watch dog timer)*/
-                WDTwait();
-                break;
-            case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
-                //TODO: write function directly here or in MPU.c
-                break;
-            case 'r':/*internal processing*/
-                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-                break;
-            default:
-                updateErrorStatus(error_main_reveiveCommand);
-                break;
-        }
+//        switch(commandData[3]){         //Process command type
+//            case 'm': /*change sattelite mode*/
+//                commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+//    //                    commandSwitchSatMode(&commandData[4]);
+//                break;
+//            case 'p': /*power supply*/
+//                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+//                break;
+//            case 'n': /*radio unit*/
+//                commandSwitchFMCW(commandData[4]);
+//                break;
+//            case 'i':/*I2C*/
+//                commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
+//                break;
+//            case 'e': /*EEPROM*/
+//    //                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
+//                commandSwitchEEPROM(&commandData[4]);
+//                break;
+//            case 'u':/*UART*/
+//                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7]);
+//                break;
+//            case 'w':/*WDT (watch dog timer)*/
+//                WDTwait();
+//                break;
+//            case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
+//                //TODO: write function directly here or in MPU.c
+//                break;
+//            case 'r':/*internal processing*/
+//                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+//                break;
+//            default:
+//                updateErrorStatus(error_main_reveiveCommand);
+//                break;
+//        }
         
     }
 }
