@@ -151,7 +151,6 @@ void main(void) {
         /*----------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------*/
         sendPulseWDT();
-        delay_s(1);
 
 //
 //        /*---Receive command data---*/
@@ -201,7 +200,7 @@ void main(void) {
 //        }
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/
-        if(commandData[0] != 'R') continue;              //command target = PIC_RX
+        if(commandData[0] != 'R') continue;              //command target = PIC_RX        
             //Task target
         if(commandData[2] != 'r') continue;          //task target =  PIC_RX
                 // Command type

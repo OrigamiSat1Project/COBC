@@ -91,9 +91,9 @@ void waitFlag(void){
             }
         }
 
-//        if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
-//            break;
-//        }
+        if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
+            break;
+        }
 
         /*Search for extra flags and skip them until different byte is read in*/
         while(buf == FLAG_AX25){
@@ -221,7 +221,7 @@ UINT fcsCheck(void){
 //UBYTE *receiveDataPacket(void){
 void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
-    waitFlag();
+    waitFlag();    
 //    putChar('f');
     getData();
     fcschecker = fcsCheck();
