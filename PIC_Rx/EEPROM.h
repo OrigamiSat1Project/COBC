@@ -28,24 +28,24 @@
 *MPU.c
 ******************************************************************************/
 /*-----------in/out status-----------------*/
-#define TRISA_addressHigh 0x81//
-#define TRISA_addressLow  0x15//
-#define TRISB_addressHigh 0x81//
-#define TRISB_addressLow  0x16//
-#define TRISC_addressHigh 0x81//
-#define TRISC_addressLow  0x17//
-#define TRISD_addressHigh 0x81//
-#define TRISD_addressLow  0x18//
-#define TRISE_addressHigh 0x81//
-#define TRISE_addressLow  0x19//
+#define TRISA_addressHigh 0x81
+#define TRISA_addressLow  0x15
+#define TRISB_addressHigh 0x81
+#define TRISB_addressLow  0x16
+#define TRISC_addressHigh 0x81
+#define TRISC_addressLow  0x17
+#define TRISD_addressHigh 0x81
+#define TRISD_addressLow  0x18
+#define TRISE_addressHigh 0x81
+#define TRISE_addressLow  0x19
 
 /*-----------high/low status-----------------*/
-#define PORTA_addressHigh 0x81//
-#define PORTA_addressLow  0x1A//
-#define PORTB_addressHigh 0x81//
-#define PORTB_addressLow  0x1B//
-#define PORTC_addressHigh 0x81//
-#define PORTC_addressLow  0x1C//
+#define PORTA_addressHigh 0x81
+#define PORTA_addressLow  0x1A
+#define PORTB_addressHigh 0x81
+#define PORTB_addressLow  0x1B
+#define PORTC_addressHigh 0x81
+#define PORTC_addressLow  0x1C
 #define PORTD_addressHigh 0x81//
 #define PORTD_addressLow  0x1D//
 #define PORTE_addressHigh 0x81//

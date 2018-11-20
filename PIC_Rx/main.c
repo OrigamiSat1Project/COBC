@@ -82,10 +82,10 @@ void main(void) {
     } else {                                                                            //before melting
         UWORD SatMode_error_status;
         /*---200s ( 50s * 4times)---*/
-        for(UBYTE i=0; i<4; i++){
+        for(UBYTE i=0; i<1; i++){
             /*---wait 50s---*/
             sendPulseWDT();
-            for(UBYTE j=0; j<10; j++){
+            for(UBYTE j=0; j<6; j++){
                 delay_s(5);
                 sendPulseWDT();
             }
@@ -161,12 +161,14 @@ void main(void) {
         commandData[0] = 0;
 
         receiveDataPacket(commandData);
-        
 
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[0] == 0) continue;      //not receive command-->continue
 
-        
+        commandData[19] = 0x00;
+        commandData[20] = 0x20;
+        commandData[21] = 0x00;
+        commandData[22] = 0x03;
         
         mainControlByte = (UBYTE)(MAIN_EEPROM_ADDRESS | commandData[19]);
         subControlByte = (UBYTE)(SUB_EEPROM_ADDRESS | commandData[19]);

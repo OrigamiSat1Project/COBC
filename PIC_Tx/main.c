@@ -80,20 +80,20 @@ void main(void) {
     sendPulseWDT();
     delay_s(TURN_ON_WAIT_TIME);   
 
-//    UBYTE melting_status[2] = {0x00};
-//    melting_status[0] = checkMeltingStatus(EEPROM_address);
-//    melting_status[1] = checkMeltingStatus(EEPROM_subaddress);
-//    if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {  //before melting                                                                           //before melting
-//        /*---200s ( 50s * 4times)---*/
-//        for(UBYTE i=0; i<4; i++){
-//            /*---wait 50s---*/
-//            sendPulseWDT();
-//            for(UBYTE i=0; i<10; i++){
-//                delay_s(5);
-//                sendPulseWDT();
-//            }
-//        }
-//    }                  
+    UBYTE melting_status[2] = {0x00};
+    melting_status[0] = checkMeltingStatus(EEPROM_address);
+    melting_status[1] = checkMeltingStatus(EEPROM_subaddress);
+    if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {  //before melting                                                                           //before melting
+        /*---200s ( 50s * 4times)---*/
+        for(UBYTE i=0; i<1; i++){
+            /*---wait 50s---*/
+            sendPulseWDT();
+            for(UBYTE i=0; i<6; i++){
+                delay_s(5);
+                sendPulseWDT();
+            }
+        }
+    }                  
      
     while(1){
         sendPulseWDT();
