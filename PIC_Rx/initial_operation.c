@@ -110,12 +110,10 @@ UBYTE InitialOperation(void){
                 sendPulseWDT();
 
                 if(melting_counter<4){
-                    //***FIXME*** wire melting!! be careful!!
-//                    //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x01, 0x00);
+                    sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x01, 0x00);
 
                 } else {
-                    //***FIXME***  wire melting!! be careful!!
-//                   //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x01, 0x00);
+                   sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x01, 0x00);
                 }
                 melting_counter++;
             }
@@ -128,20 +126,6 @@ UBYTE InitialOperation(void){
             return error_initialOpe_satMode;
     }
 }
-
-//ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
-//UBYTE bitCalResult(UBYTE bit_input){
-//    UBYTE bit_cal_result; 
-//    for(UBYTE cal_counter=0; cal_counter<8; cal_counter++){
-//        if((bit_input & 1)==1){
-//            bit_cal_result = bit_cal_result + 1;
-//        } else {
-//            bit_cal_result = bit_cal_result + 0;
-//        }
-//        bit_input = bit_input >>1;
-//    }
-//    return bit_cal_result;
-//}
 
 UBYTE bitCalResult(UBYTE bit_input){
     UBYTE bit_cal_result = 0; 

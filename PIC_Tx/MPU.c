@@ -109,24 +109,24 @@ void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
 /********************************************************/    
 //melting program!! Be careful to write program to FM!!!!!
 /********************************************************/
-//    
-//    if ( onOff == 0x00 ){        
-////            WIRE_CUTTER = low;
-//    } else {                     
-////            WIRE_CUTTER = high;
-//    }
-//
-//    if(timeHigh == 0x00 && timeLow == 0x00){
-//    }else {        
-//        UWORD wait_time = 0;
-//        wait_time = calTime2Byte(timeHigh, timeLow);
-//
-//        if(wait_time>MELTING_TIME_MAX){
-//            wait_time = MELTING_TIME_DEFAULT;
-//        } else {}
-//        delay_ms(wait_time);
-////        WIRE_CUTTER =invertState(onOff);
-//    }
+    
+    if ( onOff == 0x00 ){        
+        WIRE_CUTTER = low;
+    } else {                     
+        WIRE_CUTTER = high;
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){
+    }else {        
+        UWORD wait_time = 0;
+        wait_time = calTime2Byte(timeHigh, timeLow);
+
+        if(wait_time>MELTING_TIME_MAX){
+            wait_time = MELTING_TIME_DEFAULT;
+        } else {}
+        delay_ms(wait_time);
+        WIRE_CUTTER =invertState(onOff);
+    }
 }
 
 /*antenna melting with meliing times*/
@@ -222,10 +222,10 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             onOff5R8GSubPower(onOff, timeHigh, timeLow);
             break;
         case 'a': //WIRE_CUTTER
-////            cutWire(onOff, timeHigh, timeLow);
+            cutWire(onOff, timeHigh, timeLow);
             break;
         case 't': //WIRE_CUTTER with times
-////            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
+            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
             break;
         case 'w': //WDT
             onOffTXWDT(onOff, timeHigh, timeLow);
