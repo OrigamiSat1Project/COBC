@@ -13,7 +13,7 @@
 #ifndef DECODE_AX25_H
 #define	DECODE_AX25_H
 
-#define GET_BIT_WAIT_LOOP 55      //Sets the wait time for a change //20MHz:130  10MHz:66 //TODO: check runtime
+#define GET_BIT_WAIT_LOOP 54      //Sets the wait time for a change //20MHz:130  10MHz:66 //TODO: check runtime
 #define FLAG_AX25 0x7e
 #define PACKET_SIZE 52
 #define DATA_SIZE 32

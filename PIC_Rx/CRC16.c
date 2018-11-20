@@ -26,7 +26,7 @@ UWORD crc16(UWORD crc, UBYTE *ptr, UBYTE len){
 
 
 UWORD checkCRC(UBYTE *command, UBYTE sizeBeforeCRC){
-    UWORD checkReceive;
+    UWORD checkReceive = 0x00;
     checkReceive |= command[sizeBeforeCRC];
     checkReceive = checkReceive << 8;
     checkReceive |= command[sizeBeforeCRC +1];

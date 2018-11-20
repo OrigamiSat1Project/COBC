@@ -163,17 +163,15 @@ void main(void) {
         commandData[0] = 0;
 
         receiveDataPacket(commandData);
+        commandData[19] = 0x00;
+        commandData[20] = 0x00;
+        commandData[21] = 0x20;
+        commandData[22] = 0x05;
 
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[0] == 0) continue;      //not receive command-->continue
 
-        /*---check command ID---*/
-        lastCommandID = ReadEEPROMmainAndSub(B0select_EEPROM, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID);
-        commandID = commandData[1];
-        if (commandID == lastCommandID) {
-            continue;       //same uplink command-->continue
-        }
-        WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_LastCommandID, LowAddress_for_LastCommandID, commandID);
+        
         
         mainControlByte = (UBYTE)(MAIN_EEPROM_ADDRESS | commandData[19]);
         subControlByte = (UBYTE)(SUB_EEPROM_ADDRESS | commandData[19]);
@@ -182,10 +180,15 @@ void main(void) {
         /*------------------------------------------------------------------*/
 
         /*---update CRC---*/
-        if(crc16(0,commandData,29) != checkCRC(commandData,29)){
-            commandData[31] &= 0b01111111;
-        }else{
-            commandData[31] |= 0b10000000;
+        if(crc16(0,commandData,29) == checkCRC(commandData,29)){
+            commandData[31] = 0xb0;
+            /*---check command ID---*/
+            lastCommandID = ReadEEPROMmainAndSub(B0select_EEPROM, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID);
+            commandID = commandData[1];
+            if (commandID == lastCommandID) {
+                continue;       //same uplink command-->continue
+            }
+            WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_LastCommandID, LowAddress_for_LastCommandID, commandID);
         }
 
         /*---Write uplink command in EEPROM---*/
@@ -196,9 +199,6 @@ void main(void) {
         /*---Send address using UART to OBC and TXCOBC---*/
         sendCommand('g','u',commandData[19], commandData[20], commandData[21], commandData[22], 0x00, 0x00);
         
-//        for(int i = 0 ; i < 32 ; i ++){
-//            putChar(commandData[i]);
-//        }
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/
         if(commandData[0] != 'R') continue;              //command target = PIC_RX
