@@ -167,12 +167,12 @@ void main(void) {
         if(commandData[0] == 0) continue;      //not receive command-->continue
 
         /*---check command ID---*/
-        lastCommandID = ReadEEPROMmainAndSub(B0select_for_RXCOBCLastCommand,HighAddress_for_LastCommandID,LowAddress_for_LastCommandID);
+        lastCommandID = ReadEEPROMmainAndSub(B0select_EEPROM, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID);
         commandID = commandData[1];
         if (commandID == lastCommandID) {
             continue;       //same uplink command-->continue
         }
-        lastCommandID = commandID;                      //update command ID
+        WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_LastCommandID, LowAddress_for_LastCommandID, commandID);        
         
         mainControlByte = (UBYTE)(MAIN_EEPROM_ADDRESS | commandData[19]);
         subControlByte = (UBYTE)(SUB_EEPROM_ADDRESS | commandData[19]);
@@ -197,6 +197,7 @@ void main(void) {
         sendCommand('g','u',commandData[19], commandData[20], commandData[21], commandData[22], 0x00, 0x00);
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/
+
         if(commandData[0] != 'R') continue;              //command target = PIC_RX
             //Task target
         if(commandData[2] != 'r') continue;          //task target =  PIC_RX

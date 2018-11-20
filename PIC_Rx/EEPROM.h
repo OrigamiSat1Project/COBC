@@ -21,6 +21,9 @@
 #define MAIN_EEPROM_ADDRESS_B1  0x54//
 #define SUB_EEPROM_ADDRESS_B1   0x56//
 
+#define B0select_EEPROM 0
+#define B1select_EEPROM 1
+
 /*******************************************************************************
 *MPU.c
 ******************************************************************************/
@@ -84,6 +87,7 @@
 #define HighAddress_for_RXCOBCLastCommandStatus  0x81//
 #define LowAddress_for_RXCOBCLastCommandStatus   0x84
 
+//for uplink receive command (target OBC/TXCOBC/RXCOBC)
 #define HighAddress_for_LastCommandID  0x81
 #define LowAddress_for_LastCommandID   0x1F
 

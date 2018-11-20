@@ -102,16 +102,6 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1,UBYTE Par
     }
 }
 
-//Write UART
-void WriteUART( UBYTE *TXDATA ){
-    UBYTE command_size;
-    command_size = 5 ;  //TODO:chage command size
-    for ( UBYTE i=0; i<command_size; i++ ){
-        putChar(TXDATA[i]); 
-        NOP();
-    }
-}
-
 void UART_buffer_clear(void){
     RCREG = 0;   //USART Receive Register
 }
@@ -159,10 +149,6 @@ void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3){ //TODO: different format for writedataUART
     
     switch(command){    
-        case 'w': //UART write
-            //TODO: write method for UART writ
-            WriteUART( data1 ); 
-            break;
         case 'c': //UART buffer clear
             //TODO: write method for UART buffer clear---finish?
             UART_buffer_clear();

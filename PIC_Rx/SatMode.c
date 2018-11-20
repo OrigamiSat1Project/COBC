@@ -20,7 +20,7 @@ UWORD MeasureBatVoltageAndChangeSatMode(){
     //------battery voltage measure-------------
     UBYTE bat_voltage[2];
     UWORD Voltage;//Voltage is 10 bit           
-    UBYTE error_status = 0;
+    UWORD error_status = 0;
     UWORD High, Low;
 
     //if Voltage is 0x0000 or very large,read one more time. Then it is still 0x0000 or very large,CHange SafeMode.
