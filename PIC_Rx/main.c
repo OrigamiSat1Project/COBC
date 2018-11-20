@@ -161,10 +161,6 @@ void main(void) {
         commandData[0] = 0;
 
         receiveDataPacket(commandData);
-        commandData[19] = 0x00;
-        commandData[20] = 0x00;
-        commandData[21] = 0x20;
-        commandData[22] = 0x05;
 
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[0] == 0) continue;      //not receive command-->continue
