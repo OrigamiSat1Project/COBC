@@ -221,7 +221,7 @@ UINT fcsCheck(void){
 //UBYTE *receiveDataPacket(void){
 void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
-    waitFlag();
+    waitFlag();    
 //    putChar('f');
     getData();
     fcschecker = fcsCheck();

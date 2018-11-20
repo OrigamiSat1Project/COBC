@@ -138,4 +138,7 @@
 #define PORTE_addressLow  0x90
 
 
+#define SatMode_error_status1_addresshigh 0x81//
+#define SatMode_error_status1_addresslow 0x01
+
 #endif	/* EEPROM_H */

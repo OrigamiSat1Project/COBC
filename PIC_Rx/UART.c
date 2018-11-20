@@ -175,7 +175,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3){ //
             changeInterruptPermission(data1,data2);
             break;
         default:
-            updateErrorStatus(error_UART_commandSwitchUART);
+//            updateErrorStatus(error_UART_commandSwitchUART);
             break;
     }
 }

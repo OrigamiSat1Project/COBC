@@ -104,7 +104,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
                     commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
                     break;
                 default:
-                    updateErrorStatus(error_FMCW_downlinkReceivedCommand);
+//                    updateErrorStatus(error_FMCW_downlinkReceivedCommand);
                     break;
             }
         }
@@ -177,14 +177,14 @@ void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_ad
     switch(type_select){
         case 0xaa:  //the size of data is specified by the command
             ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, downlink_times);
-            updateErrorStatus(ok_FMCW_commandSwitchCWDownlink_aa);
+//            updateErrorStatus(ok_FMCW_commandSwitchCWDownlink_aa);
             break;
         case 0xbb:  //the size of data is written in EEPROM
             GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, low_address_forDataSize, downlink_times);
-            updateErrorStatus(ok_FMCW_commandSwitchCWDownlink_bb);
+//            updateErrorStatus(ok_FMCW_commandSwitchCWDownlink_bb);
             break;
         default:
-            updateErrorStatus(error_FMCW_commandSwitchCWDownlink);
+//            updateErrorStatus(error_FMCW_commandSwitchCWDownlink);
             break;
 
     }
@@ -536,6 +536,11 @@ void HKDownlinkFR1(void){
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow);
     sendPulseWDT();
     if(ReceiveFlag == CORRECT_RECEIVE) return;
+    //SatMode error status
+   __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+   ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,SatMode_error_status1_addresshigh,SatMode_error_status1_addresslow);
+   sendPulseWDT();
+   if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //battery Temperature
     __delay_us(LONG_DELAYTIMES_FOR_MORSE);
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow,DATA,2);
@@ -546,19 +551,9 @@ void HKDownlinkFR1(void){
    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID);
    sendPulseWDT();
    if(ReceiveFlag == CORRECT_RECEIVE) return;
-// command error status(RX)
-   __delay_us(LONG_DELAYTIMES_FOR_MORSE);
-   ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,RXCOBC_CommandErrorStatus_addressHigh,RXCOBC_CommandErrorStatus_addressLow);
-   sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //latest execution command ID(TX)
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID);
-   sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
-//    //command error status(TX)
-   __delay_us(LONG_DELAYTIMES_FOR_MORSE);
-   ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,TXCOBC_CommandErrorStatus_addressHigh,TXCOBC_CommandErrorStatus_addressLow);
    sendPulseWDT();
    if(ReceiveFlag == CORRECT_RECEIVE) return;
 //    //battery Voltage (CIB)

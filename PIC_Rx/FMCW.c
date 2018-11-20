@@ -294,7 +294,7 @@ void commandSwitchFMCW(UBYTE command){
             FMRX(FMRX_Nref, FMRX_Nprg);
             break;
         default:
-            updateErrorStatus(error_FMCW_commandSwitchFMCW);
+//            updateErrorStatus(error_FMCW_commandSwitchFMCW);
             break;
     }
 }

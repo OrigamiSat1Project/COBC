@@ -35,7 +35,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
             UBYTE SWchangeSavingMode = ReadEEPROM(MAIN_EEPROM_ADDRESS,SW_Change_SavingMode_ADC_addresshigh,SW_Change_SavingMode_ADC_addresslow);  
             UBYTE bitcount = BitCount(SWchangeSavingMode);  
 //            error_status = error_status | 0x0003;//0b 00000000 00000011
-            error_status = 0x01;
+            error_status |= 0x03;
             if(bitcount >= 2 && bitcount <= 4){
                 SwitchToSavingMode();
             }else if(bitcount >= 5 && bitcount <= 7){
@@ -50,7 +50,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                 }else{
                     SwitchToSavingMode();
 //                    error_status = 0xAAAA; //0b 10101010 10101010;
-                    error_status = 0x02;
+                    error_status = 0x55;
                 }
             }
             return error_status;
@@ -70,7 +70,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
             Low = Init_TheresholdBatVol_nominal_saving_low;
             BatVol_nominal_saving = (High << 8) | Low;
 //            error_status = error_status | 0x000C; //0b 00000000 00001100
-            error_status = 0x03;
+            error_status |= 0x0C;
         }
     }
     __delay_ms(100);///DON'T Delete
@@ -87,7 +87,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
             Low = Init_TheresholdBatVol_saving_survival_low;
             BatVol_saving_survival = (High << 8) | Low;
 //            error_status = error_status | 0x0030; //0b 00000000 00110000;
-            error_status = 0x04;
+            error_status |= 0x0C;
         }              
     }
     __delay_ms(100);///DON'T Delete
@@ -103,7 +103,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
             Low = Init_TheresholdBatVol_nominal_revival_low;
             BatVol_nominal_revival = (High << 8) | Low;
 //            error_status = error_status | 0x00C0; // 0b 00000000 11000000;
-            error_status = 0x05;
+            error_status |= 0x0C;
         }
     }
     __delay_ms(100);///DON'T Delete
@@ -120,7 +120,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
             Low = Init_TheresholdBatVol_saving_revival_low;
             BatVol_saving_revival = (High << 8) | Low;
 //            error_status = error_status | 0x0300; //0b 00000011 00000000;
-            error_status = 0x06;
+            error_status |= 0x0C;
         }              
     }
     __delay_ms(100);///DON'T Delete
@@ -148,7 +148,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                 default:
                     ChoicedSatMode = ReserveBeforeSatMode;
 //                    error_status = error_status | 0x0C00; //0b 00001100 00000000;
-                    error_status = 0x07;
+                    error_status |= 0x30;
                     break;                       
             }
             break;
@@ -231,7 +231,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
             break;
         default:    
 //            error_status |= 0x3000;// 0b 00110000 00000000;
-            error_status = 0x08;
+            error_status |= 0xC0;
             break;
     }
     return error_status;
@@ -309,7 +309,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
             ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;
             break;
         default:
-            updateErrorStatus(error_MPU_commandSwitchSatMode);
+//            updateErrorStatus(error_MPU_commandSwitchSatMode);
             break;
     }
 }

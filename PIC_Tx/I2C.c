@@ -264,7 +264,7 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             //TODO: write method for measure IMU
             break;
         default:
-            updateErrorStatus(error_I2C_commandSwitchI2C);
+//            updateErrorStatus(error_I2C_commandSwitchI2C);
             break;
     }
 }
