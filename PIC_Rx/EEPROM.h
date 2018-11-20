@@ -64,7 +64,7 @@
 #define HighAddress_for_Error  HighAddress_for_RXCOBCLastCommandStatus//
 #define LowAddress_for_Error   LowAddress_for_RXCOBCLastCommandStatus
 
-#define InitialOpe_error_status_addressHigh  0x81//
+#define InitialOpe_error_status_addressHigh  0x81
 #define InitialOpe_error_status_addressLow   0x0C
 
 
@@ -92,9 +92,9 @@
 *DATA
 ******************************************************************************/
 /*---initial operation---*/
-#define MeltingStatus_addressHigh      0x81//
-#define MeltingStatus_addressLow       0x0A
-#define MeltingCounter_addressHigh     0x81//
+#define MeltingStatus_addressHigh      0x85
+#define MeltingStatus_addressLow       0x00
+#define MeltingCounter_addressHigh     0x81
 #define MeltingCounter_addressLow      0x0B
 #define BatteryVoltage_addressHigh     0x81//
 #define BatteryVoltage_addressLow      0x87

@@ -47,12 +47,14 @@
 #define error_MPU_switchPowerSpply1pin           0x93
 #define error_MPU_changeInOut                    0x94
 #define error_MPU_changeHighLow                  0x95
-#define error_initialOpe_powerShortage           0x30
-#define error_initialOpe_obcAlive                0x31
-#define error_initialOpe_satMode                 0x32
-#define error_initialOpe_alreadyMelting          0x33
-#define error_initialOpe_OBCstatus               0x34
-#define error_initialOpe_readSatMode             0x35
+
+/*---Initial Ope---*/
+#define error_initialOpe_powerShortage           0x03
+#define error_initialOpe_obcAlive                0x0C
+#define error_initialOpe_satMode                 0x30
+#define error_initialOpe_alreadyMelting          0xC0
+#define error_initialOpe_OBCstatus               0x06
+#define error_initialOpe_readSatMode             0x60
 
 
 
