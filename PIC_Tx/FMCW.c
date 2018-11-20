@@ -83,7 +83,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
                     commandSwitchCWDownlink(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9], commandData[10]);
                     break;
                 case 'f':/*downlink FM Signal*/
-                    downlinkFMSignal(commandData[5],commandData[6],commandData[7],commandData[8], commandData[9],commandData[10]);
+                    downlinkFMSignal(commandData[4],commandData[5],commandData[6],commandData[7], commandData[8],commandData[9]);
                     break;
                 case 'p': /*power supply*/
                     commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);

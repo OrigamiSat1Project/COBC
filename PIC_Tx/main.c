@@ -157,7 +157,7 @@ void main(void) {
                     break;
                 case 0x66:  /*'f':FM Downlink*/
 //                    commandSwitchFMDownlink(RXDATA[2], FMdata);
-                    downlinkFMSignal(RXDATA[3],RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
+                    downlinkFMSignal(RXDATA[2],RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7]);
                     break;
                 case 'p':/*'p':power*/
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
