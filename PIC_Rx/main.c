@@ -82,10 +82,10 @@ void main(void) {
     } else {                                                                            //before melting
         UWORD SatMode_error_status;
         /*---200s ( 50s * 4times)---*/
-        for(UBYTE i=0; i<1; i++){
+        for(UBYTE i=0; i<4; i++){
             /*---wait 50s---*/
             sendPulseWDT();
-            for(UBYTE j=0; j<6; j++){
+            for(UBYTE j=0; j<10; j++){
                 delay_s(5);
                 sendPulseWDT();
             }
@@ -101,23 +101,19 @@ void main(void) {
     while(1){
 
         /*---timer interrupt---*/
-//        /*----------------------------------------------------------------------------*/
-//        /*----------------------------------------------------------------------------*/
-//        /*---timer process for EPS reset (1week)---*/
-////        if(get_timer_counter('w') >= 1){  //for FM
-//        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
-        if(get_eps_reset_counter_min() >= EPS_RSET_INTERVAL_SHORT){   //for debug
+        /*----------------------------------------------------------------------------*/
+        /*----------------------------------------------------------------------------*/
+        /*---timer process for EPS reset (1week)---*/
+        if(get_timer_counter('w') >= 1){  
             resetEPS();
             setPLL();
 //            // Execute 1week reset
             reset_timer();
-            set_eps_reset_counter(0,0);  //for debug
+            set_eps_reset_counter(0,0);  
         }
 //
         /*---timer process for NTRX PLL setting(every day) & EPS reset (if initial Ope / everyday)---*/
-//        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   //FM
-        if(get_NTRX_pll_setting_counter_min() >= NTRX_PLL_INTERVAL){  //for debug
-//        if(get_NTRX_pll_setting_counter_sec() >= 8){   //for debug
+        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   
             melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
             if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
@@ -128,17 +124,14 @@ void main(void) {
         }
 
         //*---timer process for initial operation (22.5min)---*/
-        if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
-//         if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
+        if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  
             error_status = InitialOperation();
             WriteOneByteToMainAndSubB0EEPROM(InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow,error_status);
-            errorCheckInitialOpe();  //*******for debug (initial ope) ************
             set_init_ope_counter(0,0);
          }
 
-//        /*---timer process for measure EPS BATTERY---*/
-               if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
-//        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
+        /*---timer process for measure EPS BATTERY---*/
+               if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  
             SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
            if (SatMode_error_status != 0){
                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
@@ -164,11 +157,6 @@ void main(void) {
 
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[0] == 0) continue;      //not receive command-->continue
-
-        commandData[19] = 0x00;
-        commandData[20] = 0x20;
-        commandData[21] = 0x00;
-        commandData[22] = 0x03;
         
         mainControlByte = (UBYTE)(MAIN_EEPROM_ADDRESS | commandData[19]);
         subControlByte = (UBYTE)(SUB_EEPROM_ADDRESS | commandData[19]);

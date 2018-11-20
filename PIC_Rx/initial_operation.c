@@ -110,12 +110,10 @@ UBYTE InitialOperation(void){
                 sendPulseWDT();
 
                 if(melting_counter<4){
-                    //***FIXME*** wire melting!! be careful!!
-//                    //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x01, 0x00);
+                    sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x01, 0x00);
 
                 } else {
-                    //***FIXME***  wire melting!! be careful!!
-//                   //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x01, 0x00);
+                   sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x01, 0x00);
                 }
                 melting_counter++;
             }
