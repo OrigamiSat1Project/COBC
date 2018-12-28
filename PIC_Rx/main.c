@@ -75,69 +75,75 @@ void main(void) {
     UBYTE melting_status[2];
     melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
     melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {  //after melting
-        if(MRLTING_FLAG_FOR_OBC == LOW){
-            MRLTING_FLAG_FOR_OBC = HIGH;
-        }
-    } else {                                                                            //before melting
-        /*---200s ( 50s * 4times)---*/
-        for(UBYTE i=0; i<4; i++){
-            /*---wait 50s---*/
-            sendPulseWDT();
-            for(UBYTE j=0; j<10; j++){
-                delay_s(5);
-                sendPulseWDT();
-            }
-            /*---measure voltage & change Sat Mode---*/
-            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-            if (SatMode_error_status != 0){
-                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-            }
-            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, SatMode_error_status);
-        }
-    }
+//    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {  //after melting
+//        if(MRLTING_FLAG_FOR_OBC == LOW){
+//            MRLTING_FLAG_FOR_OBC = HIGH;
+//        }
+//    } else {                                                                            //before melting
+//        /*---200s ( 50s * 4times)---*/
+//        for(UBYTE i=0; i<4; i++){
+//            /*---wait 50s---*/
+//            sendPulseWDT();
+//            for(UBYTE j=0; j<10; j++){
+//                delay_s(5);
+//                sendPulseWDT();
+//            }
+//            /*---measure voltage & change Sat Mode---*/
+//            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+//            if (SatMode_error_status != 0){
+//                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+//            }
+//            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, SatMode_error_status);
+//        }
+//    }
+    
+    putChar(0x12);
     
     while(1){
+        
+        putChar(0xaa);
+        __delay_ms(500);
+        
 
         /*---timer interrupt---*/
         /*----------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------*/
         /*---timer process for EPS reset (1week)---*/
-        if(get_timer_counter('w') >= 1){  
-            resetEPS();
-            setPLL();
-//            // Execute 1week reset
-            reset_timer();
-            set_eps_reset_counter(0,0);  
-        }
+//        if(get_timer_counter('w') >= 1){  
+//            resetEPS();
+//            setPLL();
+////            // Execute 1week reset
+//            reset_timer();
+//            set_eps_reset_counter(0,0);  
+//        }
 //
         /*---timer process for NTRX PLL setting(every day) & EPS reset (if initial Ope / everyday)---*/
-        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   
-            melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-            melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-            if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
-                resetEPS();  //only initial ope -> reset EPS
-            }
-            setPLL();  // set PLL every day
-            set_NTRX_pll_setting_counter(0,0,0,0);
-        }
-
-        //*---timer process for initial operation (22.5min)---*/
-        if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  
-            error_status = InitialOperation();
-            WriteOneByteToMainAndSubB0EEPROM(InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow,error_status);
-            set_init_ope_counter(0,0);
-         }
-
-        /*---timer process for measure EPS BATTERY---*/
-        if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  
-            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-            if (SatMode_error_status != 0){
-               SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-           }
-           WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, SatMode_error_status);
-           set_bat_meas_counter(0,0);
-        }
+//        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   
+//            melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+//            melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+//            if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
+//                resetEPS();  //only initial ope -> reset EPS
+//            }
+//            setPLL();  // set PLL every day
+//            set_NTRX_pll_setting_counter(0,0,0,0);
+//        }
+//
+//        //*---timer process for initial operation (22.5min)---*/
+//        if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  
+//            error_status = InitialOperation();
+//            WriteOneByteToMainAndSubB0EEPROM(InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow,error_status);
+//            set_init_ope_counter(0,0);
+//         }
+//
+//        /*---timer process for measure EPS BATTERY---*/
+//        if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  
+//            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+//            if (SatMode_error_status != 0){
+//               SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+//           }
+//           WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, SatMode_error_status);
+//           set_bat_meas_counter(0,0);
+//        }
         /*----------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------*/
         sendPulseWDT();
@@ -151,7 +157,35 @@ void main(void) {
         /*---COMMAND RESET----*/
         commandData[0] = 0;
 
-        receiveDataPacket(commandData);
+//        receiveDataPacket(commandData);
+        
+        /*send command from serial for EM test
+         * add by Ide 2018/12/29
+         * 
+         */
+        /*----------------------------------------------------------------------------*/
+        set_receive_command_counter(0,0);
+        putChar(0x88);
+        while(1){
+//            putChar(0x77);
+            if (get_receive_command_counter_sec() > 3) {
+                putChar(0x99);
+                break;
+            }
+//            while(commandData[0] != 'O' && commandData[0] != 'R' && commandData[0] != 'T'){
+//                commandData[0] = getChar();
+//            }
+            for(UINT i=0;i<8;i++){
+                commandData[i] = getChar();
+            }
+        }
+        for(UINT i=0;i<8;i++){
+            putChar(commandData[i]);
+        }
+        put_lf();
+        putChar(0xbb);
+        
+        /*----------------------------------------------------------------------------*/
 
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[0] == 0) continue;      //not receive command-->continue
