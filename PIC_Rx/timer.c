@@ -63,6 +63,16 @@ static UINT eps_reset_counter_min = 0;
 //for debug function
 void interrupt TimerCheck(void){
     interruptI2C();
+    
+    if(RCIF == 1){
+        putChar(0xDD);
+        for(int i = 0 ; i < 36 ; i ++){
+            RXDATA[i] = getChar();
+        }
+        putChar(0xEE);
+        receiveflag = 1;
+        RCIF = 0;
+    }
 
     if(INTCONbits.TMR0IF){
         INTCONbits.TMR0IF = 0;

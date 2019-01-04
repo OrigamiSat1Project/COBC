@@ -23,6 +23,8 @@ void interrupt TimerCheck(void);
 
 int CollisionCheck;
 int AckCheck;
+UBYTE RXDATA[36];
+UBYTE receiveflag = 0;
 
 void set_NTRX_pll_setting_counter(UINT, UINT, UINT, UINT);
 UINT get_NTRX_pll_setting_counter_sec(void);

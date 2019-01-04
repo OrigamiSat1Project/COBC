@@ -15,9 +15,10 @@ void InitSerial(void){
 	SPEN   = 1;						// Enable serial port pins
 	CREN   = 1;						// Enable reception
 	SREN   = 0;						// No effect
+    INTCON = 0b11000000;
     RCIF   = 0;                     // RX frag Reset
 	TXIE   = 0;						// Disble tx interrupts
-	RCIE   = 0;						// Disble rx interrupts
+	RCIE   = 1;						// Disble rx interrupts
 	TX9    = 0;						// 8-bit transmission
 	RX9    = 0;						// 8-bit reception
 	TXEN   = 0;						// Reset transmitter
@@ -33,17 +34,17 @@ UBYTE getChar(void){        //TODO: add time out feature
     }
 	UBYTE break_counter = 0;
     
-//    while(RCIF != 1);
+    while(RCIF != 1);
     
-	while(!RCIF){
-        break_counter ++;
-        if(break_counter >= 100){
-//            putChar(0xbb);
-            NOP();
-            break_counter = 0;
-            break;
-        }
-    }
+//	while(!RCIF){
+//        break_counter ++;
+//        if(break_counter >= 100){
+////            putChar(0xbb);
+//            NOP();
+//            break_counter = 0;
+//            break;
+//        }
+//    }
     RCIF = 0;
 	return RCREG;                   //USART Receive Data Register
 }

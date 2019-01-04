@@ -164,26 +164,21 @@ void main(void) {
          * 
          */
         /*----------------------------------------------------------------------------*/
-        set_receive_command_counter(0,0);
-        putChar(0x88);
-        while(1){
-//            putChar(0x77);
-            if (get_receive_command_counter_sec() > 3) {
-                putChar(0x99);
-                break;
-            }
-//            while(commandData[0] != 'O' && commandData[0] != 'R' && commandData[0] != 'T'){
-//                commandData[0] = getChar();
-//            }
-            for(UINT i=0;i<8;i++){
-                commandData[i] = getChar();
-            }
+        while(receiveflag != 1){
+            putChar('1');
+            sendPulseWDT();
+            __delay_ms(500);
         }
-        for(UINT i=0;i<8;i++){
+        if(RXDATA[0] != 'o' || RXDATA[1] != 'r' || RXDATA[2] != 'i' || RXDATA[3] != '1'){
+            putChar(0x44);
+            continue;
+        }
+        for(int i = 0 ; i < 32 ; i ++){
+            commandData[i] = RXDATA[i+4];
             putChar(commandData[i]);
         }
-        put_lf();
-        putChar(0xbb);
+        receiveflag = 0;
+        putChar(0xFF);
         
         /*----------------------------------------------------------------------------*/
 
