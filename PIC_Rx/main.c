@@ -97,11 +97,11 @@ void main(void) {
 //        }
 //    }
     
-    putChar(0x12);
+//    putChar(0x12);
     
     while(1){
         
-        putChar(0xaa);
+//        putChar(0xaa);
         __delay_ms(500);
         
 
@@ -165,20 +165,21 @@ void main(void) {
          */
         /*----------------------------------------------------------------------------*/
         while(receiveflag != 1){
-            putChar('1');
+//            putChar('1');
             sendPulseWDT();
             __delay_ms(500);
         }
-        if(RXDATA[0] != 'o' || RXDATA[1] != 'r' || RXDATA[2] != 'i' || RXDATA[3] != '1'){
-            putChar(0x44);
-            continue;
-        }
+//        if(RXDATA[0] != 'o' || RXDATA[1] != 'r' || RXDATA[2] != 'i' || RXDATA[3] != '1'){
+//            putChar(0x44);
+//            continue;
+//        }
         for(int i = 0 ; i < 32 ; i ++){
-            commandData[i] = RXDATA[i+4];
-            putChar(commandData[i]);
+//            commandData[i] = RXDATA[i+4];
+            commandData[i] = RXDATA[i];
+//            putChar(commandData[i]);
         }
         receiveflag = 0;
-        putChar(0xFF);
+//        putChar(0xFF);
         
         /*----------------------------------------------------------------------------*/
 

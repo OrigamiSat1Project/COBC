@@ -60,16 +60,26 @@ UBYTE WDT_flag = 0x00;
 static UINT eps_reset_counter_sec = 0;
 static UINT eps_reset_counter_min = 0;
 
+UBYTE cmd_tmp;
+
 //for debug function
 void interrupt TimerCheck(void){
     interruptI2C();
     
     if(RCIF == 1){
-        putChar(0xDD);
-        for(int i = 0 ; i < 36 ; i ++){
+//        putChar(0xDD);
+        for(int i = 0 ; i < 32 ; i ++){
             RXDATA[i] = getChar();
+            if(RXDATA[i] = 0xDB){
+                cmd_tmp = getChar();
+                if(cmd_tmp == 0xDC){
+                    RXDATA[i] = 0xC0;
+                }else if(cmd_tmp == 0xDD){
+                    RXDATA[i] = 0xDB;
+                }
+            }
         }
-        putChar(0xEE);
+//        putChar(0xEE);
         receiveflag = 1;
         RCIF = 0;
     }
