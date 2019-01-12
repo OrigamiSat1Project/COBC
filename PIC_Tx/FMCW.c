@@ -68,6 +68,12 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         FMPTT = 0;
         __delay_ms(300);
     }
+    for(int i = 0 ; i < EEPROM_COMMAND_DATA_SIZE ; i ++){
+        putChar(commandData[i]);
+    }
+    
+    putChar('\r');
+    putChar('\n');
 
     /*-------------------------------------------------*/
     if(commandData[0]=='T'){                //command target = PIC_TX
@@ -153,9 +159,26 @@ void downlinkFMSignal(UBYTE Address7bit, UBYTE addressHigh, UBYTE addressLow, UB
                 SendPacket(downlink_data,MAX_DOWNLINK_DATA_SIZE + PACKET_COUNTER_SIZE);
                 FMPTT = low;
             }
-            
             __delay_ms(500);
         }
+        
+        if(DataLength <= MAX_DOWNLINK_DATA_SIZE){
+            ReadDataFromEEPROM(Address7bit,addressHigh,addressLow, &downlink_data[3],DataLength);
+            for(int i = 0 ; i < DataLength + PACKET_COUNTER_SIZE ; i ++){
+                putChar(downlink_data[i]);
+            }
+            putChar('\r');
+            putChar('\n');
+            flag = 1;
+        }else{
+            ReadDataFromEEPROM(Address7bit,addressHigh,addressLow, &downlink_data[3],MAX_DOWNLINK_DATA_SIZE);
+            for(int i = 0 ; i < MAX_DOWNLINK_DATA_SIZE + PACKET_COUNTER_SIZE ; i++){
+                putChar(downlink_data[i]);
+            }
+            putChar('\r');
+            putChar('\n');
+        }
+        
         if(flag) break;
         packet_counter += 1;
         address += 0x0020;
