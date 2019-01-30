@@ -67,6 +67,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         SendPacket(commandData,EEPROM_COMMAND_DATA_SIZE);
         FMPTT = 0;
         __delay_ms(300);
+        sendPulseWDT();
     }
     for(int i = 0 ; i < EEPROM_COMMAND_DATA_SIZE ; i ++){
         putChar(commandData[i]);
@@ -418,6 +419,7 @@ void DevideDataAndChangeBinaryToChar (UBYTE binary_data, UBYTE *char_data_highLo
 void sendMorse(char *HK_Data,size_t data_size){
     for (UINT i = 0;i<data_size;i++){
         long mo = changeCharMorse(HK_Data[i]);
+        putChar(HK_Data[i]);
         for (int n=0;n<19;n++){
             if(mo==0){
                 break;
@@ -529,11 +531,12 @@ void HKDownlink(void){
     HKDownlinkFR0();
     __delay_s(1);
     if(ReceiveFlag == CORRECT_RECEIVE) return;
-    HKDownlinkFR1();
-    __delay_s(1);
-    if(ReceiveFlag == CORRECT_RECEIVE) return;
-    HKDownlinkFR2();
-    __delay_s(1);
+    putChar('\r'); putChar('\n');
+//    HKDownlinkFR1();
+//    __delay_s(1);
+//    if(ReceiveFlag == CORRECT_RECEIVE) return;
+//    HKDownlinkFR2();
+//    __delay_s(1);
 }
 
 /*******************************************************************************
@@ -544,13 +547,13 @@ void HKDownlinkFR0(void){
     UBYTE MYCALL[6] = {'J', 'S', '1', 'Y','A','X'};
     sendMorse(MYCALL,sizeof(MYCALL)/sizeof(MYCALL[0]));
     sendPulseWDT();
-    if(ReceiveFlag == CORRECT_RECEIVE) return;
+    if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
     __delay_us(LONG_DELAYTIMES_FOR_MORSE);
     sendPulseWDT();
     UBYTE SatName[7] = {'o', 'r', 'i', 'g', 'a','m','i'};
     sendMorse(SatName,sizeof(SatName)/sizeof(SatName[0]));
     sendPulseWDT();
-    if(ReceiveFlag == CORRECT_RECEIVE) return;
+    if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 }
 
 void HKDownlinkFR1(void){
@@ -558,78 +561,78 @@ void HKDownlinkFR1(void){
     //Sattellite Mode
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow);
     sendPulseWDT();
-    if(ReceiveFlag == CORRECT_RECEIVE) return;
+    if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
     //SatMode error status
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,SatMode_error_status1_addresshigh,SatMode_error_status1_addresslow);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //battery Temperature
     __delay_us(LONG_DELAYTIMES_FOR_MORSE);
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow,DATA,2);
     sendPulseWDT();
-    if(ReceiveFlag == CORRECT_RECEIVE) return;
+    if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
    //latest execution command ID(RX)
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //latest execution command ID(TX)
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //battery Voltage (CIB)
     __delay_us(LONG_DELAYTIMES_FOR_MORSE);
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,BatteryVoltageCIB_addressHigh,BatteryVoltageCIB_addressLow,DATA,2);
     sendPulseWDT();
-    if(ReceiveFlag == CORRECT_RECEIVE) return;
+    if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //5VBus Voltage
     __delay_us(LONG_DELAYTIMES_FOR_MORSE);
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA,2);
     sendPulseWDT();
-    if(ReceiveFlag == CORRECT_RECEIVE) return;
+    if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 
    //3V3Bus Voltage
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH3_addressHigh,adcValue_CH3_addressLow,DATA,2);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //battery Voltage (OBC)
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,BatteryVoltageOBC_addressHigh,BatteryVoltageOBC_addressLow);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //latest execution command ID (OBC)
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,LatestExcutionCommandID_addressHigh,LatestExcutionCommandID_addressLow);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //command error status(OBC)
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,OBC_CommandErrorStatus_addressHigh,OBC_CommandErrorStatus_addressLow);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //Battery Current
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,BatteryCurrent_addressHigh,BatteryCurrent_addressLow,DATA,2);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //EPS switch status
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,EpsSwitchStatus_addressHigh,EpsSwitchStatus_addressLow,DATA,2);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //TX temperature
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,TxTemperature_addressHigh,TxTemperature_addressLow);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 //    //RX temperature
    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,RxTemperature_addressHigh,RxTemperature_addressLow);
    sendPulseWDT();
-   if(ReceiveFlag == CORRECT_RECEIVE) return;
+   if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
 }
 
 void HKDownlinkFR2(void){
@@ -639,14 +642,17 @@ void HKDownlinkFR2(void){
     UBYTE ReadData1_addressLow = ReadEEPROM(EEPROM_address, FreeData1Lowaddress_addressHigh, FreeData1Lowaddress_addressLow);
     ReadOneByteDataFromEEPROMandSendMorse(ReadData1_slaveaddress,ReadData1_addressHigh,ReadData1_addressLow);
     sendPulseWDT();
-    if(ReceiveFlag == CORRECT_RECEIVE) return;
+    if(ReceiveFlag == CORRECT_RECEIVE) {putChar('\r'); putChar('\n'); return;}
     __delay_us(LONG_DELAYTIMES_FOR_MORSE);
     UBYTE ReadData2_slaveaddress = ReadEEPROM(EEPROM_address,FreeData2_slaveaddress_addressHigh,FreeData2_slaveaddress_addressLow);
     UBYTE ReadData2_addressHigh = ReadEEPROM(EEPROM_address, FreeData2Highaddress_addressHigh, FreeData2Highaddress_addressLow);
     UBYTE ReadData2_addressLow = ReadEEPROM(EEPROM_address, FreeData2Lowaddress_addressHigh, FreeData2Lowaddress_addressLow);
     ReadOneByteDataFromEEPROMandSendMorse(ReadData2_slaveaddress,ReadData2_addressHigh,ReadData2_addressLow);
     sendPulseWDT();
-    if(ReceiveFlag == CORRECT_RECEIVE) return;
+    if(ReceiveFlag == CORRECT_RECEIVE) {
+        putChar('\r'); putChar('\n'); return;
+    }
+    
 }
 
 

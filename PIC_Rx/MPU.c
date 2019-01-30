@@ -340,6 +340,10 @@ void onNtrxPowerSupplyCIB(UBYTE timeHigh,UBYTE timeLow){
 //    put_lf();  
     sendCommandByPointer(send_command);
     __delay_ms(2000);//wait EPS ON
+//    for(int i = 0 ; i < 10 ; i ++){
+//        delay_ms(1000);
+//        sendPulseWDT();
+//    }
     setPLL();
 //    reviveEPS(timeHigh, timeLow);           
 }

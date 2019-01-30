@@ -220,6 +220,7 @@ UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
     }
     I2CMasterStop();
     __delay_ms(5);
+//    return 0xFF;
     return dat;
 }
 
@@ -345,7 +346,13 @@ void commandSwitchEEPROM(UBYTE *command){
     UBYTE *read_data;
     switch(command[0]){
         case 'w': //write data to EEPROM
+            for(int i = 0 ; i < 8; i++){
+                putChar(command[i]);
+                read_data[i] = command[i];
+            }
+//            WriteToEEPROMWithDataSize(read_data[1],read_data[2],read_data[3],&read_data[5],read_data[4]);
             WriteToEEPROMWithDataSize(command[1], command[2], command[3], &command[5], command[4]);  //data1 is the data to send
+//            delay_ms(500);
             break;
         case 'r': //read data from EEPROM
             data_length = command[4];

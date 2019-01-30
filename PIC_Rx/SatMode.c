@@ -28,26 +28,34 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
     WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressLow,bat_voltage,2);
     Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1];
     if(Voltage == 0x0000 || (bat_voltage[0] & 0xFC) != 0){
+        putChar('d');
         ReadBatVoltageWithPointer(bat_voltage);
         WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressLow,bat_voltage,2);
         Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1];
         if(Voltage == 0x0000 || (bat_voltage[0] & 0xFC) != 0){ //ADC read error
+            putChar('e');
             UBYTE SWchangeSavingMode = ReadEEPROM(MAIN_EEPROM_ADDRESS,SW_Change_SavingMode_ADC_addresshigh,SW_Change_SavingMode_ADC_addresslow);  
             UBYTE bitcount = BitCount(SWchangeSavingMode);  
 //            error_status = error_status | 0x0003;//0b 00000000 00000011
             error_status |= 0x03;
             if(bitcount >= 2 && bitcount <= 4){
+                putChar('f');
                 SwitchToSavingMode();
             }else if(bitcount >= 5 && bitcount <= 7){
+                putChar('g');
                 NOP();
             }else{
+                putChar('h');
                 SWchangeSavingMode = ReadEEPROM(SUB_EEPROM_ADDRESS,SW_Change_SavingMode_ADC_addresshigh,SW_Change_SavingMode_ADC_addresslow);
                 bitcount = BitCount(SWchangeSavingMode);
                 if(bitcount >= 2 && bitcount <= 4){
+                    putChar('i');
                     SwitchToSavingMode();
                 }else if(bitcount >= 5 && bitcount <= 7){
+                    putChar('j');
                     NOP();
                 }else{
+                    putChar('k');
                     SwitchToSavingMode();
 //                    error_status = 0xAAAA; //0b 10101010 10101010;
                     error_status = 0x55;
@@ -62,10 +70,12 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
     Low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow);    
     UWORD BatVol_nominal_saving = (High << 8) | Low;
     if(((High & 0b11111100) != 0) || (BatVol_nominal_saving <= TheresholdBatVol_lower_limit)){
+        putChar('l');
         High = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow);
         Low = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow);
         BatVol_nominal_saving = (High << 8) | Low;
         if(((High & 0b11111100) != 0) || (BatVol_nominal_saving <= TheresholdBatVol_lower_limit)){
+            putChar('m');
             High = Init_TheresholdBatVol_nominal_saving_high;
             Low = Init_TheresholdBatVol_nominal_saving_low;
             BatVol_nominal_saving = (High << 8) | Low;
@@ -79,10 +89,12 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
     Low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_saving_survival_datalow_addressHigh, BatVol_saving_survival_datalow_addressLow);
     UWORD BatVol_saving_survival = (High << 8) | Low;
     if(((High & 0b11111100) != 0) || (BatVol_saving_survival <= TheresholdBatVol_lower_limit)){
+        putChar('n');
         High = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_saving_survival_datahigh_addressHigh, BatVol_saving_survival_datahigh_addressLow);
         Low = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_saving_survival_datalow_addressHigh, BatVol_saving_survival_datalow_addressLow);
         BatVol_saving_survival = (High << 8) | Low;
         if(((High & 0b11111100) != 0) || (BatVol_saving_survival <= TheresholdBatVol_lower_limit)){
+            putChar('o');
             High = Init_TheresholdBatVol_saving_survival_high;
             Low = Init_TheresholdBatVol_saving_survival_low;
             BatVol_saving_survival = (High << 8) | Low;
@@ -95,10 +107,12 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
     Low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_revival_datalow_addressHigh, BatVol_nominal_revival_datalow_addressLow);
     UWORD BatVol_nominal_revival = (High << 8) | Low;
     if(((High & 0b11111100) != 0) || (BatVol_nominal_revival <= TheresholdBatVol_lower_limit)){
+        putChar('p');
         High = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_nominal_revival_datahigh_addressHigh, BatVol_nominal_revival_datahigh_addressLow);
         Low = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_nominal_revival_datalow_addressHigh, BatVol_nominal_revival_datalow_addressLow);
         BatVol_nominal_revival = (High << 8) | Low;
         if(((High & 0b11111100) != 0) || (BatVol_nominal_revival <= TheresholdBatVol_lower_limit)){
+            putChar('q');
             High = Init_TheresholdBatVol_nominal_revival_high;
             Low = Init_TheresholdBatVol_nominal_revival_low;
             BatVol_nominal_revival = (High << 8) | Low;
@@ -112,10 +126,12 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
     Low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_saving_revival_datalow_addressHigh, BatVol_saving_revival_datalow_addressLow);
     UWORD BatVol_saving_revival = (High << 8) | Low;
     if(((High & 0b11111100) != 0) || (BatVol_saving_revival <= TheresholdBatVol_lower_limit)){
+        putChar('r');
         High = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_saving_revival_datahigh_addressHigh, BatVol_saving_revival_datahigh_addressLow);
         Low = (UWORD)ReadEEPROM(SUB_EEPROM_ADDRESS, BatVol_saving_revival_datalow_addressHigh, BatVol_saving_revival_datalow_addressLow);
         BatVol_saving_revival = (High << 8) | Low;
         if(((High & 0b11111100) != 0) || (BatVol_saving_revival <= TheresholdBatVol_lower_limit)){
+            putChar('s');
             High = Init_TheresholdBatVol_saving_revival_high;
             Low = Init_TheresholdBatVol_saving_revival_low;
             BatVol_saving_revival = (High << 8) | Low;
@@ -132,20 +148,28 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
 
     switch(BeforeSatMode){
         case SATMODE_NOMINAL:
+            putChar('t');
         case SATMODE_SAVING:
-        case SATMODE_SURVIVAL: 
+            putChar('u');
+        case SATMODE_SURVIVAL:
+            putChar('v');
             ChoicedSatMode =  BeforeSatMode;
             break;
         default:
+            putChar('w');
             BeforeSatMode = ReadEEPROM(SUB_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow);
             BeforeSatMode = BeforeSatMode & 0xF0;
             switch(BeforeSatMode){
                 case SATMODE_NOMINAL:
+                    putChar('x');
                 case SATMODE_SAVING:
+                    putChar('y');
                 case SATMODE_SURVIVAL: 
+                    putChar('z');
                     ChoicedSatMode =  BeforeSatMode;
                     break;
                 default:
+                    putChar('A');
                     ChoicedSatMode = ReserveBeforeSatMode;
 //                    error_status = error_status | 0x0C00; //0b 00001100 00000000;
                     error_status |= 0x30;
@@ -156,12 +180,16 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
 
     switch(ChoicedSatMode){
         case SATMODE_NOMINAL:
+            putChar('B');
             if(Voltage >= BatVol_nominal_saving) {
+                putChar('C');
                 melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
                 melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
                 //write SatMode nominal(SEP -> ON, RBF -> ON)                 
                 if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)){
+                    putChar('D');
                     if(OBC_STATUS == OBC_DIED){
+                        putChar('E');
                         killEPS();
                         onEPS();                                                                          
                         setPLL();
@@ -170,11 +198,13 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                 WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
                 ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
             }else if(Voltage <= BatVol_saving_survival){
+                putChar('F');
                 killEPS();
                 //write SatMode survival(SEP -> OFF, RBF -> ON)  
                 WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
                 ReserveBeforeSatMode = SATMODE_SURVIVAL_SEPOFF_RBFON;
             }else{
+                putChar('G');
                 //Write SatMode saving(SEP -> OFF, RBF -> ON)                        
                 killEPS();                   
                 onNtrxPowerSupplyCIB(0,0);
@@ -183,7 +213,9 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
             }
             break;
         case SATMODE_SAVING:
+            putChar('H');
             if(Voltage >= BatVol_nominal_revival){
+                putChar('I');
                 //write SatMode nominal(SEP -> ON, RBF -> ON)                                               
                 offNtrxPowerSupplyCIB();
                 onEPS();
@@ -191,14 +223,17 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                 WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
                 ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
             }else if (Voltage <= BatVol_saving_survival){
+                putChar('J');
                 //write SatMode survival(SEP -> OFF, RBF -> ON)  
                 killEPS(); 
                 offNtrxPowerSupplyCIB();
                 WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
                 ReserveBeforeSatMode = SATMODE_SURVIVAL_SEPOFF_RBFON;
             }else{
+                putChar('K');
                 //Write SatMode saving(SEP -> OFF, RBF -> ON)
                 if(SEP_SW == LOW){
+                    putChar('L');
                     killEPS(); 
                     onNtrxPowerSupplyCIB(0,0);
                 }
@@ -207,21 +242,26 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
             }
             break;
         case SATMODE_SURVIVAL:
+            putChar('M');
             if(Voltage >= BatVol_nominal_revival){
+                putChar('N');
                 //write SatMode nominal(SEP -> ON, RBF -> ON)                       
                 onEPS();
                 setPLL();
                 WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_NOMINAL_SEPON_RBFON);
                 ReserveBeforeSatMode = SATMODE_NOMINAL_SEPON_RBFON;
             }else if (Voltage <= BatVol_saving_revival){
+                putChar('O');
                 //write SatMode survival(SEP -> OFF, RBF -> ON)                       
                 killEPS(); 
                 if(ReadNtrxSubPowerStatus()== 1){
+                    putChar('P');
                     offNtrxPowerSupplyCIB();
                 }
                 WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SURVIVAL_SEPOFF_RBFON);
                 ReserveBeforeSatMode = SATMODE_SURVIVAL_SEPOFF_RBFON;
             }else{
+                putChar('Q');
                 //Write SatMode saving(SEP -> OFF, RBF -> ON) 
                 killEPS(); 
                 onNtrxPowerSupplyCIB(0,0);
@@ -229,7 +269,8 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                 ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;
             }                  
             break;
-        default:    
+        default:
+            putChar('R');
 //            error_status |= 0x3000;// 0b 00110000 00000000;
             error_status |= 0xC0;
             break;

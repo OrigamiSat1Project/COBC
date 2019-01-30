@@ -70,7 +70,7 @@ void interrupt TimerCheck(void){
 //        putChar(0xDD);
         for(int i = 0 ; i < 32 ; i ++){
             RXDATA[i] = getChar();
-            if(RXDATA[i] = 0xDB){
+            if(RXDATA[i] == 0xDB){
                 cmd_tmp = getChar();
                 if(cmd_tmp == 0xDC){
                     RXDATA[i] = 0xC0;
