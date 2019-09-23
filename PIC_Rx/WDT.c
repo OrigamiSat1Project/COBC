@@ -21,7 +21,8 @@ void WDTwait(void){
 //to keep WDT from resetting the PIC 
 void sendPulseWDT(void){
     if(POWER_WDT != LOW) return;
-    PULSE_WDT = LOW; 
-    __delay_us(800);  //do not change!!
-    PULSE_WDT = HIGH;
+    putChar('w');
+//    PULSE_WDT = LOW; 
+//    __delay_us(800);  //do not change!!
+//    PULSE_WDT = HIGH;
 }

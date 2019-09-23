@@ -40,9 +40,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TXIF `Vb ~T0 @X0 0 e@100 ]
 "1052
 [v _TXREG `Vuc ~T0 @X0 0 e@25 ]
-"16 CRC16.h
-[v _crc16 `(us ~T0 @X0 0 ef3`us`*uc`ui ]
-"384 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f886.h
+"384
 [s S14 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S14 . RBIF INTF T0IF RBIE INTE T0IE PEIE GIE ]
 "394
@@ -53,8 +51,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S13 . . . ]
 "401
 [v _INTCONbits `VS13 ~T0 @X0 0 e@11 ]
-"43 I2C.h
-[v _ReadDataFromEEPROM `(v ~T0 @X0 0 ef5`uc`uc`uc`*uc`ui ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1483,26 +1479,23 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 22: typedef unsigned short long USLONG;
 [; ;Type_define.h: 23: typedef signed long SDWORD;
 [; ;Type_define.h: 24: typedef unsigned long UDWORD;
-"20 UART.h
-[v _UPLINK_COMMAND_SIZE `uc ~T0 @X0 1 e ]
-[i _UPLINK_COMMAND_SIZE
--> -> 32 `i `uc
+"19 UART.h
+[v _ReceiveFlag `uc ~T0 @X0 1 e ]
+[i _ReceiveFlag
+-> -> 0 `i `uc
 ]
-[; ;UART.h: 20: UBYTE UPLINK_COMMAND_SIZE = 32;
-[; ;UART.h: 22: void Init_SERIAL(void);
-[; ;UART.h: 23: UBYTE getChar(void);
-[; ;UART.h: 24: void putChar(UBYTE);
-[; ;UART.h: 25: void putString(UBYTE *);
-[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 29: void changeInterruptPermission(UBYTE, UBYTE);
-[; ;UART.h: 30: void put_error(void);
-[; ;UART.h: 31: void put_ok(void);
-[; ;UART.h: 32: void put_lf(void);
-[; ;UART.h: 33: void changeBaudRate(UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 34: void UARTbufferClear(void);
-[; ;UART.h: 35: void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
-[; ;UART.h: 36: void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 39: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
+[; ;UART.h: 19: UBYTE ReceiveFlag = 0x00;
+[; ;UART.h: 21: void Init_SERIAL(void);
+[; ;UART.h: 22: UBYTE getChar(void);
+[; ;UART.h: 23: void putChar(UBYTE);
+[; ;UART.h: 24: void putString(UBYTE *);
+[; ;UART.h: 27: void changeInterruptPermission(UBYTE, UBYTE);
+[; ;UART.h: 28: void put_error(void);
+[; ;UART.h: 29: void put_ok(void);
+[; ;UART.h: 30: void put_lf(void);
+[; ;UART.h: 31: void changeBaudRate(UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 32: void UARTbufferClear(void);
+[; ;UART.h: 35: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
 [; ;__size_t.h: 4: typedef unsigned size_t;
 [; ;stdarg.h: 7: typedef void * va_list[1];
 [; ;stdarg.h: 10: extern void * __va_start(void);
@@ -3053,594 +3046,412 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC16F887.h: 4300: extern volatile __bit nTX8 @ (((unsigned) &TXSTA)*8) + 6;
 [; ;PIC16F887.h: 4302: extern volatile __bit nW @ (((unsigned) &SSPSTAT)*8) + 2;
 [; ;PIC16F887.h: 4304: extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
-[; ;time.h: 30: void delay_ms(UWORD);
-[; ;time.h: 31: void delay_us(UWORD);
-[; ;time.h: 32: void delay_s(UWORD);
-[; ;time.h: 34: UWORD calTime2Byte(UBYTE, UBYTE);
-[; ;time.h: 37: void set_timer_counter_only_getChar(UINT);
-[; ;time.h: 38: UINT get_timer_counter_only_getChar(void);
+[; ;time.h: 29: void delay_ms(UWORD);
+[; ;time.h: 30: void delay_us(UWORD);
+[; ;time.h: 31: void delay_s(UWORD);
+[; ;time.h: 33: UWORD calTime2Byte(UBYTE, UBYTE);
 [; ;encode_AX25.h: 19: void SendPacketWithDataSize(UBYTE *,UINT);
-[; ;encode_AX25.h: 20: void SendPacket(UBYTE *);
+[; ;encode_AX25.h: 20: void SendPacket(UBYTE *,UINT);
 [; ;CRC16.h: 16: UWORD crc16(UWORD, UBYTE *, UINT);
 [; ;CRC16.h: 17: UWORD Identify_CRC16(UBYTE *);
 [; ;CRC16.h: 18: UWORD CRC_check(UBYTE *, UINT);
 [; ;I2C.h: 21: void InitI2CMaster(const UDWORD c);
-[; ;I2C.h: 22: void I2CMasterWait(void);
-[; ;I2C.h: 23: void I2CMasterStart(void);
-[; ;I2C.h: 24: void I2CMasterRepeatedStart(void);
-[; ;I2C.h: 25: void I2CMasterStop(void);
-[; ;I2C.h: 31: void I2CMasterWrite(UBYTE);
-[; ;I2C.h: 32: UBYTE I2CMasterRead(UBYTE);
-[; ;I2C.h: 33: void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-[; ;I2C.h: 34: void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+[; ;I2C.h: 22: void interruptI2C(void);
+[; ;I2C.h: 23: void I2CMasterWait(char);
+[; ;I2C.h: 24: int I2CMasterStart(unsigned char, unsigned char);
+[; ;I2C.h: 25: int I2CMasterRepeatedStart(unsigned char, unsigned char);
+[; ;I2C.h: 26: int I2CMasterStop(void);
+[; ;I2C.h: 32: int WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+[; ;I2C.h: 33: int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+[; ;I2C.h: 34: int WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 [; ;I2C.h: 35: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 [; ;I2C.h: 36: void WriteLastCommandIdToEEPROM(UBYTE);
 [; ;I2C.h: 37: void WriteLastCommandStatusToEEPROM(UBYTE);
 [; ;I2C.h: 38: void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;I2C.h: 43: void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+[; ;I2C.h: 43: int ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
 [; ;I2C.h: 44: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-[; ;I2C.h: 45: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+[; ;I2C.h: 45: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
 [; ;I2C.h: 46: void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
-"9 UART.c
+[; ;OkError.h: 49: void updateErrorStatus(UBYTE);
+[; ;OkError.h: 50: UBYTE bitCalResult(UBYTE bit_input);
+[; ;OkError.h: 51: UBYTE checkMeltingStatus(UBYTE e_address);
+"10 UART.c
 [v _Init_SERIAL `(v ~T0 @X0 1 ef ]
 {
-[; ;UART.c: 9: void Init_SERIAL(void){
+[; ;UART.c: 10: void Init_SERIAL(void){
 [e :U _Init_SERIAL ]
 [f ]
-[; ;UART.c: 11: SPBRG = 10;
-"11
+[; ;UART.c: 12: SPBRG = 10;
+"12
 [e = _SPBRG -> -> 10 `i `uc ]
-[; ;UART.c: 15: BRGH = 0;
-"15
+[; ;UART.c: 13: BRGH = 0;
+"13
 [e = _BRGH -> -> 0 `i `b ]
-[; ;UART.c: 17: SYNC = 0;
-"17
+[; ;UART.c: 16: SYNC = 0;
+"16
 [e = _SYNC -> -> 0 `i `b ]
-[; ;UART.c: 18: SPEN = 1;
-"18
+[; ;UART.c: 17: SPEN = 1;
+"17
 [e = _SPEN -> -> 1 `i `b ]
-[; ;UART.c: 19: CREN = 1;
-"19
+[; ;UART.c: 18: CREN = 1;
+"18
 [e = _CREN -> -> 1 `i `b ]
-[; ;UART.c: 20: SREN = 0;
-"20
+[; ;UART.c: 19: SREN = 0;
+"19
 [e = _SREN -> -> 0 `i `b ]
-[; ;UART.c: 21: INTCON = 0b11000000;
-"21
+[; ;UART.c: 20: INTCON = 0b11000000;
+"20
 [e = _INTCON -> -> 192 `i `uc ]
-[; ;UART.c: 22: PIR1 = 0b00100000;
-"22
+[; ;UART.c: 21: PIR1 = 0b00100000;
+"21
 [e = _PIR1 -> -> 32 `i `uc ]
-[; ;UART.c: 23: PIE1 = 0b00100000;
+[; ;UART.c: 22: PIE1 = 0b00101000;
+"22
+[e = _PIE1 -> -> 40 `i `uc ]
+[; ;UART.c: 23: PIE2 = 0b00000000;
 "23
-[e = _PIE1 -> -> 32 `i `uc ]
-[; ;UART.c: 24: PIE2 = 0b00000000;
-"24
 [e = _PIE2 -> -> 0 `i `uc ]
-[; ;UART.c: 28: TX9 = 0;
-"28
+[; ;UART.c: 24: TX9 = 0;
+"24
 [e = _TX9 -> -> 0 `i `b ]
-[; ;UART.c: 29: RX9 = 0;
-"29
+[; ;UART.c: 25: RX9 = 0;
+"25
 [e = _RX9 -> -> 0 `i `b ]
-[; ;UART.c: 30: TXEN = 0;
-"30
+[; ;UART.c: 26: TXEN = 0;
+"26
 [e = _TXEN -> -> 0 `i `b ]
-[; ;UART.c: 31: TXEN = 1;
-"31
+[; ;UART.c: 27: TXEN = 1;
+"27
 [e = _TXEN -> -> 1 `i `b ]
-[; ;UART.c: 33: }
-"33
+[; ;UART.c: 29: }
+"29
 [e :UE 276 ]
 }
-"35
+"31
 [v _getChar `(uc ~T0 @X0 1 ef ]
 {
-[; ;UART.c: 35: UBYTE getChar(void){
+[; ;UART.c: 31: UBYTE getChar(void){
 [e :U _getChar ]
 [f ]
-[; ;UART.c: 37: if(FERR || OERR)
-"37
+[; ;UART.c: 33: if(FERR || OERR)
+"33
 [e $ ! || _FERR _OERR 278  ]
-[; ;UART.c: 38: {
-"38
+[; ;UART.c: 34: {
+"34
 {
-[; ;UART.c: 39: CREN = 0;
-"39
+[; ;UART.c: 35: CREN = 0;
+"35
 [e = _CREN -> -> 0 `i `b ]
-[; ;UART.c: 40: __nop();
-"40
+[; ;UART.c: 36: __nop();
+"36
 [e ( ___nop ..  ]
-[; ;UART.c: 41: CREN = 1;
-"41
+[; ;UART.c: 37: CREN = 1;
+"37
 [e = _CREN -> -> 1 `i `b ]
-"42
+"38
 }
 [e :U 278 ]
-"44
+"40
 [v _break_counter `ui ~T0 @X0 1 a ]
-[; ;UART.c: 42: }
-[; ;UART.c: 44: UINT break_counter = 0;
+[; ;UART.c: 38: }
+[; ;UART.c: 40: UINT break_counter = 0;
 [e = _break_counter -> -> 0 `i `ui ]
-[; ;UART.c: 48: while(!RCIF){
-"48
+[; ;UART.c: 43: while(!RCIF){
+"43
 [e $U 279  ]
 [e :U 280 ]
 {
-[; ;UART.c: 49: break_counter ++;
-"49
+[; ;UART.c: 44: break_counter ++;
+"44
 [e ++ _break_counter -> -> 1 `i `ui ]
-[; ;UART.c: 50: if(break_counter >= 2000){
-"50
+[; ;UART.c: 45: if(break_counter >= 2000){
+"45
 [e $ ! >= _break_counter -> -> 2000 `i `ui 282  ]
 {
-[; ;UART.c: 52: __nop();
-"52
+[; ;UART.c: 46: __nop();
+"46
 [e ( ___nop ..  ]
-[; ;UART.c: 53: break_counter = 0;
-"53
+[; ;UART.c: 47: break_counter = 0;
+"47
 [e = _break_counter -> -> 0 `i `ui ]
-[; ;UART.c: 54: break;
-"54
+[; ;UART.c: 48: break;
+"48
 [e $U 281  ]
-"55
+"49
 }
 [e :U 282 ]
-"56
+"50
 }
 [e :U 279 ]
-"48
+"43
 [e $ ! _RCIF 280  ]
 [e :U 281 ]
-[; ;UART.c: 55: }
-[; ;UART.c: 56: }
-[; ;UART.c: 57: RCIF = 0;
-"57
+[; ;UART.c: 49: }
+[; ;UART.c: 50: }
+[; ;UART.c: 51: RCIF = 0;
+"51
 [e = _RCIF -> -> 0 `i `b ]
-[; ;UART.c: 58: return RCREG;
-"58
+[; ;UART.c: 52: return RCREG;
+"52
 [e ) _RCREG ]
 [e $UE 277  ]
-[; ;UART.c: 59: }
-"59
+[; ;UART.c: 53: }
+"53
 [e :UE 277 ]
 }
-"61
+"55
 [v _putChar `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;UART.c: 61: void putChar(UBYTE byte){
+[; ;UART.c: 55: void putChar(UBYTE byte){
 [e :U _putChar ]
 [v _byte `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;UART.c: 62: while(!TXIF);
-"62
+[; ;UART.c: 56: while(!TXIF);
+"56
 [e $U 284  ]
 [e :U 285 ]
 [e :U 284 ]
 [e $ ! _TXIF 285  ]
 [e :U 286 ]
-[; ;UART.c: 63: TXREG = byte;
-"63
+[; ;UART.c: 57: TXREG = byte;
+"57
 [e = _TXREG _byte ]
-[; ;UART.c: 64: }
-"64
+[; ;UART.c: 58: }
+"58
 [e :UE 283 ]
 }
-"66
+"60
 [v _putString `(v ~T0 @X0 1 ef1`*uc ]
-"67
+"61
 {
-[; ;UART.c: 66: void putString(UBYTE *x)
-[; ;UART.c: 67: {
+[; ;UART.c: 60: void putString(UBYTE *x)
+[; ;UART.c: 61: {
 [e :U _putString ]
-"66
+"60
 [v _x `*uc ~T0 @X0 1 r1 ]
-"67
+"61
 [f ]
-[; ;UART.c: 68: while(*x != '\0'){
-"68
+[; ;UART.c: 62: while(*x != '\0'){
+"62
 [e $U 288  ]
 [e :U 289 ]
 {
-[; ;UART.c: 69: putChar(*x);
-"69
+[; ;UART.c: 63: putChar(*x);
+"63
 [e ( _putChar (1 *U _x ]
-[; ;UART.c: 70: x++;
-"70
+[; ;UART.c: 64: x++;
+"64
 [e ++ _x * -> -> 1 `i `x -> -> # *U _x `i `x ]
-"71
+"65
 }
 [e :U 288 ]
-"68
+"62
 [e $ != -> *U _x `ui -> 0 `ui 289  ]
 [e :U 290 ]
-[; ;UART.c: 71: }
-[; ;UART.c: 72: }
-"72
+[; ;UART.c: 65: }
+[; ;UART.c: 66: }
+"66
 [e :UE 287 ]
 }
-"74
-[v _sendCommand `(v ~T0 @X0 1 ef8`uc`uc`uc`uc`uc`uc`uc`uc ]
-{
-[; ;UART.c: 74: void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4, UBYTE Parameter5, UBYTE Parameter6){
-[e :U _sendCommand ]
-[v _TaskTarget `uc ~T0 @X0 1 r1 ]
-[v _CommandType `uc ~T0 @X0 1 r2 ]
-[v _Parameter1 `uc ~T0 @X0 1 r3 ]
-[v _Parameter2 `uc ~T0 @X0 1 r4 ]
-[v _Parameter3 `uc ~T0 @X0 1 r5 ]
-[v _Parameter4 `uc ~T0 @X0 1 r6 ]
-[v _Parameter5 `uc ~T0 @X0 1 r7 ]
-[v _Parameter6 `uc ~T0 @X0 1 r8 ]
-[f ]
-"75
-[v _Command `uc ~T0 @X0 -> 10 `i a ]
-"76
-[v _CRC `us ~T0 @X0 1 a ]
-[; ;UART.c: 75: UBYTE Command[10];
-[; ;UART.c: 76: UWORD CRC;
-[; ;UART.c: 77: Command[0] = TaskTarget;
 "77
-[e = *U + &U _Command * -> -> -> 0 `i `ui `ux -> -> # *U &U _Command `ui `ux _TaskTarget ]
-[; ;UART.c: 78: Command[1] = CommandType;
-"78
-[e = *U + &U _Command * -> -> -> 1 `i `ui `ux -> -> # *U &U _Command `ui `ux _CommandType ]
-[; ;UART.c: 79: Command[2] = Parameter1;
-"79
-[e = *U + &U _Command * -> -> -> 2 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter1 ]
-[; ;UART.c: 80: Command[3] = Parameter2;
-"80
-[e = *U + &U _Command * -> -> -> 3 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter2 ]
-[; ;UART.c: 81: Command[4] = Parameter3;
-"81
-[e = *U + &U _Command * -> -> -> 4 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter3 ]
-[; ;UART.c: 82: Command[5] = Parameter4;
-"82
-[e = *U + &U _Command * -> -> -> 5 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter4 ]
-[; ;UART.c: 83: Command[6] = Parameter5;
-"83
-[e = *U + &U _Command * -> -> -> 6 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter5 ]
-[; ;UART.c: 84: Command[7] = Parameter6;
-"84
-[e = *U + &U _Command * -> -> -> 7 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter6 ]
-[; ;UART.c: 85: CRC = crc16(0, Command, 8);
-"85
-[e = _CRC ( _crc16 (3 , , -> -> 0 `i `us &U _Command -> -> 8 `i `ui ]
-[; ;UART.c: 86: Command[8] = CRC >> 8;
-"86
-[e = *U + &U _Command * -> -> -> 8 `i `ui `ux -> -> # *U &U _Command `ui `ux -> >> -> _CRC `ui -> 8 `i `uc ]
-[; ;UART.c: 87: Command[9] = CRC & 0x00FF;
-"87
-[e = *U + &U _Command * -> -> -> 9 `i `ui `ux -> -> # *U &U _Command `ui `ux -> & -> _CRC `ui -> -> 255 `i `ui `uc ]
-[; ;UART.c: 88: putString(Command);
-"88
-[e ( _putString (1 &U _Command ]
-[; ;UART.c: 89: }
-"89
-[e :UE 291 ]
-}
-"101
 [v _changeInterruptPermission `(v ~T0 @X0 1 ef2`uc`uc ]
 {
-[; ;UART.c: 101: void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
+[; ;UART.c: 77: void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 [e :U _changeInterruptPermission ]
 [v _GIE_status `uc ~T0 @X0 1 r1 ]
 [v _PEIE_status `uc ~T0 @X0 1 r2 ]
 [f ]
-[; ;UART.c: 102: if (GIE_status == 0x01){
-"102
-[e $ ! == -> _GIE_status `i -> 1 `i 293  ]
+[; ;UART.c: 78: if (GIE_status == 0x01){
+"78
+[e $ ! == -> _GIE_status `i -> 1 `i 292  ]
 {
-[; ;UART.c: 103: INTCONbits.GIE = 1;
-"103
+[; ;UART.c: 79: INTCONbits.GIE = 1;
+"79
 [e = . . _INTCONbits 0 7 -> -> 1 `i `uc ]
-"104
+"80
 }
-[; ;UART.c: 104: } else {
-[e $U 294  ]
-[e :U 293 ]
+[; ;UART.c: 80: } else {
+[e $U 293  ]
+[e :U 292 ]
 {
-[; ;UART.c: 105: INTCONbits.GIE = 0;
-"105
+[; ;UART.c: 81: INTCONbits.GIE = 0;
+"81
 [e = . . _INTCONbits 0 7 -> -> 0 `i `uc ]
-"106
+"82
 }
-[e :U 294 ]
-[; ;UART.c: 106: }
-[; ;UART.c: 108: if (PEIE_status == 0x01){
-"108
-[e $ ! == -> _PEIE_status `i -> 1 `i 295  ]
+[e :U 293 ]
+[; ;UART.c: 82: }
+[; ;UART.c: 84: if (PEIE_status == 0x01){
+"84
+[e $ ! == -> _PEIE_status `i -> 1 `i 294  ]
 {
-[; ;UART.c: 109: INTCONbits.PEIE = 1;
-"109
+[; ;UART.c: 85: INTCONbits.PEIE = 1;
+"85
 [e = . . _INTCONbits 0 6 -> -> 1 `i `uc ]
-"110
+"86
 }
-[; ;UART.c: 110: } else {
-[e $U 296  ]
-[e :U 295 ]
+[; ;UART.c: 86: } else {
+[e $U 295  ]
+[e :U 294 ]
 {
-[; ;UART.c: 111: INTCONbits.PEIE = 0;
-"111
+[; ;UART.c: 87: INTCONbits.PEIE = 0;
+"87
 [e = . . _INTCONbits 0 6 -> -> 0 `i `uc ]
-"112
+"88
 }
-[e :U 296 ]
-[; ;UART.c: 112: }
-[; ;UART.c: 113: }
-"113
-[e :UE 292 ]
+[e :U 295 ]
+[; ;UART.c: 88: }
+[; ;UART.c: 89: }
+"89
+[e :UE 291 ]
 }
-"116
+"92
 [v _put_error `(v ~T0 @X0 1 ef ]
 {
-[; ;UART.c: 116: void put_error(void){
+[; ;UART.c: 92: void put_error(void){
 [e :U _put_error ]
 [f ]
-[; ;UART.c: 117: putChar('E');
-"117
+[; ;UART.c: 93: putChar('E');
+"93
 [e ( _putChar (1 -> -> 69 `ui `uc ]
-[; ;UART.c: 118: putChar('R');
-"118
+[; ;UART.c: 94: putChar('R');
+"94
 [e ( _putChar (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 119: putChar('R');
-"119
+[; ;UART.c: 95: putChar('R');
+"95
 [e ( _putChar (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 120: putChar('O');
-"120
+[; ;UART.c: 96: putChar('O');
+"96
 [e ( _putChar (1 -> -> 79 `ui `uc ]
-[; ;UART.c: 121: putChar('R');
-"121
+[; ;UART.c: 97: putChar('R');
+"97
 [e ( _putChar (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 122: putChar('\r');
-"122
+[; ;UART.c: 98: putChar('\r');
+"98
 [e ( _putChar (1 -> -> 13 `ui `uc ]
-[; ;UART.c: 123: putChar('\n');
-"123
+[; ;UART.c: 99: putChar('\n');
+"99
 [e ( _putChar (1 -> -> 10 `ui `uc ]
-[; ;UART.c: 124: }
-"124
-[e :UE 297 ]
+[; ;UART.c: 100: }
+"100
+[e :UE 296 ]
 }
-"126
+"102
 [v _put_ok `(v ~T0 @X0 1 ef ]
 {
-[; ;UART.c: 126: void put_ok(void){
+[; ;UART.c: 102: void put_ok(void){
 [e :U _put_ok ]
 [f ]
-[; ;UART.c: 127: putChar('O');
-"127
+[; ;UART.c: 103: putChar('O');
+"103
 [e ( _putChar (1 -> -> 79 `ui `uc ]
-[; ;UART.c: 128: putChar('K');
-"128
+[; ;UART.c: 104: putChar('K');
+"104
 [e ( _putChar (1 -> -> 75 `ui `uc ]
-[; ;UART.c: 129: putChar('\r');
-"129
+[; ;UART.c: 105: putChar('\r');
+"105
 [e ( _putChar (1 -> -> 13 `ui `uc ]
-[; ;UART.c: 130: putChar('\n');
-"130
+[; ;UART.c: 106: putChar('\n');
+"106
 [e ( _putChar (1 -> -> 10 `ui `uc ]
-[; ;UART.c: 132: }
-"132
-[e :UE 298 ]
+[; ;UART.c: 108: }
+"108
+[e :UE 297 ]
 }
-"134
+"110
 [v _put_lf `(v ~T0 @X0 1 ef ]
 {
-[; ;UART.c: 134: void put_lf(void){
+[; ;UART.c: 110: void put_lf(void){
 [e :U _put_lf ]
 [f ]
-[; ;UART.c: 135: putChar('\r');
-"135
+[; ;UART.c: 111: putChar('\r');
+"111
 [e ( _putChar (1 -> -> 13 `ui `uc ]
-[; ;UART.c: 136: putChar('\n');
-"136
+[; ;UART.c: 112: putChar('\n');
+"112
 [e ( _putChar (1 -> -> 10 `ui `uc ]
-[; ;UART.c: 137: }
-"137
-[e :UE 299 ]
+[; ;UART.c: 113: }
+"113
+[e :UE 298 ]
 }
-"139
+"115
 [v _changeBaudRate `(v ~T0 @X0 1 ef3`uc`uc`uc ]
 {
-[; ;UART.c: 139: void changeBaudRate(UBYTE type_select,UBYTE SPBRG_number,UBYTE BRGH_number){
+[; ;UART.c: 115: void changeBaudRate(UBYTE type_select,UBYTE SPBRG_number,UBYTE BRGH_number){
 [e :U _changeBaudRate ]
 [v _type_select `uc ~T0 @X0 1 r1 ]
 [v _SPBRG_number `uc ~T0 @X0 1 r2 ]
 [v _BRGH_number `uc ~T0 @X0 1 r3 ]
 [f ]
-[; ;UART.c: 140: if(type_select=='h'){
-"140
-[e $ ! == -> _type_select `ui -> 104 `ui 301  ]
+[; ;UART.c: 116: if(type_select=='h'){
+"116
+[e $ ! == -> _type_select `ui -> 104 `ui 300  ]
 {
-[; ;UART.c: 141: SPBRG = 4;
-"141
+[; ;UART.c: 117: SPBRG = 4;
+"117
 [e = _SPBRG -> -> 4 `i `uc ]
-[; ;UART.c: 142: BRGH = 1;
-"142
+[; ;UART.c: 118: BRGH = 1;
+"118
 [e = _BRGH -> -> 1 `i `b ]
-"143
+"119
 }
-[; ;UART.c: 143: } else if(type_select=='l'){
-[e $U 302  ]
-[e :U 301 ]
-[e $ ! == -> _type_select `ui -> 108 `ui 303  ]
+[; ;UART.c: 119: } else if(type_select=='l'){
+[e $U 301  ]
+[e :U 300 ]
+[e $ ! == -> _type_select `ui -> 108 `ui 302  ]
 {
-[; ;UART.c: 144: SPBRG = 10;
-"144
+[; ;UART.c: 120: SPBRG = 10;
+"120
 [e = _SPBRG -> -> 10 `i `uc ]
-[; ;UART.c: 145: BRGH = 0;
-"145
+[; ;UART.c: 121: BRGH = 0;
+"121
 [e = _BRGH -> -> 0 `i `b ]
-"146
+"122
 }
-[; ;UART.c: 146: } else if(type_select=='a'){
-[e $U 304  ]
-[e :U 303 ]
-[e $ ! == -> _type_select `ui -> 97 `ui 305  ]
-{
-[; ;UART.c: 147: SPBRG = SPBRG_number;
-"147
-[e = _SPBRG _SPBRG_number ]
-[; ;UART.c: 148: BRGH = BRGH_number;
-"148
-[e = _BRGH -> _BRGH_number `b ]
-"149
-}
-[; ;UART.c: 149: } else {
-[e $U 306  ]
-[e :U 305 ]
-{
-"151
-}
-[e :U 306 ]
-[e :U 304 ]
+[; ;UART.c: 122: } else if(type_select=='a'){
+[e $U 303  ]
 [e :U 302 ]
-[; ;UART.c: 151: }
-[; ;UART.c: 152: }
-"152
-[e :UE 300 ]
+[e $ ! == -> _type_select `ui -> 97 `ui 304  ]
+{
+[; ;UART.c: 123: SPBRG = SPBRG_number;
+"123
+[e = _SPBRG _SPBRG_number ]
+[; ;UART.c: 124: BRGH = BRGH_number;
+"124
+[e = _BRGH -> _BRGH_number `b ]
+"125
 }
-"154
+[; ;UART.c: 125: } else {
+[e $U 305  ]
+[e :U 304 ]
+{
+"127
+}
+[e :U 305 ]
+[e :U 303 ]
+[e :U 301 ]
+[; ;UART.c: 127: }
+[; ;UART.c: 128: }
+"128
+[e :UE 299 ]
+}
+"130
 [v _UARTbufferClear `(v ~T0 @X0 1 ef ]
 {
-[; ;UART.c: 154: void UARTbufferClear(void){
+[; ;UART.c: 130: void UARTbufferClear(void){
 [e :U _UARTbufferClear ]
 [f ]
-[; ;UART.c: 155: RCREG = 0;
-"155
+[; ;UART.c: 131: RCREG = 0;
+"131
 [e = _RCREG -> -> 0 `i `uc ]
-[; ;UART.c: 156: }
-"156
-[e :UE 307 ]
+[; ;UART.c: 132: }
+"132
+[e :UE 306 ]
 }
-"158
-[v _readEEPROMandUARTwrite `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`uc ]
-{
-[; ;UART.c: 158: void readEEPROMandUARTwrite(UBYTE slaveAddress, UBYTE highAddress, UBYTE lowAddress, UBYTE *ReadData, UBYTE dataLength){
-[e :U _readEEPROMandUARTwrite ]
-[v _slaveAddress `uc ~T0 @X0 1 r1 ]
-[v _highAddress `uc ~T0 @X0 1 r2 ]
-[v _lowAddress `uc ~T0 @X0 1 r3 ]
-[v _ReadData `*uc ~T0 @X0 1 r4 ]
-[v _dataLength `uc ~T0 @X0 1 r5 ]
-[f ]
-"159
-[v _CRC `us ~T0 @X0 1 a ]
-[; ;UART.c: 159: UWORD CRC;
-[; ;UART.c: 160: ReadDataFromEEPROM(slaveAddress, highAddress, lowAddress, ReadData, dataLength);
-"160
-[e ( _ReadDataFromEEPROM (4 , , , , _slaveAddress _highAddress _lowAddress _ReadData -> _dataLength `ui ]
-[; ;UART.c: 161: for(UBYTE i=0;i<dataLength;i++){
-"161
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $U 312  ]
-[e :U 309 ]
-{
-[; ;UART.c: 162: putChar(ReadData[i]);
-"162
-[e ( _putChar (1 *U + _ReadData * -> _i `ux -> -> # *U _ReadData `ui `ux ]
-[; ;UART.c: 163: __nop();
-"163
-[e ( ___nop ..  ]
-"164
-}
-"161
-[e ++ _i -> -> 1 `i `uc ]
-[e :U 312 ]
-[e $ < -> _i `i -> _dataLength `i 309  ]
-[e :U 310 ]
-"164
-}
-[; ;UART.c: 164: }
-[; ;UART.c: 165: CRC = crc16(0, ReadData, dataLength);
-"165
-[e = _CRC ( _crc16 (3 , , -> -> 0 `i `us _ReadData -> _dataLength `ui ]
-[; ;UART.c: 166: putChar(CRC >> 8);
-"166
-[e ( _putChar (1 -> >> -> _CRC `ui -> 8 `i `uc ]
-[; ;UART.c: 167: __nop();
-"167
-[e ( ___nop ..  ]
-[; ;UART.c: 168: putChar(CRC & 0x00FF);
-"168
-[e ( _putChar (1 -> & -> _CRC `ui -> -> 255 `i `ui `uc ]
-[; ;UART.c: 169: }
-"169
-[e :UE 308 ]
-}
-"171
-[v _UARTwrite5byte `(v ~T0 @X0 1 ef5`uc`uc`uc`uc`uc ]
-{
-[; ;UART.c: 171: void UARTwrite5byte(UBYTE data1,UBYTE data2,UBYTE data3,UBYTE data4,UBYTE data5){
-[e :U _UARTwrite5byte ]
-[v _data1 `uc ~T0 @X0 1 r1 ]
-[v _data2 `uc ~T0 @X0 1 r2 ]
-[v _data3 `uc ~T0 @X0 1 r3 ]
-[v _data4 `uc ~T0 @X0 1 r4 ]
-[v _data5 `uc ~T0 @X0 1 r5 ]
-[f ]
-"172
-[v _data `uc ~T0 @X0 -> 7 `i a ]
-"173
-[v _CRC `us ~T0 @X0 1 a ]
-[; ;UART.c: 172: UBYTE data[7];
-[; ;UART.c: 173: UWORD CRC;
-[; ;UART.c: 174: data[0] = data1;
-"174
-[e = *U + &U _data * -> -> -> 0 `i `ui `ux -> -> # *U &U _data `ui `ux _data1 ]
-[; ;UART.c: 175: data[1] = data2;
-"175
-[e = *U + &U _data * -> -> -> 1 `i `ui `ux -> -> # *U &U _data `ui `ux _data2 ]
-[; ;UART.c: 176: data[2] = data3;
-"176
-[e = *U + &U _data * -> -> -> 2 `i `ui `ux -> -> # *U &U _data `ui `ux _data3 ]
-[; ;UART.c: 177: data[3] = data4;
-"177
-[e = *U + &U _data * -> -> -> 3 `i `ui `ux -> -> # *U &U _data `ui `ux _data4 ]
-[; ;UART.c: 178: data[4] = data5;
-"178
-[e = *U + &U _data * -> -> -> 4 `i `ui `ux -> -> # *U &U _data `ui `ux _data5 ]
-[; ;UART.c: 179: CRC = crc16(0, data, 5);
-"179
-[e = _CRC ( _crc16 (3 , , -> -> 0 `i `us &U _data -> -> 5 `i `ui ]
-[; ;UART.c: 180: data[5] = CRC >> 8;
-"180
-[e = *U + &U _data * -> -> -> 5 `i `ui `ux -> -> # *U &U _data `ui `ux -> >> -> _CRC `ui -> 8 `i `uc ]
-[; ;UART.c: 181: data[6] = CRC & 0x00FF;
-"181
-[e = *U + &U _data * -> -> -> 6 `i `ui `ux -> -> # *U &U _data `ui `ux -> & -> _CRC `ui -> -> 255 `i `ui `uc ]
-[; ;UART.c: 182: for(UBYTE i=0; i<7; i++){
-"182
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 7 `i 314  ]
-[e $U 315  ]
-[e :U 314 ]
-{
-[; ;UART.c: 183: putChar(data[i]);
-"183
-[e ( _putChar (1 *U + &U _data * -> _i `ux -> -> # *U &U _data `ui `ux ]
-"184
-}
-"182
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 7 `i 314  ]
-[e :U 315 ]
-"184
-}
-[; ;UART.c: 184: }
-[; ;UART.c: 185: }
-"185
-[e :UE 313 ]
-}
-"220
+"135
 [v _commandSwitchUART `(v ~T0 @X0 1 ef6`uc`uc`uc`uc`uc`uc ]
 {
-[; ;UART.c: 220: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){
+[; ;UART.c: 135: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){
 [e :U _commandSwitchUART ]
 [v _command `uc ~T0 @X0 1 r1 ]
 [v _data1 `uc ~T0 @X0 1 r2 ]
@@ -3649,79 +3460,59 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _data4 `uc ~T0 @X0 1 r5 ]
 [v _data5 `uc ~T0 @X0 1 r6 ]
 [f ]
-"221
+"136
 [v _ReadData `uc ~T0 @X0 -> 0 `x a ]
-[; ;UART.c: 221: UBYTE ReadData[];
-[; ;UART.c: 222: switch(command){
-"222
-[e $U 319  ]
+[; ;UART.c: 136: UBYTE ReadData[];
+[; ;UART.c: 137: switch(command){
+"137
+[e $U 309  ]
 {
-[; ;UART.c: 223: case 'w':
-"223
-[e :U 320 ]
-[; ;UART.c: 224: UARTwrite5byte(data1,data2,data3,data4,data5);
-"224
-[e ( _UARTwrite5byte (4 , , , , _data1 _data2 _data3 _data4 _data5 ]
-[; ;UART.c: 225: break;
-"225
-[e $U 318  ]
-[; ;UART.c: 226: case 'e':
-"226
-[e :U 321 ]
-[; ;UART.c: 228: readEEPROMandUARTwrite(data1, data2, data3, ReadData, data4);
-"228
-[e ( _readEEPROMandUARTwrite (4 , , , , _data1 _data2 _data3 &U _ReadData _data4 ]
-[; ;UART.c: 229: break;
-"229
-[e $U 318  ]
-[; ;UART.c: 230: case 'c':
-"230
-[e :U 322 ]
-[; ;UART.c: 231: UARTbufferClear();
-"231
+[; ;UART.c: 138: case 'c':
+"138
+[e :U 310 ]
+[; ;UART.c: 139: UARTbufferClear();
+"139
 [e ( _UARTbufferClear ..  ]
-[; ;UART.c: 232: break;
-"232
-[e $U 318  ]
-[; ;UART.c: 233: case 'b':
-"233
-[e :U 323 ]
-[; ;UART.c: 234: changeBaudRate(data1,data2,data3);
-"234
+[; ;UART.c: 140: break;
+"140
+[e $U 308  ]
+[; ;UART.c: 141: case 'b':
+"141
+[e :U 311 ]
+[; ;UART.c: 142: changeBaudRate(data1,data2,data3);
+"142
 [e ( _changeBaudRate (3 , , _data1 _data2 _data3 ]
-[; ;UART.c: 235: break;
-"235
-[e $U 318  ]
-[; ;UART.c: 236: case 'i':
-"236
-[e :U 324 ]
-[; ;UART.c: 237: changeInterruptPermission(data1,data2);
-"237
+[; ;UART.c: 143: break;
+"143
+[e $U 308  ]
+[; ;UART.c: 144: case 'i':
+"144
+[e :U 312 ]
+[; ;UART.c: 145: changeInterruptPermission(data1,data2);
+"145
 [e ( _changeInterruptPermission (2 , _data1 _data2 ]
-[; ;UART.c: 238: break;
-"238
-[e $U 318  ]
-[; ;UART.c: 239: default:
-"239
-[e :U 325 ]
-[; ;UART.c: 241: break;
-"241
-[e $U 318  ]
-"242
+[; ;UART.c: 146: break;
+"146
+[e $U 308  ]
+[; ;UART.c: 147: default:
+"147
+[e :U 313 ]
+[; ;UART.c: 149: break;
+"149
+[e $U 308  ]
+"150
 }
-[; ;UART.c: 242: }
-[e $U 318  ]
-"222
-[e :U 319 ]
-[e [\ _command , $ -> -> 119 `ui `uc 320
- , $ -> -> 101 `ui `uc 321
- , $ -> -> 99 `ui `uc 322
- , $ -> -> 98 `ui `uc 323
- , $ -> -> 105 `ui `uc 324
- 325 ]
-"242
-[e :U 318 ]
-[; ;UART.c: 243: }
-"243
-[e :UE 317 ]
+[; ;UART.c: 150: }
+[e $U 308  ]
+"137
+[e :U 309 ]
+[e [\ _command , $ -> -> 99 `ui `uc 310
+ , $ -> -> 98 `ui `uc 311
+ , $ -> -> 105 `ui `uc 312
+ 313 ]
+"150
+[e :U 308 ]
+[; ;UART.c: 151: }
+"151
+[e :UE 307 ]
 }

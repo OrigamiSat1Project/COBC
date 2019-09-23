@@ -1,5 +1,5 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"20 WDT.h
+"18 WDT.h
 [v _sendPulseWDT `(v ~T0 @X0 0 ef ]
 "220 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
 [s S8 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -1072,7 +1072,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;FMCW.h: 29: void FMTX(int Nref, USLONG Nprg);
 [; ;FMCW.h: 30: void CWTX(int Nref, USLONG Nprg);
 [; ;FMCW.h: 31: void FMRX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 32: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 32: void commandSwitchFMCW(UBYTE);
 [; ;FMCW.h: 33: void setNref(UBYTE unitID, int Nref);
 [; ;FMCW.h: 37: void setPLL(void);
 [; ;MPU.h: 32: void InitMPU(void);
@@ -1091,17 +1091,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;MPU.h: 50: void reviveEPS(UBYTE, UBYTE);
 [; ;MPU.h: 52: void changeInOut(UINT, UBYTE);
 [; ;MPU.h: 53: void changeHighLow(UINT, UBYTE);
-[; ;MPU.h: 54: void changeXtalFrequency(UBYTE);
-[; ;MPU.h: 56: void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;MPU.h: 57: void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
-[; ;MPU.h: 59: void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
-[; ;MPU.h: 60: void offNtrxPowerSupplyCIB(void);
-[; ;MPU.h: 62: UBYTE ReadNtrxSubPowerStatus(void);
+[; ;MPU.h: 55: void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 56: void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
+[; ;MPU.h: 58: void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
+[; ;MPU.h: 59: void offNtrxPowerSupplyCIB(void);
+[; ;MPU.h: 61: UBYTE ReadNtrxSubPowerStatus(void);
 [; ;WDT.h: 17: void InitWDT(void);
-[; ;WDT.h: 18: void commandWDT(UBYTE);
-[; ;WDT.h: 19: void resetWDT();
-[; ;WDT.h: 20: void sendPulseWDT(void);
-[; ;WDT.h: 21: void WDTwait(void);
+[; ;WDT.h: 18: void sendPulseWDT(void);
+[; ;WDT.h: 19: void WDTwait(void);
 "11 EPS.c
 [v _Reset_EPS `(v ~T0 @X0 1 ef ]
 {

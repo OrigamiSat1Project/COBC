@@ -75,32 +75,35 @@ void main(void) {
     UBYTE error_status;
 
     UBYTE melting_status[2];
-    melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-    melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-    melting_status[0] = 0;
-    melting_status[1] = 0;
-    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {  //after melting
-        if(MRLTING_FLAG_FOR_OBC == LOW){
-            MRLTING_FLAG_FOR_OBC = HIGH;
-        }
-    } else {                                                                            //before melting
-        /*---200s ( 50s * 4times)---*/
-        for(UBYTE i=0; i<4; i++){
-            putChar(0x11);
-            /*---wait 50s---*/
-            sendPulseWDT();
-            for(UBYTE j=0; j<50; j++){
-                delay_s(5);
-                sendPulseWDT();
-            }
-            /*---measure voltage & change Sat Mode---*/
-            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-            if (SatMode_error_status != 0){
-                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-            }
-            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, SatMode_error_status);
-        }
-    }
+//    melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+//    melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+////    melting_status[0] = 0;
+////    melting_status[1] = 0;
+//    putChar(0x23);
+//    if((melting_status[0] >= MELTING_FINISH)||(melting_status[1] >= MELTING_FINISH)) {  //after melting
+//        putChar(0x22);
+//        if(MRLTING_FLAG_FOR_OBC == LOW){
+//            MRLTING_FLAG_FOR_OBC = HIGH;
+//        }
+//    } else {                                                                            //before melting
+//        /*---200s ( 50s * 4times)---*/
+//        putChar(0x21);
+//        for(UBYTE i=0; i<4; i++){
+//            /*---wait 50s---*/
+//            sendPulseWDT();
+//            for(UBYTE j=0; j<10; j++){
+//                putChar(0x24);
+//                delay_s(5);
+//                sendPulseWDT();
+//            }
+//            /*---measure voltage & change Sat Mode---*/
+//            SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+//            if (SatMode_error_status != 0){
+//                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+//            }
+//            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, SatMode_error_status);
+//        }
+//    }
     
 //    putChar(0x12);
     
@@ -138,13 +141,12 @@ void main(void) {
         }
 //
         /*---timer process for NTRX PLL setting(every day) & EPS reset (if initial Ope / everyday)---*/
-        if(get_NTRX_pll_setting_counter_min() >= 2){   
-            putChar(0xBB);
+        if(get_NTRX_pll_setting_counter_day() >= 1){   
+            putChar(0x7B);
             melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-            melting_status[0] = 0x00;
-            melting_status[1] = 0x00;
             if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
+                putChar(0x7D);
                 resetEPS();  //only initial ope -> reset EPS
             }
             setPLL();  // set PLL every day
@@ -153,6 +155,7 @@ void main(void) {
 //
 //        //*---timer process for initial operation (22.5min)---*/
         if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  
+            putChar(0x7C);
             error_status = InitialOperation();
             WriteOneByteToMainAndSubB0EEPROM(InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow,error_status);
             set_init_ope_counter(0,0);
@@ -198,13 +201,13 @@ void main(void) {
 //            putChar('1');
 //            lastCommandID = ReadEEPROMmainAndSub(B0select_EEPROM, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID);
 //            putChar(lastCommandID);
-            satmode = ReadEEPROM(0x50,0x81,0x80);
-            putChar(satmode);
+//            satmode = ReadEEPROM(0x50,0x81,0x80);
+//            putChar(satmode);
             sendPulseWDT();
-            for(int i = 0 ; i < 5 ; i ++){
-               __delay_ms(1000); 
-               sendPulseWDT();
-            }
+//            for(int i = 0 ; i < 5 ; i ++){
+//               __delay_ms(1000); 
+//               sendPulseWDT();
+//            }
             if(get_receive_command_counter_sec() > 50){
                 RXDATA[0] = 0;
                 set_receive_command_counter(0,0);

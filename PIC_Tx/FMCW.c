@@ -86,6 +86,10 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
             switch(commandData[3]){         //Process command type
                 case 'm':/*get satellite mode*/
 //                    downlinkFMSignal(EEPROM_address, satelliteMode_addressHigh, satelliteMode_addressLow, commandData[4], satelliteMode_DataSize);
+                    while(1){
+                        ReadEEPROM(0x50,0x00,0x00);
+                        sendPulseWDT();
+                    }
                 case 'C':/*downlink CW Signal*/
                     commandSwitchCWDownlink(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9], commandData[10]);
                     break;
@@ -531,12 +535,11 @@ void HKDownlink(void){
     HKDownlinkFR0();
     __delay_s(1);
     if(ReceiveFlag == CORRECT_RECEIVE) return;
-    putChar('\r'); putChar('\n');
-//    HKDownlinkFR1();
-//    __delay_s(1);
-//    if(ReceiveFlag == CORRECT_RECEIVE) return;
-//    HKDownlinkFR2();
-//    __delay_s(1);
+    HKDownlinkFR1();
+    __delay_s(1);
+    if(ReceiveFlag == CORRECT_RECEIVE) return;
+    HKDownlinkFR2();
+    __delay_s(1);
 }
 
 /*******************************************************************************

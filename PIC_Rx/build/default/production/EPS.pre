@@ -1490,7 +1490,7 @@ USLONG FMRX_Nprg = 24916;
 void FMTX(int Nref, USLONG Nprg);
 void CWTX(int Nref, USLONG Nprg);
 void FMRX(int Nref, USLONG Nprg);
-void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchFMCW(UBYTE);
 void setNref(UBYTE unitID, int Nref);
 
 
@@ -1520,7 +1520,6 @@ void reviveEPS(UBYTE, UBYTE);
 
 void changeInOut(UINT, UBYTE);
 void changeHighLow(UINT, UBYTE);
-void changeXtalFrequency(UBYTE);
 
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
@@ -1532,8 +1531,6 @@ UBYTE ReadNtrxSubPowerStatus(void);
 
 # 17 "WDT.h"
 void InitWDT(void);
-void commandWDT(UBYTE);
-void resetWDT();
 void sendPulseWDT(void);
 void WDTwait(void);
 

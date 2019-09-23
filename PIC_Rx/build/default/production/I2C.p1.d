@@ -5,5 +5,8 @@ OkError.h  \
 I2C.h  \
 UART.h  \
 typeDefine.h  \
+timer.h  \
+pinDefine.h  \
 EEPROM.h  \
-time.h 
+time.h  \
+MPU.h 
