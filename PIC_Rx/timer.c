@@ -30,6 +30,9 @@ void interruptI2C(void)
      if (PIR2bits.BCLIF == 1) {
           CollisionCheck = 1;
           PIR2bits.BCLIF = 0;
+          putChar('c');
+          putChar('\r');
+          putChar('\n');
      }
 }
 

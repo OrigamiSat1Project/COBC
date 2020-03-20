@@ -75,6 +75,9 @@ void main(void) {
     Init_MPU();
     InitI2CMaster(I2Cbps);
     Init_SERIAL();
+    putChar('T');
+    putChar('\r');
+    putChar('\n');
     Init_WDT();
     Init_HK();
     sendPulseWDT();
@@ -83,7 +86,9 @@ void main(void) {
     UBYTE melting_status[2] = {0x00};
     melting_status[0] = checkMeltingStatus(EEPROM_address);
     melting_status[1] = checkMeltingStatus(EEPROM_subaddress);
-    if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {  //before melting                                                                           //before melting
+    if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {  //before melting    
+        //before melting
+        putChar('2');
         /*---200s ( 50s * 4times)---*/
         for(UBYTE i=0; i<4; i++){
             /*---wait 50s---*/
@@ -94,8 +99,11 @@ void main(void) {
             }
         }
     }                  
-     
+    
     while(1){
+        putChar('S');
+        putChar('\r');
+        putChar('\n');
         sendPulseWDT();
 
         measureAllChanelADC();
@@ -107,7 +115,8 @@ void main(void) {
 
         CheckNTRXsubpower();
         
-        HKDownlink();
+//        HKDownlink();
+        downlinkFMSignal(0x50,0x62,0x00,0x02,0x09,0x00);
 
 
         //======================================================================

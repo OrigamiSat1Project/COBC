@@ -8,6 +8,7 @@
 #include "OkError.h"
 #include "UART.h"
 #include "timer.h"
+#include "WDT.h"
 
 //UBYTE EEPROMData[32];
 
@@ -168,18 +169,24 @@ int WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addres
 int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     int ans = -1;
     ans = I2CMasterStart(addressEEPROM,0);               //Start condition
+    sendPulseWDT(); // for debug 2020/03/20
     if(ans == 0){
         I2CMasterWrite(addressHigh);              //Adress High Byte
         I2CMasterWrite(addressLow);           //Adress Low Byte
         I2CMasterWrite(data);             //Data
+        I2CMasterStop();
     }else ans = -1;
-    I2CMasterStop();
+    sendPulseWDT(); // for debug 2020/03/20
+//    I2CMasterStop();
+    sendPulseWDT(); // for debug 2020/03/20
     __delay_ms(5);
+    sendPulseWDT(); // for debug 2020/03/20
     return ans;
 }
 
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,addressHigh,addressLow,data);
+    sendPulseWDT(); // for debug 2020/03/20
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,addressHigh,addressLow,data);
 }
 
