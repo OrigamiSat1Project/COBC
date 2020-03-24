@@ -150,9 +150,10 @@ int WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addres
         I2CMasterWrite(addressLow);
         for(UBYTE i = 0 ; i < DataSize ; i ++){
             I2CMasterWrite(data[i]);
-        }
+        }        
+        I2CMasterStop();
     } else ans = -1;
-    I2CMasterStop();
+//    I2CMasterStop();
     __delay_ms(5);
     return ans;
 }
@@ -165,8 +166,9 @@ int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,
         I2CMasterWrite(addressHigh);              //Adress High Byte
         I2CMasterWrite(addressLow);           //Adress Low Byte
         I2CMasterWrite(data);             //Data
+        I2CMasterStop();
     }else ans = -1;
-    I2CMasterStop();
+//    I2CMasterStop();
     __delay_ms(5);
     return ans;
 }
@@ -209,8 +211,9 @@ int ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,
             ReadData[i] = I2CMasterRead(0);     //Read + Acknowledge
         }
         ReadData[EEPROMDataLength - 1] = I2CMasterRead(1);
+        I2CMasterStop();                        //Stop condition
     }else ans = -1;
-    I2CMasterStop();                        //Stop condition
+//    I2CMasterStop();                        //Stop condition
     __delay_ms(5);
     return ans;
 }
@@ -232,8 +235,9 @@ UBYTE ReadEEPROM(UBYTE address,UBYTE high_address,UBYTE low_address){
         I2CMasterWrite(low_address);    //Adress Low Byte
         I2CMasterRepeatedStart(address,1);         //Restart condition
         dat = (UBYTE)I2CMasterRead(1); //Read + Acknowledge
+        I2CMasterStop();
     };
-    I2CMasterStop();
+//    I2CMasterStop();
     __delay_ms(5);
     if(ans == -1) return 0xFF;
     return dat;
