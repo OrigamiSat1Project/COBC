@@ -48,25 +48,25 @@ UBYTE STOCKDATA[3][commandSize];
 
 void interrupt InterReceiver(void){
     interruptI2C();
-    if(RCIF==1){
-        UBYTE tmp;
-        tmp = getChar();
-        if(tmp != 'g' && tmp != 't') return;
-        
-        ReceiveFlag = CORRECT_RECEIVE;
-                
-        for(UINT j=0; j<3; j++){
-            if(STOCKDATA[j][0] != 'g' && STOCKDATA[j][0] != 't'){
-                STOCKDATA[j][0] = tmp;
-                for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[j][i] = getChar();
-                return;
-            }
-        }
-
-        STOCKDATA[0][0] = tmp;
-        for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[0][i] = getChar();
-        return;
-    }
+//    if(RCIF==1){
+//        UBYTE tmp;
+//        tmp = getChar();
+//        if(tmp != 'g' && tmp != 't') return;
+//        
+//        ReceiveFlag = CORRECT_RECEIVE;
+//                
+//        for(UINT j=0; j<3; j++){
+//            if(STOCKDATA[j][0] != 'g' && STOCKDATA[j][0] != 't'){
+//                STOCKDATA[j][0] = tmp;
+//                for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[j][i] = getChar();
+//                return;
+//            }
+//        }
+//
+//        STOCKDATA[0][0] = tmp;
+//        for(UBYTE i=1 ;i< commandSize; i++) STOCKDATA[0][i] = getChar();
+//        return;
+//    }
 }
 
 void main(void) {

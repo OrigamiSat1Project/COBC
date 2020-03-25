@@ -5,11 +5,12 @@
 #include "Type_define.h"
 #include "EEPROM.h"
 #include "OkError.h"
+#include "WDT.h"
+#include "Type_define.h"
 
 #define _XTAL_FREQ 10000000
 
-int AckCheck;
-int CollisionCheck;
+
 
 /*******************************************************************************
 *setting
@@ -50,17 +51,22 @@ void I2CMasterWait(char mask){
 }
 
 
-int I2CMasterStart(UBYTE slave_address,UBYTE rw){
+SBYTE I2CMasterStart(UBYTE slave_address,UBYTE rw){
 //  I2CMasterWait();
 //  SEN = 1;                      //SEN Start Condition Enable; bit 0 of SSPCON2
      CollisionCheck = 0 ;
      I2CMasterWait(0x5) ;
+     sendPulseWDT();
      SSPCON2bits.SEN = 1 ;
      I2CMasterWait(0x5) ;
+     sendPulseWDT();
      if (CollisionCheck == 1) return -1 ;
+     sendPulseWDT();
      AckCheck = 1 ;
      SSPBUF = (char)((slave_address<<1)+rw);
+     sendPulseWDT();
      while (AckCheck);
+     sendPulseWDT();
      if (CollisionCheck == 1) return -1 ;
      return SSPCON2bits.ACKSTAT;
 }
@@ -161,13 +167,18 @@ int WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addres
 /**/
 int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     int ans = -1;
+    sendPulseWDT();
+    __delay_ms(50);
     ans = I2CMasterStart(addressEEPROM,0);               //Start condition
+    sendPulseWDT();
     if(ans == 0){
         I2CMasterWrite(addressHigh);              //Adress High Byte
         I2CMasterWrite(addressLow);           //Adress Low Byte
         I2CMasterWrite(data);             //Data
         I2CMasterStop();
+        sendPulseWDT();
     }else ans = -1;
+    sendPulseWDT();
 //    I2CMasterStop();
     __delay_ms(5);
     return ans;

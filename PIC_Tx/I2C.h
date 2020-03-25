@@ -21,9 +21,12 @@
 void InitI2CMaster(const UDWORD c);
 void interruptI2C(void);
 void I2CMasterWait(char);
-int I2CMasterStart(unsigned char, unsigned char);
+SBYTE I2CMasterStart(unsigned char, unsigned char);
 int I2CMasterRepeatedStart(unsigned char, unsigned char);
 int I2CMasterStop(void);
+
+int AckCheck;
+int CollisionCheck;
 
 
 /*******************************************************************************
