@@ -30,16 +30,26 @@ void interruptI2C(void)
 {
      if (PIR1bits.SSPIF == 1) {
           if (AckCheck == 1) {
+              putChar('a');
+              putChar('\r');
+              putChar('\n');
               AckCheck = 0;
           }
+          
+          putChar('b');
+          putChar('\r');
+          putChar('\n');
           PIR1bits.SSPIF = 0;
      }
      if (PIR2bits.BCLIF == 1) {
-          CollisionCheck = 1;
-          PIR2bits.BCLIF = 0;
           putChar('c');
           putChar('\r');
           putChar('\n');
+          CollisionCheck = 1;
+          PIR2bits.BCLIF = 0;
+//          putChar('c');
+//          putChar('\r');
+//          putChar('\n');
      }
 }
 
@@ -60,12 +70,15 @@ SBYTE I2CMasterStart(UBYTE slave_address,UBYTE rw){
      SSPCON2bits.SEN = 1 ;
      I2CMasterWait(0x5) ;
      sendPulseWDT();
-     if (CollisionCheck == 1) return -1 ;
+//     if (CollisionCheck == 1) return -1 ;
+     if (1) return -1 ;
      sendPulseWDT();
-     AckCheck = 1 ;
+     AckCheck = 0 ;
      SSPBUF = (char)((slave_address<<1)+rw);
      sendPulseWDT();
+     putChar('X');
      while (AckCheck);
+     putChar('Y');
      sendPulseWDT();
      if (CollisionCheck == 1) return -1 ;
      return SSPCON2bits.ACKSTAT;
@@ -78,8 +91,9 @@ int I2CMasterRepeatedStart(UBYTE slave_address,UBYTE rw){
      I2CMasterWait(0x5) ;
      SSPCON2bits.RSEN = 1 ;
      I2CMasterWait(0x5) ;
-     if (CollisionCheck == 1) return -1 ;
-     AckCheck = 1;
+     if (1) return -1 ;
+//     if (CollisionCheck == 1) return -1 ;
+     AckCheck = 0;
      SSPBUF = (char)((slave_address<<1)+rw);
      while (AckCheck);
      if (CollisionCheck == 1) return -1;
@@ -101,7 +115,8 @@ int I2CMasterWrite(UBYTE dataByte){
 //  SSPBUF = dataByte;                   //Serial Receive/Transmit Buffer Register
      CollisionCheck = 0 ;
      I2CMasterWait(0x5) ;
-     if (CollisionCheck == 1) return -1;
+//     if (CollisionCheck == 1) return -1;
+     if (1) return -1;
      AckCheck = 1;
      SSPBUF = dataByte;
      while (AckCheck);
@@ -117,7 +132,8 @@ int I2CMasterRead(UBYTE address){
      I2CMasterWait(0x5) ;
      SSPCON2bits.RCEN = 1;      //  enable receive from slave
      I2CMasterWait(0x4) ;
-     if (CollisionCheck == 1) return -1 ;
+//     if (CollisionCheck == 1) return -1 ;
+     if (1) return -1 ;
      data_from_slave = SSPBUF;
      I2CMasterWait(0x5) ;
      if (CollisionCheck == 1) return -1 ;
@@ -141,8 +157,9 @@ int WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *
             I2CMasterWrite(*data);
             ++data;
         }
+        I2CMasterStop();
     } else ans = -1;
-    I2CMasterStop();
+//    I2CMasterStop();
     __delay_ms(5);
     return ans;
 }
@@ -170,8 +187,9 @@ int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,
     sendPulseWDT();
     __delay_ms(50);
     ans = I2CMasterStart(addressEEPROM,0);               //Start condition
+    __delay_ms(15);
     sendPulseWDT();
-    if(ans == 0){
+    if(ans == 2){
         I2CMasterWrite(addressHigh);              //Adress High Byte
         I2CMasterWrite(addressLow);           //Adress Low Byte
         I2CMasterWrite(data);             //Data
@@ -214,7 +232,7 @@ void WriteLastCommandStatusToEEPROM(UBYTE command_status){
 int ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UBYTE EEPROMDataLength){
     int ans = -1;
     ans = I2CMasterStart(Address7Bytes, 0);                       //Start condition
-    if ( ans == 0 ){
+    if ( ans == 2 ){
         I2CMasterWrite(high_address);           //Adress High Byte
         I2CMasterWrite(low_address);            //Adress Low Byte
         I2CMasterRepeatedStart(Address7Bytes,1);               //Restart condition
@@ -241,7 +259,7 @@ UBYTE ReadEEPROM(UBYTE address,UBYTE high_address,UBYTE low_address){
     UBYTE dat;
     int ans = -1;
     ans = I2CMasterStart(address,0);         //Start condition
-    if(ans == 0){
+    if(ans == 2){
         I2CMasterWrite(high_address);    //Adress High Byte
         I2CMasterWrite(low_address);    //Adress Low Byte
         I2CMasterRepeatedStart(address,1);         //Restart condition

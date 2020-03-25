@@ -25,8 +25,8 @@ SBYTE I2CMasterStart(unsigned char, unsigned char);
 int I2CMasterRepeatedStart(unsigned char, unsigned char);
 int I2CMasterStop(void);
 
-int AckCheck;
-int CollisionCheck;
+int AckCheck = 0;
+int CollisionCheck = 1;
 
 
 /*******************************************************************************

@@ -17,7 +17,8 @@ void Init_SERIAL(void){
 	SREN   = 0;						// No effect
     INTCON  = 0b11000000;
     PIR1    = 0b00100000;                     // RX frag Reset
-    PIE1    = 0b00101000;
+//    PIE1    = 0b00101000;
+    PIE1    = 0b00001000;
     PIE2    = 0b00000000;
 	TX9    = 0;						// 8-bit transmission
 	RX9    = 0;						// 8-bit reception

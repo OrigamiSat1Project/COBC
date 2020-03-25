@@ -90,14 +90,14 @@ void main(void) {
         //before melting
         putChar('2');
         /*---200s ( 50s * 4times)---*/
-        for(UBYTE i=0; i<4; i++){
-            /*---wait 50s---*/
-            sendPulseWDT();
-            for(UBYTE j=0; j<10; j++){
-                delay_s(5);
-                sendPulseWDT();
-            }
-        }
+//        for(UBYTE i=0; i<4; i++){
+//            /*---wait 50s---*/
+//            sendPulseWDT();
+//            for(UBYTE j=0; j<10; j++){
+//                delay_s(5);
+//                sendPulseWDT();
+//            }
+//        }
     }                  
     
     while(1){
