@@ -68,10 +68,9 @@ SBYTE I2CMasterStart(UBYTE slave_address,UBYTE rw){
      I2CMasterWait(0x5) ;
      sendPulseWDT();
      SSPCON2bits.SEN = 1 ;
-     I2CMasterWait(0x5) ;
+//     I2CMasterWait(0x5) ;
      sendPulseWDT();
-//     if (CollisionCheck == 1) return -1 ;
-     if (1) return -1 ;
+     if (CollisionCheck == 1) return -1 ;
      sendPulseWDT();
      AckCheck = 0 ;
      SSPBUF = (char)((slave_address<<1)+rw);
@@ -80,6 +79,11 @@ SBYTE I2CMasterStart(UBYTE slave_address,UBYTE rw){
      while (AckCheck);
      putChar('Y');
      sendPulseWDT();
+     if (SSPCONbits.WCOL == 1){
+        CollisionCheck = 1;
+        putChar('W');
+        WCOL = 0;
+     }
      if (CollisionCheck == 1) return -1 ;
      return SSPCON2bits.ACKSTAT;
 }
@@ -189,7 +193,12 @@ int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,
     ans = I2CMasterStart(addressEEPROM,0);               //Start condition
     __delay_ms(15);
     sendPulseWDT();
-    if(ans == 2){
+    putChar(ans);
+    putChar(SSPSTAT);
+    putChar(SSPCON);
+    putChar(SSPCON2);
+    putChar(PIR2);
+    if(ans == 0){
         I2CMasterWrite(addressHigh);              //Adress High Byte
         I2CMasterWrite(addressLow);           //Adress Low Byte
         I2CMasterWrite(data);             //Data
