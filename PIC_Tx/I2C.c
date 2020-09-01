@@ -1,4 +1,4 @@
-
+#include	<stdio.h>
 #include <xc.h>
 #include "UART.h"
 #include "I2C.h"
@@ -19,7 +19,8 @@ void InitI2CMaster(const UDWORD c){//Init Master Synchronous Serial Port(MSSP)
   SSPCON = 0b00101000;          //MSSP Control Register: Synchronous Serial Port Enabled;I2C Master mode, clock = FOSC/(4 * (SSPADD + 1))
   SSPCON2 = 0;                  //MSSP Control Register 2:
   SSPADD = (_XTAL_FREQ/(4*c))-1; //MSSP Address Register: the lower seven bits of SSPADD act as the baud rate generator reload value
-  SSPSTAT = 0;                  //MSSP Status Register
+//  SSPSTAT = 0;                  //MSSP Status Register
+  SSPSTAT = 0x80;                  //MSSP Status Register
   PIE1bits.SSPIE  = 1 ;               // enable MSSP interrupt
   PIE2bits.BCLIE  = 1 ;               // enable bus collision interrupt
   PIR1bits.SSPIF  = 0 ;               // clear MSSP interrupt flag
@@ -54,7 +55,26 @@ void interruptI2C(void)
 }
 
 void I2CMasterWait(char mask){
-  while ((SSPSTAT & mask) || (SSPCON2 & 0x1F));
+    put_lf();
+    putHex(SSPSTAT);
+    putHex(SSPCON);
+    putHex(SSPCON2);
+    while ((SSPSTAT & mask) || (SSPCON2 & 0x1F));
+//  putChar('Z');
+//  while (SSPSTATbits.R_nW);
+//  putChar('A');
+//  while (SSPSTATbits.BF);
+//  putChar('B');
+//  while (SSPCON2bits.GCEN);
+//  putChar('C');
+//  while (SSPCON2bits.ACKSTAT);
+//  putChar('D');
+//  while (SSPCON2bits.ACKDT);
+//  putChar('E');
+//  while (SSPCON2bits.ACKEN);
+//  putChar('F');
+//  while (SSPCON2bits.SEN);
+//  putChar('G');
   //SSPSTAT : 0x05 -> transmit is not in progress & buffer empty
   //          0x04 -> transmit is not in progress
   //SSPCON2 : ack,receive,start,restart,stop is idle
@@ -65,7 +85,9 @@ SBYTE I2CMasterStart(UBYTE slave_address,UBYTE rw){
 //  I2CMasterWait();
 //  SEN = 1;                      //SEN Start Condition Enable; bit 0 of SSPCON2
      CollisionCheck = 0 ;
+     putChar('p');
      I2CMasterWait(0x5) ;
+     putChar('q');
      sendPulseWDT();
      SSPCON2bits.SEN = 1 ;
 //     I2CMasterWait(0x5) ;
@@ -190,14 +212,19 @@ int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,
     int ans = -1;
     sendPulseWDT();
     __delay_ms(50);
+    sendPulseWDT();
+//    putChar(SSPSTAT);
+//    putChar(SSPCON);
+//    putChar(SSPCON2);
+//    putChar(PIR2);
     ans = I2CMasterStart(addressEEPROM,0);               //Start condition
     __delay_ms(15);
     sendPulseWDT();
     putChar(ans);
-    putChar(SSPSTAT);
-    putChar(SSPCON);
-    putChar(SSPCON2);
-    putChar(PIR2);
+//    putChar(SSPSTAT);
+//    putChar(SSPCON);
+//    putChar(SSPCON2);
+//    putChar(PIR2);
     if(ans == 0){
         I2CMasterWrite(addressHigh);              //Adress High Byte
         I2CMasterWrite(addressLow);           //Adress Low Byte

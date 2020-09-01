@@ -2029,14 +2029,14 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 20 "UART.h"
-UBYTE UPLINK_COMMAND_SIZE = 32;
+# 19 "UART.h"
+UBYTE ReceiveFlag = 0x00;
 
 void Init_SERIAL(void);
 UBYTE getChar(void);
 void putChar(UBYTE);
 void putString(UBYTE *);
-void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void putHex(UBYTE);
 
 
 void changeInterruptPermission(UBYTE, UBYTE);
@@ -2045,8 +2045,6 @@ void put_ok(void);
 void put_lf(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void UARTbufferClear(void);
-void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
-void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
 
 
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
@@ -4260,20 +4258,16 @@ extern volatile __bit nW @ (((unsigned) &SSPSTAT)*8) + 2;
 
 extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
 
-# 30 "time.h"
+# 29 "time.h"
 void delay_ms(UWORD);
 void delay_us(UWORD);
 void delay_s(UWORD);
 
 UWORD calTime2Byte(UBYTE, UBYTE);
 
-
-void set_timer_counter_only_getChar(UINT);
-UINT get_timer_counter_only_getChar(void);
-
 # 19 "encode_AX25.h"
 void SendPacketWithDataSize(UBYTE *,UINT);
-void SendPacket(UBYTE *);
+void SendPacket(UBYTE *,UINT);
 
 # 16 "CRC16.h"
 UWORD crc16(UWORD, UBYTE *, UINT);
@@ -4282,47 +4276,49 @@ UWORD CRC_check(UBYTE *, UINT);
 
 # 21 "I2C.h"
 void InitI2CMaster(const UDWORD c);
-void I2CMasterWait(void);
-void I2CMasterStart(void);
-void I2CMasterRepeatedStart(void);
-void I2CMasterStop(void);
+void interruptI2C(void);
+void I2CMasterWait(char);
+SBYTE I2CMasterStart(unsigned char, unsigned char);
+int I2CMasterRepeatedStart(unsigned char, unsigned char);
+int I2CMasterStop(void);
 
-# 31
-void I2CMasterWrite(UBYTE);
-UBYTE I2CMasterRead(UBYTE);
-void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+int AckCheck = 0;
+int CollisionCheck = 1;
+
+# 35
+int WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+int WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE);
 void WriteLastCommandStatusToEEPROM(UBYTE);
 void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 
-# 43
-void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+# 46
+int ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
 void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 
-# 9 "UART.c"
+# 49 "OkError.h"
+void updateErrorStatus(UBYTE);
+UBYTE bitCalResult(UBYTE bit_input);
+UBYTE checkMeltingStatus(UBYTE e_address);
+
+# 10 "UART.c"
 void Init_SERIAL(void){
 
 SPBRG = 10;
-
-
-
 BRGH = 0;
-
 SYNC = 0;
 SPEN = 1;
 CREN = 1;
 SREN = 0;
 INTCON = 0b11000000;
 PIR1 = 0b00100000;
-PIE1 = 0b00100000;
+
+PIE1 = 0b00001000;
 PIE2 = 0b00000000;
-
-
-
 TX9 = 0;
 RX9 = 0;
 TXEN = 0;
@@ -4342,11 +4338,9 @@ CREN = 1;
 UINT break_counter = 0;
 
 
-
 while(!RCIF){
 break_counter ++;
 if(break_counter >= 2000){
-
 __nop();
 break_counter = 0;
 break;
@@ -4361,6 +4355,27 @@ while(!TXIF);
 TXREG = byte;
 }
 
+void putHex(UBYTE data){
+UBYTE c[2];
+c[0] = data >> 4;
+c[1] = data & 0x0f;
+if(c[0] <= 0x09){
+c[0] += 48;
+}else{
+c[0] += 87;
+}
+if(c[1] <= 0x09){
+c[1] += 48;
+}else{
+c[1] += 87;
+}
+putChar('0');
+putChar('x');
+putChar(c[0]);
+putChar(c[1]);
+put_lf();
+}
+
 void putString(UBYTE *x)
 {
 while(*x != '\0'){
@@ -4369,24 +4384,7 @@ x++;
 }
 }
 
-void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4, UBYTE Parameter5, UBYTE Parameter6){
-UBYTE Command[10];
-UWORD CRC;
-Command[0] = TaskTarget;
-Command[1] = CommandType;
-Command[2] = Parameter1;
-Command[3] = Parameter2;
-Command[4] = Parameter3;
-Command[5] = Parameter4;
-Command[6] = Parameter5;
-Command[7] = Parameter6;
-CRC = crc16(0, Command, 8);
-Command[8] = CRC >> 8;
-Command[9] = CRC & 0x00FF;
-putString(Command);
-}
-
-# 101
+# 97
 void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 if (GIE_status == 0x01){
 INTCONbits.GIE = 1;
@@ -4444,46 +4442,10 @@ void UARTbufferClear(void){
 RCREG = 0;
 }
 
-void readEEPROMandUARTwrite(UBYTE slaveAddress, UBYTE highAddress, UBYTE lowAddress, UBYTE *ReadData, UBYTE dataLength){
-UWORD CRC;
-ReadDataFromEEPROM(slaveAddress, highAddress, lowAddress, ReadData, dataLength);
-for(UBYTE i=0;i<dataLength;i++){
-putChar(ReadData[i]);
-__nop();
-}
-CRC = crc16(0, ReadData, dataLength);
-putChar(CRC >> 8);
-__nop();
-putChar(CRC & 0x00FF);
-}
 
-void UARTwrite5byte(UBYTE data1,UBYTE data2,UBYTE data3,UBYTE data4,UBYTE data5){
-UBYTE data[7];
-UWORD CRC;
-data[0] = data1;
-data[1] = data2;
-data[2] = data3;
-data[3] = data4;
-data[4] = data5;
-CRC = crc16(0, data, 5);
-data[5] = CRC >> 8;
-data[6] = CRC & 0x00FF;
-for(UBYTE i=0; i<7; i++){
-putChar(data[i]);
-}
-}
-
-# 220
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){
 UBYTE ReadData[];
 switch(command){
-case 'w':
-UARTwrite5byte(data1,data2,data3,data4,data5);
-break;
-case 'e':
-
-readEEPROMandUARTwrite(data1, data2, data3, ReadData, data4);
-break;
 case 'c':
 UARTbufferClear();
 break;

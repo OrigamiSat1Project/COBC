@@ -1431,12 +1431,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 22: typedef unsigned short long USLONG;
 [; ;Type_define.h: 23: typedef signed long SDWORD;
 [; ;Type_define.h: 24: typedef unsigned long UDWORD;
-[; ;time.h: 30: void delay_ms(UWORD);
-[; ;time.h: 31: void delay_us(UWORD);
-[; ;time.h: 32: void delay_s(UWORD);
-[; ;time.h: 34: UWORD calTime2Byte(UBYTE, UBYTE);
-[; ;time.h: 37: void set_timer_counter_only_getChar(UINT);
-[; ;time.h: 38: UINT get_timer_counter_only_getChar(void);
+[; ;time.h: 29: void delay_ms(UWORD);
+[; ;time.h: 30: void delay_us(UWORD);
+[; ;time.h: 31: void delay_s(UWORD);
+[; ;time.h: 33: UWORD calTime2Byte(UBYTE, UBYTE);
 "8 time.c
 [v _timer_counter_only_getChar `ui ~T0 @X0 1 s ]
 [i _timer_counter_only_getChar
@@ -1570,32 +1568,4 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;time.c: 44: }
 "44
 [e :UE 146 ]
-}
-"47
-[v _set_timer_counter_only_getChar `(v ~T0 @X0 1 ef1`ui ]
-{
-[; ;time.c: 47: void set_timer_counter_only_getChar(UINT time){
-[e :U _set_timer_counter_only_getChar ]
-[v _time `ui ~T0 @X0 1 r1 ]
-[f ]
-[; ;time.c: 48: timer_counter_only_getChar = time;
-"48
-[e = _timer_counter_only_getChar _time ]
-[; ;time.c: 49: }
-"49
-[e :UE 147 ]
-}
-"51
-[v _get_timer_counter_only_getChar `(ui ~T0 @X0 1 ef ]
-{
-[; ;time.c: 51: UINT get_timer_counter_only_getChar(void){
-[e :U _get_timer_counter_only_getChar ]
-[f ]
-[; ;time.c: 52: return timer_counter_only_getChar;
-"52
-[e ) _timer_counter_only_getChar ]
-[e $UE 148  ]
-[; ;time.c: 53: }
-"53
-[e :UE 148 ]
 }

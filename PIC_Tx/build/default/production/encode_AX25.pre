@@ -2029,14 +2029,14 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 20 "UART.h"
-UBYTE UPLINK_COMMAND_SIZE = 32;
+# 19 "UART.h"
+UBYTE ReceiveFlag = 0x00;
 
 void Init_SERIAL(void);
 UBYTE getChar(void);
 void putChar(UBYTE);
 void putString(UBYTE *);
-void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void putHex(UBYTE);
 
 
 void changeInterruptPermission(UBYTE, UBYTE);
@@ -2045,22 +2045,16 @@ void put_ok(void);
 void put_lf(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void UARTbufferClear(void);
-void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
-void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
 
 
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
 
-# 30 "time.h"
+# 29 "time.h"
 void delay_ms(UWORD);
 void delay_us(UWORD);
 void delay_s(UWORD);
 
 UWORD calTime2Byte(UBYTE, UBYTE);
-
-
-void set_timer_counter_only_getChar(UINT);
-UINT get_timer_counter_only_getChar(void);
 
 # 4 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\__size_t.h"
 typedef unsigned size_t;
@@ -4273,15 +4267,15 @@ extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
 
 # 19 "encode_AX25.h"
 void SendPacketWithDataSize(UBYTE *,UINT);
-void SendPacket(UBYTE *);
+void SendPacket(UBYTE *,UINT);
 
 # 15 "encode_AX25.c"
 void SendByte(UBYTE);
 void flipout(void);
 void fcsbit(UBYTE);
-UINT Packetmaker(UBYTE *);
 
 
+UINT Packetmaker(UBYTE *,UINT);
 
 
 UINT eflag = 0;
@@ -4289,10 +4283,9 @@ UINT efcsflag = 0;
 UINT estuff = 0;
 UBYTE efcslo, efcshi;
 UBYTE ePacket[52];
-UINT ebitstatus = 0;
+BIT ebitstatus = 0;
 
-# 39
-UINT Packetmaker(UBYTE *eDataField){
+UINT Packetmaker(UBYTE *eDataField,UINT num){
 for(UINT i=0;i<6;i++){
 ePacket[i] = "JQ1YCZ"[i] << 1;
 }
@@ -4303,26 +4296,17 @@ ePacket[i+7] = "JS1YAX"[i] << 1;
 ePacket[13] = 0xe1;
 ePacket[14] = 0x03;
 ePacket[15] = 0xf0;
-
-UINT Datanum = 36;
-
-
+UINT Datanum = num;
 for(UINT i=0;i<Datanum;i++){
 ePacket[16+i] = eDataField[i];
-}
-
-
-for(UINT i=0;i<16+Datanum;i++){
-putch(ePacket[i]);
 }
 return 16+Datanum;
 }
 
-void SendPacket(UBYTE *eDataField){
-
+void SendPacket(UBYTE *eDataField,UINT num){
 UINT Packetnum;
 Packetnum = 0;
-Packetnum = Packetmaker(eDataField);
+Packetnum = Packetmaker(eDataField,num);
 ebitstatus = 1;
 efcslo = efcshi = 0xff;
 estuff = 0;
@@ -4355,7 +4339,6 @@ for(UINT i=0;i<6;i++){
 SendByte(0x7e);
 }
 }
-
 
 void SendByte(UBYTE byte){
 UBYTE bt;
@@ -4397,12 +4380,13 @@ ebitstatus = 0;
 void fcsbit(UBYTE tbyte){
 
 
-# 143
+# 124
 #asm
         BCF 03,0
         RRF _efcshi,F
         RRF _efcslo,F
 #endasm 
+
     if(((STATUS & 0x01)^(tbyte)) == 0x01){
 efcshi ^= 0x84;
 efcslo ^= 0x08;

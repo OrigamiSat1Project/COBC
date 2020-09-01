@@ -1552,7 +1552,7 @@ void WriteUART( UBYTE* );
 void UART_buffer_clear(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
-void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE);
 
 # 29 "time.h"
 void delay_s(UWORD);
@@ -1560,18 +1560,16 @@ void delay_ms(UWORD);
 void delay_us(UWORD);
 
 # 13 "CRC16.h"
-UWORD crc16(UWORD, UBYTE *, UINT);
+UWORD crc16(UWORD, UBYTE *, UBYTE);
 UWORD identifyCRC16(UBYTE *);
-UWORD checkCRC(UBYTE *, UINT);
+UWORD checkCRC(UBYTE *, UBYTE);
 
-# 62 "OkError.h"
+# 65 "OkError.h"
 void switchOk(UBYTE);
-void switchError(UBYTE);
+void updateErrorStatus(UBYTE);
 
 # 11 "UART.c"
 void InitSerial(void){
-
-
 SPBRG = 10;
 BRGH = 0;
 SYNC = 0;
@@ -1581,39 +1579,51 @@ SREN = 0;
 RCIF = 0;
 TXIE = 0;
 RCIE = 0;
-
 TX9 = 0;
 RX9 = 0;
 TXEN = 0;
 TXEN = 1;
 }
 
-# 41
+UBYTE getChar(void){
+if(FERR || OERR)
+{
+CREN = 0;
+__nop();
+CREN = 1;
+}
+UBYTE break_counter = 0;
+
+
+
+while(!RCIF){
+break_counter ++;
+if(break_counter >= 100){
+
+__nop();
+break_counter = 0;
+break;
+}
+}
+RCIF = 0;
+return RCREG;
+}
+
 void putChar(UBYTE byte){
 while(!TXIF);
 TXREG = byte;
 }
 
-# 60
 void put_error(void){
-putChar('\r');
-putChar('\n');
 putChar('E');
 putChar('R');
-putChar('R');
-putChar('O');
-putChar('R');
-putChar('!');
 putChar('\r');
 putChar('\n');
 }
 
 void put_ok(void){
-putChar('\r');
-putChar('\n');
 putChar('O');
 putChar('K');
-putChar('!');
 putChar('\r');
 putChar('\n');
 }
@@ -1623,25 +1633,14 @@ putChar('\r');
 putChar('\n');
 }
 
-# 104
 void sendCommandByPointer(UBYTE* Parameter){
-UBYTE Command[10];
 UWORD CRC;
-Command[0] = Parameter[0];
-Command[1] = Parameter[1];
-Command[2] = Parameter[2];
-Command[3] = Parameter[3];
-Command[4] = Parameter[4];
-Command[5] = Parameter[5];
-Command[6] = Parameter[6];
-Command[7] = Parameter[7];
-CRC = crc16(0, Command, 8);
-Command[8] = (UBYTE)(CRC >> 8);
-Command[9] = (UBYTE)(CRC & 0x00FF);
-
-for(UBYTE i=0; i<10; i++){
-putChar(Command[i]);
+CRC = crc16(0, Parameter, 8);
+for(UBYTE i=0; i<8; i++){
+putChar(Parameter[i]);
 }
+putChar((UBYTE)(CRC >> 8));
+putChar((UBYTE)(CRC & 0x00FF));
 }
 
 void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1,UBYTE Parameter2,UBYTE Parameter3,UBYTE Parameter4,UBYTE Parameter5,UBYTE Parameter6){
@@ -1663,7 +1662,6 @@ for(UBYTE i=0; i<10; i++){
 putChar(Command[i]);
 }
 }
-
 
 
 void WriteUART( UBYTE *TXDATA ){
@@ -1694,7 +1692,7 @@ BRGH = BRGH_number;
 }
 }
 
-# 184
+# 144
 void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 if (GIE_status == 0x01){
 INTCONbits.GIE = 1;
@@ -1710,7 +1708,7 @@ INTCONbits.PEIE = 0;
 }
 
 
-void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){
+void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3){
 
 switch(command){
 case 'w':
@@ -1729,7 +1727,7 @@ case 'i':
 changeInterruptPermission(data1,data2);
 break;
 default:
-switchError(0x30);
+
 break;
 }
 }

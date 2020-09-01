@@ -22,6 +22,7 @@ void Init_SERIAL(void);
 UBYTE getChar(void);
 void putChar(UBYTE);                  // Writes a character to the serial port
 void putString(UBYTE *);
+void putHex(UBYTE);
 
 /*Method*/
 void changeInterruptPermission(UBYTE, UBYTE);

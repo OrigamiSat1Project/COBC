@@ -1,11 +1,81 @@
 # gitignore file for manage repository
 
+*.d
+*.pre
+*.p1
+*.lst
+*.sym
+*.obj
+*.o
+*.sdb
+*.obj.dmp
+
+nbactions.xml
+nb-configuration.xml
+funclist
+*.map
+
+build/
+nbbuild/
+dist/
+nbdist/
+html/
+disassembly/
+
+nbproject/
+nbproject/private/
+nbproject/Package-*.bash
+nbproject/Makefile-*
+
+!nbproject/configuration.xml
+!nbproject/project.xml
+
+# MSP430
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+
+# Code Composer Studio
+# http://processors.wiki.ti.com/index.php/Source_control_with_CCS
+Debug/
+Release/
+.xdchelp
+.config/
+.launches/
+.metadata/
+RemoteSystemsTempFiles/
+
 # not ignore
 !*.c
 !*.h
-!/**/nbproject/
 
-# ignore
-/**/build
-/**/debug
-/**/dist
