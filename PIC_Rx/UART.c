@@ -53,6 +53,27 @@ void putChar(UBYTE byte){
 	TXREG = byte;                   //USART Transmit Data Register
 }
 
+void putHex(UBYTE data){
+    UBYTE c[2];
+    c[0] = data >> 4;
+    c[1] = data & 0x0f;
+    if(c[0] <= 0x09){
+        c[0] += 48;
+    }else{
+        c[0] += 87;
+    }
+    if(c[1] <= 0x09){
+        c[1] += 48;
+    }else{
+        c[1] += 87;
+    }
+    putChar('0');
+    putChar('x');
+    putChar(c[0]);
+    putChar(c[1]);
+    put_lf();
+}
+
 void put_error(void){
     putChar('E');
     putChar('R');

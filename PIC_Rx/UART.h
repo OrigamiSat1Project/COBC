@@ -24,6 +24,7 @@ void putChar(UBYTE c);                  // Writes a character to the serial port
 void putString(UBYTE *);
 UBYTE getChar(void);
 void putCrLf(void);
+void putHex(UBYTE);
 
 void put_error(void);
 void put_ok(void);

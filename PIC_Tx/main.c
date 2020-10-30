@@ -73,12 +73,30 @@ void main(void) {
 
     __delay_ms(1000);
     Init_MPU();
-    InitI2CMaster(I2Cbps);
     Init_SERIAL();
+    Init_WDT();
     putChar('T');
     putChar('\r');
     putChar('\n');
-    Init_WDT();
+    //for debug 20201030
+    putHex(SSPSTAT);
+    putHex(SSPCON);
+    putHex(SSPCON2);
+    
+    InitI2CMaster(I2Cbps);
+    
+//#define FLIGHT_MODE
+#define DEBUG_MODE
+    
+#ifdef DEBUG_MODE
+    while(1){
+        WriteOneByteToEEPROM(EEPROM_address,0xF0,0x00,0x54);    //char 'T'
+        __delay_us(1000);
+        sendPulseWDT();
+    }
+#endif
+    
+#ifdef FLIGHT_MODE
     Init_HK();
     sendPulseWDT();
     delay_s(TURN_ON_WAIT_TIME);   
@@ -179,4 +197,5 @@ void main(void) {
 
     //======================================================================
     }
+#endif
 }

@@ -31,10 +31,14 @@ void InitI2CMaster(const UDWORD c){//Init Master Synchronous Serial Port(MSSP)
 
 
 void I2CMasterWait(char mask){
-  while ((SSPSTAT & mask) || (SSPCON2 & 0x1F));
-  //SSPSTAT : 0x05 -> transmit is not in progress & buffer empty
-  //          0x04 -> transmit is not in progress
-  //SSPCON2 : ack,receive,start,restart,stop is idle
+    putHex(SSPSTAT);
+    putHex(SSPCON);
+    putHex(SSPCON2);
+    put_lf();
+    while ((SSPSTAT & mask) || (SSPCON2 & 0x1F));
+    //SSPSTAT : 0x05 -> transmit is not in progress & buffer empty
+    //          0x04 -> transmit is not in progress
+    //SSPCON2 : ack,receive,start,restart,stop is idle
 }
 
 
@@ -169,18 +173,13 @@ int WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addres
 int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     int ans = -1;
     ans = I2CMasterStart(addressEEPROM,0);               //Start condition
-    sendPulseWDT(); // for debug 2020/03/20
     if(ans == 0){
         I2CMasterWrite(addressHigh);              //Adress High Byte
         I2CMasterWrite(addressLow);           //Adress Low Byte
         I2CMasterWrite(data);             //Data
-        I2CMasterStop();
     }else ans = -1;
-    sendPulseWDT(); // for debug 2020/03/20
-//    I2CMasterStop();
-    sendPulseWDT(); // for debug 2020/03/20
+    I2CMasterStop();
     __delay_ms(5);
-    sendPulseWDT(); // for debug 2020/03/20
     return ans;
 }
 
