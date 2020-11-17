@@ -33,7 +33,7 @@ C
 XC8
 
 ## Debuger
-MPLAB X IDE
+MPLAB X IDE ver4.2
 
 ## Encoding
 Shift-JIS
