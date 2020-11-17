@@ -51,8 +51,9 @@ void main(void) {
     /*----------------------------------------------------------------------*/
     InitSerial();
     putChar('R');
-    putChar('\r');
-    putChar('\n');
+    putChar('R');
+    putChar('S');
+    put_lf();
     InitMPU();
     InitWDT();
     //for debug 20201030

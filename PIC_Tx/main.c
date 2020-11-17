@@ -76,8 +76,9 @@ void main(void) {
     Init_SERIAL();
     Init_WDT();
     putChar('T');
-    putChar('\r');
-    putChar('\n');
+    putChar('R');
+    putChar('S');
+    put_lf();
     //for debug 20201030
     putHex(SSPSTAT);
     putHex(SSPCON);

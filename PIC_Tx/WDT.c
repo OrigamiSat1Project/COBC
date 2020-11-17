@@ -25,4 +25,8 @@ void sendPulseWDT(void){
         __delay_us(800);
         WDT_PULSE = HIGH;
     }
+    putChar('W');
+    putChar('D');
+    putChar('T');
+    put_lf();
 }

@@ -22,7 +22,7 @@ nbdist/
 html/
 disassembly/
 
-nbproject/
+# nbproject/
 nbproject/private/
 nbproject/Package-*.bash
 nbproject/Makefile-*
