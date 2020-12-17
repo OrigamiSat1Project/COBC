@@ -4,6 +4,9 @@ PIC_RX (Communication & Inhibit Board)
 # Overview
 145MHz communication PIC
 
+# Flight Code
+[Here](https://github.com/OrigamiSat1Project/COBC/commit/364109ff58ccd64d00e6d28271780c270b42d878)
+
 ## Description
 OrigamiSat1 is first nano satellite of [ORIGAMI PROJECT](http://www.origami.titech.ac.jp/)
 this repository is for manage source code of PIC on CIB board.
