@@ -91,9 +91,19 @@ void main(void) {
     
 #ifdef DEBUG_MODE
     while(1){
-        WriteOneByteToEEPROM(EEPROM_address,0xF0,0x00,0x54);    //char 'T'
-        __delay_us(1000);
         sendPulseWDT();
+        WriteOneByteToEEPROM(EEPROM_address,0xF0,0x00,0x41);    //char 'T'
+        putHex(0x41);
+        WriteOneByteToEEPROM(EEPROM_address,0xF0,0x00,0x42);    //char 'T'
+        putHex(0x42);
+        WriteOneByteToEEPROM(EEPROM_address,0xF0,0x00,0x43);    //char 'T'
+        putHex(0x43);
+        WriteOneByteToEEPROM(EEPROM_address,0xF0,0x00,0x44);    //char 'T'
+        putHex(0x44);
+        WriteOneByteToEEPROM(EEPROM_address,0xF0,0x00,0x45);    //char 'T'
+        putHex(0x45);
+        WriteOneByteToEEPROM(EEPROM_address,0xF0,0x00,0x46);    //char 'T'
+        putHex(0x46);
     }
 #endif
     
