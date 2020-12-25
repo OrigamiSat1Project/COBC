@@ -35,7 +35,16 @@ void I2CMasterWait(char mask){
     putHex(SSPCON);
     putHex(SSPCON2);
     put_lf();
-    while ((SSPSTAT & mask) || (SSPCON2 & 0x1F));
+    while ((SSPSTAT & mask) || (SSPCON2 & 0x1F)){
+        putChar('W');
+        putChar('A');
+        putChar('W');
+        putChar('H');
+        putChar('I');
+        putChar('L');
+        putChar('E');
+        put_lf();
+    };
     putChar('W');
     putChar('A');
     putChar('I');
@@ -60,11 +69,35 @@ SBYTE I2CMasterStart(UBYTE slave_address,UBYTE rw){
     I2CMasterWait(0x5) ;
     SSPCON2bits.SEN = 1 ;
     I2CMasterWait(0x5) ;
-    if (CollisionCheck == 1) return -1 ;
+    if (CollisionCheck == 1){
+        putChar('S');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('1');
+        put_lf();
+        return -1 ;
+    }
     AckCheck = 1 ;
     SSPBUF = (char)((slave_address<<1)+rw);
-    while (AckCheck);
-    if (CollisionCheck == 1) return -1 ;
+    while (AckCheck){
+        putChar('S');
+        putChar('W');
+        putChar('H');
+        putChar('I');
+        putChar('L');
+        putChar('E');
+        put_lf();
+    };
+    if (CollisionCheck == 1) {
+        putChar('S');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('2');
+        put_lf();
+        return -1 ;
+    }
     return SSPCON2bits.ACKSTAT;
 }
 
@@ -109,11 +142,35 @@ SBYTE I2CMasterWrite(UBYTE dataByte){
     put_lf();
     CollisionCheck = 0 ;
     I2CMasterWait(0x5) ;
-    if (CollisionCheck == 1) return -1;
+    if (CollisionCheck == 1) {
+        putChar('W');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('1');
+        put_lf();
+        return -1;
+    }
     AckCheck = 1;
     SSPBUF = dataByte;
-    while (AckCheck);
-    if (CollisionCheck == 1) return -1;
+    while (AckCheck){
+        putChar('W');
+        putChar('W');
+        putChar('H');
+        putChar('I');
+        putChar('L');
+        putChar('E');
+        put_lf();
+    };
+    if (CollisionCheck == 1) {
+        putChar('W');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('2');
+        put_lf();
+        return -1;
+    }
     return SSPCON2bits.ACKSTAT;
 }
 

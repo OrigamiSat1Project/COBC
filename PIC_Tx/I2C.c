@@ -65,7 +65,21 @@ void I2CMasterWait(char mask){
     putHex(SSPSTAT);
     putHex(SSPCON);
     putHex(SSPCON2);
-    while ((SSPSTAT & mask) || (SSPCON2 & 0x1F));
+    while ((SSPSTAT & mask) || (SSPCON2 & 0x1F)){
+        putChar('W');
+        putChar('A');
+        putChar('W');
+        putChar('H');
+        putChar('I');
+        putChar('L');
+        putChar('E');
+        put_lf();
+    };
+    putChar('W');
+    putChar('A');
+    putChar('I');
+    putChar('T');
+    put_lf();
 //  putChar('Z');
 //  while (SSPSTATbits.R_nW);
 //  putChar('A');
@@ -97,24 +111,67 @@ SBYTE I2CMasterStart(UBYTE slave_address,UBYTE rw){
     putChar('T');
     put_lf();
     CollisionCheck = 0 ;
+//    putChar('C');
+//    putChar('L');
+//    putChar('1');
+//    putChar('=');
+//    putHex(CollisionCheck);
+//    put_lf();
     I2CMasterWait(0x5) ;
 //     sendPulseWDT();
     SSPCON2bits.SEN = 1 ;
 //     I2CMasterWait(0x5) ;
 //     sendPulseWDT();
-    if (CollisionCheck == 1) return -1 ;
+//    putChar('C');
+//    putChar('L');
+//    putChar('2');
+//    putChar('=');
+//    putHex(CollisionCheck);
+//    put_lf();
+    __delay_us(100);
+    if (CollisionCheck == 1) {
+        putChar('S');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('1');
+        put_lf();
+        return -1 ;
+    }
+//    putChar('C');
+//    putChar('L');
+//    putChar('3');
+//    putChar('=');
+//    putHex(CollisionCheck);
+//    put_lf();
 //     sendPulseWDT();
     AckCheck = 0 ;
     SSPBUF = (char)((slave_address<<1)+rw);
 //     sendPulseWDT();
-    while (AckCheck);
+    while (AckCheck){
+        putChar('S');
+        putChar('W');
+        putChar('H');
+        putChar('I');
+        putChar('L');
+        putChar('E');
+        put_lf();
+    };
 //     sendPulseWDT();
 //     if (SSPCONbits.WCOL == 1){
 //        CollisionCheck = 1;
 //        putChar('W');
 //        WCOL = 0;
 //     }
-    if (CollisionCheck == 1) return -1 ;
+    if (CollisionCheck == 1){
+        putChar('S');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('2');
+        put_lf();
+        return -1 ;
+    }
     return SSPCON2bits.ACKSTAT;
 }
 
@@ -160,12 +217,36 @@ int I2CMasterWrite(UBYTE dataByte){
     put_lf();
     CollisionCheck = 0 ;
     I2CMasterWait(0x5) ;
-    if (CollisionCheck == 1) return -1;
+    if (CollisionCheck == 1) {
+        putChar('W');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('1');
+        put_lf();
+        return -1;
+    }
 //     if (1) return -1;
     AckCheck = 1;
     SSPBUF = dataByte;
-    while (AckCheck);
-    if (CollisionCheck == 1) return -1;
+    while (AckCheck){
+        putChar('S');
+        putChar('W');
+        putChar('H');
+        putChar('I');
+        putChar('L');
+        putChar('E');
+        put_lf();
+    };
+    if (CollisionCheck == 1){
+        putChar('W');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('2');
+        put_lf();
+        return -1;
+    }
     return SSPCON2bits.ACKSTAT;
 }
 
