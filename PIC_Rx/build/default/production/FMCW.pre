@@ -1481,7 +1481,7 @@ USLONG FMRX_Nprg = 24916;
 void FMTX(int Nref, USLONG Nprg);
 void CWTX(int Nref, USLONG Nprg);
 void FMRX(int Nref, USLONG Nprg);
-void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchFMCW(UBYTE);
 void setNref(UBYTE unitID, int Nref);
 
 
@@ -1493,11 +1493,40 @@ void delay_s(UWORD);
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
-# 62 "OkError.h"
+# 65 "OkError.h"
 void switchOk(UBYTE);
-void switchError(UBYTE);
+void updateErrorStatus(UBYTE);
 
-# 16 "FMCW.c"
+# 20 "I2C.h"
+void InitI2CMaster(const UDWORD c);
+void interruptI2C(void);
+void I2CMasterWait(char);
+SBYTE I2CMasterStart(unsigned char, unsigned char);
+SBYTE I2CMasterRepeatedStart(unsigned char, unsigned char);
+SBYTE I2CMasterStop(void);
+
+
+int WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE);
+int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+void WriteLastCommandIdToEEPROM(UBYTE last_command_ID);
+
+
+UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
+UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE,UBYTE);
+void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
+
+void I2CBufferClear(void);
+void ChangeI2CBaudRate(UBYTE);
+
+void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+
+void commandSwitchEEPROM(UBYTE*);
+
+# 18 "FMCW.c"
 void sendLow(UBYTE unitID);
 void sendHigh(UBYTE unitID);
 void sendSTB(UBYTE unitID);
@@ -1505,8 +1534,10 @@ void setNprg(UBYTE unitID, USLONG Nprg);
 void setNref(UBYTE unitID, int Nref);
 void setOptionRegister(UBYTE unitID);
 void _NOP(void);
+UBYTE Nprg_b[17];
+UBYTE Nref_b[12];
 
-# 31
+# 35
 void sendLow(UBYTE unitID){
 if(unitID == 1)
 {
@@ -1534,7 +1565,7 @@ PORTAbits.RA2 = 0;
 }
 }
 
-# 64
+# 68
 void sendHigh(UBYTE unitID){
 if(unitID == 1)
 {
@@ -1562,7 +1593,7 @@ PORTAbits.RA2 = 0;
 }
 }
 
-# 97
+# 101
 void sendSTB(UBYTE unitID){
 if(unitID == 1)
 {
@@ -1584,18 +1615,22 @@ PORTBbits.RB0 = 0;
 }
 }
 
-# 126
+# 130
 void setNprg(UBYTE unitID, USLONG Nprg){
-UBYTE count = 0;
-UBYTE Nprg_b[17] = {0};
+UBYTE count;
 
-# 135
+
+for(UBYTE i=0; i<17; i++){
+Nprg_b[i] = 0;
+}
+
+
 for(int i=0; Nprg>0; i++){
 Nprg_b[i] = Nprg % 2;
 Nprg = Nprg / 2;
 }
 
-# 168
+
 for (UBYTE i=0; i<17; i++)
 {
 if(Nprg_b[i] == 0)
@@ -1616,11 +1651,15 @@ sendLow(unitID);
 sendSTB(unitID);
 }
 
-# 196
+# 173
 void setNref(UBYTE unitID, int Nref){
-UBYTE Nref_b[12] = {0};
 
-# 204
+
+for(UBYTE i=0; i<12; i++){
+Nref_b[i] = 0;
+}
+
+
 for(int i=0; Nref>0; i++){
 Nref_b[i] = Nref % 2;
 Nref = Nref / 2;
@@ -1647,7 +1686,7 @@ sendHigh(unitID);
 sendSTB(unitID);
 }
 
-# 236
+# 213
 void setOptionRegister(UBYTE unitID){
 
 for(UBYTE i=0;i<3;i++){
@@ -1666,11 +1705,9 @@ sendLow(unitID);
 }
 
 sendSTB(unitID);
-
-# 272
 }
 
-# 280
+# 239
 void FMTX(int Nref, USLONG Nprg){
 UBYTE fmtx = 1;
 setOptionRegister(fmtx);
@@ -1678,7 +1715,7 @@ setNref(fmtx, Nref);
 setNprg(fmtx, Nprg);
 }
 
-# 294
+# 253
 void CWTX(int Nref, USLONG Nprg){
 UBYTE cwtx = 2;
 setOptionRegister(cwtx);
@@ -1686,7 +1723,7 @@ setNref(cwtx, Nref);
 setNprg(cwtx, Nprg);
 }
 
-# 308
+# 267
 void FMRX(int Nref, USLONG Nprg){
 UBYTE fmrx = 3;
 setOptionRegister(fmrx);
@@ -1694,7 +1731,7 @@ setNref(fmrx, Nref);
 setNprg(fmrx, Nprg);
 }
 
-# 318
+# 277
 void setPLL(void){
 FMTX(2560, FMTX_Nprg);
 CWTX(128, CWTX_Nprg);
@@ -1703,24 +1740,24 @@ FMRX(2560, FMRX_Nprg);
 
 
 
-void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBYTE Nprg2, UBYTE Nprg3){
+void commandSwitchFMCW(UBYTE command){
 switch(command){
 case 't':
-
+FMTX(2560, FMTX_Nprg);
 break;
 case 'c':
-
+CWTX(128, CWTX_Nprg);
 break;
 case 'f':
-
+FMRX(2560, FMRX_Nprg);
 break;
 default:
-switchError(0xf0);
+
 break;
 }
 }
 
-# 347
+# 306
 void _NOP(void) {
 for(UBYTE i=0; i<5; i++){
 __nop();

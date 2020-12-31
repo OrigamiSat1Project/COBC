@@ -2029,16 +2029,12 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 30 "time.h"
+# 29 "time.h"
 void delay_ms(UWORD);
 void delay_us(UWORD);
 void delay_s(UWORD);
 
 UWORD calTime2Byte(UBYTE, UBYTE);
-
-
-void set_timer_counter_only_getChar(UINT);
-UINT get_timer_counter_only_getChar(void);
 
 # 8 "time.c"
 static UINT timer_counter_only_getChar = 0;
@@ -2079,11 +2075,3 @@ timeBin = (UWORD)((timeHigh<<8) | timeLow);
 return timeBin;
 }
 
-
-void set_timer_counter_only_getChar(UINT time){
-timer_counter_only_getChar = time;
-}
-
-UINT get_timer_counter_only_getChar(void){
-return timer_counter_only_getChar;
-}

@@ -76,6 +76,13 @@ void main(void) {
     InitI2CMaster(I2Cbps);
     Init_SERIAL();
     Init_WDT();
+    putChar('T');
+    putChar('R');
+    putChar('S');
+    put_lf();
+    putHex(SSPSTAT);
+    putHex(SSPCON);
+    putHex(SSPCON2);
     Init_HK();
     sendPulseWDT();
     delay_s(TURN_ON_WAIT_TIME);   
@@ -93,9 +100,12 @@ void main(void) {
                 sendPulseWDT();
             }
         }
-    }                  
+    }
      
     while(1){
+        putChar('S');
+        putChar('\r');
+        putChar('\n');
         sendPulseWDT();
 
         measureAllChanelADC();
@@ -148,19 +158,19 @@ void main(void) {
                 /*---Command from RXCOBC---*/
                 /*------------------------------------------------------------------*/
                 case 0x75:  //'u'
-                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+//                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
                     break;
 //                /*---Command from OBC---*/
 //                /*------------------------------------------------------------------*/
                 case 0x63: /*'c':CW Downlink*/
-                    commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
+//                    commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
                     break;
                 case 0x66:  /*'f':FM Downlink*/
 //                    commandSwitchFMDownlink(RXDATA[2], FMdata);
-                    downlinkFMSignal(RXDATA[2],RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7]);
+//                    downlinkFMSignal(RXDATA[2],RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7]);
                     break;
                 case 'p':/*'p':power*/
-                    commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+//                    commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 default:
                     break;

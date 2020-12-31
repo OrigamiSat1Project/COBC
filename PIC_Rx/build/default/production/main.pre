@@ -1665,7 +1665,6 @@ void reviveEPS(UBYTE, UBYTE);
 
 void changeInOut(UINT, UBYTE);
 void changeHighLow(UINT, UBYTE);
-void changeXtalFrequency(UBYTE);
 
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
@@ -1682,6 +1681,7 @@ void delay_us(UWORD);
 
 # 22 "UART.h"
 void InitSerial(void);
+void putHex(UBYTE data);
 void putChar(UBYTE c);
 void putString(UBYTE *);
 UBYTE getChar(void);
@@ -1698,43 +1698,42 @@ void WriteUART( UBYTE* );
 void UART_buffer_clear(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
-void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE);
 
-# 25 "decodeAX25.h"
+# 24 "decodeAX25.h"
 UINT getBit(void);
 void receiveDataPacket(UBYTE*);
 
 # 20 "I2C.h"
 void InitI2CMaster(const UDWORD c);
-void I2CMasterWait(void);
-void I2CMasterStart(void);
-void I2CMasterRepeatedStart(void);
-void I2CMasterStop(void);
-void I2CMasterWrite(UBYTE);
-UBYTE I2CMasterRead(UBYTE a);
+void interruptI2C(void);
+void I2CMasterWait(char);
+SBYTE I2CMasterStart(unsigned char, unsigned char);
+SBYTE I2CMasterRepeatedStart(unsigned char, unsigned char);
+SBYTE I2CMasterStop(void);
 
 
-void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-void WriteToMainAndSubB0EEPROM(UBYTE ,UBYTE ,UBYTE *,UBYTE);
-void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+int WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE);
+int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 void WriteLastCommandIdToEEPROM(UBYTE last_command_ID);
 
 
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE);
+UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE,UBYTE);
 void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
 
 void I2CBufferClear(void);
 void ChangeI2CBaudRate(UBYTE);
 
-void TestEEPROM(UBYTE);
-
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE*);
 
-# 19 "initial_operation.h"
+void commandSwitchEEPROM(UBYTE*);
+
+# 18 "initial_operation.h"
 void testInitialOpe(void);
 void errorCheckInitialOpe(void);
 UBYTE InitialOperation(void);
@@ -1751,7 +1750,7 @@ USLONG FMRX_Nprg = 24916;
 void FMTX(int Nref, USLONG Nprg);
 void CWTX(int Nref, USLONG Nprg);
 void FMRX(int Nref, USLONG Nprg);
-void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchFMCW(UBYTE);
 void setNref(UBYTE unitID, int Nref);
 
 
@@ -1764,23 +1763,24 @@ void ResetEPSandSetPLL(void);
 
 # 17 "WDT.h"
 void InitWDT(void);
-void commandWDT(UBYTE);
-void resetWDT();
 void sendPulseWDT(void);
 void WDTwait(void);
 
 # 13 "CRC16.h"
-UWORD crc16(UWORD, UBYTE *, UINT);
+UWORD crc16(UWORD, UBYTE *, UBYTE);
 UWORD identifyCRC16(UBYTE *);
-UWORD checkCRC(UBYTE *, UINT);
+UWORD checkCRC(UBYTE *, UBYTE);
 
-# 62 "OkError.h"
+# 65 "OkError.h"
 void switchOk(UBYTE);
-void switchError(UBYTE);
+void updateErrorStatus(UBYTE);
 
-# 28 "timer.h"
+# 21 "timer.h"
 void initTimer(void);
 void interrupt TimerCheck(void);
+
+int CollisionCheck;
+int AckCheck;
 
 void set_NTRX_pll_setting_counter(UINT, UINT, UINT, UINT);
 UINT get_NTRX_pll_setting_counter_sec(void);
@@ -1809,11 +1809,12 @@ UINT get_timer_counter(UBYTE unit);
 void reset_timer(void);
 
 # 42 "SatMode.h"
-UWORD MeasureBatVoltageAndChangeSatMode(void);
+UBYTE MeasureBatVoltageAndChangeSatMode(void);
 UBYTE BitCount(UBYTE);
 void SwitchToSavingMode(void);
 void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
-void testInitSatMode(void);
+
+void InitSatMode(void);
 
 
 # 27 "main.c"
@@ -1830,6 +1831,12 @@ void testInitSatMode(void);
 
 
 UBYTE lastCommandID=0xff;
+UBYTE commandData[32];
+UBYTE commandID;
+UBYTE mainControlByte;
+UBYTE subControlByte;
+
+UBYTE SatMode_error_status;
 
 
 void main(void) {
@@ -1837,240 +1844,190 @@ void main(void) {
 
 
 InitSerial();
+putChar('R');
+putChar('R');
+putChar('S');
+put_lf();
 InitMPU();
 InitWDT();
+putHex(SSPSTAT);
+putHex(SSPCON);
+putHex(SSPCON2);
+put_lf();
 InitI2CMaster(100000);
 initTimer();
-
+InitSatMode();
 
 _delay((unsigned long)((500)*(10000000/4000.0)));
 
 
 
 setPLL();
-
-
-
 _delay((unsigned long)((500)*(10000000/4000.0)));
 
-put_lf();
-putChar('S');
-for(UBYTE i=0; i<6; i++){
-putChar(0x53);
+sendPulseWDT();
+
+# 81
+UBYTE error_status;
+
+UBYTE melting_status[2];
+melting_status[0] = checkMeltingStatus(0x50);
+melting_status[1] = checkMeltingStatus(0x52);
+if((melting_status[0] >= 4)||(melting_status[1] >= 4)) {
+if(PORTDbits.RD5 == 0){
+PORTDbits.RD5 = 1;
 }
+} else {
+
+for(UBYTE i=0; i<4; i++){
+
+sendPulseWDT();
+for(UBYTE j=0; j<10; j++){
+delay_s(5);
+sendPulseWDT();
+}
+
+SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+if (SatMode_error_status != 0){
+SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+}
+WriteOneByteToMainAndSubB0EEPROM(0x81, 0x01, SatMode_error_status);
+}
+}
+
+putChar('R');
+putChar('R');
+putChar('S');
 put_lf();
-
-
-
-testInitSatMode();
-
-testInitialOpe();
-
-
-
-UBYTE error_status = 0x00;
 
 while(1){
-
-# 88
-if(get_eps_reset_counter_min() >= 2){
+putChar('M');
+putChar('R');
 put_lf();
 
-putChar(0xF1);
-
-put_lf();
-
+# 122
+if(get_timer_counter('w') >= 1){
+resetEPS();
 setPLL();
 
 reset_timer();
 set_eps_reset_counter(0,0);
-
-putChar(0xF2);
-
 }
 
-
-
-if(get_NTRX_pll_setting_counter_min() >= 1){
-
-put_lf();
-
-putChar(0xF3);
-
-put_lf();
-UBYTE melting_status[2] = {0x00};
+# 134
+if(1){
 melting_status[0] = checkMeltingStatus(0x50);
 melting_status[1] = checkMeltingStatus(0x52);
+putChar('M');
+putChar('E');
+putChar('L');
+putChar('T');
+put_lf();
+putHex(melting_status[0]);
+putHex(melting_status[1]);
 if((melting_status[0] < 4)&&(melting_status[1] < 4)) {
-
+putChar('R');
+putChar('E');
+putChar('P');
+putChar('S');
+put_lf();
+resetEPS();
 }
 setPLL();
 set_NTRX_pll_setting_counter(0,0,0,0);
-
-putChar(0xF4);
-
 }
 
 
-if(get_init_ope_counter_min() >= 1){
-
-put_lf();
-
-putChar(0xF5);
-
-put_lf();
+if(get_init_ope_counter_min() >= 23){
 error_status = InitialOperation();
-WriteOneByteToMainAndSubB0EEPROM(0x81,0x0c,error_status);
-errorCheckInitialOpe();
+WriteOneByteToMainAndSubB0EEPROM(0x81,0x0C,error_status);
 set_init_ope_counter(0,0);
-
-putChar(0xF6);
-
 }
 
 
-
-if(get_bat_meas_counter_sec() >= 10){
-put_lf();
-
-putChar(0xF7);
-
-put_lf();
-
-UWORD SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-
-
-putChar(0xAB);
-putChar((UBYTE)(SatMode_error_status>>8));
-putChar((UBYTE)SatMode_error_status);
-
-
-
-put_lf();
+if(get_bat_meas_counter_min() >= 1){
+SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
 if (SatMode_error_status != 0){
 SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-
-# 174
 }
-WriteOneByteToMainAndSubB0EEPROM(0x81, 0x14, (UBYTE)(SatMode_error_status>>8));
-WriteOneByteToMainAndSubB0EEPROM(0x81, 0x15, (UBYTE)SatMode_error_status);
+WriteOneByteToMainAndSubB0EEPROM(0x81, 0x01, SatMode_error_status);
 set_bat_meas_counter(0,0);
-
-
-putChar(0xF8);
-
 }
 
-# 192
+
 sendPulseWDT();
-delay_s(1);
 
-
-
-
-UBYTE commandData[32];
-UBYTE commandID;
-
-
-UBYTE B0select;
-UBYTE wHighAddress;
-UBYTE wLowAddress;
-UBYTE mainControlByte;
-UBYTE subControlByte;
-UBYTE downlinkTimes;
-
-
-for(UBYTE i=0; i<32; i++){
-commandData[i] = 0;
-}
+# 183
+commandData[0] = 0;
 
 receiveDataPacket(commandData);
 
-# 220
-if(commandData[0]==0) {
-continue;
-}
 
+if(commandData[0] == 0) continue;
 
+mainControlByte = (UBYTE)(0x50 | commandData[19]);
+subControlByte = (UBYTE)(0x52 | commandData[19]);
+
+# 197
+if(crc16(0,commandData,29) == checkCRC(commandData,29)){
+commandData[31] = 0xb0;
+
+lastCommandID = ReadEEPROMmainAndSub(0, 0x81, 0x1F);
 commandID = commandData[1];
 if (commandID == lastCommandID) {
 continue;
 }
-lastCommandID = commandID;
-
-B0select = commandData[19];
-wHighAddress = commandData[20];
-wLowAddress = commandData[21];
-downlinkTimes = commandData[22];
-mainControlByte = 0x50 | B0select;
-subControlByte = 0x52 | B0select;
-
-
-
-UWORD crcResult, crcValue;
-crcResult = crc16(0,commandData,29);
-crcValue = checkCRC(commandData,29);
-
-# 254
-if(crcResult != crcValue){
-commandData[31] = commandData[31] & 0b01111111;
-
-}else{
-commandData[31] = commandData[31] | 0b10000000;
-
+WriteOneByteToMainAndSubB0EEPROM(0x81, 0x1F, commandID);
 }
 
 
 
-WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,32);
-WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,32);
-WriteLastCommandIdToEEPROM(commandData[1]);
-
-# 280
-sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
-putChar('G');
-
-for(int i=0; i<32; i++){
-
-}
-putChar('H');
+WriteToEEPROMWithDataSize(mainControlByte,commandData[20],commandData[21],commandData,32);
+WriteToEEPROMWithDataSize(subControlByte,commandData[20],commandData[21],commandData,32);
 
 
-if(commandData[0]=='R'){
+sendCommand('g','u',commandData[19], commandData[20], commandData[21], commandData[22], 0x00, 0x00);
 
-if(commandData[2] == 'r'){
+
+
+if(commandData[0] != 'R') continue;
+
+
+if(commandData[2] != 'r') continue;
 
 switch(commandData[3]){
 case 'm':
-commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+
+
 break;
 case 'p':
-commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+
 break;
 case 'n':
-commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+
 break;
+case 'i':
 
-
-
+break;
 case 'e':
-commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
-break;
 
-# 321
+
+break;
+case 'u':
+
+break;
+case 'w':
+
+break;
+case 'h':
+
+break;
+case 'r':
+
+break;
 default:
-
 break;
 }
-
-# 332
+WriteOneByteToMainAndSubB0EEPROM(0x81,0x83,lastCommandID);
 }
-}else{
-
-PORTBbits.RB2 = 1;
-_delay((unsigned long)((1000)*(10000000/4000.0)));
-PORTBbits.RB2 = 0;
-}
-}
-
 }

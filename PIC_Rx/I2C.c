@@ -30,7 +30,24 @@ void InitI2CMaster(const UDWORD c){//Init Master Synchronous Serial Port(MSSP)
 
 
 void I2CMasterWait(char mask){
-  while ((SSPSTAT & mask) || (SSPCON2 & 0x1F));
+    putHex(SSPSTAT);
+    putHex(SSPCON);
+    putHex(SSPCON2);
+    while ((SSPSTAT & mask) || (SSPCON2 & 0x1F)){
+        putChar('W');
+        putChar('A');
+        putChar('W');
+        putChar('H');
+        putChar('I');
+        putChar('L');
+        putChar('E');
+        put_lf();
+    };
+    putChar('W');
+    putChar('A');
+    putChar('I');
+    putChar('T');
+    put_lf();
   //SSPSTAT : 0x05 -> transmit is not in progress & buffer empty
   //          0x04 -> transmit is not in progress
   //SSPCON2 : ack,receive,start,restart,stop is idle
@@ -40,15 +57,46 @@ void I2CMasterWait(char mask){
 SBYTE I2CMasterStart(UBYTE slave_address,UBYTE rw){
 //  I2CMasterWait();
 //  SEN = 1;                      //SEN Start Condition Enable; bit 0 of SSPCON2
-     CollisionCheck = 0 ;
+    putChar('S');
+    putChar('T');
+    putChar('A');
+    putChar('R');
+    putChar('T');
+    put_lf(); 
+    CollisionCheck = 0 ;
      I2CMasterWait(0x5) ;
      SSPCON2bits.SEN = 1 ;
      I2CMasterWait(0x5) ;
-     if (CollisionCheck == 1) return -1 ;
+     if (CollisionCheck == 1){
+        putChar('S');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('1');
+        put_lf();
+        return -1 ;
+     }
      AckCheck = 1 ;
      SSPBUF = (char)((slave_address<<1)+rw);
-     while (AckCheck);
-     if (CollisionCheck == 1) return -1 ;
+     while (AckCheck){
+        putChar('S');
+        putChar('W');
+        putChar('H');
+        putChar('I');
+        putChar('L');
+        putChar('E');
+        put_lf();
+     };
+     if (CollisionCheck == 1){
+        putChar('S');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('2');
+        put_lf();
+        return -1 ;
+     }
+         
      return SSPCON2bits.ACKSTAT;
 }
 
@@ -70,7 +118,12 @@ SBYTE I2CMasterRepeatedStart(UBYTE slave_address,UBYTE rw){
 SBYTE I2CMasterStop(void){
 //  I2CMasterWait();
 //  PEN = 1;                      //Stop Condition Enable bit (Master mode only); bit 2 of SSPCON2
-     CollisionCheck = 0 ;
+    putChar('S');
+    putChar('T');
+    putChar('O');
+    putChar('P');
+    put_lf();
+    CollisionCheck = 0 ;
      I2CMasterWait(0x5) ;
      SSPCON2bits.PEN = 1 ;
      if (CollisionCheck == 1) return -1 ;
@@ -80,13 +133,43 @@ SBYTE I2CMasterStop(void){
 SBYTE I2CMasterWrite(UBYTE dataByte){
 //  I2CMasterWait();
 //  SSPBUF = dataByte;                   //Serial Receive/Transmit Buffer Register
-     CollisionCheck = 0 ;
+    putChar('W');
+    putChar('R');
+    putChar('I');
+    putChar('T');
+    putChar('E');
+    put_lf();
+    CollisionCheck = 0 ;
      I2CMasterWait(0x5) ;
-     if (CollisionCheck == 1) return -1;
+     if (CollisionCheck == 1) {
+        putChar('W');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('1');
+        put_lf();
+        return -1;
+     }
      AckCheck = 1;
      SSPBUF = dataByte;
-     while (AckCheck);
-     if (CollisionCheck == 1) return -1;
+     while (AckCheck){
+        putChar('W');
+        putChar('W');
+        putChar('H');
+        putChar('I');
+        putChar('L');
+        putChar('E');
+        put_lf();
+     };
+     if (CollisionCheck == 1){
+        putChar('W');
+        putChar('R');
+        putChar('T');
+        putChar('N');
+        putChar('2');
+        put_lf();
+        return -1;
+     }
      return SSPCON2bits.ACKSTAT;
 }
 
@@ -94,17 +177,22 @@ SBYTE I2CMasterWrite(UBYTE dataByte){
 int I2CMasterRead(UBYTE address){
      int data_from_slave ;
 
-     CollisionCheck = 0 ;
-     I2CMasterWait(0x5) ;
-     SSPCON2bits.RCEN = 1;      //  enable receive from slave
-     I2CMasterWait(0x4) ;
-     if (CollisionCheck == 1) return -1 ;
-     data_from_slave = SSPBUF;
-     I2CMasterWait(0x5) ;
-     if (CollisionCheck == 1) return -1 ;
-     SSPCON2bits.ACKDT = address;
-     SSPCON2bits.ACKEN = 1;
-     return data_from_slave;
+    putChar('R');
+    putChar('E');
+    putChar('A');
+    putChar('D');
+    put_lf();
+    CollisionCheck = 0 ;
+    I2CMasterWait(0x5) ;
+    SSPCON2bits.RCEN = 1;      //  enable receive from slave
+    I2CMasterWait(0x4) ;
+    if (CollisionCheck == 1) return -1 ;
+    data_from_slave = SSPBUF;
+    I2CMasterWait(0x5) ;
+    if (CollisionCheck == 1) return -1 ;
+    SSPCON2bits.ACKDT = address;
+    SSPCON2bits.ACKEN = 1;
+    return data_from_slave;
 }
 
 

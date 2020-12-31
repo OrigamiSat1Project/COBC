@@ -21,16 +21,32 @@ void initTimer(void){
 
 void interruptI2C(void)
 {
-     if (PIR1bits.SSPIF == 1) {
-          if (AckCheck == 1) {
-              AckCheck = 0;
-          }
-          PIR1bits.SSPIF = 0;
-     }
-     if (PIR2bits.BCLIF == 1) {
-          CollisionCheck = 1;
-          PIR2bits.BCLIF = 0;
-     }
+    if (PIR1bits.SSPIF == 1) {
+        if (AckCheck == 1) {
+            putChar('A');
+            putChar('C');
+            putChar('K');
+            putChar('\r');
+            putChar('\n');
+            AckCheck = 0;
+        }
+
+        putChar('S');
+        putChar('S');
+        putChar('P');
+        putChar('\r');
+        putChar('\n');
+        PIR1bits.SSPIF = 0;
+    }
+    if (PIR2bits.BCLIF == 1) {
+       putChar('B');
+       putChar('C');
+       putChar('L');
+       putChar('\r');
+       putChar('\n');
+       CollisionCheck = 1;
+       PIR2bits.BCLIF = 0;
+    }
 }
 
 UBYTE EPS_reset_time = EPS_RSET_INTERVAL_SHORT;

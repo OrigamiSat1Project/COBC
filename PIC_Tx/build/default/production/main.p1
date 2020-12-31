@@ -1,31 +1,43 @@
 Version 3.2 HI-TECH Software Intermediate Code
+"22 I2C.h
+[v _interruptI2C `(v ~T0 @X0 0 ef ]
 "3784 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f886.h
 [v _RCIF `Vb ~T0 @X0 0 e@101 ]
-"24 UART.h
-[v _putChar `(v ~T0 @X0 0 ef1`uc ]
-"23
+"23 UART.h
 [v _getChar `(uc ~T0 @X0 0 ef ]
-"32
-[v _put_lf `(v ~T0 @X0 0 ef ]
 [p mainexit ]
-[v F1552 `(v ~T0 @X0 1 tf1`ul ]
+[v F1733 `(v ~T0 @X0 1 tf1`ul ]
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
-[v __delay `JF1552 ~T0 @X0 0 e ]
+[v __delay `JF1733 ~T0 @X0 0 e ]
 [p i __delay ]
 "25 MPU.h
 [v _Init_MPU `(v ~T0 @X0 0 ef ]
 "21 I2C.h
 [v _InitI2CMaster `(v ~T0 @X0 0 ef1`Cul ]
-"22 UART.h
+"21 UART.h
 [v _Init_SERIAL `(v ~T0 @X0 0 ef ]
-"20 WDT.h
+"19 WDT.h
 [v _Init_WDT `(v ~T0 @X0 0 ef ]
+"24 UART.h
+[v _putChar `(v ~T0 @X0 0 ef1`uc ]
+"31
+[v _put_lf `(v ~T0 @X0 0 ef ]
 "22
+[v _putHex `(v ~T0 @X0 0 ef1`uc ]
+"2017 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f886.h
+[v _SSPSTAT `Vuc ~T0 @X0 0 e@148 ]
+"769
+[v _SSPCON `Vuc ~T0 @X0 0 e@20 ]
+"1819
+[v _SSPCON2 `Vuc ~T0 @X0 0 e@145 ]
+"62 FMCW.h
+[v _Init_HK `(v ~T0 @X0 0 ef ]
+"21 WDT.h
 [v _sendPulseWDT `(v ~T0 @X0 0 ef ]
-"32 time.h
+"31 time.h
 [v _delay_s `(v ~T0 @X0 0 ef1`us ]
-"65 FMCW.h
-[v _HK_test_setting `(v ~T0 @X0 0 ef ]
+"51 OkError.h
+[v _checkMeltingStatus `(uc ~T0 @X0 0 ef1`uc ]
 "18 ADC.h
 [v _measureAllChanelADC `(v ~T0 @X0 0 ef ]
 "24
@@ -34,35 +46,99 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _onOffNTRX `(v ~T0 @X0 0 ef3`uc`uc`uc ]
 "39
 [v _CheckNTRXsubpower `(v ~T0 @X0 0 ef ]
-"41 FMCW.h
+"45 FMCW.h
 [v _HKDownlink `(v ~T0 @X0 0 ef ]
 "44 I2C.h
 [v _ReadEEPROM `(uc ~T0 @X0 0 ef3`uc`uc`uc ]
 "36
 [v _WriteLastCommandIdToEEPROM `(v ~T0 @X0 0 ef1`uc ]
-"37
-[v _WriteLastCommandStatusToEEPROM `(v ~T0 @X0 0 ef1`uc ]
 "16 CRC16.h
 [v _crc16 `(us ~T0 @X0 0 ef3`us`*uc`ui ]
 "18
 [v _CRC_check `(us ~T0 @X0 0 ef2`*uc`ui ]
-"32 FMCW.h
-[v _downlinkReceivedCommand `(v ~T0 @X0 0 ef4`uc`uc`uc`uc ]
-"38
-[v _downlinkFMSignal `(v ~T0 @X0 0 ef5`uc`uc`uc`uc`uc ]
-"38 MPU.h
-[v _commandSwitchPowerSupply `(v ~T0 @X0 0 ef5`uc`uc`uc`uc`uc ]
-"19 ADC.h
-[v _measureDcDcTemperature `(v ~T0 @X0 0 ef ]
-"26 UART.h
-[v _sendCommand `(v ~T0 @X0 0 ef8`uc`uc`uc`uc`uc`uc`uc`uc ]
-"31
-[v _put_ok `(v ~T0 @X0 0 ef ]
-"30
-[v _put_error `(v ~T0 @X0 0 ef ]
+[; ;__size_t.h: 4: typedef unsigned size_t;
+[; ;stdarg.h: 7: typedef void * va_list[1];
+[; ;stdarg.h: 10: extern void * __va_start(void);
+[; ;stdarg.h: 13: extern void * __va_arg(void *, ...);
+[; ;stdio.h: 43: struct __prbuf
+[; ;stdio.h: 44: {
+[; ;stdio.h: 45: char * ptr;
+[; ;stdio.h: 46: void (* func)(char);
+[; ;stdio.h: 47: };
+[; ;errno.h: 29: extern int errno;
+[; ;conio.h: 12: extern void init_uart(void);
+[; ;conio.h: 14: extern char getch(void);
+[; ;conio.h: 15: extern char getche(void);
+[; ;conio.h: 16: extern void putch(char);
+[; ;conio.h: 17: extern void ungetch(char);
+[; ;conio.h: 19: extern __bit kbhit(void);
+[; ;conio.h: 23: extern char * cgets(char *);
+[; ;conio.h: 24: extern void cputs(const char *);
+[; ;stdio.h: 88: extern int cprintf(char *, ...);
+[; ;stdio.h: 93: extern int _doprnt(struct __prbuf *, const register char *, register va_list);
+[; ;stdio.h: 183: extern char * gets(char *);
+[; ;stdio.h: 184: extern int puts(const char *);
+[; ;stdio.h: 185: extern int scanf(const char *, ...) __attribute__((unsupported("scanf() is not supported by this compiler")));
+[; ;stdio.h: 186: extern int sscanf(const char *, const char *, ...) __attribute__((unsupported("sscanf() is not supported by this compiler")));
+[; ;stdio.h: 187: extern int vprintf(const char *, va_list) __attribute__((unsupported("vprintf() is not supported by this compiler")));
+[; ;stdio.h: 188: extern int vsprintf(char *, const char *, va_list) __attribute__((unsupported("vsprintf() is not supported by this compiler")));
+[; ;stdio.h: 189: extern int vscanf(const char *, va_list ap) __attribute__((unsupported("vscanf() is not supported by this compiler")));
+[; ;stdio.h: 190: extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupported("vsscanf() is not supported by this compiler")));
+[; ;stdio.h: 194: extern int sprintf(char *, const char *, ...);
+[; ;stdio.h: 195: extern int printf(const char *, ...);
+[; ;stdlib.h: 7: typedef unsigned short wchar_t;
+[; ;stdlib.h: 15: typedef struct {
+[; ;stdlib.h: 16: int rem;
+[; ;stdlib.h: 17: int quot;
+[; ;stdlib.h: 18: } div_t;
+[; ;stdlib.h: 19: typedef struct {
+[; ;stdlib.h: 20: unsigned rem;
+[; ;stdlib.h: 21: unsigned quot;
+[; ;stdlib.h: 22: } udiv_t;
+[; ;stdlib.h: 23: typedef struct {
+[; ;stdlib.h: 24: long quot;
+[; ;stdlib.h: 25: long rem;
+[; ;stdlib.h: 26: } ldiv_t;
+[; ;stdlib.h: 27: typedef struct {
+[; ;stdlib.h: 28: unsigned long quot;
+[; ;stdlib.h: 29: unsigned long rem;
+[; ;stdlib.h: 30: } uldiv_t;
+[; ;stdlib.h: 53: extern double atof(const char *);
+[; ;stdlib.h: 54: extern double strtod(const char *, const char **);
+[; ;stdlib.h: 55: extern int atoi(const char *);
+[; ;stdlib.h: 56: extern unsigned xtoi(const char *);
+[; ;stdlib.h: 57: extern long atol(const char *);
+[; ;stdlib.h: 58: extern long strtol(const char *, char **, int);
+[; ;stdlib.h: 60: extern int rand(void);
+[; ;stdlib.h: 61: extern void srand(unsigned int);
+[; ;stdlib.h: 62: extern void * calloc(size_t, size_t);
+[; ;stdlib.h: 63: extern div_t div(int numer, int denom);
+[; ;stdlib.h: 64: extern udiv_t udiv(unsigned numer, unsigned denom);
+[; ;stdlib.h: 65: extern ldiv_t ldiv(long numer, long denom);
+[; ;stdlib.h: 66: extern uldiv_t uldiv(unsigned long numer,unsigned long denom);
+[; ;stdlib.h: 67: extern unsigned long _lrotl(unsigned long value, unsigned int shift);
+[; ;stdlib.h: 68: extern unsigned long _lrotr(unsigned long value, unsigned int shift);
+[; ;stdlib.h: 69: extern unsigned int _rotl(unsigned int value, unsigned int shift);
+[; ;stdlib.h: 70: extern unsigned int _rotr(unsigned int value, unsigned int shift);
+[; ;stdlib.h: 75: extern void * malloc(size_t);
+[; ;stdlib.h: 76: extern void free(void *);
+[; ;stdlib.h: 77: extern void * realloc(void *, size_t);
+[; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
+[; ;stdlib.h: 86: extern int atexit(void (*)(void));
+[; ;stdlib.h: 87: extern char * getenv(const char *);
+[; ;stdlib.h: 88: extern char ** environ;
+[; ;stdlib.h: 89: extern int system(char *);
+[; ;stdlib.h: 90: extern void qsort(void *, size_t, size_t, int (*)(const void *, const void *));
+[; ;stdlib.h: 91: extern void * bsearch(const void *, void *, size_t, size_t, int(*)(const void *, const void *));
+[; ;stdlib.h: 92: extern int abs(int);
+[; ;stdlib.h: 93: extern long labs(long);
+[; ;stdlib.h: 95: extern char * itoa(char * buf, int val, int base);
+[; ;stdlib.h: 96: extern char * utoa(char * buf, unsigned val, int base);
+[; ;stdlib.h: 101: extern char * ltoa(char * buf, long val, int base);
+[; ;stdlib.h: 102: extern char * ultoa(char * buf, unsigned long val, int base);
+[; ;stdlib.h: 104: extern char * ftoa(float f, int * status);
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
-[; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
 [; ;pic16f886.h: 50: extern volatile unsigned char INDF @ 0x000;
 "52 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f886.h
 [; ;pic16f886.h: 52: asm("INDF equ 00h");
@@ -1488,26 +1564,24 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 22: typedef unsigned short long USLONG;
 [; ;Type_define.h: 23: typedef signed long SDWORD;
 [; ;Type_define.h: 24: typedef unsigned long UDWORD;
-"20 UART.h
-[v _UPLINK_COMMAND_SIZE `uc ~T0 @X0 1 e ]
-[i _UPLINK_COMMAND_SIZE
--> -> 32 `i `uc
+"19 UART.h
+[v _ReceiveFlag `uc ~T0 @X0 1 e ]
+[i _ReceiveFlag
+-> -> 0 `i `uc
 ]
-[; ;UART.h: 20: UBYTE UPLINK_COMMAND_SIZE = 32;
-[; ;UART.h: 22: void Init_SERIAL(void);
+[; ;UART.h: 19: UBYTE ReceiveFlag = 0x00;
+[; ;UART.h: 21: void Init_SERIAL(void);
+[; ;UART.h: 22: void putHex(UBYTE data);
 [; ;UART.h: 23: UBYTE getChar(void);
 [; ;UART.h: 24: void putChar(UBYTE);
 [; ;UART.h: 25: void putString(UBYTE *);
-[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 29: void changeInterruptPermission(UBYTE, UBYTE);
-[; ;UART.h: 30: void put_error(void);
-[; ;UART.h: 31: void put_ok(void);
-[; ;UART.h: 32: void put_lf(void);
-[; ;UART.h: 33: void changeBaudRate(UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 34: void UARTbufferClear(void);
-[; ;UART.h: 35: void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);
-[; ;UART.h: 36: void UARTwrite5byte(UBYTE,UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 39: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
+[; ;UART.h: 28: void changeInterruptPermission(UBYTE, UBYTE);
+[; ;UART.h: 29: void put_error(void);
+[; ;UART.h: 30: void put_ok(void);
+[; ;UART.h: 31: void put_lf(void);
+[; ;UART.h: 32: void changeBaudRate(UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 33: void UARTbufferClear(void);
+[; ;UART.h: 36: void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5);
 [; ;MPU.h: 25: void Init_MPU(void);
 [; ;MPU.h: 30: void onOffHEATER(UBYTE,UBYTE, UBYTE);
 [; ;MPU.h: 31: void onOffNTRX(UBYTE,UBYTE, UBYTE);
@@ -1519,92 +1593,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;MPU.h: 37: void onOffCWKEY(UBYTE,UBYTE, UBYTE);
 [; ;MPU.h: 38: void commandSwitchPowerSupply(UBYTE , UBYTE , UBYTE , UBYTE, UBYTE);
 [; ;MPU.h: 39: void CheckNTRXsubpower(void);
-[; ;time.h: 30: void delay_ms(UWORD);
-[; ;time.h: 31: void delay_us(UWORD);
-[; ;time.h: 32: void delay_s(UWORD);
-[; ;time.h: 34: UWORD calTime2Byte(UBYTE, UBYTE);
-[; ;time.h: 37: void set_timer_counter_only_getChar(UINT);
-[; ;time.h: 38: UINT get_timer_counter_only_getChar(void);
-[; ;__size_t.h: 4: typedef unsigned size_t;
-[; ;stdarg.h: 7: typedef void * va_list[1];
-[; ;stdarg.h: 10: extern void * __va_start(void);
-[; ;stdarg.h: 13: extern void * __va_arg(void *, ...);
-[; ;stdio.h: 43: struct __prbuf
-[; ;stdio.h: 44: {
-[; ;stdio.h: 45: char * ptr;
-[; ;stdio.h: 46: void (* func)(char);
-[; ;stdio.h: 47: };
-[; ;errno.h: 29: extern int errno;
-[; ;conio.h: 12: extern void init_uart(void);
-[; ;conio.h: 14: extern char getch(void);
-[; ;conio.h: 15: extern char getche(void);
-[; ;conio.h: 16: extern void putch(char);
-[; ;conio.h: 17: extern void ungetch(char);
-[; ;conio.h: 19: extern __bit kbhit(void);
-[; ;conio.h: 23: extern char * cgets(char *);
-[; ;conio.h: 24: extern void cputs(const char *);
-[; ;stdio.h: 88: extern int cprintf(char *, ...);
-[; ;stdio.h: 93: extern int _doprnt(struct __prbuf *, const register char *, register va_list);
-[; ;stdio.h: 183: extern char * gets(char *);
-[; ;stdio.h: 184: extern int puts(const char *);
-[; ;stdio.h: 185: extern int scanf(const char *, ...) __attribute__((unsupported("scanf() is not supported by this compiler")));
-[; ;stdio.h: 186: extern int sscanf(const char *, const char *, ...) __attribute__((unsupported("sscanf() is not supported by this compiler")));
-[; ;stdio.h: 187: extern int vprintf(const char *, va_list) __attribute__((unsupported("vprintf() is not supported by this compiler")));
-[; ;stdio.h: 188: extern int vsprintf(char *, const char *, va_list) __attribute__((unsupported("vsprintf() is not supported by this compiler")));
-[; ;stdio.h: 189: extern int vscanf(const char *, va_list ap) __attribute__((unsupported("vscanf() is not supported by this compiler")));
-[; ;stdio.h: 190: extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupported("vsscanf() is not supported by this compiler")));
-[; ;stdio.h: 194: extern int sprintf(char *, const char *, ...);
-[; ;stdio.h: 195: extern int printf(const char *, ...);
-[; ;stdlib.h: 7: typedef unsigned short wchar_t;
-[; ;stdlib.h: 15: typedef struct {
-[; ;stdlib.h: 16: int rem;
-[; ;stdlib.h: 17: int quot;
-[; ;stdlib.h: 18: } div_t;
-[; ;stdlib.h: 19: typedef struct {
-[; ;stdlib.h: 20: unsigned rem;
-[; ;stdlib.h: 21: unsigned quot;
-[; ;stdlib.h: 22: } udiv_t;
-[; ;stdlib.h: 23: typedef struct {
-[; ;stdlib.h: 24: long quot;
-[; ;stdlib.h: 25: long rem;
-[; ;stdlib.h: 26: } ldiv_t;
-[; ;stdlib.h: 27: typedef struct {
-[; ;stdlib.h: 28: unsigned long quot;
-[; ;stdlib.h: 29: unsigned long rem;
-[; ;stdlib.h: 30: } uldiv_t;
-[; ;stdlib.h: 53: extern double atof(const char *);
-[; ;stdlib.h: 54: extern double strtod(const char *, const char **);
-[; ;stdlib.h: 55: extern int atoi(const char *);
-[; ;stdlib.h: 56: extern unsigned xtoi(const char *);
-[; ;stdlib.h: 57: extern long atol(const char *);
-[; ;stdlib.h: 58: extern long strtol(const char *, char **, int);
-[; ;stdlib.h: 60: extern int rand(void);
-[; ;stdlib.h: 61: extern void srand(unsigned int);
-[; ;stdlib.h: 62: extern void * calloc(size_t, size_t);
-[; ;stdlib.h: 63: extern div_t div(int numer, int denom);
-[; ;stdlib.h: 64: extern udiv_t udiv(unsigned numer, unsigned denom);
-[; ;stdlib.h: 65: extern ldiv_t ldiv(long numer, long denom);
-[; ;stdlib.h: 66: extern uldiv_t uldiv(unsigned long numer,unsigned long denom);
-[; ;stdlib.h: 67: extern unsigned long _lrotl(unsigned long value, unsigned int shift);
-[; ;stdlib.h: 68: extern unsigned long _lrotr(unsigned long value, unsigned int shift);
-[; ;stdlib.h: 69: extern unsigned int _rotl(unsigned int value, unsigned int shift);
-[; ;stdlib.h: 70: extern unsigned int _rotr(unsigned int value, unsigned int shift);
-[; ;stdlib.h: 75: extern void * malloc(size_t);
-[; ;stdlib.h: 76: extern void free(void *);
-[; ;stdlib.h: 77: extern void * realloc(void *, size_t);
-[; ;stdlib.h: 86: extern int atexit(void (*)(void));
-[; ;stdlib.h: 87: extern char * getenv(const char *);
-[; ;stdlib.h: 88: extern char ** environ;
-[; ;stdlib.h: 89: extern int system(char *);
-[; ;stdlib.h: 90: extern void qsort(void *, size_t, size_t, int (*)(const void *, const void *));
-[; ;stdlib.h: 91: extern void * bsearch(const void *, void *, size_t, size_t, int(*)(const void *, const void *));
-[; ;stdlib.h: 92: extern int abs(int);
-[; ;stdlib.h: 93: extern long labs(long);
-[; ;stdlib.h: 95: extern char * itoa(char * buf, int val, int base);
-[; ;stdlib.h: 96: extern char * utoa(char * buf, unsigned val, int base);
-[; ;stdlib.h: 101: extern char * ltoa(char * buf, long val, int base);
-[; ;stdlib.h: 102: extern char * ultoa(char * buf, unsigned long val, int base);
-[; ;stdlib.h: 104: extern char * ftoa(float f, int * status);
+[; ;MPU.h: 40: void changeInOut(UINT, UBYTE);
+[; ;MPU.h: 41: void changeHighLow(UINT, UBYTE);
+[; ;MPU.h: 42: void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
+[; ;time.h: 29: void delay_ms(UWORD);
+[; ;time.h: 30: void delay_us(UWORD);
+[; ;time.h: 31: void delay_s(UWORD);
+[; ;time.h: 33: UWORD calTime2Byte(UBYTE, UBYTE);
 [; ;PIC16F887.h: 50: extern volatile unsigned char INDF @ 0x000;
 "52 C:\Program Files (x86)\Microchip\xc8\v1.45\include\PIC16F887.h
 [; ;PIC16F887.h: 52: asm("INDF equ 00h");
@@ -3076,49 +3071,44 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC16F887.h: 4302: extern volatile __bit nW @ (((unsigned) &SSPSTAT)*8) + 2;
 [; ;PIC16F887.h: 4304: extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
 [; ;encode_AX25.h: 19: void SendPacketWithDataSize(UBYTE *,UINT);
-[; ;encode_AX25.h: 20: void SendPacket(UBYTE *);
+[; ;encode_AX25.h: 20: void SendPacket(UBYTE *,UINT);
 [; ;I2C.h: 21: void InitI2CMaster(const UDWORD c);
-[; ;I2C.h: 22: void I2CMasterWait(void);
-[; ;I2C.h: 23: void I2CMasterStart(void);
-[; ;I2C.h: 24: void I2CMasterRepeatedStart(void);
-[; ;I2C.h: 25: void I2CMasterStop(void);
-[; ;I2C.h: 31: void I2CMasterWrite(UBYTE);
-[; ;I2C.h: 32: UBYTE I2CMasterRead(UBYTE);
-[; ;I2C.h: 33: void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
-[; ;I2C.h: 34: void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+[; ;I2C.h: 22: void interruptI2C(void);
+[; ;I2C.h: 23: void I2CMasterWait(char);
+[; ;I2C.h: 24: int I2CMasterStart(unsigned char, unsigned char);
+[; ;I2C.h: 25: int I2CMasterRepeatedStart(unsigned char, unsigned char);
+[; ;I2C.h: 26: int I2CMasterStop(void);
+[; ;I2C.h: 32: int WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+[; ;I2C.h: 33: int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+[; ;I2C.h: 34: int WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 [; ;I2C.h: 35: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
 [; ;I2C.h: 36: void WriteLastCommandIdToEEPROM(UBYTE);
 [; ;I2C.h: 37: void WriteLastCommandStatusToEEPROM(UBYTE);
 [; ;I2C.h: 38: void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
-[; ;I2C.h: 43: void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+[; ;I2C.h: 43: int ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE);
 [; ;I2C.h: 44: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
-[; ;I2C.h: 45: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+[; ;I2C.h: 45: void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UBYTE *);
 [; ;I2C.h: 46: void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
-[; ;FMCW.h: 32: void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 35: void _NOP(void);
-[; ;FMCW.h: 38: void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 41: void HKDownlink(void);
-[; ;FMCW.h: 42: void HKDownlinkFR0(void);
-[; ;FMCW.h: 43: void HKDownlinkFR1(void);
-[; ;FMCW.h: 44: void HKDownlinkFR2(void);
-[; ;FMCW.h: 48: void commandSwitchCWDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 49: long changeCharMorse (char);
-[; ;FMCW.h: 50: char changeBinaryToChar(UBYTE);
-[; ;FMCW.h: 51: void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
-[; ;FMCW.h: 52: void sendMorse(char*,size_t);
-[; ;FMCW.h: 53: void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 54: void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
-[; ;FMCW.h: 55: void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
-[; ;FMCW.h: 56: void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE, UBYTE);
-[; ;FMCW.h: 59: void testForCwFunctions(void);
-[; ;FMCW.h: 60: void Morse_V(void);
-[; ;FMCW.h: 61: void Morse_Y(void);
-[; ;FMCW.h: 62: void Morse_J(void);
-[; ;FMCW.h: 65: void HK_test_setting(void);
-[; ;WDT.h: 19: void commandWDT(UBYTE);
-[; ;WDT.h: 20: void Init_WDT(void);
-[; ;WDT.h: 21: void resetWDT();
-[; ;WDT.h: 22: void sendPulseWDT(void);
+[; ;FMCW.h: 36: void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 39: void _NOP(void);
+[; ;FMCW.h: 42: void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 45: void HKDownlink(void);
+[; ;FMCW.h: 46: void HKDownlinkFR0(void);
+[; ;FMCW.h: 47: void HKDownlinkFR1(void);
+[; ;FMCW.h: 48: void HKDownlinkFR2(void);
+[; ;FMCW.h: 52: void commandSwitchCWDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 53: long changeCharMorse (char);
+[; ;FMCW.h: 54: char changeBinaryToChar(UBYTE);
+[; ;FMCW.h: 55: void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
+[; ;FMCW.h: 56: void sendMorse(char*,size_t);
+[; ;FMCW.h: 57: void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 58: void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
+[; ;FMCW.h: 59: void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
+[; ;FMCW.h: 60: void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE, UBYTE);
+[; ;FMCW.h: 62: void Init_HK(void);
+[; ;WDT.h: 19: void Init_WDT(void);
+[; ;WDT.h: 20: void WDTwait(void);
+[; ;WDT.h: 21: void sendPulseWDT(void);
 [; ;CRC16.h: 16: UWORD crc16(UWORD, UBYTE *, UINT);
 [; ;CRC16.h: 17: UWORD Identify_CRC16(UBYTE *);
 [; ;CRC16.h: 18: UWORD CRC_check(UBYTE *, UINT);
@@ -3127,12 +3117,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ADC.h: 20: void measureChannel2(void);
 [; ;ADC.h: 21: void measureChannel3(void);
 [; ;ADC.h: 22: void measureChannel4(void);
-[; ;ADC.h: 23: void commandSwitchHKdata(UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;ADC.h: 23: void commandSwitchHKdata(UBYTE);
 [; ;ADC.h: 24: UBYTE read5VBusAndSwitchNtrxPower(void);
-[; ;OkError.h: 44: void switchOk(UBYTE);
-[; ;OkError.h: 45: void switchError(UBYTE);
-[; ;OkError.h: 46: void putErrorNoDownlink(UBYTE);
-[; ;OkError.h: 47: UBYTE bitCalResult(UBYTE bit_input);
+[; ;OkError.h: 49: void updateErrorStatus(UBYTE);
+[; ;OkError.h: 50: UBYTE bitCalResult(UBYTE bit_input);
+[; ;OkError.h: 51: UBYTE checkMeltingStatus(UBYTE e_address);
 [; ;main.c: 20: void interrupt InterReceiver(void);
 "28 main.c
 [p x FOSC=HS ]
@@ -3158,585 +3147,449 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p x BOR4V=BOR40V ]
 "39
 [p x WRT=OFF ]
-"42
-[v _RXDATA `uc ~T0 @X0 -> 10 `i e ]
-[; ;main.c: 42: UBYTE RXDATA[10];
-"43
-[v _STOCKDATA `uc ~T0 @X0 -> 10 `i e ]
-[; ;main.c: 43: UBYTE STOCKDATA[10];
 "44
-[v _ReceiveFlag `uc ~T0 @X0 1 e ]
-[i _ReceiveFlag
--> -> 0 `i `uc
-]
-[; ;main.c: 44: UBYTE ReceiveFlag = 0x00;
+[v _RXDATA `uc ~T0 @X0 -> 10 `i e ]
+[; ;main.c: 44: UBYTE RXDATA[10];
+[v F3111 `uc ~T0 @X0 -> 10 `i t ]
+"45
+[v _STOCKDATA `F3111 ~T0 @X0 -> 3 `i e ]
+[; ;main.c: 45: UBYTE STOCKDATA[3][10];
 [v $root$_InterReceiver `(v ~T0 @X0 0 e ]
-[v F3128 `(v ~T0 @X0 1 tf ]
-"47
-[v _InterReceiver `IF3128 ~T0 @X0 1 e ]
+[v F3108 `(v ~T0 @X0 1 tf ]
+"49
+[v _InterReceiver `IF3108 ~T0 @X0 1 e ]
 {
-[; ;main.c: 47: void interrupt InterReceiver(void){
+[; ;main.c: 49: void interrupt InterReceiver(void){
 [e :U _InterReceiver ]
 [f ]
-[; ;main.c: 48: if(RCIF==1){
-"48
+[; ;main.c: 50: interruptI2C();
+"50
+[e ( _interruptI2C ..  ]
+[; ;main.c: 51: if(RCIF==1){
+"51
 [e $ ! == -> _RCIF `i -> 1 `i 277  ]
 {
-[; ;main.c: 49: putChar('U');
-"49
-[e ( _putChar (1 -> -> 85 `ui `uc ]
-[; ;main.c: 50: STOCKDATA[0] = 0x21;
-"50
-[e = *U + &U _STOCKDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _STOCKDATA `ui `ux -> -> 33 `i `uc ]
-[; ;main.c: 51: STOCKDATA[0] = getChar();
-"51
-[e = *U + &U _STOCKDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _STOCKDATA `ui `ux ( _getChar ..  ]
-[; ;main.c: 52: if(STOCKDATA[0] != 'g' && STOCKDATA[0] != 't'){
 "52
-[e $ ! && != -> *U + &U _STOCKDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _STOCKDATA `ui `ux `ui -> 103 `ui != -> *U + &U _STOCKDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _STOCKDATA `ui `ux `ui -> 116 `ui 278  ]
-{
+[v _tmp `uc ~T0 @X0 1 a ]
+[; ;main.c: 52: UBYTE tmp;
+[; ;main.c: 53: tmp = getChar();
+"53
+[e = _tmp ( _getChar ..  ]
+[; ;main.c: 54: if(tmp != 'g' && tmp != 't') return;
 "54
-}
-[; ;main.c: 54: } else {
-[e $U 279  ]
+[e $ ! && != -> _tmp `ui -> 103 `ui != -> _tmp `ui -> 116 `ui 278  ]
+[e $UE 276  ]
 [e :U 278 ]
-{
-[; ;main.c: 55: RXDATA[0] = STOCKDATA[0];
-"55
-[e = *U + &U _RXDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _STOCKDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _STOCKDATA `ui `ux ]
-[; ;main.c: 56: for(UBYTE i=1 ;i< 10; i++) RXDATA[i] = getChar();
+[; ;main.c: 56: ReceiveFlag = 0x02;
 "56
+[e = _ReceiveFlag -> -> 2 `i `uc ]
+[; ;main.c: 58: for(UINT j=0; j<3; j++){
+"58
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 3 `i `ui 279  ]
+[e $U 280  ]
+[e :U 279 ]
+{
+[; ;main.c: 59: if(STOCKDATA[j][0] != 'g' && STOCKDATA[j][0] != 't'){
+"59
+[e $ ! && != -> *U + &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux * -> -> -> 0 `i `ui `ux -> -> # *U &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux `ui `ux `ui -> 103 `ui != -> *U + &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux * -> -> -> 0 `i `ui `ux -> -> # *U &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux `ui `ux `ui -> 116 `ui 282  ]
+{
+[; ;main.c: 60: STOCKDATA[j][0] = tmp;
+"60
+[e = *U + &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux * -> -> -> 0 `i `ui `ux -> -> # *U &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux `ui `ux _tmp ]
+[; ;main.c: 61: for(UBYTE i=1 ;i< 10; i++) STOCKDATA[j][i] = getChar();
+"61
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 10 `i 280  ]
-[e $U 281  ]
-[e :U 280 ]
-[e = *U + &U _RXDATA * -> _i `ux -> -> # *U &U _RXDATA `ui `ux ( _getChar ..  ]
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 10 `i 280  ]
-[e :U 281 ]
-}
-[; ;main.c: 57: put_lf();
-"57
-[e ( _put_lf ..  ]
-[; ;main.c: 58: for(UBYTE i=0 ;i< 10; i++) putChar(RXDATA[i]);
-"58
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
 [e $ < -> _i `i -> 10 `i 283  ]
 [e $U 284  ]
 [e :U 283 ]
-[e ( _putChar (1 *U + &U _RXDATA * -> _i `ux -> -> # *U &U _RXDATA `ui `ux ]
+[e = *U + &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux * -> _i `ux -> -> # *U &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux `ui `ux ( _getChar ..  ]
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> 10 `i 283  ]
 [e :U 284 ]
 }
-[; ;main.c: 59: put_lf();
-"59
-[e ( _put_lf ..  ]
-[; ;main.c: 60: ReceiveFlag = 0x02;
-"60
-[e = _ReceiveFlag -> -> 2 `i `uc ]
-"61
-}
-[e :U 279 ]
-[; ;main.c: 61: }
-[; ;main.c: 62: RCIF = 0;
+[; ;main.c: 62: return;
 "62
-[e = _RCIF -> -> 0 `i `b ]
+[e $UE 276  ]
 "63
 }
-[e :U 277 ]
-[; ;main.c: 63: }
-[; ;main.c: 64: putChar('V');
+[e :U 282 ]
 "64
-[e ( _putChar (1 -> -> 86 `ui `uc ]
-[; ;main.c: 65: putChar('V');
-"65
-[e ( _putChar (1 -> -> 86 `ui `uc ]
-[; ;main.c: 66: putChar('V');
+}
+"58
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 3 `i `ui 279  ]
+[e :U 280 ]
+"64
+}
+[; ;main.c: 63: }
+[; ;main.c: 64: }
+[; ;main.c: 66: STOCKDATA[0][0] = tmp;
 "66
-[e ( _putChar (1 -> -> 86 `ui `uc ]
-[; ;main.c: 67: putChar('V');
+[e = *U + &U *U + &U _STOCKDATA * -> -> -> 0 `i `ui `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux * -> -> -> 0 `i `ui `ux -> -> # *U &U *U + &U _STOCKDATA * -> -> -> 0 `i `ui `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux `ui `ux _tmp ]
+[; ;main.c: 67: for(UBYTE i=1 ;i< 10; i++) STOCKDATA[0][i] = getChar();
 "67
-[e ( _putChar (1 -> -> 86 `ui `uc ]
-[; ;main.c: 68: putChar('V');
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 10 `i 286  ]
+[e $U 287  ]
+[e :U 286 ]
+[e = *U + &U *U + &U _STOCKDATA * -> -> -> 0 `i `ui `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux * -> _i `ux -> -> # *U &U *U + &U _STOCKDATA * -> -> -> 0 `i `ui `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux `ui `ux ( _getChar ..  ]
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 10 `i 286  ]
+[e :U 287 ]
+}
+[; ;main.c: 68: return;
 "68
-[e ( _putChar (1 -> -> 86 `ui `uc ]
-[; ;main.c: 69: putChar('V');
+[e $UE 276  ]
 "69
-[e ( _putChar (1 -> -> 86 `ui `uc ]
-[; ;main.c: 70: put_lf();
+}
+[e :U 277 ]
+[; ;main.c: 69: }
+[; ;main.c: 70: }
 "70
-[e ( _put_lf ..  ]
-[; ;main.c: 71: }
-"71
 [e :UE 276 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"121
+"72
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 121: void main(void) {
+[; ;main.c: 72: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 123: _delay((unsigned long)((1000)*(10000000/4000.0)));
-"123
+[; ;main.c: 74: _delay((unsigned long)((1000)*(10000000/4000.0)));
+"74
 [e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 124: Init_MPU();
-"124
+[; ;main.c: 75: Init_MPU();
+"75
 [e ( _Init_MPU ..  ]
-[; ;main.c: 125: InitI2CMaster(100000);
-"125
+[; ;main.c: 76: InitI2CMaster(100000);
+"76
 [e ( _InitI2CMaster (1 -> -> 100000 `l `ul ]
-[; ;main.c: 126: Init_SERIAL();
-"126
+[; ;main.c: 77: Init_SERIAL();
+"77
 [e ( _Init_SERIAL ..  ]
-[; ;main.c: 127: Init_WDT();
-"127
+[; ;main.c: 78: Init_WDT();
+"78
 [e ( _Init_WDT ..  ]
-[; ;main.c: 128: sendPulseWDT();
-"128
+[; ;main.c: 79: putChar('T');
+"79
+[e ( _putChar (1 -> -> 84 `ui `uc ]
+[; ;main.c: 80: putChar('R');
+"80
+[e ( _putChar (1 -> -> 82 `ui `uc ]
+[; ;main.c: 81: putChar('S');
+"81
+[e ( _putChar (1 -> -> 83 `ui `uc ]
+[; ;main.c: 82: put_lf();
+"82
+[e ( _put_lf ..  ]
+[; ;main.c: 83: putHex(SSPSTAT);
+"83
+[e ( _putHex (1 _SSPSTAT ]
+[; ;main.c: 84: putHex(SSPCON);
+"84
+[e ( _putHex (1 _SSPCON ]
+[; ;main.c: 85: putHex(SSPCON2);
+"85
+[e ( _putHex (1 _SSPCON2 ]
+[; ;main.c: 86: Init_HK();
+"86
+[e ( _Init_HK ..  ]
+[; ;main.c: 87: sendPulseWDT();
+"87
 [e ( _sendPulseWDT ..  ]
-[; ;main.c: 129: delay_s(2);
-"129
-[e ( _delay_s (1 -> -> 2 `i `us ]
-[; ;main.c: 131: for(UBYTE i=0; i<6 ; i++){
-"131
+[; ;main.c: 88: delay_s(1);
+"88
+[e ( _delay_s (1 -> -> 1 `i `us ]
+[v F3122 `uc ~T0 @X0 -> 2 `i s ]
+[i F3122
+:U ..
+"90
+-> -> 0 `i `uc
+..
+]
+[v _melting_status `uc ~T0 @X0 -> 2 `i a ]
+[; ;main.c: 90: UBYTE melting_status[2] = {0x00};
+[e = _melting_status F3122 ]
+[; ;main.c: 91: melting_status[0] = checkMeltingStatus(0x50);
+"91
+[e = *U + &U _melting_status * -> -> -> 0 `i `ui `ux -> -> # *U &U _melting_status `ui `ux ( _checkMeltingStatus (1 -> -> 80 `i `uc ]
+[; ;main.c: 92: melting_status[1] = checkMeltingStatus(0x52);
+"92
+[e = *U + &U _melting_status * -> -> -> 1 `i `ui `ux -> -> # *U &U _melting_status `ui `ux ( _checkMeltingStatus (1 -> -> 82 `i `uc ]
+[; ;main.c: 93: if((melting_status[0] < 4)&&(melting_status[1] < 4)) {
+"93
+[e $ ! && < -> *U + &U _melting_status * -> -> -> 0 `i `ui `ux -> -> # *U &U _melting_status `ui `ux `i -> 4 `i < -> *U + &U _melting_status * -> -> -> 1 `i `ui `ux -> -> # *U &U _melting_status `ui `ux `i -> 4 `i 290  ]
+{
+[; ;main.c: 95: for(UBYTE i=0; i<4; i++){
+"95
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 6 `i 287  ]
-[e $U 288  ]
-[e :U 287 ]
-{
-[; ;main.c: 132: putChar(0xF0);
-"132
-[e ( _putChar (1 -> -> 240 `i `uc ]
-"133
-}
-"131
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 6 `i 287  ]
-[e :U 288 ]
-"133
-}
-[; ;main.c: 133: }
-[; ;main.c: 134: put_lf();
-"134
-[e ( _put_lf ..  ]
-[; ;main.c: 136: HK_test_setting();
-"136
-[e ( _HK_test_setting ..  ]
-[; ;main.c: 142: while(1){
-"142
+[e $ < -> _i `i -> 4 `i 291  ]
+[e $U 292  ]
 [e :U 291 ]
 {
-[; ;main.c: 143: put_lf();
-"143
-[e ( _put_lf ..  ]
-[; ;main.c: 144: for(UBYTE i=0; i<3 ; i++){
-"144
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 3 `i 293  ]
-[e $U 294  ]
-[e :U 293 ]
-{
-[; ;main.c: 145: putChar(0xE1);
-"145
-[e ( _putChar (1 -> -> 225 `i `uc ]
-"146
-}
-"144
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 3 `i 293  ]
-[e :U 294 ]
-"146
-}
-[; ;main.c: 146: }
-[; ;main.c: 147: put_lf();
-"147
-[e ( _put_lf ..  ]
-[; ;main.c: 148: sendPulseWDT();
-"148
+[; ;main.c: 97: sendPulseWDT();
+"97
 [e ( _sendPulseWDT ..  ]
-[; ;main.c: 156: measureAllChanelADC();
-"156
-[e ( _measureAllChanelADC ..  ]
-[; ;main.c: 157: if(read5VBusAndSwitchNtrxPower() != 0){
-"157
-[e $ ! != -> ( _read5VBusAndSwitchNtrxPower ..  `i -> 0 `i 296  ]
+[; ;main.c: 98: for(UBYTE j=0; j<10; j++){
+"98
 {
-[; ;main.c: 158: if(read5VBusAndSwitchNtrxPower() != 0){
-"158
-[e $ ! != -> ( _read5VBusAndSwitchNtrxPower ..  `i -> 0 `i 297  ]
+[v _j `uc ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `uc ]
+[e $ < -> _j `i -> 10 `i 294  ]
+[e $U 295  ]
+[e :U 294 ]
 {
-[; ;main.c: 159: onOffNTRX(0x01,0,0);
-"159
-[e ( _onOffNTRX (3 , , -> -> 1 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc ]
-"160
+[; ;main.c: 99: delay_s(5);
+"99
+[e ( _delay_s (1 -> -> 5 `i `us ]
+[; ;main.c: 100: sendPulseWDT();
+"100
+[e ( _sendPulseWDT ..  ]
+"101
 }
-[e :U 297 ]
-"161
+"98
+[e ++ _j -> -> 1 `i `uc ]
+[e $ < -> _j `i -> 10 `i 294  ]
+[e :U 295 ]
+"101
 }
-[e :U 296 ]
-[; ;main.c: 160: }
-[; ;main.c: 161: }
-[; ;main.c: 163: CheckNTRXsubpower();
-"163
-[e ( _CheckNTRXsubpower ..  ]
-[; ;main.c: 166: put_lf();
-"166
-[e ( _put_lf ..  ]
-[; ;main.c: 167: for(UBYTE i=0; i<3 ; i++){
-"167
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 3 `i 298  ]
-[e $U 299  ]
-[e :U 298 ]
-{
-[; ;main.c: 168: putChar(0xE2);
-"168
-[e ( _putChar (1 -> -> 226 `i `uc ]
-"169
+"102
 }
-"167
+"95
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 3 `i 298  ]
-[e :U 299 ]
-"169
+[e $ < -> _i `i -> 4 `i 291  ]
+[e :U 292 ]
+"102
 }
-[; ;main.c: 169: }
-[; ;main.c: 170: put_lf();
-"170
-[e ( _put_lf ..  ]
-[; ;main.c: 171: HKDownlink();
-"171
-[e ( _HKDownlink ..  ]
-[; ;main.c: 172: put_lf();
-"172
-[e ( _put_lf ..  ]
-[; ;main.c: 173: for(UBYTE i=0; i<3 ; i++){
-"173
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 3 `i 301  ]
-[e $U 302  ]
-[e :U 301 ]
-{
-[; ;main.c: 174: putChar(0xE3);
-"174
-[e ( _putChar (1 -> -> 227 `i `uc ]
-"175
-}
-"173
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 3 `i 301  ]
-[e :U 302 ]
-"175
-}
-[; ;main.c: 175: }
-[; ;main.c: 176: put_lf();
-"176
-[e ( _put_lf ..  ]
-[; ;main.c: 181: if(ReceiveFlag == 0x02){
-"181
-[e $ ! == -> _ReceiveFlag `i -> 2 `i 304  ]
-{
-[; ;main.c: 182: put_lf();
-"182
-[e ( _put_lf ..  ]
-[; ;main.c: 183: for(UBYTE i=0; i<10 ; i++){
-"183
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 10 `i 305  ]
-[e $U 306  ]
-[e :U 305 ]
-{
-[; ;main.c: 184: putChar(RXDATA[i]);
-"184
-[e ( _putChar (1 *U + &U _RXDATA * -> _i `ux -> -> # *U &U _RXDATA `ui `ux ]
-"185
-}
-"183
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 10 `i 305  ]
-[e :U 306 ]
-"185
-}
-[; ;main.c: 185: }
-[; ;main.c: 186: put_lf();
-"186
-[e ( _put_lf ..  ]
-"187
-[v _command_ID `uc ~T0 @X0 1 a ]
-[; ;main.c: 187: UBYTE command_ID = 0x00;
-[e = _command_ID -> -> 0 `i `uc ]
-"188
-[v _command_status `uc ~T0 @X0 1 a ]
-[; ;main.c: 188: UBYTE command_status = 0x00;
-[e = _command_status -> -> 0 `i `uc ]
-"189
-[v _ID_add_high `uc ~T0 @X0 1 a ]
-[; ;main.c: 189: UBYTE ID_add_high = 0x00;
-[e = _ID_add_high -> -> 0 `i `uc ]
-"190
-[v _ID_add_low `uc ~T0 @X0 1 a ]
-[; ;main.c: 190: UBYTE ID_add_low = 0x00;
-[e = _ID_add_low -> -> 0 `i `uc ]
-[; ;main.c: 193: ID_add_high = RXDATA[3];
-"193
-[e = _ID_add_high *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-[; ;main.c: 194: ID_add_low = RXDATA[4] + 1;
-"194
-[e = _ID_add_low -> + -> *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux `i -> 1 `i `uc ]
-[; ;main.c: 195: putChar(0xc4);
-"195
-[e ( _putChar (1 -> -> 196 `i `uc ]
-[; ;main.c: 196: putChar(ID_add_high);
-"196
-[e ( _putChar (1 _ID_add_high ]
-[; ;main.c: 197: putChar(ID_add_low);
-"197
-[e ( _putChar (1 _ID_add_low ]
-[; ;main.c: 200: if(RXDATA[0] == 'g'){
-"200
-[e $ ! == -> *U + &U _RXDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux `ui -> 103 `ui 308  ]
-{
-[; ;main.c: 201: command_ID = ReadEEPROM(RXDATA[2], ID_add_high, ID_add_low);
-"201
-[e = _command_ID ( _ReadEEPROM (3 , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux _ID_add_high _ID_add_low ]
-[; ;main.c: 202: putChar(0xc5);
-"202
-[e ( _putChar (1 -> -> 197 `i `uc ]
-[; ;main.c: 203: putChar(command_ID);
-"203
-[e ( _putChar (1 _command_ID ]
-[; ;main.c: 204: WriteLastCommandIdToEEPROM(command_ID);
-"204
-[e ( _WriteLastCommandIdToEEPROM (1 _command_ID ]
-[; ;main.c: 205: WriteLastCommandStatusToEEPROM(0x55);
-"205
-[e ( _WriteLastCommandStatusToEEPROM (1 -> -> 85 `i `uc ]
-[; ;main.c: 206: if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
-"206
-[e $ ! != -> ( _crc16 (3 , , -> -> 0 `i `us &U _RXDATA -> -> 8 `i `ui `ui -> ( _CRC_check (2 , &U _RXDATA -> -> 8 `i `ui `ui 309  ]
-{
-[; ;main.c: 208: WriteLastCommandStatusToEEPROM(0x10);
-"208
-[e ( _WriteLastCommandStatusToEEPROM (1 -> -> 16 `i `uc ]
-[; ;main.c: 209: ReceiveFlag = 0x01;
-"209
-[e = _ReceiveFlag -> -> 1 `i `uc ]
-[; ;main.c: 210: putChar(0xc6);
-"210
-[e ( _putChar (1 -> -> 198 `i `uc ]
-[; ;main.c: 211: put_lf();
-"211
-[e ( _put_lf ..  ]
-[; ;main.c: 212: continue;
-"212
-[e $U 290  ]
-"213
-}
-[e :U 309 ]
-"214
-}
-[e :U 308 ]
-[; ;main.c: 213: }
-[; ;main.c: 214: }
-[; ;main.c: 215: if(RXDATA[0] == 't'){
-"215
-[e $ ! == -> *U + &U _RXDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux `ui -> 116 `ui 310  ]
-{
-[; ;main.c: 216: if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
-"216
-[e $ ! != -> ( _crc16 (3 , , -> -> 0 `i `us &U _RXDATA -> -> 8 `i `ui `ui -> ( _CRC_check (2 , &U _RXDATA -> -> 8 `i `ui `ui 311  ]
-{
-[; ;main.c: 217: ReceiveFlag = 0x01;
-"217
-[e = _ReceiveFlag -> -> 1 `i `uc ]
-[; ;main.c: 218: continue;
-"218
-[e $U 290  ]
-"219
-}
-[e :U 311 ]
-"220
-}
-[e :U 310 ]
-[; ;main.c: 219: }
-[; ;main.c: 220: }
-[; ;main.c: 221: putChar(0xc7);
-"221
-[e ( _putChar (1 -> -> 199 `i `uc ]
-[; ;main.c: 222: putChar(0xc7);
-"222
-[e ( _putChar (1 -> -> 199 `i `uc ]
-[; ;main.c: 223: putChar(0xc7);
-"223
-[e ( _putChar (1 -> -> 199 `i `uc ]
-[; ;main.c: 224: putChar(0xc7);
-"224
-[e ( _putChar (1 -> -> 199 `i `uc ]
-[; ;main.c: 225: putChar(0xc7);
-"225
-[e ( _putChar (1 -> -> 199 `i `uc ]
-[; ;main.c: 226: putChar(0xc7);
-"226
-[e ( _putChar (1 -> -> 199 `i `uc ]
-[; ;main.c: 227: putChar(0xc7);
-"227
-[e ( _putChar (1 -> -> 199 `i `uc ]
-[; ;main.c: 228: putChar(0xc7);
-"228
-[e ( _putChar (1 -> -> 199 `i `uc ]
-[; ;main.c: 229: putChar(RXDATA[1]);
-"229
-[e ( _putChar (1 *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-[; ;main.c: 233: switch(RXDATA[1]){
-"233
-[e $U 313  ]
-{
-[; ;main.c: 236: case 0x75:
-"236
-[e :U 314 ]
-[; ;main.c: 237: putChar('R');
-"237
-[e ( _putChar (1 -> -> 82 `ui `uc ]
-[; ;main.c: 238: putChar(0xa4);
-"238
-[e ( _putChar (1 -> -> 164 `i `uc ]
-[; ;main.c: 239: downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-"239
-[e ( _downlinkReceivedCommand (4 , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-[; ;main.c: 240: break;
-"240
-[e $U 312  ]
-[; ;main.c: 247: case 0x66:
-"247
-[e :U 315 ]
-[; ;main.c: 248: putChar(0xa6);
-"248
-[e ( _putChar (1 -> -> 166 `i `uc ]
-[; ;main.c: 249: downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-"249
-[e ( _downlinkFMSignal (4 , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-[; ;main.c: 250: break;
-"250
-[e $U 312  ]
-[; ;main.c: 251: case 'p':
-"251
-[e :U 316 ]
-[; ;main.c: 252: for(UBYTE i=0; i<20; i++) putChar(0xa7);
-"252
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 20 `i 317  ]
-[e $U 318  ]
-[e :U 317 ]
-[e ( _putChar (1 -> -> 167 `i `uc ]
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 20 `i 317  ]
-[e :U 318 ]
-}
-[; ;main.c: 253: commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-"253
-[e ( _commandSwitchPowerSupply (4 , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-[; ;main.c: 254: break;
-"254
-[e $U 312  ]
-[; ;main.c: 255: case 0x68:
-"255
-[e :U 320 ]
-[; ;main.c: 256: measureDcDcTemperature();
-"256
-[e ( _measureDcDcTemperature ..  ]
-[; ;main.c: 257: break;
-"257
-[e $U 312  ]
-[; ;main.c: 258: case 0x72:
-"258
-[e :U 321 ]
-[; ;main.c: 259: sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
-"259
-[e ( _sendCommand (4 , , , , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 7 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux -> -> 0 `i `uc -> -> 0 `i `uc ]
-[; ;main.c: 260: break;
-"260
-[e $U 312  ]
-[; ;main.c: 262: case 0x80:
-"262
-[e :U 322 ]
-[; ;main.c: 263: putChar(0x80);
-"263
-[e ( _putChar (1 -> -> 128 `i `uc ]
-[; ;main.c: 264: put_ok();
-"264
-[e ( _put_ok ..  ]
-[; ;main.c: 265: break;
-"265
-[e $U 312  ]
-[; ;main.c: 266: default:
-"266
-[e :U 323 ]
-[; ;main.c: 267: putChar(0xc8);
-"267
-[e ( _putChar (1 -> -> 200 `i `uc ]
-[; ;main.c: 269: put_error();
-"269
-[e ( _put_error ..  ]
-[; ;main.c: 270: break;
-"270
-[e $U 312  ]
-"271
-}
-[; ;main.c: 271: }
-[e $U 312  ]
-"233
-[e :U 313 ]
-[e [\ *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux , $ -> -> 117 `i `uc 314
- , $ -> -> 102 `i `uc 315
- , $ -> -> 112 `ui `uc 316
- , $ -> -> 104 `i `uc 320
- , $ -> -> 114 `i `uc 321
- , $ -> -> 128 `i `uc 322
- 323 ]
-"271
-[e :U 312 ]
-[; ;main.c: 272: putChar(0xc9);
-"272
-[e ( _putChar (1 -> -> 201 `i `uc ]
-[; ;main.c: 273: WriteLastCommandStatusToEEPROM(command_status);
-"273
-[e ( _WriteLastCommandStatusToEEPROM (1 _command_status ]
-[; ;main.c: 274: ReceiveFlag = 0x00;
-"274
-[e = _ReceiveFlag -> -> 0 `i `uc ]
-[; ;main.c: 275: putChar(0x39);
-"275
-[e ( _putChar (1 -> -> 57 `i `uc ]
-"276
-}
-[e :U 304 ]
-"281
+"103
 }
 [e :U 290 ]
+[; ;main.c: 101: }
+[; ;main.c: 102: }
+[; ;main.c: 103: }
+[; ;main.c: 105: while(1){
+"105
+[e :U 298 ]
+{
+[; ;main.c: 106: putChar('S');
+"106
+[e ( _putChar (1 -> -> 83 `ui `uc ]
+[; ;main.c: 107: putChar('\r');
+"107
+[e ( _putChar (1 -> -> 13 `ui `uc ]
+[; ;main.c: 108: putChar('\n');
+"108
+[e ( _putChar (1 -> -> 10 `ui `uc ]
+[; ;main.c: 109: sendPulseWDT();
+"109
+[e ( _sendPulseWDT ..  ]
+[; ;main.c: 111: measureAllChanelADC();
+"111
+[e ( _measureAllChanelADC ..  ]
+[; ;main.c: 112: if(read5VBusAndSwitchNtrxPower() != 0){
+"112
+[e $ ! != -> ( _read5VBusAndSwitchNtrxPower ..  `i -> 0 `i 300  ]
+{
+[; ;main.c: 113: if(read5VBusAndSwitchNtrxPower() != 0){
+"113
+[e $ ! != -> ( _read5VBusAndSwitchNtrxPower ..  `i -> 0 `i 301  ]
+{
+[; ;main.c: 114: onOffNTRX(0x01,0,0);
+"114
+[e ( _onOffNTRX (3 , , -> -> 1 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc ]
+"115
+}
+[e :U 301 ]
+"116
+}
+[e :U 300 ]
+[; ;main.c: 115: }
+[; ;main.c: 116: }
+[; ;main.c: 118: CheckNTRXsubpower();
+"118
+[e ( _CheckNTRXsubpower ..  ]
+[; ;main.c: 120: HKDownlink();
+"120
+[e ( _HKDownlink ..  ]
+[; ;main.c: 126: for(UINT j=0; j<3; j++){
+"126
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 3 `i `ui 302  ]
+[e $U 303  ]
+[e :U 302 ]
+{
+[; ;main.c: 127: if(STOCKDATA[j][0] == 'g' || STOCKDATA[j][0] == 't'){
+"127
+[e $ ! || == -> *U + &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux * -> -> -> 0 `i `ui `ux -> -> # *U &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux `ui `ux `ui -> 103 `ui == -> *U + &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux * -> -> -> 0 `i `ui `ux -> -> # *U &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux `ui `ux `ui -> 116 `ui 305  ]
+{
+[; ;main.c: 128: for(UINT i=0; i<10; i++) RXDATA[i] = STOCKDATA[j][i];
+"128
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 10 `i `ui 306  ]
+[e $U 307  ]
+[e :U 306 ]
+[e = *U + &U _RXDATA * -> _i `ux -> -> # *U &U _RXDATA `ui `ux *U + &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux * -> _i `ux -> -> # *U &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux `ui `ux ]
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 10 `i `ui 306  ]
+[e :U 307 ]
+}
+[; ;main.c: 129: for(UINT i=0; i<10; i++) STOCKDATA[j][i] = 0;;
+"129
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 10 `i `ui 309  ]
+[e $U 310  ]
+[e :U 309 ]
+[e = *U + &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux * -> _i `ux -> -> # *U &U *U + &U _STOCKDATA * -> _j `ux -> * -> # *U &U *U &U _STOCKDATA `ui -> -> 10 `i `ui `ux `ui `ux -> -> 0 `i `uc ]
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 10 `i `ui 309  ]
+[e :U 310 ]
+}
+[; ;main.c: 130: ReceiveFlag = 0x02;
+"130
+[e = _ReceiveFlag -> -> 2 `i `uc ]
+[; ;main.c: 131: break;
+"131
+[e $U 303  ]
+"132
+}
+[e :U 305 ]
+"133
+}
+"126
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 3 `i `ui 302  ]
+[e :U 303 ]
+"133
+}
+[; ;main.c: 132: }
+[; ;main.c: 133: }
+[; ;main.c: 135: if(ReceiveFlag == 0x02){
+"135
+[e $ ! == -> _ReceiveFlag `i -> 2 `i 312  ]
+{
+"136
+[v _command_ID `uc ~T0 @X0 1 a ]
+[; ;main.c: 136: UBYTE command_ID = 0x00;
+[e = _command_ID -> -> 0 `i `uc ]
+"137
+[v _ID_add_high `uc ~T0 @X0 1 a ]
+[; ;main.c: 137: UBYTE ID_add_high = 0x00;
+[e = _ID_add_high -> -> 0 `i `uc ]
+"138
+[v _ID_add_low `uc ~T0 @X0 1 a ]
+[; ;main.c: 138: UBYTE ID_add_low = 0x00;
+[e = _ID_add_low -> -> 0 `i `uc ]
+[; ;main.c: 141: ID_add_high = RXDATA[3];
+"141
+[e = _ID_add_high *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
+[; ;main.c: 142: ID_add_low = RXDATA[4] + 1;
 "142
-[e $U 291  ]
-[e :U 292 ]
-[; ;main.c: 276: }
-[; ;main.c: 281: }
-[; ;main.c: 282: }
-"282
-[e :UE 286 ]
+[e = _ID_add_low -> + -> *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux `i -> 1 `i `uc ]
+[; ;main.c: 145: if(RXDATA[0] == 'g' || RXDATA[0] == 't'){
+"145
+[e $ ! || == -> *U + &U _RXDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux `ui -> 103 `ui == -> *U + &U _RXDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux `ui -> 116 `ui 313  ]
+{
+[; ;main.c: 146: command_ID = ReadEEPROM(RXDATA[2], ID_add_high, ID_add_low);
+"146
+[e = _command_ID ( _ReadEEPROM (3 , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux _ID_add_high _ID_add_low ]
+[; ;main.c: 147: WriteLastCommandIdToEEPROM(command_ID);
+"147
+[e ( _WriteLastCommandIdToEEPROM (1 _command_ID ]
+[; ;main.c: 148: if(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
+"148
+[e $ ! != -> ( _crc16 (3 , , -> -> 0 `i `us &U _RXDATA -> -> 8 `i `ui `ui -> ( _CRC_check (2 , &U _RXDATA -> -> 8 `i `ui `ui 314  ]
+{
+[; ;main.c: 150: ReceiveFlag = 0x01;
+"150
+[e = _ReceiveFlag -> -> 1 `i `uc ]
+[; ;main.c: 151: continue;
+"151
+[e $U 297  ]
+"152
+}
+[e :U 314 ]
+"153
+}
+[e :U 313 ]
+[; ;main.c: 152: }
+[; ;main.c: 153: }
+[; ;main.c: 157: switch(RXDATA[1]){
+"157
+[e $U 316  ]
+{
+[; ;main.c: 160: case 0x75:
+"160
+[e :U 317 ]
+[; ;main.c: 162: break;
+"162
+[e $U 315  ]
+[; ;main.c: 165: case 0x63:
+"165
+[e :U 318 ]
+[; ;main.c: 167: break;
+"167
+[e $U 315  ]
+[; ;main.c: 168: case 0x66:
+"168
+[e :U 319 ]
+[; ;main.c: 171: break;
+"171
+[e $U 315  ]
+[; ;main.c: 172: case 'p':
+"172
+[e :U 320 ]
+[; ;main.c: 174: break;
+"174
+[e $U 315  ]
+[; ;main.c: 175: default:
+"175
+[e :U 321 ]
+[; ;main.c: 176: break;
+"176
+[e $U 315  ]
+"177
+}
+[; ;main.c: 177: }
+[e $U 315  ]
+"157
+[e :U 316 ]
+[e [\ *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux , $ -> -> 117 `i `uc 317
+ , $ -> -> 99 `i `uc 318
+ , $ -> -> 102 `i `uc 319
+ , $ -> -> 112 `ui `uc 320
+ 321 ]
+"177
+[e :U 315 ]
+[; ;main.c: 178: ReceiveFlag = 0x00;
+"178
+[e = _ReceiveFlag -> -> 0 `i `uc ]
+"179
+}
+[e :U 312 ]
+"182
+}
+[e :U 297 ]
+"105
+[e $U 298  ]
+[e :U 299 ]
+[; ;main.c: 179: }
+[; ;main.c: 182: }
+[; ;main.c: 183: }
+"183
+[e :UE 289 ]
 }

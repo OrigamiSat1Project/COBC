@@ -50,8 +50,16 @@ void main(void) {
     /*---Initialization---*/
     /*----------------------------------------------------------------------*/
     InitSerial();
+    putChar('R');
+    putChar('R');
+    putChar('S');
+    put_lf();
     InitMPU();
     InitWDT();
+    putHex(SSPSTAT);
+    putHex(SSPCON);
+    putHex(SSPCON2);
+    put_lf();
     InitI2CMaster(I2C_baud_rate_def);
     initTimer();
     InitSatMode();
@@ -104,7 +112,7 @@ void main(void) {
     
     while(1){
         putChar('M');
-        putChar('L');
+        putChar('R');
         put_lf();
 
         /*---timer interrupt---*/
@@ -120,10 +128,17 @@ void main(void) {
         }
 //
         /*---timer process for NTRX PLL setting(every day) & EPS reset (if initial Ope / everyday)---*/
-        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){ 
-//        if(1){
+//        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){
+        
+        //for debug 20201231
+        if(1){
             melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+            putChar('M');
+            putChar('E');
+            putChar('L');
+            putChar('T');
+            put_lf();
             putHex(melting_status[0]);
             putHex(melting_status[1]);
             if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
@@ -207,33 +222,33 @@ void main(void) {
                 // Command type
         switch(commandData[3]){         //Process command type
             case 'm': /*change sattelite mode*/
-                commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+//                commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
     //                    commandSwitchSatMode(&commandData[4]);
                 break;
             case 'p': /*power supply*/
-                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+//                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
                 break;
             case 'n': /*radio unit*/
-                commandSwitchFMCW(commandData[4]);
+//                commandSwitchFMCW(commandData[4]);
                 break;
             case 'i':/*I2C*/
-                commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
+//                commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
                 break;
             case 'e': /*EEPROM*/
     //                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
-                commandSwitchEEPROM(&commandData[4]);
+//                commandSwitchEEPROM(&commandData[4]);
                 break;
             case 'u':/*UART*/
-                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7]);
+//                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7]);
                 break;
             case 'w':/*WDT (watch dog timer)*/
-                WDTwait();
+//                WDTwait();
                 break;
             case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
                 //TODO: write function directly here or in MPU.c
                 break;
             case 'r':/*internal processing*/
-                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+//                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
                 break;
             default:
                 break;

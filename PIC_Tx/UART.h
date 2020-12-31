@@ -19,6 +19,7 @@
 UBYTE ReceiveFlag = NOT_RECEIVE;
 
 void Init_SERIAL(void);
+void putHex(UBYTE data);
 UBYTE getChar(void);
 void putChar(UBYTE);                  // Writes a character to the serial port
 void putString(UBYTE *);

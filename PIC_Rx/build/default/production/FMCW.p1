@@ -7,7 +7,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S13 . . ]
 "412
 [v _PORTEbits `VS13 ~T0 @X0 0 e@9 ]
-"22 FMCW.c
+"24 FMCW.c
 [v __NOP `(v ~T0 @X0 0 ef ]
 "344 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
 [s S12 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -33,8 +33,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S7 . . ]
 "231
 [v _PORTBbits `VS7 ~T0 @X0 0 e@6 ]
-"63 OkError.h
-[v _switchError `(v ~T0 @X0 0 ef1`uc ]
 "29 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v ___nop `(v ~T0 @X0 0 ef ]
 [p i ___nop ]
@@ -1084,530 +1082,535 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;FMCW.h: 29: void FMTX(int Nref, USLONG Nprg);
 [; ;FMCW.h: 30: void CWTX(int Nref, USLONG Nprg);
 [; ;FMCW.h: 31: void FMRX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 32: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 32: void commandSwitchFMCW(UBYTE);
 [; ;FMCW.h: 33: void setNref(UBYTE unitID, int Nref);
 [; ;FMCW.h: 37: void setPLL(void);
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
-[; ;OkError.h: 62: void switchOk(UBYTE);
-[; ;OkError.h: 63: void switchError(UBYTE);
-[; ;FMCW.c: 16: void sendLow(UBYTE unitID);
-[; ;FMCW.c: 17: void sendHigh(UBYTE unitID);
-[; ;FMCW.c: 18: void sendSTB(UBYTE unitID);
-[; ;FMCW.c: 19: void setNprg(UBYTE unitID, USLONG Nprg);
-[; ;FMCW.c: 20: void setNref(UBYTE unitID, int Nref);
-[; ;FMCW.c: 21: void setOptionRegister(UBYTE unitID);
-[; ;FMCW.c: 22: void _NOP(void);
-"31 FMCW.c
+[; ;OkError.h: 65: void switchOk(UBYTE);
+[; ;OkError.h: 66: void updateErrorStatus(UBYTE);
+[; ;I2C.h: 20: void InitI2CMaster(const UDWORD c);
+[; ;I2C.h: 21: void interruptI2C(void);
+[; ;I2C.h: 22: void I2CMasterWait(char);
+[; ;I2C.h: 23: SBYTE I2CMasterStart(unsigned char, unsigned char);
+[; ;I2C.h: 24: SBYTE I2CMasterRepeatedStart(unsigned char, unsigned char);
+[; ;I2C.h: 25: SBYTE I2CMasterStop(void);
+[; ;I2C.h: 28: int WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+[; ;I2C.h: 29: int WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+[; ;I2C.h: 30: void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE);
+[; ;I2C.h: 31: int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+[; ;I2C.h: 32: void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+[; ;I2C.h: 33: void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+[; ;I2C.h: 34: void WriteLastCommandIdToEEPROM(UBYTE last_command_ID);
+[; ;I2C.h: 37: UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
+[; ;I2C.h: 38: UBYTE ReadEEPROMmainAndSub(UBYTE,UBYTE,UBYTE);
+[; ;I2C.h: 39: void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
+[; ;I2C.h: 41: void I2CBufferClear(void);
+[; ;I2C.h: 42: void ChangeI2CBaudRate(UBYTE);
+[; ;I2C.h: 44: void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;I2C.h: 46: void commandSwitchEEPROM(UBYTE*);
+[; ;FMCW.c: 18: void sendLow(UBYTE unitID);
+[; ;FMCW.c: 19: void sendHigh(UBYTE unitID);
+[; ;FMCW.c: 20: void sendSTB(UBYTE unitID);
+[; ;FMCW.c: 21: void setNprg(UBYTE unitID, USLONG Nprg);
+[; ;FMCW.c: 22: void setNref(UBYTE unitID, int Nref);
+[; ;FMCW.c: 23: void setOptionRegister(UBYTE unitID);
+[; ;FMCW.c: 24: void _NOP(void);
+"25 FMCW.c
+[v _Nprg_b `uc ~T0 @X0 -> 17 `i e ]
+[; ;FMCW.c: 25: UBYTE Nprg_b[17];
+"26
+[v _Nref_b `uc ~T0 @X0 -> 12 `i e ]
+[; ;FMCW.c: 26: UBYTE Nref_b[12];
+"35
 [v _sendLow `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;FMCW.c: 31: void sendLow(UBYTE unitID){
+[; ;FMCW.c: 35: void sendLow(UBYTE unitID){
 [e :U _sendLow ]
 [v _unitID `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;FMCW.c: 32: if(unitID == 1)
-"32
-[e $ ! == -> _unitID `i -> 1 `i 96  ]
-[; ;FMCW.c: 33: {
-"33
-{
-[; ;FMCW.c: 34: PORTEbits.RE1 = 0;
-"34
-[e = . . _PORTEbits 0 1 -> -> 0 `i `uc ]
-[; ;FMCW.c: 35: _NOP();
-"35
-[e ( __NOP ..  ]
-[; ;FMCW.c: 36: PORTEbits.RE2 = 1;
+[; ;FMCW.c: 36: if(unitID == 1)
 "36
-[e = . . _PORTEbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 37: _NOP();
+[e $ ! == -> _unitID `i -> 1 `i 96  ]
+[; ;FMCW.c: 37: {
 "37
-[e ( __NOP ..  ]
-[; ;FMCW.c: 38: PORTEbits.RE2 = 0;
+{
+[; ;FMCW.c: 38: PORTEbits.RE1 = 0;
 "38
-[e = . . _PORTEbits 0 2 -> -> 0 `i `uc ]
+[e = . . _PORTEbits 0 1 -> -> 0 `i `uc ]
+[; ;FMCW.c: 39: _NOP();
 "39
-}
-[; ;FMCW.c: 39: }
-[e $U 97  ]
+[e ( __NOP ..  ]
+[; ;FMCW.c: 40: PORTEbits.RE2 = 1;
 "40
-[e :U 96 ]
-[; ;FMCW.c: 40: else if(unitID == 2)
-[e $ ! == -> _unitID `i -> 2 `i 98  ]
-[; ;FMCW.c: 41: {
+[e = . . _PORTEbits 0 2 -> -> 1 `i `uc ]
+[; ;FMCW.c: 41: _NOP();
 "41
-{
-[; ;FMCW.c: 42: PORTDbits.RD1 = 0;
+[e ( __NOP ..  ]
+[; ;FMCW.c: 42: PORTEbits.RE2 = 0;
 "42
-[e = . . _PORTDbits 0 1 -> -> 0 `i `uc ]
-[; ;FMCW.c: 43: _NOP();
+[e = . . _PORTEbits 0 2 -> -> 0 `i `uc ]
 "43
-[e ( __NOP ..  ]
-[; ;FMCW.c: 44: PORTDbits.RD2 = 1;
-"44
-[e = . . _PORTDbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 45: _NOP();
-"45
-[e ( __NOP ..  ]
-[; ;FMCW.c: 46: PORTDbits.RD2 = 0;
-"46
-[e = . . _PORTDbits 0 2 -> -> 0 `i `uc ]
-"47
 }
-[; ;FMCW.c: 47: }
-[e $U 99  ]
-"48
-[e :U 98 ]
-[; ;FMCW.c: 48: else if(unitID == 3)
-[e $ ! == -> _unitID `i -> 3 `i 100  ]
-[; ;FMCW.c: 49: {
-"49
+[; ;FMCW.c: 43: }
+[e $U 97  ]
+"44
+[e :U 96 ]
+[; ;FMCW.c: 44: else if(unitID == 2)
+[e $ ! == -> _unitID `i -> 2 `i 98  ]
+[; ;FMCW.c: 45: {
+"45
 {
-[; ;FMCW.c: 50: PORTAbits.RA3 = 0;
+[; ;FMCW.c: 46: PORTDbits.RD1 = 0;
+"46
+[e = . . _PORTDbits 0 1 -> -> 0 `i `uc ]
+[; ;FMCW.c: 47: _NOP();
+"47
+[e ( __NOP ..  ]
+[; ;FMCW.c: 48: PORTDbits.RD2 = 1;
+"48
+[e = . . _PORTDbits 0 2 -> -> 1 `i `uc ]
+[; ;FMCW.c: 49: _NOP();
+"49
+[e ( __NOP ..  ]
+[; ;FMCW.c: 50: PORTDbits.RD2 = 0;
 "50
-[e = . . _PORTAbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 51: _NOP();
+[e = . . _PORTDbits 0 2 -> -> 0 `i `uc ]
 "51
-[e ( __NOP ..  ]
-[; ;FMCW.c: 52: PORTAbits.RA2 = 1;
+}
+[; ;FMCW.c: 51: }
+[e $U 99  ]
 "52
-[e = . . _PORTAbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 53: _NOP();
+[e :U 98 ]
+[; ;FMCW.c: 52: else if(unitID == 3)
+[e $ ! == -> _unitID `i -> 3 `i 100  ]
+[; ;FMCW.c: 53: {
 "53
-[e ( __NOP ..  ]
-[; ;FMCW.c: 54: PORTAbits.RA2 = 0;
+{
+[; ;FMCW.c: 54: PORTAbits.RA3 = 0;
 "54
-[e = . . _PORTAbits 0 2 -> -> 0 `i `uc ]
+[e = . . _PORTAbits 0 3 -> -> 0 `i `uc ]
+[; ;FMCW.c: 55: _NOP();
 "55
+[e ( __NOP ..  ]
+[; ;FMCW.c: 56: PORTAbits.RA2 = 1;
+"56
+[e = . . _PORTAbits 0 2 -> -> 1 `i `uc ]
+[; ;FMCW.c: 57: _NOP();
+"57
+[e ( __NOP ..  ]
+[; ;FMCW.c: 58: PORTAbits.RA2 = 0;
+"58
+[e = . . _PORTAbits 0 2 -> -> 0 `i `uc ]
+"59
 }
 [e :U 100 ]
-"56
+"60
 [e :U 99 ]
 [e :U 97 ]
-[; ;FMCW.c: 55: }
-[; ;FMCW.c: 56: }
+[; ;FMCW.c: 59: }
+[; ;FMCW.c: 60: }
 [e :UE 95 ]
 }
-"64
+"68
 [v _sendHigh `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;FMCW.c: 64: void sendHigh(UBYTE unitID){
+[; ;FMCW.c: 68: void sendHigh(UBYTE unitID){
 [e :U _sendHigh ]
 [v _unitID `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;FMCW.c: 65: if(unitID == 1)
-"65
-[e $ ! == -> _unitID `i -> 1 `i 102  ]
-[; ;FMCW.c: 66: {
-"66
-{
-[; ;FMCW.c: 67: PORTEbits.RE1 = 1;
-"67
-[e = . . _PORTEbits 0 1 -> -> 1 `i `uc ]
-[; ;FMCW.c: 68: _NOP();
-"68
-[e ( __NOP ..  ]
-[; ;FMCW.c: 69: PORTEbits.RE2 = 1;
+[; ;FMCW.c: 69: if(unitID == 1)
 "69
-[e = . . _PORTEbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 70: _NOP();
+[e $ ! == -> _unitID `i -> 1 `i 102  ]
+[; ;FMCW.c: 70: {
 "70
-[e ( __NOP ..  ]
-[; ;FMCW.c: 71: PORTEbits.RE2 = 0;
+{
+[; ;FMCW.c: 71: PORTEbits.RE1 = 1;
 "71
-[e = . . _PORTEbits 0 2 -> -> 0 `i `uc ]
+[e = . . _PORTEbits 0 1 -> -> 1 `i `uc ]
+[; ;FMCW.c: 72: _NOP();
 "72
-}
-[; ;FMCW.c: 72: }
-[e $U 103  ]
+[e ( __NOP ..  ]
+[; ;FMCW.c: 73: PORTEbits.RE2 = 1;
 "73
-[e :U 102 ]
-[; ;FMCW.c: 73: else if(unitID == 2)
-[e $ ! == -> _unitID `i -> 2 `i 104  ]
-[; ;FMCW.c: 74: {
+[e = . . _PORTEbits 0 2 -> -> 1 `i `uc ]
+[; ;FMCW.c: 74: _NOP();
 "74
-{
-[; ;FMCW.c: 75: PORTDbits.RD1 = 1;
+[e ( __NOP ..  ]
+[; ;FMCW.c: 75: PORTEbits.RE2 = 0;
 "75
-[e = . . _PORTDbits 0 1 -> -> 1 `i `uc ]
-[; ;FMCW.c: 76: _NOP();
+[e = . . _PORTEbits 0 2 -> -> 0 `i `uc ]
 "76
-[e ( __NOP ..  ]
-[; ;FMCW.c: 77: PORTDbits.RD2 = 1;
-"77
-[e = . . _PORTDbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 78: _NOP();
-"78
-[e ( __NOP ..  ]
-[; ;FMCW.c: 79: PORTDbits.RD2 = 0;
-"79
-[e = . . _PORTDbits 0 2 -> -> 0 `i `uc ]
-"80
 }
-[; ;FMCW.c: 80: }
-[e $U 105  ]
-"81
-[e :U 104 ]
-[; ;FMCW.c: 81: else if(unitID == 3)
-[e $ ! == -> _unitID `i -> 3 `i 106  ]
-[; ;FMCW.c: 82: {
-"82
+[; ;FMCW.c: 76: }
+[e $U 103  ]
+"77
+[e :U 102 ]
+[; ;FMCW.c: 77: else if(unitID == 2)
+[e $ ! == -> _unitID `i -> 2 `i 104  ]
+[; ;FMCW.c: 78: {
+"78
 {
-[; ;FMCW.c: 83: PORTAbits.RA3 = 1;
+[; ;FMCW.c: 79: PORTDbits.RD1 = 1;
+"79
+[e = . . _PORTDbits 0 1 -> -> 1 `i `uc ]
+[; ;FMCW.c: 80: _NOP();
+"80
+[e ( __NOP ..  ]
+[; ;FMCW.c: 81: PORTDbits.RD2 = 1;
+"81
+[e = . . _PORTDbits 0 2 -> -> 1 `i `uc ]
+[; ;FMCW.c: 82: _NOP();
+"82
+[e ( __NOP ..  ]
+[; ;FMCW.c: 83: PORTDbits.RD2 = 0;
 "83
-[e = . . _PORTAbits 0 3 -> -> 1 `i `uc ]
-[; ;FMCW.c: 84: _NOP();
+[e = . . _PORTDbits 0 2 -> -> 0 `i `uc ]
 "84
-[e ( __NOP ..  ]
-[; ;FMCW.c: 85: PORTAbits.RA2 = 1;
+}
+[; ;FMCW.c: 84: }
+[e $U 105  ]
 "85
-[e = . . _PORTAbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 86: _NOP();
+[e :U 104 ]
+[; ;FMCW.c: 85: else if(unitID == 3)
+[e $ ! == -> _unitID `i -> 3 `i 106  ]
+[; ;FMCW.c: 86: {
 "86
-[e ( __NOP ..  ]
-[; ;FMCW.c: 87: PORTAbits.RA2 = 0;
+{
+[; ;FMCW.c: 87: PORTAbits.RA3 = 1;
 "87
-[e = . . _PORTAbits 0 2 -> -> 0 `i `uc ]
+[e = . . _PORTAbits 0 3 -> -> 1 `i `uc ]
+[; ;FMCW.c: 88: _NOP();
 "88
+[e ( __NOP ..  ]
+[; ;FMCW.c: 89: PORTAbits.RA2 = 1;
+"89
+[e = . . _PORTAbits 0 2 -> -> 1 `i `uc ]
+[; ;FMCW.c: 90: _NOP();
+"90
+[e ( __NOP ..  ]
+[; ;FMCW.c: 91: PORTAbits.RA2 = 0;
+"91
+[e = . . _PORTAbits 0 2 -> -> 0 `i `uc ]
+"92
 }
 [e :U 106 ]
-"89
+"93
 [e :U 105 ]
 [e :U 103 ]
-[; ;FMCW.c: 88: }
-[; ;FMCW.c: 89: }
+[; ;FMCW.c: 92: }
+[; ;FMCW.c: 93: }
 [e :UE 101 ]
 }
-"97
+"101
 [v _sendSTB `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;FMCW.c: 97: void sendSTB(UBYTE unitID){
+[; ;FMCW.c: 101: void sendSTB(UBYTE unitID){
 [e :U _sendSTB ]
 [v _unitID `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;FMCW.c: 98: if(unitID == 1)
-"98
-[e $ ! == -> _unitID `i -> 1 `i 108  ]
-[; ;FMCW.c: 99: {
-"99
-{
-[; ;FMCW.c: 100: PORTEbits.RE0 = 1;
-"100
-[e = . . _PORTEbits 0 0 -> -> 1 `i `uc ]
-[; ;FMCW.c: 101: _NOP();
-"101
-[e ( __NOP ..  ]
-[; ;FMCW.c: 102: PORTEbits.RE0 = 0;
+[; ;FMCW.c: 102: if(unitID == 1)
 "102
-[e = . . _PORTEbits 0 0 -> -> 0 `i `uc ]
+[e $ ! == -> _unitID `i -> 1 `i 108  ]
+[; ;FMCW.c: 103: {
 "103
-}
-[; ;FMCW.c: 103: }
-[e $U 109  ]
+{
+[; ;FMCW.c: 104: PORTEbits.RE0 = 1;
 "104
-[e :U 108 ]
-[; ;FMCW.c: 104: else if(unitID == 2)
-[e $ ! == -> _unitID `i -> 2 `i 110  ]
-[; ;FMCW.c: 105: {
+[e = . . _PORTEbits 0 0 -> -> 1 `i `uc ]
+[; ;FMCW.c: 105: _NOP();
 "105
-{
-[; ;FMCW.c: 106: PORTDbits.RD0 = 1;
+[e ( __NOP ..  ]
+[; ;FMCW.c: 106: PORTEbits.RE0 = 0;
 "106
-[e = . . _PORTDbits 0 0 -> -> 1 `i `uc ]
-[; ;FMCW.c: 107: _NOP();
+[e = . . _PORTEbits 0 0 -> -> 0 `i `uc ]
 "107
-[e ( __NOP ..  ]
-[; ;FMCW.c: 108: PORTDbits.RD0 = 0;
-"108
-[e = . . _PORTDbits 0 0 -> -> 0 `i `uc ]
-"109
 }
-[; ;FMCW.c: 109: }
-[e $U 111  ]
-"110
-[e :U 110 ]
-[; ;FMCW.c: 110: else if(unitID == 3)
-[e $ ! == -> _unitID `i -> 3 `i 112  ]
-[; ;FMCW.c: 111: {
-"111
+[; ;FMCW.c: 107: }
+[e $U 109  ]
+"108
+[e :U 108 ]
+[; ;FMCW.c: 108: else if(unitID == 2)
+[e $ ! == -> _unitID `i -> 2 `i 110  ]
+[; ;FMCW.c: 109: {
+"109
 {
-[; ;FMCW.c: 112: PORTBbits.RB0 = 1;
-"112
-[e = . . _PORTBbits 0 0 -> -> 1 `i `uc ]
-[; ;FMCW.c: 113: _NOP();
-"113
+[; ;FMCW.c: 110: PORTDbits.RD0 = 1;
+"110
+[e = . . _PORTDbits 0 0 -> -> 1 `i `uc ]
+[; ;FMCW.c: 111: _NOP();
+"111
 [e ( __NOP ..  ]
-[; ;FMCW.c: 114: PORTBbits.RB0 = 0;
+[; ;FMCW.c: 112: PORTDbits.RD0 = 0;
+"112
+[e = . . _PORTDbits 0 0 -> -> 0 `i `uc ]
+"113
+}
+[; ;FMCW.c: 113: }
+[e $U 111  ]
 "114
-[e = . . _PORTBbits 0 0 -> -> 0 `i `uc ]
+[e :U 110 ]
+[; ;FMCW.c: 114: else if(unitID == 3)
+[e $ ! == -> _unitID `i -> 3 `i 112  ]
+[; ;FMCW.c: 115: {
 "115
+{
+[; ;FMCW.c: 116: PORTBbits.RB0 = 1;
+"116
+[e = . . _PORTBbits 0 0 -> -> 1 `i `uc ]
+[; ;FMCW.c: 117: _NOP();
+"117
+[e ( __NOP ..  ]
+[; ;FMCW.c: 118: PORTBbits.RB0 = 0;
+"118
+[e = . . _PORTBbits 0 0 -> -> 0 `i `uc ]
+"119
 }
 [e :U 112 ]
-"116
+"120
 [e :U 111 ]
 [e :U 109 ]
-[; ;FMCW.c: 115: }
-[; ;FMCW.c: 116: }
+[; ;FMCW.c: 119: }
+[; ;FMCW.c: 120: }
 [e :UE 107 ]
 }
-"126
+"130
 [v _setNprg `(v ~T0 @X0 1 ef2`uc`um ]
 {
-[; ;FMCW.c: 126: void setNprg(UBYTE unitID, USLONG Nprg){
+[; ;FMCW.c: 130: void setNprg(UBYTE unitID, USLONG Nprg){
 [e :U _setNprg ]
 [v _unitID `uc ~T0 @X0 1 r1 ]
 [v _Nprg `um ~T0 @X0 1 r2 ]
 [f ]
-"127
+"131
 [v _count `uc ~T0 @X0 1 a ]
-[; ;FMCW.c: 127: UBYTE count = 0;
-[e = _count -> -> 0 `i `uc ]
-[v F1161 `uc ~T0 @X0 -> 17 `i s ]
-[i F1161
-:U ..
-"128
--> -> 0 `i `uc
-..
-]
-[v _Nprg_b `uc ~T0 @X0 -> 17 `i a ]
-[; ;FMCW.c: 128: UBYTE Nprg_b[17] = {0};
-[e = _Nprg_b F1161 ]
-[; ;FMCW.c: 135: for(int i=0; Nprg>0; i++){
-"135
-{
-[v _i `i ~T0 @X0 1 a ]
-[e = _i -> 0 `i ]
-[e $ > _Nprg -> -> -> 0 `i `m `um 114  ]
-[e $U 115  ]
-[e :U 114 ]
-{
-[; ;FMCW.c: 136: Nprg_b[i] = Nprg % 2;
-"136
-[e = *U + &U _Nprg_b * -> -> _i `ui `ux -> -> # *U &U _Nprg_b `ui `ux -> % _Nprg -> -> -> 2 `i `m `um `uc ]
-[; ;FMCW.c: 137: Nprg = Nprg / 2;
-"137
-[e = _Nprg / _Nprg -> -> -> 2 `i `m `um ]
-"138
-}
-"135
-[e ++ _i -> 1 `i ]
-[e $ > _Nprg -> -> -> 0 `i `m `um 114  ]
-[e :U 115 ]
-"138
-}
-[; ;FMCW.c: 138: }
-[; ;FMCW.c: 168: for (UBYTE i=0; i<17; i++)
-"168
+[; ;FMCW.c: 131: UBYTE count;
+[; ;FMCW.c: 134: for(UBYTE i=0; i<17; i++){
+"134
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 17 `i 117  ]
-[e $U 118  ]
-"169
-[e :U 117 ]
-[; ;FMCW.c: 169: {
+[e $ < -> _i `i -> 17 `i 114  ]
+[e $U 115  ]
+[e :U 114 ]
 {
-[; ;FMCW.c: 170: if(Nprg_b[i] == 0)
-"170
-[e $ ! == -> *U + &U _Nprg_b * -> _i `ux -> -> # *U &U _Nprg_b `ui `ux `i -> 0 `i 120  ]
-[; ;FMCW.c: 171: {
-"171
-{
-[; ;FMCW.c: 172: sendLow(unitID);
-"172
-[e ( _sendLow (1 _unitID ]
-"173
+[; ;FMCW.c: 135: Nprg_b[i] = 0;
+"135
+[e = *U + &U _Nprg_b * -> _i `ux -> -> # *U &U _Nprg_b `ui `ux -> -> 0 `i `uc ]
+"136
 }
-[e :U 120 ]
-[; ;FMCW.c: 173: }
-[; ;FMCW.c: 174: if(Nprg_b[i] == 1)
-"174
-[e $ ! == -> *U + &U _Nprg_b * -> _i `ux -> -> # *U &U _Nprg_b `ui `ux `i -> 1 `i 121  ]
-[; ;FMCW.c: 175: {
-"175
-{
-[; ;FMCW.c: 176: sendHigh(unitID);
-"176
-[e ( _sendHigh (1 _unitID ]
-"177
-}
-[e :U 121 ]
-"178
-}
-"168
+"134
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 17 `i 117  ]
-[e :U 118 ]
-"178
+[e $ < -> _i `i -> 17 `i 114  ]
+[e :U 115 ]
+"136
 }
-[; ;FMCW.c: 177: }
-[; ;FMCW.c: 178: }
-[; ;FMCW.c: 181: sendHigh(unitID);
-"181
-[e ( _sendHigh (1 _unitID ]
-[; ;FMCW.c: 182: sendLow(unitID);
-"182
+[; ;FMCW.c: 136: }
+[; ;FMCW.c: 139: for(int i=0; Nprg>0; i++){
+"139
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ > _Nprg -> -> -> 0 `i `m `um 117  ]
+[e $U 118  ]
+[e :U 117 ]
+{
+[; ;FMCW.c: 140: Nprg_b[i] = Nprg % 2;
+"140
+[e = *U + &U _Nprg_b * -> -> _i `ui `ux -> -> # *U &U _Nprg_b `ui `ux -> % _Nprg -> -> -> 2 `i `m `um `uc ]
+[; ;FMCW.c: 141: Nprg = Nprg / 2;
+"141
+[e = _Nprg / _Nprg -> -> -> 2 `i `m `um ]
+"142
+}
+"139
+[e ++ _i -> 1 `i ]
+[e $ > _Nprg -> -> -> 0 `i `m `um 117  ]
+[e :U 118 ]
+"142
+}
+[; ;FMCW.c: 142: }
+[; ;FMCW.c: 145: for (UBYTE i=0; i<17; i++)
+"145
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 17 `i 120  ]
+[e $U 121  ]
+"146
+[e :U 120 ]
+[; ;FMCW.c: 146: {
+{
+[; ;FMCW.c: 147: if(Nprg_b[i] == 0)
+"147
+[e $ ! == -> *U + &U _Nprg_b * -> _i `ux -> -> # *U &U _Nprg_b `ui `ux `i -> 0 `i 123  ]
+[; ;FMCW.c: 148: {
+"148
+{
+[; ;FMCW.c: 149: sendLow(unitID);
+"149
 [e ( _sendLow (1 _unitID ]
-[; ;FMCW.c: 185: sendSTB(unitID);
-"185
+"150
+}
+[e :U 123 ]
+[; ;FMCW.c: 150: }
+[; ;FMCW.c: 151: if(Nprg_b[i] == 1)
+"151
+[e $ ! == -> *U + &U _Nprg_b * -> _i `ux -> -> # *U &U _Nprg_b `ui `ux `i -> 1 `i 124  ]
+[; ;FMCW.c: 152: {
+"152
+{
+[; ;FMCW.c: 153: sendHigh(unitID);
+"153
+[e ( _sendHigh (1 _unitID ]
+"154
+}
+[e :U 124 ]
+"155
+}
+"145
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 17 `i 120  ]
+[e :U 121 ]
+"155
+}
+[; ;FMCW.c: 154: }
+[; ;FMCW.c: 155: }
+[; ;FMCW.c: 158: sendHigh(unitID);
+"158
+[e ( _sendHigh (1 _unitID ]
+[; ;FMCW.c: 159: sendLow(unitID);
+"159
+[e ( _sendLow (1 _unitID ]
+[; ;FMCW.c: 162: sendSTB(unitID);
+"162
 [e ( _sendSTB (1 _unitID ]
-[; ;FMCW.c: 186: }
-"186
+[; ;FMCW.c: 163: }
+"163
 [e :UE 113 ]
 }
-"196
+"173
 [v _setNref `(v ~T0 @X0 1 ef2`uc`i ]
 {
-[; ;FMCW.c: 196: void setNref(UBYTE unitID, int Nref){
+[; ;FMCW.c: 173: void setNref(UBYTE unitID, int Nref){
 [e :U _setNref ]
 [v _unitID `uc ~T0 @X0 1 r1 ]
 [v _Nref `i ~T0 @X0 1 r2 ]
 [f ]
-[v F1167 `uc ~T0 @X0 -> 12 `i s ]
-[i F1167
-:U ..
-"197
--> -> 0 `i `uc
-..
-]
-[v _Nref_b `uc ~T0 @X0 -> 12 `i a ]
-[; ;FMCW.c: 197: UBYTE Nref_b[12] = {0};
-[e = _Nref_b F1167 ]
-[; ;FMCW.c: 204: for(int i=0; Nref>0; i++){
-"204
-{
-[v _i `i ~T0 @X0 1 a ]
-[e = _i -> 0 `i ]
-[e $ > _Nref -> 0 `i 123  ]
-[e $U 124  ]
-[e :U 123 ]
-{
-[; ;FMCW.c: 205: Nref_b[i] = Nref % 2;
-"205
-[e = *U + &U _Nref_b * -> -> _i `ui `ux -> -> # *U &U _Nref_b `ui `ux -> % _Nref -> 2 `i `uc ]
-[; ;FMCW.c: 206: Nref = Nref / 2;
-"206
-[e = _Nref / _Nref -> 2 `i ]
-"207
-}
-"204
-[e ++ _i -> 1 `i ]
-[e $ > _Nref -> 0 `i 123  ]
-[e :U 124 ]
-"207
-}
-[; ;FMCW.c: 207: }
-[; ;FMCW.c: 210: for (UBYTE i=0; i<12; i++)
-"210
+[; ;FMCW.c: 176: for(UBYTE i=0; i<12; i++){
+"176
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
 [e $ < -> _i `i -> 12 `i 126  ]
 [e $U 127  ]
-"211
 [e :U 126 ]
-[; ;FMCW.c: 211: {
 {
-[; ;FMCW.c: 212: if(Nref_b[i] == 0)
-"212
-[e $ ! == -> *U + &U _Nref_b * -> _i `ux -> -> # *U &U _Nref_b `ui `ux `i -> 0 `i 129  ]
-[; ;FMCW.c: 213: {
-"213
-{
-[; ;FMCW.c: 214: sendLow(unitID);
-"214
-[e ( _sendLow (1 _unitID ]
-"215
+[; ;FMCW.c: 177: Nref_b[i] = 0;
+"177
+[e = *U + &U _Nref_b * -> _i `ux -> -> # *U &U _Nref_b `ui `ux -> -> 0 `i `uc ]
+"178
 }
-[e :U 129 ]
-[; ;FMCW.c: 215: }
-[; ;FMCW.c: 216: if(Nref_b[i] == 1)
-"216
-[e $ ! == -> *U + &U _Nref_b * -> _i `ux -> -> # *U &U _Nref_b `ui `ux `i -> 1 `i 130  ]
-[; ;FMCW.c: 217: {
-"217
-{
-[; ;FMCW.c: 218: sendHigh(unitID);
-"218
-[e ( _sendHigh (1 _unitID ]
-"219
-}
-[e :U 130 ]
-"220
-}
-"210
+"176
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> 12 `i 126  ]
 [e :U 127 ]
-"220
+"178
 }
-[; ;FMCW.c: 219: }
-[; ;FMCW.c: 220: }
-[; ;FMCW.c: 223: sendHigh(unitID);
-"223
+[; ;FMCW.c: 178: }
+[; ;FMCW.c: 181: for(int i=0; Nref>0; i++){
+"181
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ > _Nref -> 0 `i 129  ]
+[e $U 130  ]
+[e :U 129 ]
+{
+[; ;FMCW.c: 182: Nref_b[i] = Nref % 2;
+"182
+[e = *U + &U _Nref_b * -> -> _i `ui `ux -> -> # *U &U _Nref_b `ui `ux -> % _Nref -> 2 `i `uc ]
+[; ;FMCW.c: 183: Nref = Nref / 2;
+"183
+[e = _Nref / _Nref -> 2 `i ]
+"184
+}
+"181
+[e ++ _i -> 1 `i ]
+[e $ > _Nref -> 0 `i 129  ]
+[e :U 130 ]
+"184
+}
+[; ;FMCW.c: 184: }
+[; ;FMCW.c: 187: for (UBYTE i=0; i<12; i++)
+"187
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 12 `i 132  ]
+[e $U 133  ]
+"188
+[e :U 132 ]
+[; ;FMCW.c: 188: {
+{
+[; ;FMCW.c: 189: if(Nref_b[i] == 0)
+"189
+[e $ ! == -> *U + &U _Nref_b * -> _i `ux -> -> # *U &U _Nref_b `ui `ux `i -> 0 `i 135  ]
+[; ;FMCW.c: 190: {
+"190
+{
+[; ;FMCW.c: 191: sendLow(unitID);
+"191
+[e ( _sendLow (1 _unitID ]
+"192
+}
+[e :U 135 ]
+[; ;FMCW.c: 192: }
+[; ;FMCW.c: 193: if(Nref_b[i] == 1)
+"193
+[e $ ! == -> *U + &U _Nref_b * -> _i `ux -> -> # *U &U _Nref_b `ui `ux `i -> 1 `i 136  ]
+[; ;FMCW.c: 194: {
+"194
+{
+[; ;FMCW.c: 195: sendHigh(unitID);
+"195
 [e ( _sendHigh (1 _unitID ]
-[; ;FMCW.c: 224: sendHigh(unitID);
-"224
+"196
+}
+[e :U 136 ]
+"197
+}
+"187
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 12 `i 132  ]
+[e :U 133 ]
+"197
+}
+[; ;FMCW.c: 196: }
+[; ;FMCW.c: 197: }
+[; ;FMCW.c: 200: sendHigh(unitID);
+"200
 [e ( _sendHigh (1 _unitID ]
-[; ;FMCW.c: 227: sendSTB(unitID);
-"227
+[; ;FMCW.c: 201: sendHigh(unitID);
+"201
+[e ( _sendHigh (1 _unitID ]
+[; ;FMCW.c: 204: sendSTB(unitID);
+"204
 [e ( _sendSTB (1 _unitID ]
-[; ;FMCW.c: 228: }
-"228
-[e :UE 122 ]
+[; ;FMCW.c: 205: }
+"205
+[e :UE 125 ]
 }
-"236
+"213
 [v _setOptionRegister `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;FMCW.c: 236: void setOptionRegister(UBYTE unitID){
+[; ;FMCW.c: 213: void setOptionRegister(UBYTE unitID){
 [e :U _setOptionRegister ]
 [v _unitID `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;FMCW.c: 238: for(UBYTE i=0;i<3;i++){
-"238
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 3 `i 132  ]
-[e $U 133  ]
-[e :U 132 ]
-{
-[; ;FMCW.c: 239: sendLow(unitID);
-"239
-[e ( _sendLow (1 _unitID ]
-"240
-}
-"238
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 3 `i 132  ]
-[e :U 133 ]
-"240
-}
-[; ;FMCW.c: 240: }
-[; ;FMCW.c: 241: for(UBYTE i=0;i<2;i++){
-"241
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 2 `i 135  ]
-[e $U 136  ]
-[e :U 135 ]
-{
-[; ;FMCW.c: 242: sendHigh(unitID);
-"242
-[e ( _sendHigh (1 _unitID ]
-"243
-}
-"241
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 2 `i 135  ]
-[e :U 136 ]
-"243
-}
-[; ;FMCW.c: 243: }
-[; ;FMCW.c: 244: for(UBYTE i=0;i<3;i++){
-"244
+[; ;FMCW.c: 215: for(UBYTE i=0;i<3;i++){
+"215
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
@@ -1615,23 +1618,20 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 139  ]
 [e :U 138 ]
 {
-[; ;FMCW.c: 245: sendLow(unitID);
-"245
+[; ;FMCW.c: 216: sendLow(unitID);
+"216
 [e ( _sendLow (1 _unitID ]
-"246
+"217
 }
-"244
+"215
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> 3 `i 138  ]
 [e :U 139 ]
-"246
+"217
 }
-[; ;FMCW.c: 246: }
-[; ;FMCW.c: 247: sendHigh(unitID);
-"247
-[e ( _sendHigh (1 _unitID ]
-[; ;FMCW.c: 249: for(UBYTE i=0;i<2;i++){
-"249
+[; ;FMCW.c: 217: }
+[; ;FMCW.c: 218: for(UBYTE i=0;i<2;i++){
+"218
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
@@ -1639,206 +1639,252 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 142  ]
 [e :U 141 ]
 {
-[; ;FMCW.c: 250: sendLow(unitID);
-"250
-[e ( _sendLow (1 _unitID ]
-"251
+[; ;FMCW.c: 219: sendHigh(unitID);
+"219
+[e ( _sendHigh (1 _unitID ]
+"220
 }
-"249
+"218
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> 2 `i 141  ]
 [e :U 142 ]
-"251
+"220
 }
-[; ;FMCW.c: 251: }
-[; ;FMCW.c: 253: sendSTB(unitID);
-"253
+[; ;FMCW.c: 220: }
+[; ;FMCW.c: 221: for(UBYTE i=0;i<3;i++){
+"221
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 3 `i 144  ]
+[e $U 145  ]
+[e :U 144 ]
+{
+[; ;FMCW.c: 222: sendLow(unitID);
+"222
+[e ( _sendLow (1 _unitID ]
+"223
+}
+"221
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 3 `i 144  ]
+[e :U 145 ]
+"223
+}
+[; ;FMCW.c: 223: }
+[; ;FMCW.c: 224: sendHigh(unitID);
+"224
+[e ( _sendHigh (1 _unitID ]
+[; ;FMCW.c: 226: for(UBYTE i=0;i<2;i++){
+"226
+{
+[v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 2 `i 147  ]
+[e $U 148  ]
+[e :U 147 ]
+{
+[; ;FMCW.c: 227: sendLow(unitID);
+"227
+[e ( _sendLow (1 _unitID ]
+"228
+}
+"226
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 2 `i 147  ]
+[e :U 148 ]
+"228
+}
+[; ;FMCW.c: 228: }
+[; ;FMCW.c: 230: sendSTB(unitID);
+"230
 [e ( _sendSTB (1 _unitID ]
-[; ;FMCW.c: 272: }
-"272
-[e :UE 131 ]
+[; ;FMCW.c: 231: }
+"231
+[e :UE 137 ]
 }
-"280
+"239
 [v _FMTX `(v ~T0 @X0 1 ef2`i`um ]
 {
-[; ;FMCW.c: 280: void FMTX(int Nref, USLONG Nprg){
+[; ;FMCW.c: 239: void FMTX(int Nref, USLONG Nprg){
 [e :U _FMTX ]
 [v _Nref `i ~T0 @X0 1 r1 ]
 [v _Nprg `um ~T0 @X0 1 r2 ]
 [f ]
-"281
+"240
 [v _fmtx `uc ~T0 @X0 1 a ]
-[; ;FMCW.c: 281: UBYTE fmtx = 1;
+[; ;FMCW.c: 240: UBYTE fmtx = 1;
 [e = _fmtx -> -> 1 `i `uc ]
-[; ;FMCW.c: 282: setOptionRegister(fmtx);
-"282
+[; ;FMCW.c: 241: setOptionRegister(fmtx);
+"241
 [e ( _setOptionRegister (1 _fmtx ]
-[; ;FMCW.c: 283: setNref(fmtx, Nref);
-"283
+[; ;FMCW.c: 242: setNref(fmtx, Nref);
+"242
 [e ( _setNref (2 , _fmtx _Nref ]
-[; ;FMCW.c: 284: setNprg(fmtx, Nprg);
-"284
+[; ;FMCW.c: 243: setNprg(fmtx, Nprg);
+"243
 [e ( _setNprg (2 , _fmtx _Nprg ]
-[; ;FMCW.c: 285: }
-"285
-[e :UE 144 ]
+[; ;FMCW.c: 244: }
+"244
+[e :UE 150 ]
 }
-"294
+"253
 [v _CWTX `(v ~T0 @X0 1 ef2`i`um ]
 {
-[; ;FMCW.c: 294: void CWTX(int Nref, USLONG Nprg){
+[; ;FMCW.c: 253: void CWTX(int Nref, USLONG Nprg){
 [e :U _CWTX ]
 [v _Nref `i ~T0 @X0 1 r1 ]
 [v _Nprg `um ~T0 @X0 1 r2 ]
 [f ]
-"295
+"254
 [v _cwtx `uc ~T0 @X0 1 a ]
-[; ;FMCW.c: 295: UBYTE cwtx = 2;
+[; ;FMCW.c: 254: UBYTE cwtx = 2;
 [e = _cwtx -> -> 2 `i `uc ]
-[; ;FMCW.c: 296: setOptionRegister(cwtx);
-"296
+[; ;FMCW.c: 255: setOptionRegister(cwtx);
+"255
 [e ( _setOptionRegister (1 _cwtx ]
-[; ;FMCW.c: 297: setNref(cwtx, Nref);
-"297
+[; ;FMCW.c: 256: setNref(cwtx, Nref);
+"256
 [e ( _setNref (2 , _cwtx _Nref ]
-[; ;FMCW.c: 298: setNprg(cwtx, Nprg);
-"298
+[; ;FMCW.c: 257: setNprg(cwtx, Nprg);
+"257
 [e ( _setNprg (2 , _cwtx _Nprg ]
-[; ;FMCW.c: 299: }
-"299
-[e :UE 145 ]
+[; ;FMCW.c: 258: }
+"258
+[e :UE 151 ]
 }
-"308
+"267
 [v _FMRX `(v ~T0 @X0 1 ef2`i`um ]
 {
-[; ;FMCW.c: 308: void FMRX(int Nref, USLONG Nprg){
+[; ;FMCW.c: 267: void FMRX(int Nref, USLONG Nprg){
 [e :U _FMRX ]
 [v _Nref `i ~T0 @X0 1 r1 ]
 [v _Nprg `um ~T0 @X0 1 r2 ]
 [f ]
-"309
+"268
 [v _fmrx `uc ~T0 @X0 1 a ]
-[; ;FMCW.c: 309: UBYTE fmrx = 3;
+[; ;FMCW.c: 268: UBYTE fmrx = 3;
 [e = _fmrx -> -> 3 `i `uc ]
-[; ;FMCW.c: 310: setOptionRegister(fmrx);
-"310
+[; ;FMCW.c: 269: setOptionRegister(fmrx);
+"269
 [e ( _setOptionRegister (1 _fmrx ]
-[; ;FMCW.c: 311: setNref(fmrx, Nref);
-"311
+[; ;FMCW.c: 270: setNref(fmrx, Nref);
+"270
 [e ( _setNref (2 , _fmrx _Nref ]
-[; ;FMCW.c: 312: setNprg(fmrx, Nprg);
-"312
+[; ;FMCW.c: 271: setNprg(fmrx, Nprg);
+"271
 [e ( _setNprg (2 , _fmrx _Nprg ]
-[; ;FMCW.c: 313: }
-"313
-[e :UE 146 ]
+[; ;FMCW.c: 272: }
+"272
+[e :UE 152 ]
 }
-"318
+"277
 [v _setPLL `(v ~T0 @X0 1 ef ]
 {
-[; ;FMCW.c: 318: void setPLL(void){
+[; ;FMCW.c: 277: void setPLL(void){
 [e :U _setPLL ]
 [f ]
-[; ;FMCW.c: 319: FMTX(2560, FMTX_Nprg);
-"319
+[; ;FMCW.c: 278: FMTX(2560, FMTX_Nprg);
+"278
 [e ( _FMTX (2 , -> 2560 `i _FMTX_Nprg ]
-[; ;FMCW.c: 320: CWTX(128, CWTX_Nprg);
-"320
+[; ;FMCW.c: 279: CWTX(128, CWTX_Nprg);
+"279
 [e ( _CWTX (2 , -> 128 `i _CWTX_Nprg ]
-[; ;FMCW.c: 321: FMRX(2560, FMRX_Nprg);
-"321
+[; ;FMCW.c: 280: FMRX(2560, FMRX_Nprg);
+"280
 [e ( _FMRX (2 , -> 2560 `i _FMRX_Nprg ]
-[; ;FMCW.c: 322: }
-"322
-[e :UE 147 ]
+[; ;FMCW.c: 281: }
+"281
+[e :UE 153 ]
 }
-"326
-[v _commandSwitchFMCW `(v ~T0 @X0 1 ef6`uc`uc`uc`uc`uc`uc ]
+"285
+[v _commandSwitchFMCW `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;FMCW.c: 326: void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBYTE Nprg2, UBYTE Nprg3){
+[; ;FMCW.c: 285: void commandSwitchFMCW(UBYTE command){
 [e :U _commandSwitchFMCW ]
 [v _command `uc ~T0 @X0 1 r1 ]
-[v _Nref1 `uc ~T0 @X0 1 r2 ]
-[v _Nref2 `uc ~T0 @X0 1 r3 ]
-[v _Nprg1 `uc ~T0 @X0 1 r4 ]
-[v _Nprg2 `uc ~T0 @X0 1 r5 ]
-[v _Nprg3 `uc ~T0 @X0 1 r6 ]
 [f ]
-[; ;FMCW.c: 327: switch(command){
-"327
-[e $U 150  ]
+[; ;FMCW.c: 286: switch(command){
+"286
+[e $U 156  ]
 {
-[; ;FMCW.c: 328: case 't':
-"328
-[e :U 151 ]
-[; ;FMCW.c: 330: break;
-"330
-[e $U 149  ]
-[; ;FMCW.c: 331: case 'c':
-"331
-[e :U 152 ]
-[; ;FMCW.c: 333: break;
-"333
-[e $U 149  ]
-[; ;FMCW.c: 334: case 'f':
-"334
-[e :U 153 ]
-[; ;FMCW.c: 336: break;
-"336
-[e $U 149  ]
-[; ;FMCW.c: 337: default:
-"337
-[e :U 154 ]
-[; ;FMCW.c: 338: switchError(0xf0);
-"338
-[e ( _switchError (1 -> -> 240 `i `uc ]
-[; ;FMCW.c: 339: break;
-"339
-[e $U 149  ]
-"340
+[; ;FMCW.c: 287: case 't':
+"287
+[e :U 157 ]
+[; ;FMCW.c: 288: FMTX(2560, FMTX_Nprg);
+"288
+[e ( _FMTX (2 , -> 2560 `i _FMTX_Nprg ]
+[; ;FMCW.c: 289: break;
+"289
+[e $U 155  ]
+[; ;FMCW.c: 290: case 'c':
+"290
+[e :U 158 ]
+[; ;FMCW.c: 291: CWTX(128, CWTX_Nprg);
+"291
+[e ( _CWTX (2 , -> 128 `i _CWTX_Nprg ]
+[; ;FMCW.c: 292: break;
+"292
+[e $U 155  ]
+[; ;FMCW.c: 293: case 'f':
+"293
+[e :U 159 ]
+[; ;FMCW.c: 294: FMRX(2560, FMRX_Nprg);
+"294
+[e ( _FMRX (2 , -> 2560 `i _FMRX_Nprg ]
+[; ;FMCW.c: 295: break;
+"295
+[e $U 155  ]
+[; ;FMCW.c: 296: default:
+"296
+[e :U 160 ]
+[; ;FMCW.c: 298: break;
+"298
+[e $U 155  ]
+"299
 }
-[; ;FMCW.c: 340: }
-[e $U 149  ]
-"327
-[e :U 150 ]
-[e [\ _command , $ -> -> 116 `ui `uc 151
- , $ -> -> 99 `ui `uc 152
- , $ -> -> 102 `ui `uc 153
- 154 ]
-"340
-[e :U 149 ]
-[; ;FMCW.c: 341: }
-"341
-[e :UE 148 ]
+[; ;FMCW.c: 299: }
+[e $U 155  ]
+"286
+[e :U 156 ]
+[e [\ _command , $ -> -> 116 `ui `uc 157
+ , $ -> -> 99 `ui `uc 158
+ , $ -> -> 102 `ui `uc 159
+ 160 ]
+"299
+[e :U 155 ]
+[; ;FMCW.c: 300: }
+"300
+[e :UE 154 ]
 }
-"347
+"306
 [v __NOP `(v ~T0 @X0 1 ef ]
 {
-[; ;FMCW.c: 347: void _NOP(void) {
+[; ;FMCW.c: 306: void _NOP(void) {
 [e :U __NOP ]
 [f ]
-[; ;FMCW.c: 348: for(UBYTE i=0; i<5; i++){
-"348
+[; ;FMCW.c: 307: for(UBYTE i=0; i<5; i++){
+"307
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 5 `i 156  ]
-[e $U 157  ]
-[e :U 156 ]
+[e $ < -> _i `i -> 5 `i 162  ]
+[e $U 163  ]
+[e :U 162 ]
 {
-[; ;FMCW.c: 349: __nop();
-"349
+[; ;FMCW.c: 308: __nop();
+"308
 [e ( ___nop ..  ]
-"350
+"309
 }
-"348
+"307
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 5 `i 156  ]
-[e :U 157 ]
-"350
+[e $ < -> _i `i -> 5 `i 162  ]
+[e :U 163 ]
+"309
 }
-[; ;FMCW.c: 350: }
-[; ;FMCW.c: 351: }
-"351
-[e :UE 155 ]
+[; ;FMCW.c: 309: }
+[; ;FMCW.c: 310: }
+"310
+[e :UE 161 ]
 }
