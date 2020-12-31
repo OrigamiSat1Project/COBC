@@ -23,6 +23,26 @@ void InitSerial(void){
 	TXEN   = 0;						// Reset transmitter
 	TXEN   = 1;						// Enable the transmitter
 }
+void putHex(UBYTE data){
+    UBYTE c[2];
+    c[0] = data >> 4;
+    c[1] = data & 0x0f;
+    if(c[0] <= 0x09){
+        c[0] += 48;
+    }else{
+        c[0] += 87;
+    }
+    if(c[1] <= 0x09){
+        c[1] += 48;
+    }else{
+        c[1] += 87;
+    }
+    putChar('0');
+    putChar('x');
+    putChar(c[0]);
+    putChar(c[1]);
+    put_lf();
+}
 
 UBYTE getChar(void){        //TODO: add time out feature
 	if(FERR || OERR) // If over run error, then reset the receiver //FERR = Framin Error bit// OERR = Overrun Error bit

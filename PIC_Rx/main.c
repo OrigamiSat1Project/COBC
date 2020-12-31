@@ -97,7 +97,15 @@ void main(void) {
         }
     }
     
+    putChar('R');
+    putChar('R');
+    putChar('S');
+    put_lf();
+    
     while(1){
+        putChar('M');
+        putChar('L');
+        put_lf();
 
         /*---timer interrupt---*/
         /*----------------------------------------------------------------------------*/
@@ -112,10 +120,18 @@ void main(void) {
         }
 //
         /*---timer process for NTRX PLL setting(every day) & EPS reset (if initial Ope / everyday)---*/
-        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){   
+        if(get_NTRX_pll_setting_counter_day() >= NTRX_PLL_INTERVAL){ 
+//        if(1){
             melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+            putHex(melting_status[0]);
+            putHex(melting_status[1]);
             if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {
+                putChar('R');
+                putChar('E');
+                putChar('P');
+                putChar('S');
+                put_lf();
                 resetEPS();  //only initial ope -> reset EPS
             }
             setPLL();  // set PLL every day

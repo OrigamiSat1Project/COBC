@@ -20,6 +20,7 @@
 #define synchronous  1
 
 void InitSerial(void);
+void putHex(UBYTE data);
 void putChar(UBYTE c);                  // Writes a character to the serial port
 void putString(UBYTE *);
 UBYTE getChar(void);
