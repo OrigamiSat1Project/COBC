@@ -86,8 +86,8 @@ void main(void) {
     
     InitI2CMaster(I2Cbps);
     
-//#define FLIGHT_MODE
-#define DEBUG_MODE
+#define FLIGHT_MODE
+//#define DEBUG_MODE
     
 #ifdef DEBUG_MODE
     while(1){
@@ -144,7 +144,7 @@ void main(void) {
 
         CheckNTRXsubpower();
         
-//        HKDownlink();
+        HKDownlink();
         downlinkFMSignal(0x50,0x62,0x00,0x02,0x09,0x00);
 
 

@@ -66,8 +66,8 @@ void main(void) {
     initTimer();
     __delay_s(5);
     
-//#define FLIGHT_MODE
-#define DEBUG_MODE
+#define FLIGHT_MODE
+//#define DEBUG_MODE
     
 #ifdef DEBUG_MODE
     while(1){
@@ -232,48 +232,48 @@ void main(void) {
         WriteToEEPROMWithDataSize(subControlByte,commandData[20],commandData[21],commandData,DATA_SIZE);
 
         /*---Send address using UART to OBC and TXCOBC---*/
-        sendCommand('g','u',commandData[19], commandData[20], commandData[21], commandData[22], 0x00, 0x00);
-        
-        /*---Define if command target is RXCOBC 'R' and read in task target ---*/
-        /*------------------------------------------------------------------*/
-        if(commandData[0] != 'R') continue;              //command target = PIC_RX        
-        
-            //Task target
-        if(commandData[2] != 'r') continue;          //task target =  PIC_RX
-                // Command type
-        switch(commandData[3]){         //Process command type
-            case 'm': /*change sattelite mode*/
-                commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
-    //                    commandSwitchSatMode(&commandData[4]);
-                break;
-            case 'p': /*power supply*/
-                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
-                break;
-            case 'n': /*radio unit*/
-                commandSwitchFMCW(commandData[4]);
-                break;
-            case 'i':/*I2C*/
-                commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
-                break;
-            case 'e': /*EEPROM*/
-    //                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
-                commandSwitchEEPROM(&commandData[4]);
-                break;
-            case 'u':/*UART*/
-                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7]);
-                break;
-            case 'w':/*WDT (watch dog timer)*/
-                WDTwait();
-                break;
-            case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
-                //TODO: write function directly here or in MPU.c
-                break;
-            case 'r':/*internal processing*/
-                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-                break;
-            default:
-                break;
-        }
+//        sendCommand('g','u',commandData[19], commandData[20], commandData[21], commandData[22], 0x00, 0x00);
+//        
+//        /*---Define if command target is RXCOBC 'R' and read in task target ---*/
+//        /*------------------------------------------------------------------*/
+//        if(commandData[0] != 'R') continue;              //command target = PIC_RX        
+//        
+//            //Task target
+//        if(commandData[2] != 'r') continue;          //task target =  PIC_RX
+//                // Command type
+//        switch(commandData[3]){         //Process command type
+//            case 'm': /*change sattelite mode*/
+//                commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+//    //                    commandSwitchSatMode(&commandData[4]);
+//                break;
+//            case 'p': /*power supply*/
+//                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+//                break;
+//            case 'n': /*radio unit*/
+//                commandSwitchFMCW(commandData[4]);
+//                break;
+//            case 'i':/*I2C*/
+//                commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
+//                break;
+//            case 'e': /*EEPROM*/
+//    //                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], &commandData[9]);
+//                commandSwitchEEPROM(&commandData[4]);
+//                break;
+//            case 'u':/*UART*/
+//                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7]);
+//                break;
+//            case 'w':/*WDT (watch dog timer)*/
+//                WDTwait();
+//                break;
+//            case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
+//                //TODO: write function directly here or in MPU.c
+//                break;
+//            case 'r':/*internal processing*/
+//                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+//                break;
+//            default:
+//                break;
+//        }
         WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID,lastCommandID);
     }
 #endif
