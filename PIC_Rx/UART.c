@@ -44,7 +44,7 @@ UBYTE getChar(void){        //TODO: add time out feature
             break;
         }
     }
-    RCIF = 0;
+//    RCIF = 0;
 	return RCREG;                   //USART Receive Data Register
 }
 

@@ -62,7 +62,39 @@ void main(void) {
     /*----------------------------------------------------------------------*/
     setPLL();
     __delay_ms(500);           //wait for circuit of PLL
-
+    
+#define flight
+//#define debug
+#ifdef debug
+    while(1){
+        sendPulseWDT();
+        putChar(0xAA);
+        putChar(0xAA);
+        putChar(0xAA);
+        putChar(0xAA);
+        putChar(0xAA);
+        
+         set_receive_command_counter(0,0);
+        while(RCIF != 1){
+            if(get_receive_command_counter_sec() >= 5)   break;
+        }
+        UBYTE test;
+        test = getChar();
+        putChar(test);
+//        for(int i=0; i<32;i ++){
+//            putChar(0xCC);
+//            putChar(0xCC);
+//            putChar(0xCC);
+//            set_receive_command_counter(0,0);
+//            while(RCIF != 1){
+//                if(get_receive_command_counter_sec() >= 1)   break;
+//            }
+//            commandData[i] = getChar();
+//            putChar(commandData[i]);
+//        }
+    }
+#endif
+#ifdef flight
     sendPulseWDT();
 
     /*----------------------------------------------------------------------*/
@@ -96,8 +128,18 @@ void main(void) {
 //            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status1_addresshigh, SatMode_error_status1_addresslow, SatMode_error_status);
 //        }
 //    }
-    
+    putChar(0x88);
+    putChar(0x88);
+    putChar(0x88);
+    putChar(0x88);
+    putChar(0x88);
+    putChar(0x88);
     while(1){
+        putChar(0xAA);
+        putChar(0xAA);
+        putChar(0xAA);
+        putChar(0xAA);
+        putChar(0xAA);
 
         /*---timer interrupt---*/
         /*----------------------------------------------------------------------------*/
@@ -150,8 +192,27 @@ void main(void) {
 
         /*---COMMAND RESET----*/
         commandData[0] = 0;
-
-        receiveDataPacket(commandData);
+        for(int i=0; i<32;i ++){
+            commandData[i] = 0;
+        }
+//        receiveDataPacket(commandData);
+        set_receive_command_counter(0,0);
+        while(RCIF != 1){
+//            if(get_receive_command_counter_sec() >= 1) sendPulseWDT();
+            __delay_ms(1);
+            sendPulseWDT();
+            if(get_receive_command_counter_sec() >= 5)   break;
+        }
+        for(int i=0; i<32;i ++){
+            commandData[i] = getChar();
+            putChar(commandData[i]);
+            sendPulseWDT();
+        }
+        putChar(0xBB);
+        putChar(0xBB);
+        putChar(0xBB);
+        putChar(0xBB);
+        putChar(0xBB);
 
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[0] == 0) continue;      //not receive command-->continue
@@ -169,9 +230,27 @@ void main(void) {
             lastCommandID = ReadEEPROMmainAndSub(B0select_EEPROM, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID);
             commandID = commandData[1];
             if (commandID == lastCommandID) {
+                putChar(0xAF);
+                putChar(0xAF);
+                putChar(0xAF);
+                putChar(0xAF);
+                putChar(0xAF);
+                putChar(0xAF);
                 continue;       //same uplink command-->continue
             }
             WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_LastCommandID, LowAddress_for_LastCommandID, commandID);
+//            putChar(commandID);
+        }
+        UBYTE read_ID;
+        read_ID = ReadEEPROMmainAndSub(B0select_EEPROM, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID);
+        putChar(lastCommandID);
+        putChar(commandID);
+        putChar(read_ID);
+        putChar(0xCC);
+        putChar(0xCC);
+        putChar(0xCC);
+        for(int i=0; i<32;i ++){
+            putChar(commandData[i]);
         }
 
         /*---Write uplink command in EEPROM---*/
@@ -224,4 +303,11 @@ void main(void) {
         }
         WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID,lastCommandID);
     }
+    putChar(0xEE);
+    putChar(0xEE);
+    putChar(0xEE);
+    putChar(0xEE);
+    putChar(0xEE);
+    putChar(0xEE);
+#endif
 }
