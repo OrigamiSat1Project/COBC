@@ -83,17 +83,17 @@ void main(void) {
     UBYTE melting_status[2] = {0x00};
     melting_status[0] = checkMeltingStatus(EEPROM_address);
     melting_status[1] = checkMeltingStatus(EEPROM_subaddress);
-    if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {  //before melting                                                                           //before melting
-        /*---200s ( 50s * 4times)---*/
-        for(UBYTE i=0; i<4; i++){
-            /*---wait 50s---*/
-            sendPulseWDT();
-            for(UBYTE j=0; j<10; j++){
-                delay_s(5);
-                sendPulseWDT();
-            }
-        }
-    }                  
+//    if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)) {  //before melting                                                                           //before melting
+//        /*---200s ( 50s * 4times)---*/
+//        for(UBYTE i=0; i<4; i++){
+//            /*---wait 50s---*/
+//            sendPulseWDT();
+//            for(UBYTE j=0; j<10; j++){
+//                delay_s(5);
+//                sendPulseWDT();
+//            }
+//        }
+//    }                  
      
     while(1){
         sendPulseWDT();
