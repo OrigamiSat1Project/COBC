@@ -203,10 +203,12 @@ void main(void) {
             sendPulseWDT();
             if(get_receive_command_counter_sec() >= 5)   break;
         }
-        for(int i=0; i<32;i ++){
-            commandData[i] = getChar();
-            putChar(commandData[i]);
-            sendPulseWDT();
+        if(RCIF == 1){
+            for(int i=0; i<32;i ++){
+                commandData[i] = getChar();
+//                putChar(commandData[i]);
+//                sendPulseWDT();
+            }
         }
         putChar(0xBB);
         putChar(0xBB);
@@ -240,6 +242,12 @@ void main(void) {
             }
             WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_LastCommandID, LowAddress_for_LastCommandID, commandID);
 //            putChar(commandID);
+            putChar(0xCB);
+            putChar(0xCB);
+            putChar(0xCB);
+            putChar(0xCB);
+            putChar(0xCB);
+            
         }
         UBYTE read_ID;
         read_ID = ReadEEPROMmainAndSub(B0select_EEPROM, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID);
@@ -252,6 +260,12 @@ void main(void) {
         for(int i=0; i<32;i ++){
             putChar(commandData[i]);
         }
+        putChar(0xDD);
+        putChar(0xDD);
+        putChar(0xDD);
+        putChar(0xDD);
+        putChar(0xDD);
+        
 
         /*---Write uplink command in EEPROM---*/
         /*------------------------------------------------------------------*/
