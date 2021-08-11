@@ -78,7 +78,7 @@ void main(void) {
     Init_WDT();
     Init_HK();
     sendPulseWDT();
-    delay_s(TURN_ON_WAIT_TIME);   
+    delay_s(TURN_ON_WAIT_TIME);
 
     UBYTE melting_status[2] = {0x00};
     melting_status[0] = checkMeltingStatus(EEPROM_address);
@@ -94,10 +94,10 @@ void main(void) {
 //            }
 //        }
 //    }
-     
+    putChar(0x88);
     while(1){
         sendPulseWDT();
-
+        putChar(0xAA);
         measureAllChanelADC();
         if(read5VBusAndSwitchNtrxPower() != 0){
             if(read5VBusAndSwitchNtrxPower() != 0){
@@ -108,6 +108,7 @@ void main(void) {
         CheckNTRXsubpower();
         
         HKDownlink();
+        
 
 
         //======================================================================
@@ -141,7 +142,19 @@ void main(void) {
                     continue;
                 }
             }
-
+            putChar(ID_add_high);
+            putChar(ID_add_low);
+            putChar(command_ID);
+            putChar(ReadEEPROM(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID));
+            putChar(ReadEEPROM(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID));
+            putChar(0xEB);
+            for(int i = 0; i<32; i++){
+                UBYTE tmp;
+                tmp = ReadEEPROM(RXDATA[2], RXDATA[3], RXDATA[4]+i);
+                putChar(tmp);
+            }
+            putChar(RXDATA[2]);
+           
             /*---Define if command target is 't' or 'g' and read in task target ---*/
             /*------------------------------------------------------------------*/
             switch(RXDATA[1]){

@@ -15,6 +15,11 @@
 
 UBYTE ReserveBeforeSatMode = SATMODE_SAVING;//spare BeforeSatMode (when can't read BeforeSatMode from EEPROM)
 UBYTE melting_status[2];
+UBYTE ChoicedSatMode;
+
+UBYTE get_SatMode(){
+    return ChoicedSatMode;
+}        
 
 UBYTE MeasureBatVoltageAndChangeSatMode(){
     //------battery voltage measure-------------
@@ -126,7 +131,8 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
     __delay_ms(100);///DON'T Delete
 
     UBYTE BeforeSatMode = ReadEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow);
-    UBYTE ChoicedSatMode = BeforeSatMode;//For change BeforeSatMode/ReserveBeforeSatMode when EEPROM broken;
+//    UBYTE ChoicedSatMode = BeforeSatMode;//For change BeforeSatMode/ReserveBeforeSatMode when EEPROM broken;
+    ChoicedSatMode = BeforeSatMode;
     BeforeSatMode = BeforeSatMode & 0xF0;
     ReserveBeforeSatMode = ReserveBeforeSatMode & 0xF0;
 

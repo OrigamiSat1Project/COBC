@@ -326,4 +326,3 @@ void changeHighLow(UINT pin_select_command, UBYTE highLow){
     }
     WriteOneByteToMainAndSubB0EEPROM(highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
 }
-

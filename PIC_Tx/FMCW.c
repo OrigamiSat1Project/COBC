@@ -74,7 +74,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         //Task target
         if(commandData[2] == 't'){          //task target =  PIC_TX
         // Command type
-            UBYTE commandData5_19[15] = {0};
+            UBYTE commandData[15] = {0};
 
             switch(commandData[3]){         //Process command type
                 case 'm':/*get satellite mode*/
@@ -394,6 +394,7 @@ void DevideDataAndChangeBinaryToChar (UBYTE binary_data, UBYTE *char_data_highLo
 
 void sendMorse(char *HK_Data,size_t data_size){
     for (UINT i = 0;i<data_size;i++){
+        putChar(HK_Data[i]);
         long mo = changeCharMorse(HK_Data[i]);
         for (int n=0;n<19;n++){
             if(mo==0){

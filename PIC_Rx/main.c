@@ -184,7 +184,6 @@ void main(void) {
         /*----------------------------------------------------------------------------*/
         sendPulseWDT();
 
-//
 //        /*---Receive command data---*/
 //        /*------------------------------------------------------------------*/
 
@@ -212,6 +211,23 @@ void main(void) {
         }
         putChar(0xBB);
         putChar(0xBB);
+        putChar(0xBB);
+        putChar(get_SatMode());
+        //Bat Voltage measured in SatMode function
+        UBYTE datHigh = ReadEEPROMmainAndSub(0x50,BatteryVoltage_addressHigh,BatteryVoltage_addressLow);
+        UBYTE datLow = ReadEEPROMmainAndSub(0x50,0x81,0x88);
+        putChar(datHigh);
+        putChar(datLow);
+        
+        //Values of threshold
+        putChar(ReadEEPROMmainAndSub(B0select_EEPROM, BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow));
+        putChar(ReadEEPROMmainAndSub(B0select_EEPROM, BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow));
+        putChar(ReadEEPROMmainAndSub(B0select_EEPROM, BatVol_saving_survival_datahigh_addressHigh, BatVol_saving_survival_datahigh_addressLow));
+        putChar(ReadEEPROMmainAndSub(B0select_EEPROM, BatVol_saving_survival_datalow_addressHigh, BatVol_saving_survival_datalow_addressLow));
+        putChar(ReadEEPROMmainAndSub(B0select_EEPROM, BatVol_nominal_revival_datahigh_addressHigh, BatVol_nominal_revival_datahigh_addressLow));
+        putChar(ReadEEPROMmainAndSub(B0select_EEPROM, BatVol_nominal_revival_datalow_addressHigh, BatVol_nominal_revival_datalow_addressLow));
+        putChar(ReadEEPROMmainAndSub(B0select_EEPROM, BatVol_saving_revival_datahigh_addressHigh, BatVol_saving_revival_datahigh_addressLow));
+        putChar(ReadEEPROMmainAndSub(B0select_EEPROM, BatVol_saving_revival_datalow_addressHigh, BatVol_saving_revival_datalow_addressLow));
         putChar(0xBB);
         putChar(0xBB);
         putChar(0xBB);
@@ -247,13 +263,12 @@ void main(void) {
             putChar(0xCB);
             putChar(0xCB);
             putChar(0xCB);
-            
         }
         UBYTE read_ID;
         read_ID = ReadEEPROMmainAndSub(B0select_EEPROM, HighAddress_for_LastCommandID, LowAddress_for_LastCommandID);
         putChar(lastCommandID);
-        putChar(commandID);
-        putChar(read_ID);
+        putChar(commandID);     //from UART
+        putChar(read_ID);       //from EEPROM
         putChar(0xCC);
         putChar(0xCC);
         putChar(0xCC);
@@ -272,6 +287,16 @@ void main(void) {
         WriteToEEPROMWithDataSize(mainControlByte,commandData[20],commandData[21],commandData,DATA_SIZE);
         WriteToEEPROMWithDataSize(subControlByte,commandData[20],commandData[21],commandData,DATA_SIZE);
 
+//        for(int i = 0; i<32; i++){
+//            UBYTE tmp;
+//            tmp = ReadEEPROM(MAIN_EEPROM_ADDRESS, commandData[20], commandData[21]+i);
+//            putChar(tmp);
+//        }
+//        
+//        putChar(0xEB);
+//        putChar(0xEB);
+//        putChar(0xEB);
+        
         /*---Send address using UART to OBC and TXCOBC---*/
         sendCommand('g','u',commandData[19], commandData[20], commandData[21], commandData[22], 0x00, 0x00);
         

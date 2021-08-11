@@ -84,6 +84,7 @@ void SendPacket(UBYTE *eDataField,UINT num){
 
 void SendByte(UBYTE byte){
     UBYTE bt;
+    putChar(byte);
     for(UINT i=0;i<8;i++){
         bt = byte & bit_H;
         //  eDataField -- FCSCalculate
